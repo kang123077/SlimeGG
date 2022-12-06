@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: -5177388603050735206, guid: 71ebafeef3c03457483266a33ab2b270, type: 3}
-  m_Color: {r: 0.38679248, g: 0.3557761, b: 0.3557761, a: 1}
+  m_Color: {r: 0.2830189, g: 0.2763439, b: 0.2763439, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -94,6 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6637834533767558991}
   - component: {fileID: 2717636186091058421}
+  - component: {fileID: 2195382741015162953}
   m_Layer: 0
   m_Name: Socket Base
   m_TagString: Untagged
@@ -143,3 +144,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &2195382741015162953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8274246282593073317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf68390af196751418f35350723cf913, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
