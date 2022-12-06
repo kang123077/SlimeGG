@@ -29,8 +29,12 @@ public class CameraController : MonoBehaviour
         keyH = keyH * speed_move * Time.deltaTime;
         keyV = keyV * speed_move * Time.deltaTime;
         keyD = keyD * speed_wheel * Time.deltaTime;
-        transform.Translate(Vector3.right * keyH);
-        transform.Translate(Vector3.up * keyV);
+
+        if ((transform.position.x >= 3 && keyH <= 0) || (transform.position.x <= 8 && keyH >= 0))
+            transform.Translate(Vector3.right * keyH);
+        if ((transform.position.y >= -5 && keyV <= 0) || (transform.position.y <= -1 && keyV >= 0))
+            transform.Translate(Vector3.up * keyV);
+
         if (
             (transform.position.z <= 3 && transform.position.z >= -3)
             || (transform.position.z <= 3 && keyD >= 0)
