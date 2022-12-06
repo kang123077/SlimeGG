@@ -15,7 +15,6 @@ public class CameraController : MonoBehaviour
         camera = GetComponent<Camera>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         moveCameraByKeyBoard();
