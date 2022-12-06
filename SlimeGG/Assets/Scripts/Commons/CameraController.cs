@@ -5,15 +5,9 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     private float speed_move = 5.0f;
-    private float speed_wheel = 3000.0f;
-    private new Transform transform;
-    private new Camera camera;
+    private float speed_wheel = 0.2f;
 
-    void Start()
-    {
-        transform = GetComponent<Transform>();
-        camera = GetComponent<Camera>();
-    }
+    void Start() { }
 
     void Update()
     {
@@ -35,10 +29,10 @@ public class CameraController : MonoBehaviour
             transform.Translate(Vector3.up * keyV);
 
         if (
-            (transform.position.z <= 3 && transform.position.z >= -3)
-            || (transform.position.z <= 3 && keyD >= 0)
-            || (transform.position.z >= -3 && keyD <= 0)
+            (Camera.main.orthographicSize <= 4.5 && Camera.main.orthographicSize >= 2.5)
+            || (Camera.main.orthographicSize <= 4.5 && keyD <= 0)
+            || (Camera.main.orthographicSize >= 2.5 && keyD >= 0)
         )
-            transform.Translate(Vector3.forward * keyD);
+            Camera.main.orthographicSize += speed_wheel * (keyD != 0 ? (keyD > 0 ? -1 : 1) : 0);
     }
 }
