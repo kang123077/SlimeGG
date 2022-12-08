@@ -9,7 +9,7 @@ public class TileSetController : MonoBehaviour
     [SerializeField]
     private GameObject tileBase;
     private GameObject[] tiles;
-    private float zCoor = 9f;
+    private float zCoor = 19f;
 
     void Start()
     {
