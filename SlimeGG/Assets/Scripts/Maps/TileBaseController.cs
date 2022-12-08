@@ -6,7 +6,7 @@ public class TileBaseController : MonoBehaviour
 {
     private GameObject socketMounted = null;
     private GameObject tempSocketMountable = null;
-    private float zCoor = 9f;
+    private float zCoor = 19f;
 
     public void detach()
     {
