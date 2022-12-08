@@ -6,6 +6,8 @@ public class CameraController : MonoBehaviour
 {
     private float speed_move = 5.0f;
     private float speed_wheel = 0.2f;
+    private float zoom_max = 8.0f;
+    private float zoom_min = 2.5f;
 
     void Start() { }
 
@@ -29,9 +31,9 @@ public class CameraController : MonoBehaviour
             transform.Translate(Vector3.up * keyV);
 
         if (
-            (Camera.main.orthographicSize <= 4.5 && Camera.main.orthographicSize >= 2.5)
-            || (Camera.main.orthographicSize <= 4.5 && keyD <= 0)
-            || (Camera.main.orthographicSize >= 2.5 && keyD >= 0)
+            (Camera.main.orthographicSize <= zoom_max && Camera.main.orthographicSize >= zoom_min)
+            || (Camera.main.orthographicSize <= zoom_max && keyD <= 0)
+            || (Camera.main.orthographicSize >= zoom_min && keyD >= 0)
         )
             Camera.main.orthographicSize += speed_wheel * (keyD != 0 ? (keyD > 0 ? -1 : 1) : 0);
     }
