@@ -9,8 +9,6 @@ public class DrawerController : MonoBehaviour
         Left, Right, Top, Bottom
     }
     [SerializeField]
-    private float distanceToMove;
-    [SerializeField]
     private Direction directionAttached;
 
     private Transform button;
@@ -28,12 +26,11 @@ public class DrawerController : MonoBehaviour
 
     public void ToggleDrawer()
     {
-        transform.Translate(
-            new Vector3(
-                (directionAttached == Direction.Left ? -1f : directionAttached == Direction.Right ? 1f : 0f) * (isHidden ? 1f : -1f) * distanceToMove,
-                (directionAttached == Direction.Top ? -1f : directionAttached == Direction.Bottom ? 1f : 0f) * (isHidden ? 1f : -1f) * distanceToMove,
-                0f)
-            );
+        transform.localPosition = new Vector3(
+                transform.localPosition.x + (directionAttached == Direction.Left ? -1f : directionAttached == Direction.Right ? 1f : 0f) * (isHidden ? 1f : -1f) * transform.GetComponent<RectTransform>().sizeDelta.x,
+                transform.localPosition.y + (directionAttached == Direction.Top ? -1f : directionAttached == Direction.Bottom ? 1f : 0f) * (isHidden ? 1f : -1f) * transform.GetComponent<RectTransform>().sizeDelta.y,
+                transform.localPosition.z
+                );
         button.transform.Rotate(new Vector3(0f, 0f, 180f));
         isHidden = !isHidden;
     }
