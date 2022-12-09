@@ -11,6 +11,7 @@ public class TileSetController : MonoBehaviour
     private GameObject tileBase;
     [SerializeField]
     private GameObject tileSetInventory;
+    private bool isInInventory = false;
 
     private GameObject[] tiles;
     private float zCoor = 19f;
@@ -49,18 +50,28 @@ public class TileSetController : MonoBehaviour
     {
         if (tileSetInventory.GetComponent<TileSetInventoryController>().getIsMouseIn())
         {
-            print("TileSet must go to Inventory!");
+            print("Go to Inventory");
+            isInInventory = true;
+            transform.SetParent(tileSetInventory.transform.Find("Viewport").Find("Content"));
         }
-        bool isAllAttachable = true;
-        for (int i = 0; i < tiles.Length; i++)
+        else
         {
-            isAllAttachable = isAllAttachable && (tiles[i].GetComponent<TileBaseController>().returnSocketMountable() != null);
+            isInInventory = false;
+            transform.SetParent(null);
         }
-        if (isAllAttachable)
+        if (!isInInventory)
         {
+            bool isAllAttachable = true;
             for (int i = 0; i < tiles.Length; i++)
             {
-                tiles[i].GetComponent<TileBaseController>().attach();
+                isAllAttachable = isAllAttachable && (tiles[i].GetComponent<TileBaseController>().returnSocketMountable() != null);
+            }
+            if (isAllAttachable)
+            {
+                for (int i = 0; i < tiles.Length; i++)
+                {
+                    tiles[i].GetComponent<TileBaseController>().attach();
+                }
             }
         }
     }
