@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TileSetController : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class TileSetController : MonoBehaviour
     private TileInfo[] tileInfos;
     [SerializeField]
     private GameObject tileBase;
+    [SerializeField]
+    private GameObject tileSetInventory;
+
     private GameObject[] tiles;
     private float zCoor = 19f;
 
@@ -43,6 +47,10 @@ public class TileSetController : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (tileSetInventory.GetComponent<TileSetInventoryController>().getIsMouseIn())
+        {
+            print("TileSet must go to Inventory!");
+        }
         bool isAllAttachable = true;
         for (int i = 0; i < tiles.Length; i++)
         {
