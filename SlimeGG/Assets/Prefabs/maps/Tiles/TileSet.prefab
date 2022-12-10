@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6797c3c9e8e31114ab35ae7da7131458, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileInfos: []
   tileBase: {fileID: 7374783945117358764, guid: f9fbbdbc4e26e0f4aa00a3863c1fa816, type: 3}
 --- !u!54 &6158872396735061297
 Rigidbody:
@@ -59,7 +58,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0

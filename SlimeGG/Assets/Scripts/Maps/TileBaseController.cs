@@ -31,7 +31,7 @@ public class TileBaseController : MonoBehaviour
     public GameObject returnSocketMountable()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 1.0f))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 11.0f))
         {
             GameObject curSocketTr = hit.collider.gameObject;
             if (curSocketTr.tag == "Socket" && curSocketTr.GetComponent<SocketController>().isMounted == false)
