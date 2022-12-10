@@ -40,6 +40,9 @@ public class TileSetController : MonoBehaviour
 
     private void OnMouseDown()
     {
+        isInInventory = false;
+        transform.SetParent(null);
+        transform.localScale = new Vector3(1f, 1f, 1f);
         for (int i = 0; i < tiles.Length; i++)
         {
             tiles[i].GetComponent<TileBaseController>().detach();
@@ -53,6 +56,7 @@ public class TileSetController : MonoBehaviour
             print("Go to Inventory");
             isInInventory = true;
             transform.SetParent(tileSetInventory.transform.Find("Viewport").Find("Content"));
+            transform.localScale = new Vector3(60f, 60f, 1f);
         }
         else
         {
