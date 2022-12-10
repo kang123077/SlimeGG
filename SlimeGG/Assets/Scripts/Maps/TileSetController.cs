@@ -9,6 +9,7 @@ public class TileSetController : MonoBehaviour
     private GameObject tileBase;
     private TileSetInfo tileSetInfo;
     private GameObject tileSetInventory;
+    private Transform tileSetInstalledStore;
     private bool isInInventory = false;
 
     private GameObject[] tiles;
@@ -28,7 +29,7 @@ public class TileSetController : MonoBehaviour
             GameObject newTile = Instantiate(tileBase);
             newTile.transform.position = new Vector3(y % 2 == 0 ? x * 2 : ((x * 2) + 1), -y * 2, zCoor);
             newTile.GetComponent<TileBaseController>().setTileType(tileSetInfo.tileType);
-            (tiles[i] = newTile).transform.transform.SetParent(transform);
+            (tiles[i] = newTile).transform.SetParent(transform);
         }
         size.x += 1;
         size.y += 1;
@@ -38,11 +39,15 @@ public class TileSetController : MonoBehaviour
     {
         this.tileSetInfo = tileSetInfo;
         initTileSet();
+        if (tileSetInfo.isFixed)
+        {
+            tryAttachTileSet();
+        }
     }
-
 
     void OnMouseDrag()
     {
+        if (tileSetInfo.isFixed) return;
         Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, zCoor);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
         objPosition.z = zCoor;
@@ -51,6 +56,7 @@ public class TileSetController : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (tileSetInfo.isFixed) return;
         tileSetInventory.GetComponent<TileSetInventoryController>().removeTileSet(transform);
         for (int i = 0; i < tiles.Length; i++)
         {
@@ -60,6 +66,7 @@ public class TileSetController : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (tileSetInfo.isFixed) return;
         if (tileSetInventory.GetComponent<TileSetInventoryController>().getIsMouseIn())
         {
             tileSetInventory.GetComponent<TileSetInventoryController>().addTileSet(transform);
@@ -70,18 +77,7 @@ public class TileSetController : MonoBehaviour
         }
         if (!isInInventory)
         {
-            bool isAllAttachable = true;
-            for (int i = 0; i < tiles.Length; i++)
-            {
-                isAllAttachable = isAllAttachable && (tiles[i].GetComponent<TileBaseController>().returnSocketMountable() != null);
-            }
-            if (isAllAttachable)
-            {
-                for (int i = 0; i < tiles.Length; i++)
-                {
-                    tiles[i].GetComponent<TileBaseController>().attach();
-                }
-            }
+            tryAttachTileSet();
         }
     }
 
@@ -103,5 +99,28 @@ public class TileSetController : MonoBehaviour
     public void setTileSetInventory(GameObject tileSetInventory)
     {
         this.tileSetInventory = tileSetInventory;
+    }
+
+    public void setTileSetInstalledStore(Transform tileSetInstalledStore)
+    {
+        this.tileSetInstalledStore = tileSetInstalledStore;
+    }
+
+    public bool tryAttachTileSet()
+    {
+        bool isAllAttachable = true;
+        for (int i = 0; i < tiles.Length; i++)
+        {
+            isAllAttachable = isAllAttachable && (tiles[i].GetComponent<TileBaseController>().returnSocketMountable() != null);
+        }
+        if (isAllAttachable)
+        {
+            transform.SetParent(tileSetInstalledStore);
+            for (int i = 0; i < tiles.Length; i++)
+            {
+                tiles[i].GetComponent<TileBaseController>().attach();
+            }
+        }
+        return isAllAttachable;
     }
 }

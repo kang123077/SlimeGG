@@ -12,12 +12,16 @@ public class TileSetGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TileInfo[] newTileInfos = new TileInfo[4];
+        TileInfo[] newTileInfos = new TileInfo[1];
+        newTileInfos[0] = new TileInfo(0, 0);
+        TileSetInfo newTileSetInfo = new TileSetInfo(newTileInfos, TileType.Normal, true);
+        installTileSet(newTileSetInfo);
+        newTileInfos = new TileInfo[4];
         newTileInfos[0] = new TileInfo(0, 0);
         newTileInfos[1] = new TileInfo(1, 0);
         newTileInfos[2] = new TileInfo(1, 1);
         newTileInfos[3] = new TileInfo(1, 2);
-        TileSetInfo newTileSetInfo = new TileSetInfo(newTileInfos);
+        newTileSetInfo = new TileSetInfo(newTileInfos);
         addTileSetToInventory(newTileSetInfo);
         newTileInfos = new TileInfo[3];
         newTileInfos[0] = new TileInfo(0, 0);
@@ -42,8 +46,17 @@ public class TileSetGenerator : MonoBehaviour
     private void addTileSetToInventory(TileSetInfo newTileSetInfo)
     {
         GameObject newTileSet = Instantiate(tileSet);
-        newTileSet.GetComponent<TileSetController>().setTileSetInfo(newTileSetInfo);
+        newTileSet.GetComponent<TileSetController>().setTileSetInstalledStore(transform);
         newTileSet.GetComponent<TileSetController>().setTileSetInventory(tileSetInventoy);
+        newTileSet.GetComponent<TileSetController>().setTileSetInfo(newTileSetInfo);
         tileSetInventoy.GetComponent<TileSetInventoryController>().addTileSet(newTileSet.transform);
+    }
+
+    private void installTileSet(TileSetInfo newTileSetInfo)
+    {
+        GameObject newTileSet = Instantiate(tileSet);
+        newTileSet.GetComponent<TileSetController>().setTileSetInstalledStore(transform);
+        newTileSet.GetComponent<TileSetController>().setTileSetInventory(tileSetInventoy);
+        newTileSet.GetComponent<TileSetController>().setTileSetInfo(newTileSetInfo);
     }
 }
