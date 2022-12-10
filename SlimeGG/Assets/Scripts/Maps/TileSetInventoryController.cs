@@ -7,7 +7,7 @@ public class TileSetInventoryController : MonoBehaviour, IPointerEnterHandler, I
 {
     private Transform contentParent;
     private bool isMouseIn = false;
-    private Vector2 margin = new Vector2(100f, -100f);
+    private Vector2 margin = new Vector2(200f, -200f);
 
     public void OnPointerEnter(PointerEventData eventData)
     {

@@ -27,6 +27,7 @@ public class TileSetController : MonoBehaviour
             size.y = Mathf.Max(size.y, y);
             GameObject newTile = Instantiate(tileBase);
             newTile.transform.position = new Vector3(y % 2 == 0 ? x * 2 : ((x * 2) + 1), -y * 2, zCoor);
+            newTile.GetComponent<TileBaseController>().setTileType(tileSetInfo.tileType);
             (tiles[i] = newTile).transform.transform.SetParent(transform);
         }
         size.x += 1;

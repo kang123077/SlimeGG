@@ -42,4 +42,15 @@ public class TileBaseController : MonoBehaviour
         }
         return null;
     }
+
+    // 임시 타일 타일 색 명시용
+    public void setTileType(TileType tileType)
+    {
+        transform.Find("Tile Main").GetComponent<SpriteRenderer>().color =
+            tileType == TileType.Pasture ? Color.green
+            : tileType == TileType.Ocean ? Color.blue
+            : tileType == TileType.Mountain ? Color.gray
+            : tileType == TileType.Volcano ? Color.red
+            : Color.white;
+    }
 }
