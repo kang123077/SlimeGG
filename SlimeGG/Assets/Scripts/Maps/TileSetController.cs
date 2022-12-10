@@ -6,27 +6,42 @@ using UnityEngine.EventSystems;
 public class TileSetController : MonoBehaviour
 {
     [SerializeField]
-    private TileInfo[] tileInfos;
-    [SerializeField]
     private GameObject tileBase;
-    [SerializeField]
+    private TileInfo[] tileInfos;
     private GameObject tileSetInventory;
     private bool isInInventory = false;
 
     private GameObject[] tiles;
     private float zCoor = 19f;
+    private Vector3 size;
 
-    void Start()
+    //void Start()
+    //{
+    //    initTileSet();
+    //}
+
+    public void initTileSet()
     {
         tiles = new GameObject[tileInfos.Length];
+        size.z = tileInfos.Length;
         for (int i = 0; i < tileInfos.Length; i++)
         {
             int x = tileInfos[i].x;
+            size.x = Mathf.Max(size.x, x);
             int y = tileInfos[i].y;
+            size.y = Mathf.Max(size.y, y);
             GameObject newTile = Instantiate(tileBase);
             newTile.transform.position = new Vector3(y % 2 == 0 ? x * 2 : ((x * 2) + 1), -y * 2, zCoor);
             (tiles[i] = newTile).transform.transform.SetParent(transform);
         }
+        size.x += 1;
+        size.y += 1;
+    }
+
+    public void setTileInfos(TileInfo[] tileInfos)
+    {
+        this.tileInfos = tileInfos;
+        initTileSet();
     }
 
 
@@ -40,9 +55,7 @@ public class TileSetController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        isInInventory = false;
-        transform.SetParent(null);
-        transform.localScale = new Vector3(1f, 1f, 1f);
+        tileSetInventory.GetComponent<TileSetInventoryController>().removeTileSet(transform);
         for (int i = 0; i < tiles.Length; i++)
         {
             tiles[i].GetComponent<TileBaseController>().detach();
@@ -53,15 +66,11 @@ public class TileSetController : MonoBehaviour
     {
         if (tileSetInventory.GetComponent<TileSetInventoryController>().getIsMouseIn())
         {
-            print("Go to Inventory");
-            isInInventory = true;
-            transform.SetParent(tileSetInventory.transform.Find("Viewport").Find("Content"));
-            transform.localScale = new Vector3(60f, 60f, 1f);
+            tileSetInventory.GetComponent<TileSetInventoryController>().addTileSet(transform);
         }
         else
         {
-            isInInventory = false;
-            transform.SetParent(null);
+            tileSetInventory.GetComponent<TileSetInventoryController>().removeTileSet(transform);
         }
         if (!isInInventory)
         {
@@ -78,5 +87,25 @@ public class TileSetController : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void setIsInInventory(bool isInInventory)
+    {
+        this.isInInventory = isInInventory;
+    }
+
+    public bool getIsInInvetory()
+    {
+        return isInInventory;
+    }
+
+    public Vector2 getSize()
+    {
+        return size;
+    }
+
+    public void setTileSetInventory(GameObject tileSetInventory)
+    {
+        this.tileSetInventory = tileSetInventory;
     }
 }
