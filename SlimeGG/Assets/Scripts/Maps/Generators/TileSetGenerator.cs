@@ -12,21 +12,24 @@ public class TileSetGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TileInfo[] newTileSetInfo = new TileInfo[4];
-        newTileSetInfo[0] = new TileInfo(0, 0);
-        newTileSetInfo[1] = new TileInfo(1, 0);
-        newTileSetInfo[2] = new TileInfo(1, 1);
-        newTileSetInfo[3] = new TileInfo(0, 2);
+        TileInfo[] newTileInfos = new TileInfo[4];
+        newTileInfos[0] = new TileInfo(0, 0);
+        newTileInfos[1] = new TileInfo(1, 0);
+        newTileInfos[2] = new TileInfo(1, 1);
+        newTileInfos[3] = new TileInfo(1, 2);
+        TileSetInfo newTileSetInfo = new TileSetInfo(newTileInfos);
         addTileSetToInventory(newTileSetInfo);
-        newTileSetInfo = new TileInfo[3];
-        newTileSetInfo[0] = new TileInfo(0, 0);
-        newTileSetInfo[1] = new TileInfo(1, 0);
-        newTileSetInfo[2] = new TileInfo(0, 1);
+        newTileInfos = new TileInfo[3];
+        newTileInfos[0] = new TileInfo(0, 0);
+        newTileInfos[1] = new TileInfo(1, 0);
+        newTileInfos[2] = new TileInfo(0, 1);
+        newTileSetInfo = new TileSetInfo(newTileInfos, TileType.Ocean);
         addTileSetToInventory(newTileSetInfo);
-        newTileSetInfo = new TileInfo[3];
-        newTileSetInfo[0] = new TileInfo(0, 0);
-        newTileSetInfo[1] = new TileInfo(1, 0);
-        newTileSetInfo[2] = new TileInfo(2, 0);
+        newTileInfos = new TileInfo[3];
+        newTileInfos[0] = new TileInfo(0, 0);
+        newTileInfos[1] = new TileInfo(1, 0);
+        newTileInfos[2] = new TileInfo(2, 0);
+        newTileSetInfo = new TileSetInfo(newTileInfos, TileType.Volcano);
         addTileSetToInventory(newTileSetInfo);
     }
 
@@ -36,10 +39,10 @@ public class TileSetGenerator : MonoBehaviour
 
     }
 
-    private void addTileSetToInventory(TileInfo[] newTileSetInfo)
+    private void addTileSetToInventory(TileSetInfo newTileSetInfo)
     {
         GameObject newTileSet = Instantiate(tileSet);
-        newTileSet.GetComponent<TileSetController>().setTileInfos(newTileSetInfo);
+        newTileSet.GetComponent<TileSetController>().setTileSetInfo(newTileSetInfo);
         newTileSet.GetComponent<TileSetController>().setTileSetInventory(tileSetInventoy);
         tileSetInventoy.GetComponent<TileSetInventoryController>().addTileSet(newTileSet.transform);
     }

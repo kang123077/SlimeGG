@@ -7,7 +7,7 @@ public class TileSetController : MonoBehaviour
 {
     [SerializeField]
     private GameObject tileBase;
-    private TileInfo[] tileInfos;
+    private TileSetInfo tileSetInfo;
     private GameObject tileSetInventory;
     private bool isInInventory = false;
 
@@ -15,20 +15,15 @@ public class TileSetController : MonoBehaviour
     private float zCoor = 19f;
     private Vector3 size;
 
-    //void Start()
-    //{
-    //    initTileSet();
-    //}
-
     public void initTileSet()
     {
-        tiles = new GameObject[tileInfos.Length];
-        size.z = tileInfos.Length;
-        for (int i = 0; i < tileInfos.Length; i++)
+        tiles = new GameObject[tileSetInfo.tileInfos.Length];
+        size.z = tileSetInfo.tileInfos.Length;
+        for (int i = 0; i < tileSetInfo.tileInfos.Length; i++)
         {
-            int x = tileInfos[i].x;
+            int x = tileSetInfo.tileInfos[i].x;
             size.x = Mathf.Max(size.x, x);
-            int y = tileInfos[i].y;
+            int y = tileSetInfo.tileInfos[i].y;
             size.y = Mathf.Max(size.y, y);
             GameObject newTile = Instantiate(tileBase);
             newTile.transform.position = new Vector3(y % 2 == 0 ? x * 2 : ((x * 2) + 1), -y * 2, zCoor);
@@ -38,9 +33,9 @@ public class TileSetController : MonoBehaviour
         size.y += 1;
     }
 
-    public void setTileInfos(TileInfo[] tileInfos)
+    public void setTileSetInfo(TileSetInfo tileSetInfo)
     {
-        this.tileInfos = tileInfos;
+        this.tileSetInfo = tileSetInfo;
         initTileSet();
     }
 
