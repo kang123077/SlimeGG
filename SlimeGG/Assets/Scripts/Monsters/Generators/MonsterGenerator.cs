@@ -26,7 +26,7 @@ public class MonsterGenerator : MonoBehaviour
     private void generateMonster(MonsterInfo monsterInfo)
     {
         GameObject newMonster = Instantiate(monsterBase);
-        newMonster.transform.SetParent(null);
-        newMonster.transform.position = new Vector3(0f, 0f, 18f);
+        newMonster.transform.SetParent(transform);
+        newMonster.transform.localPosition = new Vector3(0f, 0f, 0f);
     }
 }

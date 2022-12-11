@@ -13,6 +13,8 @@ public class TileSetController : MonoBehaviour
     private bool isInInventory = false;
 
     private GameObject[] tiles;
+    private Transform[] monsters;
+    private bool isOnMonster = false;
     private float zCoor = 19f;
     private Vector3 size;
 
@@ -47,7 +49,7 @@ public class TileSetController : MonoBehaviour
 
     void OnMouseDrag()
     {
-        if (tileSetInfo.isFixed) return;
+        if (tileSetInfo.isFixed || isOnMonster) return;
         Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, zCoor);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
         objPosition.z = zCoor;
@@ -56,7 +58,7 @@ public class TileSetController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (tileSetInfo.isFixed) return;
+        if (tileSetInfo.isFixed || isOnMonster) return;
         tileSetInventory.GetComponent<TileSetInventoryController>().removeTileSet(transform);
         for (int i = 0; i < tiles.Length; i++)
         {
@@ -66,7 +68,7 @@ public class TileSetController : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (tileSetInfo.isFixed) return;
+        if (tileSetInfo.isFixed || isOnMonster) return;
         if (tileSetInventory.GetComponent<TileSetInventoryController>().getIsMouseIn())
         {
             tileSetInventory.GetComponent<TileSetInventoryController>().addTileSet(transform);
@@ -122,5 +124,16 @@ public class TileSetController : MonoBehaviour
             }
         }
         return isAllAttachable;
+    }
+
+    public void addMonster(Transform targetMonster)
+    {
+        targetMonster.SetParent(transform.Find("Monster Container"));
+        isOnMonster = true;
+    }
+
+    public void removeMonster()
+    {
+        isOnMonster = transform.Find("Monster Container").childCount > 0;
     }
 }
