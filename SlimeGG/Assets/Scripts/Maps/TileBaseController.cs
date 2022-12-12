@@ -6,7 +6,6 @@ public class TileBaseController : MonoBehaviour
 {
     private GameObject socketMounted = null;
     private GameObject tempSocketMountable = null;
-    private float zCoor = 19f;
 
     public void detach()
     {
@@ -17,13 +16,13 @@ public class TileBaseController : MonoBehaviour
         }
     }
 
-    public void attach()
+    public Vector2 attach()
     {
         socketMounted = tempSocketMountable;
         tempSocketMountable = null;
         Vector3 socketPos = socketMounted.transform.position;
-        transform.position = new Vector3(socketPos.x, socketPos.y, zCoor);
         socketMounted.GetComponent<SocketController>().isMounted = true;
+        return socketMounted.GetComponent<SocketController>().coor;
     }
 
     public GameObject returnSocketMountable()

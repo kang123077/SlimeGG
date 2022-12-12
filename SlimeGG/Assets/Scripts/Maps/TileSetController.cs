@@ -52,6 +52,8 @@ public class TileSetController : MonoBehaviour
         if (tileSetInfo.isFixed || isOnMonster) return;
         Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, zCoor);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
+        objPosition.x -= size.x / 2f + (size.y % 2 == 0 ? 0 : 0.5f);
+        objPosition.y += size.y / 2f;
         objPosition.z = zCoor;
         transform.position = objPosition;
     }
@@ -120,10 +122,22 @@ public class TileSetController : MonoBehaviour
         if (isAllAttachable)
         {
             transform.SetParent(tileSetInstalledStore);
+            Vector2 targetSocketCoor = new Vector2();
             for (int i = 0; i < tiles.Length; i++)
             {
-                tiles[i].GetComponent<TileBaseController>().attach();
+                if (i == 0)
+                {
+                    targetSocketCoor = tiles[i].GetComponent<TileBaseController>().attach();
+                }
+                else
+                {
+                    tiles[i].GetComponent<TileBaseController>().attach();
+                }
             }
+            transform.position = new Vector3(
+                targetSocketCoor.x * 2 + (targetSocketCoor.y % 2 == 0 ? 0 : 1),
+                -targetSocketCoor.y * 2,
+                zCoor);
         }
         return isAllAttachable;
     }
