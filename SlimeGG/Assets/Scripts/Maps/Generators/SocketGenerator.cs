@@ -6,7 +6,8 @@ public class SocketGenerator : MonoBehaviour
 {
     [SerializeField]
     private GameObject socketBase;
-    private Transform[] Lines = new Transform[4];
+    [SerializeField]
+    private GameObject tileSetBase;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +28,10 @@ public class SocketGenerator : MonoBehaviour
                 GameObject newSocket = Instantiate(socketBase);
                 newSocket.name = "Socket " + j;
                 newSocket.tag = "Socket";
+                if (i == 0 && j == 0)
+                {
+                    newSocket.GetComponent<SocketController>().isMounted = true;
+                }
                 Transform newSocketTr = newSocket.transform;
                 newSocketTr.position = newLineTr.position;
                 newSocketTr.position = new Vector3(

@@ -6,15 +6,17 @@ TagManager:
   tags:
   - Socket
   - Tile
+  - Tile Set
+  - Monster
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - TileSet
   - Water
   - UI
-  - 
-  - 
+  - Monster
+  - Moving
   - 
   - 
   - 
