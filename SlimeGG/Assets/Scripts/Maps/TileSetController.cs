@@ -83,7 +83,10 @@ public class TileSetController : MonoBehaviour
         }
         if (!isInInventory)
         {
-            tryAttachTileSet();
+            if (!tryAttachTileSet())
+            {
+                tileSetInventory.GetComponent<TileSetInventoryController>().addTileSet(transform);
+            }
         }
     }
 
