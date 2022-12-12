@@ -10,6 +10,7 @@ public class TileSetController : MonoBehaviour
     private GameObject tileSetInventory;
     private Transform tileSetInstalledStore;
     private bool isInInventory = false;
+    private Vector2 installedCoor = new Vector2(-1f, -1f);
 
     private GameObject[] tiles;
     private Transform[] monsters;
@@ -75,7 +76,7 @@ public class TileSetController : MonoBehaviour
         transform.gameObject.layer = 3;
         if (tileSetInventory.GetComponent<TileSetInventoryController>().getIsMouseIn())
         {
-            tileSetInventory.GetComponent<TileSetInventoryController>().addTileSet(transform);
+            sendTileSetToInventory();
         }
         else
         {
@@ -85,7 +86,14 @@ public class TileSetController : MonoBehaviour
         {
             if (!tryAttachTileSet())
             {
-                tileSetInventory.GetComponent<TileSetInventoryController>().addTileSet(transform);
+                if (installedCoor.x != -1f)
+                {
+                    sendTileSetToPrevPosition();
+                }
+                else
+                {
+                    sendTileSetToInventory();
+                }
             }
         }
     }
@@ -115,6 +123,11 @@ public class TileSetController : MonoBehaviour
         this.tileSetInstalledStore = tileSetInstalledStore;
     }
 
+
+    /** Try to install TileSet into Socket
+     *  True if installation successed
+     *  False if installation failed
+     */
     public bool tryAttachTileSet()
     {
         bool isAllAttachable = true;
@@ -125,12 +138,11 @@ public class TileSetController : MonoBehaviour
         if (isAllAttachable)
         {
             transform.SetParent(tileSetInstalledStore);
-            Vector2 targetSocketCoor = new Vector2();
             for (int i = 0; i < tiles.Length; i++)
             {
                 if (i == 0)
                 {
-                    targetSocketCoor = tiles[i].GetComponent<TileBaseController>().attach();
+                    installedCoor = tiles[i].GetComponent<TileBaseController>().attach();
                 }
                 else
                 {
@@ -138,8 +150,8 @@ public class TileSetController : MonoBehaviour
                 }
             }
             transform.position = new Vector3(
-                targetSocketCoor.x * 2 + (targetSocketCoor.y % 2 == 0 ? 0 : 1),
-                -targetSocketCoor.y * 2,
+                installedCoor.x * 2 + (installedCoor.y % 2 == 0 ? 0 : 1),
+                -installedCoor.y * 2,
                 zCoor);
         }
         return isAllAttachable;
@@ -156,5 +168,26 @@ public class TileSetController : MonoBehaviour
     {
         isOnMonster = transform.Find("Monster Container").childCount > 0;
         transform.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Polygons;
+    }
+
+    /**
+     * Send TileSet to Inventory
+     */
+    private void sendTileSetToInventory()
+    {
+        installedCoor = new Vector2(-1f, -1f);
+        tileSetInventory.GetComponent<TileSetInventoryController>().addTileSet(transform);
+    }
+
+    /**
+     * Send TileSet to previous installed position(Socket)
+     */
+    private void sendTileSetToPrevPosition()
+    {
+        transform.position = new Vector3(
+            installedCoor.x * 2 + (installedCoor.y % 2 == 0 ? 0 : 1),
+            -installedCoor.y * 2,
+            zCoor);
+        tryAttachTileSet();
     }
 }
