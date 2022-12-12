@@ -60,6 +60,7 @@ public class TileSetGenerator : MonoBehaviour
         newTileSet.GetComponent<TileSetController>().setTileSetInstalledStore(transform);
         newTileSet.GetComponent<TileSetController>().setTileSetInventory(tileSetInventoy);
         newTileSet.GetComponent<TileSetController>().setTileSetInfo(newTileSetInfo);
+        newTileSet.name = "Base TileSet";
         setBaseTileSet(newTileSet);
     }
 

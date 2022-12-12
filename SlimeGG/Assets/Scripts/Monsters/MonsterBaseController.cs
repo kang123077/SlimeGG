@@ -39,12 +39,20 @@ public class MonsterBaseController : MonoBehaviour
 
     private void OnMouseUp()
     {
-        detectTileSet();
+        Vector3 rayStartPosition = transform.position;
+        rayStartPosition.z += 0.1f;
+        RaycastHit2D hit = Physics2D.Raycast(rayStartPosition, transform.forward, 1.0f, layerMask);
+        if (hit)
+        {
+            if (hit.transform.tag == "Tile Set")
+            {
+                assignMonsterToTileSet(hit.collider.transform);
+            }
+        };
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        print("Collided!!");
         direction.x = UnityEngine.Random.Range(-10, 10) / 10.0f * (direction.x >= 0f ? -1.0f : 1.0f);
         direction.y = UnityEngine.Random.Range(-10, 10) / 10.0f * (direction.y >= 0f ? -1.0f : 1.0f);
     }
@@ -54,18 +62,9 @@ public class MonsterBaseController : MonoBehaviour
         transform.Translate(direction * speed * Time.deltaTime);
     }
 
-    public void detectTileSet()
+    public void assignMonsterToTileSet(Transform tileSet)
     {
-        Vector3 rayStartPosition = transform.position;
-        rayStartPosition.z += 0.1f;
-        RaycastHit2D hit = Physics2D.Raycast(rayStartPosition, transform.forward, 1.0f, layerMask);
-        if (hit)
-        {
-            if (hit.transform.tag == "Tile Set")
-            {
-                curTileSet = hit.transform;
-                curTileSet.GetComponent<TileSetController>().addMonster(transform);
-            }
-        };
+        curTileSet = tileSet;
+        curTileSet.GetComponent<TileSetController>().addMonster(transform);
     }
 }

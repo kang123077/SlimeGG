@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class TileSetController : MonoBehaviour
 {
@@ -65,11 +64,13 @@ public class TileSetController : MonoBehaviour
         {
             tiles[i].GetComponent<TileBaseController>().detach();
         }
+        transform.gameObject.layer = 7;
     }
 
     private void OnMouseUp()
     {
         if (tileSetInfo.isFixed || isOnMonster) return;
+        transform.gameObject.layer = 3;
         if (tileSetInventory.GetComponent<TileSetInventoryController>().getIsMouseIn())
         {
             tileSetInventory.GetComponent<TileSetInventoryController>().addTileSet(transform);
