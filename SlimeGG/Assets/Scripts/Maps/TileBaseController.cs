@@ -6,7 +6,6 @@ public class TileBaseController : MonoBehaviour
 {
     private GameObject socketMounted = null;
     private GameObject tempSocketMountable = null;
-    private float zCoor = 19f;
 
     public void detach()
     {
@@ -17,13 +16,13 @@ public class TileBaseController : MonoBehaviour
         }
     }
 
-    public void attach()
+    public Vector2 attach()
     {
         socketMounted = tempSocketMountable;
         tempSocketMountable = null;
         Vector3 socketPos = socketMounted.transform.position;
-        transform.position = new Vector3(socketPos.x, socketPos.y, zCoor);
         socketMounted.GetComponent<SocketController>().isMounted = true;
+        return socketMounted.GetComponent<SocketController>().coor;
     }
 
     public GameObject returnSocketMountable()
@@ -44,11 +43,5 @@ public class TileBaseController : MonoBehaviour
     // 임시 타일 타일 색 명시용
     public void setTileType(TileType tileType)
     {
-        transform.Find("Tile Main").GetComponent<SpriteRenderer>().color =
-            tileType == TileType.Pasture ? Color.green
-            : tileType == TileType.Ocean ? Color.blue
-            : tileType == TileType.Mountain ? Color.gray
-            : tileType == TileType.Volcano ? Color.red
-            : Color.white;
     }
 }
