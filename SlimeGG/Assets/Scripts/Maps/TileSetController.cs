@@ -43,6 +43,7 @@ public class TileSetController : MonoBehaviour
         initTileSet();
         if (tileSetInfo.isFixed)
         {
+            transform.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Outlines;
             tryAttachTileSet();
         }
     }
@@ -128,6 +129,7 @@ public class TileSetController : MonoBehaviour
 
     public void addMonster(Transform targetMonster)
     {
+        transform.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Outlines;
         targetMonster.SetParent(transform.Find("Monster Container"));
         isOnMonster = true;
     }
@@ -135,5 +137,6 @@ public class TileSetController : MonoBehaviour
     public void removeMonster()
     {
         isOnMonster = transform.Find("Monster Container").childCount > 0;
+        transform.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Polygons;
     }
 }

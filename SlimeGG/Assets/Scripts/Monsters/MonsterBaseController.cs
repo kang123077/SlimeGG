@@ -18,7 +18,7 @@ public class MonsterBaseController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //moveTo(direction, 0.5f);
+        moveTo(direction, 0.5f);
     }
     void OnMouseDrag()
     {
@@ -39,17 +39,7 @@ public class MonsterBaseController : MonoBehaviour
 
     private void OnMouseUp()
     {
-        Vector3 rayStartPosition = transform.position;
-        rayStartPosition.z += 0.1f;
-        RaycastHit2D hit = Physics2D.Raycast(rayStartPosition, transform.forward, 1.0f, layerMask);
-        if (hit)
-        {
-            if (hit.transform.tag == "Tile Set")
-            {
-                curTileSet = hit.transform;
-                curTileSet.GetComponent<TileSetController>().addMonster(transform);
-            }
-        };
+        detectTileSet();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -62,5 +52,20 @@ public class MonsterBaseController : MonoBehaviour
     private void moveTo(Vector2 direction, float speed)
     {
         transform.Translate(direction * speed * Time.deltaTime);
+    }
+
+    public void detectTileSet()
+    {
+        Vector3 rayStartPosition = transform.position;
+        rayStartPosition.z += 0.1f;
+        RaycastHit2D hit = Physics2D.Raycast(rayStartPosition, transform.forward, 1.0f, layerMask);
+        if (hit)
+        {
+            if (hit.transform.tag == "Tile Set")
+            {
+                curTileSet = hit.transform;
+                curTileSet.GetComponent<TileSetController>().addMonster(transform);
+            }
+        };
     }
 }

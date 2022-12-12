@@ -8,6 +8,8 @@ public class TileSetGenerator : MonoBehaviour
     private GameObject tileSetInventoy;
     [SerializeField]
     private GameObject tileSet;
+    [SerializeField]
+    private GameObject monsterGenerator;
     private List<TileInfo[]> tileSetInfos;
     // Start is called before the first frame update
     void Start()
@@ -15,7 +17,7 @@ public class TileSetGenerator : MonoBehaviour
         TileInfo[] newTileInfos = new TileInfo[1];
         newTileInfos[0] = new TileInfo(0, 0);
         TileSetInfo newTileSetInfo = new TileSetInfo(newTileInfos, TileType.Normal, true);
-        installTileSet(newTileSetInfo);
+        installBaseTileSet(newTileSetInfo);
         newTileInfos = new TileInfo[4];
         newTileInfos[0] = new TileInfo(0, 0);
         newTileInfos[1] = new TileInfo(1, 0);
@@ -52,11 +54,18 @@ public class TileSetGenerator : MonoBehaviour
         tileSetInventoy.GetComponent<TileSetInventoryController>().addTileSet(newTileSet.transform);
     }
 
-    private void installTileSet(TileSetInfo newTileSetInfo)
+    private void installBaseTileSet(TileSetInfo newTileSetInfo)
     {
         GameObject newTileSet = Instantiate(tileSet);
         newTileSet.GetComponent<TileSetController>().setTileSetInstalledStore(transform);
         newTileSet.GetComponent<TileSetController>().setTileSetInventory(tileSetInventoy);
         newTileSet.GetComponent<TileSetController>().setTileSetInfo(newTileSetInfo);
+        setBaseTileSet(newTileSet);
+    }
+
+    private void setBaseTileSet(GameObject baseTileSet)
+    {
+        monsterGenerator.GetComponent<MonsterGenerator>().baseTileSet = baseTileSet;
+        monsterGenerator.GetComponent<MonsterGenerator>().generateMonsters();
     }
 }

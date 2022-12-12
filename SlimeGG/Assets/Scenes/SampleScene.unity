@@ -539,6 +539,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterBase: {fileID: 1029297608838221857, guid: 5060a4a32a58499409b57df0ea2a3589, type: 3}
+  baseTileSet: {fileID: 0}
 --- !u!4 &562461647
 Transform:
   m_ObjectHideFlags: 0
@@ -1344,6 +1345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileSetInventoy: {fileID: 241848125}
   tileSet: {fileID: 6158872396735061308, guid: 8c94847967ec3a24e8b4b4292ac67eb8, type: 3}
+  monsterGenerator: {fileID: 562461645}
 --- !u!1 &2089931897
 GameObject:
   m_ObjectHideFlags: 0
