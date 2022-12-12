@@ -16,11 +16,17 @@ public class TileSetGenerator : MonoBehaviour
     {
         TileSetInfo newTileSetInfo = new TileSetInfo(TileType.Normal, true, TileShape.Single);
         installBaseTileSet(newTileSetInfo);
-        newTileSetInfo = new TileSetInfo(TileShape.CurvedClock4);
+        newTileSetInfo = new TileSetInfo(TileShape.CurvedClockArc4);
         addTileSetToInventory(newTileSetInfo);
-        newTileSetInfo = new TileSetInfo(TileType.Ocean, TileShape.TriangleReverse3);
+        newTileSetInfo = new TileSetInfo(TileType.Ocean, TileShape.CurvedCounterClockArc4);
         addTileSetToInventory(newTileSetInfo);
-        newTileSetInfo = new TileSetInfo(TileType.Volcano, TileShape.StraightHorizontal3);
+        newTileSetInfo = new TileSetInfo(TileType.Volcano, TileShape.Seven4);
+        addTileSetToInventory(newTileSetInfo);
+        newTileSetInfo = new TileSetInfo(TileType.Volcano, TileShape.SevenReverse4);
+        addTileSetToInventory(newTileSetInfo);
+        newTileSetInfo = new TileSetInfo(TileType.Volcano, TileShape.L4);
+        addTileSetToInventory(newTileSetInfo);
+        newTileSetInfo = new TileSetInfo(TileType.Volcano, TileShape.LReverse4);
         addTileSetToInventory(newTileSetInfo);
     }
 
