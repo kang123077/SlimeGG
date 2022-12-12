@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TileSetController : MonoBehaviour
 {
+    private static string sprite_path = "Sprites/Tiles/";
     [SerializeField]
     private GameObject tileBase;
     private TileSetInfo tileSetInfo;
@@ -11,6 +13,7 @@ public class TileSetController : MonoBehaviour
     private Transform tileSetInstalledStore;
     private bool isInInventory = false;
     private Vector2 installedCoor = new Vector2(-1f, -1f);
+    private SpriteRenderer bgSprite;
 
     private GameObject[] tiles;
     private Transform[] monsters;
@@ -20,6 +23,58 @@ public class TileSetController : MonoBehaviour
 
     public void initTileSet()
     {
+        string spriteName = "";
+        switch (tileSetInfo.tileShape)
+        {
+            case TileShape.Single:
+                spriteName = "Single";
+                break;
+            case TileShape.StraightVertical2:
+                break;
+            case TileShape.StraightHorizontal2:
+                break;
+            case TileShape.StraightVertical3:
+                break;
+            case TileShape.StraightHorizontal3:
+                spriteName = "StraightHorizontal3";
+                break;
+            case TileShape.CurvedClock3:
+                spriteName = "CurvedClock3";
+                break;
+            case TileShape.CurvedClock4:
+                spriteName = "CurvedClock4";
+                break;
+            case TileShape.CurvedCounterClock3:
+                break;
+            case TileShape.CurvedCounterClock4:
+                break;
+            case TileShape.ZigZagR3:
+                break;
+            case TileShape.ZigZagL3:
+                break;
+            case TileShape.Triangle3:
+                break;
+            case TileShape.TriangleTailR4:
+                break;
+            case TileShape.TriangleTailL4:
+                break;
+            case TileShape.TriangleReverse3:
+                spriteName = "TriangleReverse3";
+                break;
+            case TileShape.TriangleReverseTailR4:
+                break;
+            case TileShape.TriangleReverseTailL4:
+                break;
+            case TileShape.Diamond:
+                break;
+            case TileShape.ParallR4:
+                break;
+            case TileShape.ParallL4:
+                break;
+        }
+        bgSprite = transform.Find("bg").GetComponent<SpriteRenderer>();
+        bgSprite.sprite = Resources.Load<Sprite>(sprite_path + spriteName);
+        bgSprite.transform.position = new Vector3(tileSetInfo.adjCoor.x, tileSetInfo.adjCoor.y, zCoor);
         tiles = new GameObject[tileSetInfo.tileInfos.Length];
         size.z = tileSetInfo.tileInfos.Length;
         for (int i = 0; i < tileSetInfo.tileInfos.Length; i++)

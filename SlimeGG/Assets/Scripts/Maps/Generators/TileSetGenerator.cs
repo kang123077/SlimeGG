@@ -14,28 +14,13 @@ public class TileSetGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TileInfo[] newTileInfos = new TileInfo[1];
-        newTileInfos[0] = new TileInfo(0, 0);
-        TileSetInfo newTileSetInfo = new TileSetInfo(newTileInfos, TileType.Normal, true);
+        TileSetInfo newTileSetInfo = new TileSetInfo(TileType.Normal, true, TileShape.Single);
         installBaseTileSet(newTileSetInfo);
-        newTileInfos = new TileInfo[4];
-        newTileInfos[0] = new TileInfo(0, 0);
-        newTileInfos[1] = new TileInfo(1, 0);
-        newTileInfos[2] = new TileInfo(1, 1);
-        newTileInfos[3] = new TileInfo(1, 2);
-        newTileSetInfo = new TileSetInfo(newTileInfos);
+        newTileSetInfo = new TileSetInfo(TileShape.CurvedClock4);
         addTileSetToInventory(newTileSetInfo);
-        newTileInfos = new TileInfo[3];
-        newTileInfos[0] = new TileInfo(0, 0);
-        newTileInfos[1] = new TileInfo(1, 0);
-        newTileInfos[2] = new TileInfo(0, 1);
-        newTileSetInfo = new TileSetInfo(newTileInfos, TileType.Ocean);
+        newTileSetInfo = new TileSetInfo(TileType.Ocean, TileShape.TriangleReverse3);
         addTileSetToInventory(newTileSetInfo);
-        newTileInfos = new TileInfo[3];
-        newTileInfos[0] = new TileInfo(0, 0);
-        newTileInfos[1] = new TileInfo(1, 0);
-        newTileInfos[2] = new TileInfo(2, 0);
-        newTileSetInfo = new TileSetInfo(newTileInfos, TileType.Volcano);
+        newTileSetInfo = new TileSetInfo(TileType.Volcano, TileShape.StraightHorizontal3);
         addTileSetToInventory(newTileSetInfo);
     }
 
