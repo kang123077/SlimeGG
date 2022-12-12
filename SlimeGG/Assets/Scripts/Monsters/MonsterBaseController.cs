@@ -42,7 +42,6 @@ public class MonsterBaseController : MonoBehaviour
         Vector3 rayStartPosition = transform.position;
         rayStartPosition.z += 0.1f;
         RaycastHit2D hit = Physics2D.Raycast(rayStartPosition, transform.forward, 1.0f, layerMask);
-        Debug.DrawRay(rayStartPosition, transform.forward * 1.0f, Color.green, 100.0f);
         if (hit)
         {
             if (hit.transform.tag == "Tile Set")
@@ -53,10 +52,11 @@ public class MonsterBaseController : MonoBehaviour
         };
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        print("Collided!");
-        direction = new Vector2(UnityEngine.Random.Range(0, direction.x >= 0 ? 1 : -1), UnityEngine.Random.Range(0, direction.y >= 0 ? 1 : -1));
+        print("Collided!!");
+        direction.x = UnityEngine.Random.Range(-10, 10) / 10.0f * (direction.x >= 0f ? -1.0f : 1.0f);
+        direction.y = UnityEngine.Random.Range(-10, 10) / 10.0f * (direction.y >= 0f ? -1.0f : 1.0f);
     }
 
     private void moveTo(Vector2 direction, float speed)
