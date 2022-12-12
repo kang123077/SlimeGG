@@ -37,9 +37,9 @@ public class MonsterBaseController : MonoBehaviour
 
     private void OnMouseUp()
     {
-        RaycastHit hit;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.forward);
         Debug.DrawRay(transform.position, transform.forward * 1.0f, Color.green, 100.0f);
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 1.0f))
+        if (hit)
         {
             if (hit.transform.tag == "Tile Set")
             {
