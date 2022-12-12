@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TileSetController : MonoBehaviour
 {
+    private static string sprite_path = "Sprites/Tiles/";
     [SerializeField]
     private GameObject tileBase;
     private TileSetInfo tileSetInfo;
     private GameObject tileSetInventory;
     private Transform tileSetInstalledStore;
     private bool isInInventory = false;
+    private Vector2 installedCoor = new Vector2(-1f, -1f);
+    private SpriteRenderer bgSprite;
 
     private GameObject[] tiles;
     private Transform[] monsters;
@@ -19,6 +23,9 @@ public class TileSetController : MonoBehaviour
 
     public void initTileSet()
     {
+        bgSprite = transform.Find("bg").GetComponent<SpriteRenderer>();
+        bgSprite.sprite = Resources.Load<Sprite>(sprite_path + tileSetInfo.tileShape.ToString());
+        bgSprite.transform.position = new Vector3(tileSetInfo.adjCoor.x, tileSetInfo.adjCoor.y, zCoor);
         tiles = new GameObject[tileSetInfo.tileInfos.Length];
         size.z = tileSetInfo.tileInfos.Length;
         for (int i = 0; i < tileSetInfo.tileInfos.Length; i++)
@@ -52,6 +59,8 @@ public class TileSetController : MonoBehaviour
         if (tileSetInfo.isFixed || isOnMonster) return;
         Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, zCoor);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
+        objPosition.x -= size.x / 2f + (size.y % 2 == 0 ? 0 : 0.5f);
+        objPosition.y += size.y / 2f;
         objPosition.z = zCoor;
         transform.position = objPosition;
     }
@@ -73,7 +82,7 @@ public class TileSetController : MonoBehaviour
         transform.gameObject.layer = 3;
         if (tileSetInventory.GetComponent<TileSetInventoryController>().getIsMouseIn())
         {
-            tileSetInventory.GetComponent<TileSetInventoryController>().addTileSet(transform);
+            sendTileSetToInventory();
         }
         else
         {
@@ -81,7 +90,17 @@ public class TileSetController : MonoBehaviour
         }
         if (!isInInventory)
         {
-            tryAttachTileSet();
+            if (!tryAttachTileSet())
+            {
+                if (installedCoor.x != -1f)
+                {
+                    sendTileSetToPrevPosition();
+                }
+                else
+                {
+                    sendTileSetToInventory();
+                }
+            }
         }
     }
 
@@ -110,6 +129,11 @@ public class TileSetController : MonoBehaviour
         this.tileSetInstalledStore = tileSetInstalledStore;
     }
 
+
+    /** Try to install TileSet into Socket
+     *  True if installation successed
+     *  False if installation failed
+     */
     public bool tryAttachTileSet()
     {
         bool isAllAttachable = true;
@@ -122,8 +146,19 @@ public class TileSetController : MonoBehaviour
             transform.SetParent(tileSetInstalledStore);
             for (int i = 0; i < tiles.Length; i++)
             {
-                tiles[i].GetComponent<TileBaseController>().attach();
+                if (i == 0)
+                {
+                    installedCoor = tiles[i].GetComponent<TileBaseController>().attach();
+                }
+                else
+                {
+                    tiles[i].GetComponent<TileBaseController>().attach();
+                }
             }
+            transform.position = new Vector3(
+                installedCoor.x * 2 + (installedCoor.y % 2 == 0 ? 0 : 1),
+                -installedCoor.y * 2,
+                zCoor);
         }
         return isAllAttachable;
     }
@@ -139,5 +174,26 @@ public class TileSetController : MonoBehaviour
     {
         isOnMonster = transform.Find("Monster Container").childCount > 0;
         transform.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Polygons;
+    }
+
+    /**
+     * Send TileSet to Inventory
+     */
+    private void sendTileSetToInventory()
+    {
+        installedCoor = new Vector2(-1f, -1f);
+        tileSetInventory.GetComponent<TileSetInventoryController>().addTileSet(transform);
+    }
+
+    /**
+     * Send TileSet to previous installed position(Socket)
+     */
+    private void sendTileSetToPrevPosition()
+    {
+        transform.position = new Vector3(
+            installedCoor.x * 2 + (installedCoor.y % 2 == 0 ? 0 : 1),
+            -installedCoor.y * 2,
+            zCoor);
+        tryAttachTileSet();
     }
 }
