@@ -19,18 +19,22 @@ public class MonsterGenerator : MonoBehaviour
 
     }
 
-    public void generateMonsters()
+    public void initGeneration()
     {
-        monsterInfos = new MonsterInfo[1];
-        for (int i = 0; i < monsterInfos.Length; i++)
-        {
-            generateMonster(monsterInfos[i]);
-        }
+        MonsterInfo monsterInfo = new MonsterInfo();
+        generateMonster(monsterInfo);
+        monsterInfo = new MonsterInfo(InfantType.Lava);
+        generateMonster(monsterInfo);
+        monsterInfo = new MonsterInfo(InfantType.Dark);
+        generateMonster(monsterInfo);
+        monsterInfo = new MonsterInfo(InfantType.Ore);
+        generateMonster(monsterInfo);
     }
 
     private void generateMonster(MonsterInfo monsterInfo)
     {
         GameObject newMonster = Instantiate(monsterBase);
+        newMonster.GetComponent<MonsterBaseController>().initInfo(monsterInfo);
         newMonster.GetComponent<MonsterBaseController>().assignMonsterToTileSet(baseTileSet.transform);
         newMonster.transform.localPosition = new Vector3(0f, 0f, 0f);
     }

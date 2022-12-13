@@ -58,6 +58,6 @@ public class TileSetGenerator : MonoBehaviour
     private void setBaseTileSet(GameObject baseTileSet)
     {
         monsterGenerator.GetComponent<MonsterGenerator>().baseTileSet = baseTileSet;
-        monsterGenerator.GetComponent<MonsterGenerator>().generateMonsters();
+        monsterGenerator.GetComponent<MonsterGenerator>().initGeneration();
     }
 }

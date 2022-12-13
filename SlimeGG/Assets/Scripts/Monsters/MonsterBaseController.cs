@@ -1,14 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MonsterBaseController : MonoBehaviour
 {
+    private static string sprite_path = "Sprites/Monsters/Infants/";
     private float zCoor = 18f;
     private Vector2 direction;
     private Transform curTileSet;
     private int layerMask;
-    // Start is called before the first frame update
+    private MonsterInfo monsterInfo;
+
+    public void initInfo(MonsterInfo monsterInfo)
+    {
+        this.monsterInfo = monsterInfo;
+        Transform bg = transform.Find("Image");
+        bg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(sprite_path + monsterInfo.infantType.ToString());
+        Destroy(bg.GetComponent<PolygonCollider2D>());
+        bg.AddComponent<PolygonCollider2D>();
+    }
     void Start()
     {
         direction = new Vector2(1, 1);
