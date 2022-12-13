@@ -16,8 +16,7 @@ public class TileSetController : MonoBehaviour
     private SpriteRenderer bgSprite;
 
     private GameObject[] tiles;
-    private Transform[] monsters;
-    private bool isOnMonster = false;
+    private List<Transform> monsters = new List<Transform>();
     private float zCoor = 19f;
     private Vector3 size;
 
@@ -56,7 +55,7 @@ public class TileSetController : MonoBehaviour
 
     void OnMouseDrag()
     {
-        if (tileSetInfo.isFixed || isOnMonster) return;
+        if (tileSetInfo.isFixed || monsters.Count > 0) return;
         Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, zCoor);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
         objPosition.x -= size.x / 2f + (size.y % 2 == 0 ? 0 : 0.5f);
@@ -67,7 +66,7 @@ public class TileSetController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (tileSetInfo.isFixed || isOnMonster) return;
+        if (tileSetInfo.isFixed || monsters.Count > 0) return;
         tileSetInventory.GetComponent<TileSetInventoryController>().removeTileSet(transform);
         for (int i = 0; i < tiles.Length; i++)
         {
@@ -78,7 +77,7 @@ public class TileSetController : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (tileSetInfo.isFixed || isOnMonster) return;
+        if (tileSetInfo.isFixed || monsters.Count > 0) return;
         transform.gameObject.layer = 3;
         if (tileSetInventory.GetComponent<TileSetInventoryController>().getIsMouseIn())
         {
@@ -167,13 +166,16 @@ public class TileSetController : MonoBehaviour
     {
         transform.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Outlines;
         targetMonster.SetParent(transform.Find("Monster Container"));
-        isOnMonster = true;
+        monsters.Add(targetMonster);
     }
 
-    public void removeMonster()
+    public void removeMonster(Transform targetMonster)
     {
-        isOnMonster = transform.Find("Monster Container").childCount > 0;
-        transform.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Polygons;
+        monsters.Remove(targetMonster);
+        if (monsters.Count == 0)
+        {
+            transform.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Polygons;
+        }
     }
 
     /**

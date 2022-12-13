@@ -44,12 +44,14 @@ public class MonsterBaseController : MonoBehaviour
         transform.SetParent(null);
         if (curTileSet != null)
         {
-            curTileSet.GetComponent<TileSetController>().removeMonster();
+            curTileSet.GetComponent<TileSetController>().removeMonster(transform);
         }
+        transform.gameObject.layer = 7;
     }
 
     private void OnMouseUp()
     {
+        transform.gameObject.layer = 3;
         Vector3 rayStartPosition = transform.position;
         rayStartPosition.z += 0.1f;
         RaycastHit2D hit = Physics2D.Raycast(rayStartPosition, transform.forward, 1.0f, layerMask);
