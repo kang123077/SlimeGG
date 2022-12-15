@@ -21,7 +21,7 @@ public class MonsterGenerator : MonoBehaviour
 
     public void initGeneration()
     {
-        MonsterInfo monsterInfo = new MonsterInfo();
+        MonsterInfo monsterInfo = new MonsterInfo(InfantType.Ore);
         generateMonster(monsterInfo);
         monsterInfo = new MonsterInfo(InfantType.Lava);
         generateMonster(monsterInfo);
