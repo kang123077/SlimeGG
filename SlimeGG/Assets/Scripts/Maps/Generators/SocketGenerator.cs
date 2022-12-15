@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SocketGenerator : MonoBehaviour
@@ -8,10 +9,20 @@ public class SocketGenerator : MonoBehaviour
     private GameObject socketBase;
     [SerializeField]
     private GameObject tileSetBase;
+    [SerializeField]
+    private GameObject tileSetInventoy;
+    [SerializeField]
+    private GameObject monsterGenerator;
+    [SerializeField]
+    private GameObject tileSetStore;
 
     // Start is called before the first frame update
     void Start()
     {
+        TileSetInfo newTileSetInfo = new TileSetInfo(TileType.Normal, true, TileShape.Single);
+        GameObject baseTileSet = Instantiate(tileSetBase);
+        baseTileSet.GetComponent<TileSetController>().setTileSetInstalledStore(tileSetStore.transform);
+        baseTileSet.GetComponent<TileSetController>().setTileSetInventory(tileSetInventoy);
         for (int i = 0; i < 4; i++)
         {
             GameObject newLine = new GameObject();
@@ -31,7 +42,7 @@ public class SocketGenerator : MonoBehaviour
                 newSocket.GetComponent<SocketController>().coor = new Vector2(j, i);
                 if (i == 0 && j == 0)
                 {
-                    newSocket.GetComponent<SocketController>().isMounted = true;
+                    newSocket.GetComponent<SocketController>().tileSetInstalled = baseTileSet.transform;
                 }
                 Transform newSocketTr = newSocket.transform;
                 newSocketTr.position = newLineTr.position;
@@ -43,5 +54,10 @@ public class SocketGenerator : MonoBehaviour
                 newSocketTr.SetParent(newLineTr);
             }
         }
+        baseTileSet.GetComponent<TileSetController>().setTileSetInfo(newTileSetInfo);
+        baseTileSet.name = "Base TileSet";
+        baseTileSet.transform.SetParent(tileSetStore.transform);
+        monsterGenerator.GetComponent<MonsterGenerator>().baseTileSet = baseTileSet;
+        monsterGenerator.GetComponent<MonsterGenerator>().initGeneration();
     }
 }

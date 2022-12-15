@@ -1189,7 +1189,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 605062685}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1284,6 +1284,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   socketBase: {fileID: 8274246282593073317, guid: 2f70ea66597bdc74c92f5954e7aecd83, type: 3}
   tileSetBase: {fileID: 6158872396735061308, guid: 8c94847967ec3a24e8b4b4292ac67eb8, type: 3}
+  tileSetInventoy: {fileID: 241848125}
+  monsterGenerator: {fileID: 562461645}
+  tileSetStore: {fileID: 1809938683}
 --- !u!4 &1779397624
 Transform:
   m_ObjectHideFlags: 0
@@ -1345,7 +1348,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileSetInventoy: {fileID: 241848125}
   tileSet: {fileID: 6158872396735061308, guid: 8c94847967ec3a24e8b4b4292ac67eb8, type: 3}
-  monsterGenerator: {fileID: 562461645}
 --- !u!1 &2089931897
 GameObject:
   m_ObjectHideFlags: 0

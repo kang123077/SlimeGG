@@ -147,11 +147,11 @@ public class TileSetController : MonoBehaviour
             {
                 if (i == 0)
                 {
-                    installedCoor = tiles[i].GetComponent<TileBaseController>().attach();
+                    installedCoor = tiles[i].GetComponent<TileBaseController>().attach(transform);
                 }
                 else
                 {
-                    tiles[i].GetComponent<TileBaseController>().attach();
+                    tiles[i].GetComponent<TileBaseController>().attach(transform);
                 }
             }
             transform.position = new Vector3(
@@ -166,6 +166,7 @@ public class TileSetController : MonoBehaviour
     {
         transform.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Outlines;
         targetMonster.SetParent(transform.Find("Monster Container"));
+        targetMonster.localPosition = new Vector3(targetMonster.localPosition.x, targetMonster.localPosition.y, 0f);
         monsters.Add(targetMonster);
     }
 

@@ -54,14 +54,14 @@ public class MonsterBaseController : MonoBehaviour
         transform.gameObject.layer = 3;
         Vector3 rayStartPosition = transform.position;
         rayStartPosition.z += 0.1f;
-        RaycastHit2D hit = Physics2D.Raycast(rayStartPosition, transform.forward, 1.0f, layerMask);
-        if (hit)
+        RaycastHit hit3D;
+        if (Physics.Raycast(rayStartPosition, transform.forward, out hit3D, 2.0f))
         {
-            if (hit.transform.tag == "Tile Set")
+            if (hit3D.collider.transform.tag == "Socket")
             {
-                assignMonsterToTileSet(hit.collider.transform);
+                assignMonsterToTileSet(hit3D.collider.transform.GetComponent<SocketController>().tileSetInstalled);
             }
-        };
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
