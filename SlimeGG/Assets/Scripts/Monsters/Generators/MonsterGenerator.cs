@@ -21,14 +21,14 @@ public class MonsterGenerator : MonoBehaviour
 
     public void initGeneration()
     {
-        MonsterInfo monsterInfo = new MonsterInfo(InfantType.Ore);
+        MonsterInfo monsterInfo = new MonsterInfo(GrowthState.Infant, "Ore");
         generateMonster(monsterInfo);
-        monsterInfo = new MonsterInfo(InfantType.Lava);
-        generateMonster(monsterInfo);
-        monsterInfo = new MonsterInfo(InfantType.Dark);
-        generateMonster(monsterInfo);
-        monsterInfo = new MonsterInfo(InfantType.Ore);
-        generateMonster(monsterInfo);
+        //monsterInfo = new MonsterInfo(InfantType.Lava);
+        //generateMonster(monsterInfo);
+        //monsterInfo = new MonsterInfo(InfantType.Dark);
+        //generateMonster(monsterInfo);
+        //monsterInfo = new MonsterInfo(InfantType.Ore);
+        //generateMonster(monsterInfo);
     }
 
     private void generateMonster(MonsterInfo monsterInfo)
