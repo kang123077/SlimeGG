@@ -11,6 +11,7 @@ public class MonsterBaseController : MonoBehaviour
     private MonsterInfo monsterInfo;
     private float moveTime = 0f;
     private bool isStopped = false;
+    private Vector2 correctionCoor;
 
     public void initInfo(MonsterInfo monsterInfo)
     {
@@ -20,6 +21,7 @@ public class MonsterBaseController : MonoBehaviour
         Destroy(bg.GetComponent<PolygonCollider2D>());
         bg.AddComponent<PolygonCollider2D>();
     }
+
     void Start()
     {
         direction.x = Random.Range(-10, 10) / 10.0f;
@@ -51,14 +53,29 @@ public class MonsterBaseController : MonoBehaviour
     }
     void OnMouseDrag()
     {
-        Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, zCoor);
+        Vector3 mousePos = new Vector3(
+            Input.mousePosition.x,
+            Input.mousePosition.y,
+            10f
+            );
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
         objPosition.z = zCoor;
-        transform.position = objPosition;
+        transform.position = objPosition - new Vector3(correctionCoor.x, correctionCoor.y, 0f);
     }
 
     private void OnMouseDown()
     {
+        Vector3 mousePos = new Vector3(
+       Input.mousePosition.x - correctionCoor.x,
+       Input.mousePosition.y - correctionCoor.y,
+       10f
+       );
+        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
+        correctionCoor = objPosition - transform.position;
+
+        GameObject.Find("UI").GetComponent<UIController>().UIOnChecker();
+        GameObject.Find("Popup UI").GetComponent<PopupUIController>().generateUI(monsterInfo);
+
         transform.SetParent(null);
         if (curTileSet != null)
         {

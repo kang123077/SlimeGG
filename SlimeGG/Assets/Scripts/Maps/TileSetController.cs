@@ -20,6 +20,8 @@ public class TileSetController : MonoBehaviour
     private float zCoor = 19f;
     private Vector3 size;
 
+    private Vector2 correctionCoor;
+
     public void initTileSet()
     {
         bgSprite = transform.Find("bg").GetComponent<SpriteRenderer>();
@@ -58,15 +60,23 @@ public class TileSetController : MonoBehaviour
         if (tileSetInfo.isFixed || monsters.Count > 0) return;
         Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, zCoor);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
-        objPosition.x -= size.x / 2f + (size.y % 2 == 0 ? 0 : 0.5f);
-        objPosition.y += size.y / 2f;
-        objPosition.z = zCoor;
-        transform.position = objPosition;
+        transform.position = objPosition - new Vector3(correctionCoor.x, correctionCoor.y, 0f);
     }
 
     private void OnMouseDown()
     {
-        if (tileSetInfo.isFixed || monsters.Count > 0) return;
+        if (tileSetInfo.isFixed || isOnMonster) return;
+        Vector3 mousePos = new Vector3(
+       Input.mousePosition.x - correctionCoor.x,
+       Input.mousePosition.y - correctionCoor.y,
+       10f
+       );
+        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
+        correctionCoor = objPosition - transform.position;
+
+        GameObject.Find("UI").GetComponent<UIController>().UIOnChecker();
+        GameObject.Find("Popup UI").GetComponent<PopupUIController>().generateUI(tileSetInfo);
+
         tileSetInventory.GetComponent<TileSetInventoryController>().removeTileSet(transform);
         for (int i = 0; i < tiles.Length; i++)
         {
