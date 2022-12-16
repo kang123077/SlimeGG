@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class MonsterBaseController : MonoBehaviour
 {
-    private static string sprite_path = "Sprites/Monsters/Infants/";
     private float zCoor = 18f;
     private Vector2 direction = new Vector2(0f, 0f);
     private Transform curTileSet;
@@ -12,14 +11,25 @@ public class MonsterBaseController : MonoBehaviour
     private float moveTime = 0f;
     private bool isStopped = false;
     private Vector2 correctionCoor;
+    private Transform bg;
+    private Animator anim;
 
     public void initInfo(MonsterInfo monsterInfo)
     {
         this.monsterInfo = monsterInfo;
-        Transform bg = transform.Find("Image");
-        bg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(sprite_path + monsterInfo.infantType.ToString());
+        bg = transform.Find("Image");
+        bg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(
+            PathInfo.PATH_SPRITE +
+            PathInfo.Monster.paths[monsterInfo.curGrowthState][monsterInfo.monsterName]
+            );
         Destroy(bg.GetComponent<PolygonCollider2D>());
         bg.AddComponent<PolygonCollider2D>();
+        anim = bg.GetComponent<Animator>();
+        anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
+            PathInfo.PATH_ANIMATION +
+            PathInfo.Monster.paths[monsterInfo.curGrowthState][monsterInfo.monsterName] +
+            "/Controller"
+            );
     }
 
     void Start()
@@ -38,6 +48,7 @@ public class MonsterBaseController : MonoBehaviour
             if (!isStopped)
             {
                 direction.x = Random.Range(6f, 10f) / 5.0f * (direction.x > 1.5f ? -1f : 1f);
+                anim.SetInteger("DirectionState", direction.x < 0f ? 1 : 2);
                 direction.y = Random.Range(6f, 10f) / 5.0f * (direction.y > 1.5f ? -1f : 1f);
             }
             isStopped = !isStopped;
@@ -118,6 +129,7 @@ public class MonsterBaseController : MonoBehaviour
             ? 1f
             : Random.Range(-1f, 1f)
             );
+        anim.SetInteger("DirectionState", direction.x < 0f ? 1 : 2);
     }
 
     private void moveTo(Vector2 direction, float speed)

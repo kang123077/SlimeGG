@@ -1,16 +1,11 @@
 public class MonsterInfo
 {
-    public EggType eggType;
-    public InfantType infantType;
+    public GrowthState curGrowthState;
+    public string monsterName;
 
-    public MonsterInfo()
+    public MonsterInfo(GrowthState curGrowthState, string monsterName)
     {
-        eggType = EggType.Normal;
-        infantType = InfantType.Beast;
-    }
-
-    public MonsterInfo(InfantType infantType)
-    {
-        this.infantType = infantType;
+        this.curGrowthState = curGrowthState;
+        this.monsterName = monsterName;
     }
 }
