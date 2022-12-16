@@ -65,7 +65,7 @@ public class TileSetController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (tileSetInfo.isFixed || isOnMonster) return;
+        if (tileSetInfo.isFixed || monsters.Count > 0) return;
         Vector3 mousePos = new Vector3(
        Input.mousePosition.x - correctionCoor.x,
        Input.mousePosition.y - correctionCoor.y,

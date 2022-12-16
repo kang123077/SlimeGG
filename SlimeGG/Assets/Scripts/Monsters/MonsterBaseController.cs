@@ -105,10 +105,10 @@ public class MonsterBaseController : MonoBehaviour
         moveTime = 0f;
         Vector2 colPoint = collision.contacts[0].point;
         direction.x = Random.Range(3f, 10f) / 5.0f * (
-            colPoint.x - transform.position.x < 1f  && colPoint.x - transform.position.x > 0f
+            colPoint.x - transform.position.x < 1f && colPoint.x - transform.position.x > 0f
             ? -1f
             : transform.position.x - colPoint.x < 1f && colPoint.x - transform.position.x > 0f
-            ? 1f 
+            ? 1f
             : Random.Range(-1f, 1f)
             );
         direction.y = Random.Range(3f, 10f) / 5.0f * (
