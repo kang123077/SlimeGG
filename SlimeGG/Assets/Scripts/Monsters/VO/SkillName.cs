@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum MonsterSkillName
+public enum SkillName
 {
     Scratch, // ÇÒÄû±â
     Sting, // Âî¸£±â

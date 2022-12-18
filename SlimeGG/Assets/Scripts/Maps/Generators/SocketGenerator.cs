@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+using System.json;
+
 public class SocketGenerator : MonoBehaviour
 {
     [SerializeField]
@@ -19,6 +21,7 @@ public class SocketGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        json.test = JsonUtility.FromJson<Object>("");
         TileSetInfo newTileSetInfo = new TileSetInfo(TileType.Normal, true, TileShape.Single);
         GameObject baseTileSet = Instantiate(tileSetBase);
         baseTileSet.GetComponent<TileSetController>().setTileSetInstalledStore(tileSetStore.transform);

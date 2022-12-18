@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MonsterType
+public enum Type
 {
     Animal, // Áü½Â
     Spirit, // Á¤·É (Elements?)

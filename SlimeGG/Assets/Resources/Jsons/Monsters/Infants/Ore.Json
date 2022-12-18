@@ -1,0 +1,14 @@
+{
+  "Hp": 100,
+  "ATK": 100,
+  "DEF": 100,
+  "SPD": 100,
+  "Type": {
+    "Earth": 100,
+    "Golem": 150
+  },
+  "Skill": [
+	"Charge",
+	"Scratch"
+  ]
+}

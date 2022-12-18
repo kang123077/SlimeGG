@@ -1,4 +1,4 @@
-public enum MonsterSpecies
+public enum Species
 {
     Insect, // 예시
     Eatsect, // 식곤충

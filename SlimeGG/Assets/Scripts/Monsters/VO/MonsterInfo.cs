@@ -1,8 +1,12 @@
+using System.Collections.Generic;
+
 [System.Serializable]
 public class MonsterInfo
 {
+    public string nickName;
     public GrowthState curGrowthState;
-    public string monsterName;
+    public Dictionary<GrowthState, SpeciesInfo> speciesInfo;
+    public string monsterName; // юс╫ц
 
     public MonsterInfo(GrowthState curGrowthState, string monsterName)
     {
