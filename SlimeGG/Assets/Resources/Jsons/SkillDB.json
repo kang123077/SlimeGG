@@ -1,0 +1,39 @@
+{
+  "Skills": {
+    "Charge": {
+      "name": "Charge",
+      "damage": 12,
+      "coolTime": 10,
+      "Type": {
+        "Wind": 0.6,
+        "Golem": 0.4
+      }
+    },
+    "Fire": {
+      "name": "Fire",
+      "damage": 5,
+      "coolTime": 6,
+      "Type": {
+        "Fire": 0.6,
+        "Spirit": 0.4
+      }
+    },
+    "DrillAttack": {
+      "name": "DrillAttack",
+      "damage": 4,
+      "coolTime": 4,
+      "Type": {
+        "Machine": 1.2
+      }
+    },
+    "DragonBreath": {
+      "name": "DragonBreath",
+      "damage": 12,
+      "coolTime": 10,
+      "Type": {
+        "Dragon": 1.2,
+        "Fire": 0.4
+      }
+    }
+  }
+}
