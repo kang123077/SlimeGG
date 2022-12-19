@@ -8,6 +8,7 @@ TagManager:
   - Tile
   - Tile Set
   - Monster
+  - Field
   layers:
   - Default
   - TransparentFX
