@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class TypeList : MonoBehaviour
+public class TypeSet
 {
-    public Dictionary<>
+    public TypeName typeName;
+    public float typeNum;
 }

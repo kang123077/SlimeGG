@@ -1,4 +1,4 @@
-public enum Species
+public enum SpeciesName
 {
     Insect, // 예시
     Eatsect, // 식곤충

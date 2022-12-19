@@ -8,15 +8,8 @@ public class SkillInfo
     public SkillName name;
     public int damage;
     public int cooltime;
-    Dictionary<Type, float> type;
-
-    public void printData()
-    {
-        Debug.Log("SkillName : " + name);
-        Debug.Log("Damage : " + damage);
-        Debug.Log("Cooltime : " + cooltime);
-        Debug.Log("Type : " + damage);
-    }
+    public int multiflier;
+    public TypeSet[] typeList;
 }
 
 /*

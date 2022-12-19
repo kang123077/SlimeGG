@@ -14,9 +14,9 @@ public static class PathInfo
         public static string PATH_LV3 = Monster.PATH + "Lv3s/";
         public static string PATH_LV4 = Monster.PATH + "Lv4s/";
 
-        public static string oreInfoPath = PATH_JSONS + Monster.paths[GrowthState.Infant]["Ore"] + ".json";
-        public static string oreAniPath = PATH_ANIMATION + Monster.paths[GrowthState.Infant]["Ore"];
-        public static string oreSpritePath = PATH_SPRITE + Monster.paths[GrowthState.Infant]["Ore"];
+        // public static string oreInfoPath = PATH_JSONS + Monster.paths[GrowthState.Infant]["Ore"] + ".json";
+        // public static string oreAniPath = PATH_ANIMATION + Monster.paths[GrowthState.Infant]["Ore"];
+        // public static string oreSpritePath = PATH_SPRITE + Monster.paths[GrowthState.Infant]["Ore"];
 
         public static Dictionary<GrowthState, Dictionary<string, string>> paths = new Dictionary<GrowthState, Dictionary<string, string>>()
             {

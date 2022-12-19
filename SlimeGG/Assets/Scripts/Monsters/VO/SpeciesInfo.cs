@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 
+[System.Serializable]
 public class SpeciesInfo
 {
-    public Species speciesName;
-    public Dictionary<Type, int> basicType = new Dictionary<Type, int>(); 
+    public SpeciesName Name;
+    public StatInfo statInfo;
+    public SkillInfo[] skillList;
 }

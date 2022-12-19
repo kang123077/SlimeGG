@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 
+[System.Serializable]
 public class GrowthStateInfo
 {
-    Dictionary<GrowthState, SpeciesInfo> speciesInfo;
+    public GrowthState growthState;
+    public SpeciesInfo speciesInfo;
 }
