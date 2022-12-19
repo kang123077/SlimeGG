@@ -603,6 +603,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1887458824}
   - component: {fileID: 1887458825}
+  - component: {fileID: 1887458826}
   m_Layer: 0
   m_Name: Field
   m_TagString: Field
@@ -638,6 +639,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d37f577789c8a3d4e999704a750387a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1887458826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887458823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41ca4ecd9fbe02b479773dfece6021ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2125466923

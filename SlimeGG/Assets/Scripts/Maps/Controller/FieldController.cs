@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FieldController : MonoBehaviour
 {
-    private FieldVO fieldVO = new FieldVO();
+    private FieldVO fieldVO = new FieldVO(2, 2);
     private Transform monsterContainer = null;
 
     // Start is called before the first frame update
@@ -27,7 +27,19 @@ public class FieldController : MonoBehaviour
         {
             monsterContainer = transform.Find("Monster Container");
         }
+        fieldVO.monsterControllers[side][numPos] = monster;
         monster.SetParent(monsterContainer);
         monster.localPosition = fieldVO.initPosList[side][numPos];
+    }
+
+    public void setFieldInfoForMonsters()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < fieldVO.numberRestrictPerSide[i]; j++)
+            {
+                fieldVO.monsterControllers[i][j].GetComponent<MonsterBattleController>().setFieldInfo(new Vector2(i, j), fieldVO.monsterControllers[i], fieldVO.monsterControllers[j]);
+            }
+        }
     }
 }

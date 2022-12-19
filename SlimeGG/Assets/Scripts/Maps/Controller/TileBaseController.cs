@@ -38,9 +38,4 @@ public class TileBaseController : MonoBehaviour
         }
         return null;
     }
-
-    // 임시 타일 타일 색 명시용
-    public void setTileType(TileType tileType)
-    {
-    }
 }

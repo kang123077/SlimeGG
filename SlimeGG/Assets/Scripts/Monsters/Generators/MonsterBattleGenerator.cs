@@ -37,6 +37,8 @@ public class MonsterBattleGenerator : MonoBehaviour
         //generateMonster(monsterInfo);
         //monsterInfo = new MonsterInfo(InfantType.Ore);
         //generateMonster(monsterInfo);
+
+        fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
     }
 
     private void generateMonster(MonsterInfo monsterInfo, int side, int numPos)
