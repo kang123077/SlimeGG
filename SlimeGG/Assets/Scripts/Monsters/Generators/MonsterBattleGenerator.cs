@@ -24,9 +24,13 @@ public class MonsterBattleGenerator : MonoBehaviour
     public void initGeneration()
     {
         MonsterInfo monsterInfo = new MonsterInfo(GrowthState.Infant, "Ore");
-        generateMonster(monsterInfo, 0);
+        generateMonster(monsterInfo, 0, 0);
         monsterInfo = new MonsterInfo(GrowthState.Infant, "Ore");
-        generateMonster(monsterInfo, 1);
+        generateMonster(monsterInfo, 0, 1);
+        monsterInfo = new MonsterInfo(GrowthState.Infant, "Ore");
+        generateMonster(monsterInfo, 1, 0);
+        monsterInfo = new MonsterInfo(GrowthState.Infant, "Ore");
+        generateMonster(monsterInfo, 1, 1);
         //monsterInfo = new MonsterInfo(InfantType.Lava);
         //generateMonster(monsterInfo);
         //monsterInfo = new MonsterInfo(InfantType.Dark);
@@ -35,10 +39,10 @@ public class MonsterBattleGenerator : MonoBehaviour
         //generateMonster(monsterInfo);
     }
 
-    private void generateMonster(MonsterInfo monsterInfo, int numPos)
+    private void generateMonster(MonsterInfo monsterInfo, int side, int numPos)
     {
         GameObject newMonster = Instantiate(monsterBase);
         newMonster.GetComponent<MonsterBattleController>().initInfo(monsterInfo);
-        fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, numPos);
+        fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, side, numPos);
     }
 }

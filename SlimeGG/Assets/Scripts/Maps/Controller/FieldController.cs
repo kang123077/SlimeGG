@@ -21,13 +21,13 @@ public class FieldController : MonoBehaviour
 
     }
 
-    public void setMonsterInPosition(Transform monster, int numPos)
+    public void setMonsterInPosition(Transform monster, int side, int numPos)
     {
         if (monsterContainer == null)
         {
             monsterContainer = transform.Find("Monster Container");
         }
         monster.SetParent(monsterContainer);
-        monster.localPosition = fieldVO.initPosList[numPos];
+        monster.localPosition = fieldVO.initPosList[side][numPos];
     }
 }
