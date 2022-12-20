@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-
+[System.Serializable]
 public class MonsterElementStat
 {
-    public Dictionary<ElementEnum, float> stats;
+    public List<float> stats { get; set; }
 }

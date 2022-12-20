@@ -2,6 +2,11 @@ using System.Collections.Generic;
 
 public class MonsterInfo: MonsterAbilityStat
 {
-    string nickName;
-    List<MonsterSpeciesInfo> accuSpecies;
+    public string nickName;
+    public List<MonsterSpeciesInfo> accuSpecies;
+
+    public MonsterInfo()
+    {
+
+    }
 }

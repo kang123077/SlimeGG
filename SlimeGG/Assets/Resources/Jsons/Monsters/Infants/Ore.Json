@@ -1,14 +1,10 @@
 {
+  "species": "Ore",
+  "stage": "Infant",
+  "elements": ["Earth", "Golem"],
+  "skills": ["Charge", "Scratch"],
   "hp": 100,
-  "atk": 100,
   "def": 100,
   "spd": 100,
-  "typeList": {
-    "Earth": 100,
-    "Golem": 150
-  },
-  "Skill": [
-	"Charge",
-	"Scratch"
-  ]
+  "stats": [100, 150]
 }

@@ -23,16 +23,16 @@ public class MonsterBattleGenerator : MonoBehaviour
 
     public void initGeneration()
     {
-        MonsterInfo monsterInfo = new MonsterInfo("M L 0", SpeciesName.Ore);
-        generateMonster(monsterInfo, 0, 0);
-        monsterInfo = new MonsterInfo("M L 1", SpeciesName.Ore);
-        generateMonster(monsterInfo, 0, 1);
-        monsterInfo = new MonsterInfo("M R 0", SpeciesName.Ore);
-        generateMonster(monsterInfo, 1, 0);
-        monsterInfo = new MonsterInfo("M R 2", SpeciesName.Ore);
-        generateMonster(monsterInfo, 1, 1);
+        //MonsterInfo monsterInfo = new MonsterInfo("M L 0", SpeciesName.Ore);
+        //generateMonster(monsterInfo, 0, 0);
+        //monsterInfo = new MonsterInfo("M L 1", SpeciesName.Ore);
+        //generateMonster(monsterInfo, 0, 1);
+        //monsterInfo = new MonsterInfo("M R 0", SpeciesName.Ore);
+        //generateMonster(monsterInfo, 1, 0);
+        //monsterInfo = new MonsterInfo("M R 2", SpeciesName.Ore);
+        //generateMonster(monsterInfo, 1, 1);
 
-        fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
+        //fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
     }
 
     private void generateMonster(MonsterInfo monsterInfo, int side, int numPos)

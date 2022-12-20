@@ -19,16 +19,13 @@ public class MonsterBaseController : MonoBehaviour
         this.monsterInfo = monsterInfo;
         bg = transform.Find("Image");
         bg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(
-            PathInfo.PATH_SPRITE +
-            PathInfo.Monster.paths[monsterInfo.curGrowthState][monsterInfo.monsterName]
+            PathInfo.SPRITE + monsterInfo.accuSpecies[-1].resourcePath
             );
         Destroy(bg.GetComponent<PolygonCollider2D>());
         bg.AddComponent<PolygonCollider2D>();
         anim = bg.GetComponent<Animator>();
         anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
-            PathInfo.PATH_ANIMATION +
-            PathInfo.Monster.paths[monsterInfo.curGrowthState][monsterInfo.monsterName] +
-            "/Controller"
+            PathInfo.ANIMATION + monsterInfo.accuSpecies[-1].resourcePath + "/Controller"
             );
     }
 

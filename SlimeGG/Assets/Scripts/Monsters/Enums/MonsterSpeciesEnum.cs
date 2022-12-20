@@ -1,4 +1,5 @@
-public enum MonsterSpeiciesEnum
+
+public enum MonsterSpeciesEnum
 {
-    Ore, Insect,
+    Insect, Ore,
 }
