@@ -4,24 +4,16 @@ using System.Collections.Generic;
 public class MonsterInfo
 {
     public string nickName;
-    public GrowthState curGrowthState; // generator¿ë ÀÓ½Ã?
-    public string monsterName; // generator¿ë ÀÓ½Ã?
-    // public int curGrowthStateIdx¸¦ growthStateInfoÀÇ idx·Î ¾²´Â°Ô ³ªÀ»Áöµµ..?
+    public GrowthState curGrowthState; // generatorìš© ì„ì‹œ?
+    public string monsterName; // generatorìš© ì„ì‹œ?
+    // public int curGrowthStateIdxë¥¼ growthStateInfoì˜ idxë¡œ ì“°ëŠ”ê²Œ ë‚˜ì„ì§€ë„..?
     public GrowthStateInfo curGrowthStateInfo;
     public GrowthStateInfo[] growthStateInfo;
-    public StatInfo growValue; // ¼ºÀåÄ¡
-    public StatInfo stat; // ÃÖÁ¾ ½ºÅÈ? growthStateInfo.speciesInfo.stat + growValue
-    // ÇöÀç ¿Ã¶ó°£ Å¸ÀÏ¼ÂÀÇ Á¤º¸¸¦ ´ã´Â °ø°£ÀÌ ÀÖÀ»Áöµµ?
+    public StatInfo growValue; // ì„±ì¥ì¹˜
+    public StatInfo stat; // ìµœì¢… ìŠ¤íƒ¯? growthStateInfo.speciesInfo.stat + growValue
+    // í˜„ì¬ ì˜¬ë¼ê°„ íƒ€ì¼ì…‹ì˜ ì •ë³´ë¥¼ ë‹´ëŠ” ê³µê°„ì´ ìˆì„ì§€ë„?
 
-    // Generator¿ë Constructor
-    public MonsterInfo(string nickName, GrowthState curGrowthState, string monsterName)
-    {
-        this.nickName = nickName;
-        this.curGrowthState = curGrowthState;
-        this.monsterName = monsterName;
-    }
-
-    // speciesName¸¸ ¹Ş¾Æ¼­ ÃÊ±âÈ­ ÇÏ´Â Constructor ¿¹»ó
+    // speciesNameë§Œ ë°›ì•„ì„œ ì´ˆê¸°í™” í•˜ëŠ” Constructor ì˜ˆìƒ
     public MonsterInfo(string nickName, SpeciesName speciesName)
     {
         this.nickName = nickName;
