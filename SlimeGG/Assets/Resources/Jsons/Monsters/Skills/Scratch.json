@@ -1,0 +1,9 @@
+{
+  "name": "Scratch",
+  "damage": 12,
+  "coolTime": 10,
+  "type": {
+    "Wind": 0.6,
+    "Golem": 0.4
+  }
+}
