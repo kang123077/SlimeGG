@@ -1,13 +1,15 @@
 using System.Collections.Generic;
-using UnityEngine;
-using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 [System.Serializable]
 public class MonsterSpeciesInfo : MonsterAbilityStat
 {
+    [JsonConverter(typeof(StringEnumConverter))]
     public MonsterSpeciesEnum species { get; set; }
+    [JsonConverter(typeof(StringEnumConverter))]
     public MonsterStageEnum stage { get; set; }
-    public List<ElementEnum> elements { get; set; }
+    [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
     public List<MonsterSkillEnum> skills { get; set; }
     public string resourcePath { get; set; }
 
@@ -27,12 +29,29 @@ public class MonsterSpeciesInfo : MonsterAbilityStat
     }
     override public string ToString()
     {
+        string elementToString = string.Empty;
+        string statsToString = string.Empty;
+        string skillsToString = string.Empty;
+
+        elements.ForEach((str) =>
+        {
+            elementToString += str + ", ";
+        });
+        stats.ForEach((str) =>
+        {
+            statsToString += str + ", ";
+        });
+        skills.ForEach((str) =>
+        {
+            skillsToString += str + ", ";
+        });
+
         return $"\n" +
             $"{species.ToString()}\n" +
             $"{stage.ToString()}\n" +
-            $"{elements.ToString()}\n" +
-            $"{stats.ToString()}\n" +
-            $"{skills.ToString()}\n"
+            $"{elementToString}\n" +
+            $"{statsToString}\n" +
+            $"{skillsToString}\n"
             ;
     }
 

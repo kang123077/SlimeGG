@@ -1,10 +1,20 @@
 {
   "species": "Ore",
   "stage": "Infant",
-  "elements": ["Earth", "Golem"],
-  "skills": ["Charge", "Scratch"],
+  "elements": [
+    "Earth",
+    "Golem"
+  ],
+  "skills": [
+    "Charge",
+    "Scratch"
+  ],
+  "resourcePath": "Monsters/Infant/Ore",
   "hp": 100,
   "def": 100,
   "spd": 100,
-  "stats": [100, 150]
+  "stats": [
+    1.0,
+    1.5
+  ]
 }

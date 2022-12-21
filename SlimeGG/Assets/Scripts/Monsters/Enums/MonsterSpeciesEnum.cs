@@ -1,5 +1,9 @@
+using System.Runtime.Serialization;
 
 public enum MonsterSpeciesEnum
 {
-    Insect, Ore,
+    [EnumMember(Value = "Insect")]
+    Insect,
+    [EnumMember(Value = "Ore")]
+    Ore,
 }

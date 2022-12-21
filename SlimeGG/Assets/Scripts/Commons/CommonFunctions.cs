@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
 
 public static class CommonFunctions
 {
@@ -16,5 +18,19 @@ public static class CommonFunctions
             res.Add(convertEnumFromString<T>(str));
         });
         return res;
+    }
+
+    public static T LoadObjectFromJson<T>(string jsonPath)
+    {
+        string jsonData = File.ReadAllText(jsonPath + ".json");
+        return JsonConvert.DeserializeObject<T>(jsonData);
+    }
+
+    public static void saveObjectFromJson<T>(string jsonPath, T objectToSave)
+    {
+        File.WriteAllText(
+            jsonPath + ".json",
+            JsonConvert.SerializeObject(objectToSave, Formatting.Indented)
+            );
     }
 }
