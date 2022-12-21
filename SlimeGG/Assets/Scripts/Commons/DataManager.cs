@@ -16,10 +16,6 @@ public class DataManager : MonoBehaviour
             );
         LocalDictionary.monsters[MonsterSpeciesEnum.Egg] = temp;
 
-        LocalStorage.monsters = CommonFunctions.loadObjectFromJson<List<MonsterInfo>>(
-            "Assets/Resources/Jsons/Save/Monsters"
-            );
-
         // 타일 형태 별 좌표 정보 불러오기
         foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
             "Assets/Resources/Jsons/TileSets/Shapes"
@@ -52,6 +48,19 @@ public class DataManager : MonoBehaviour
                         );
             }
         }
+
+        // 세이브 정보 불러오기
+        //      몬스터
+        LocalStorage.monsters = CommonFunctions.loadObjectFromJson<List<MonsterInfo>>(
+            "Assets/Resources/Jsons/Save/Monsters"
+            );
+        LocalStorage.MONSTER_DATACALL_DONE = true;
+
+        //      타일셋
+        LocalStorage.tileSets = CommonFunctions.loadObjectFromJson<List<TileSetBriefInfo>>(
+            "Assets/Resources/Jsons/Save/TileSets"
+            );
+        LocalStorage.TILESET_DATACALL_DONE = true;
 
     }
 

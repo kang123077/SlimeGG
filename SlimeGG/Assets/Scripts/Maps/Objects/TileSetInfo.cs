@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class TileSetInfo : ElementStat
@@ -10,4 +11,5 @@ public class TileSetInfo : ElementStat
     public int tier { get; set; }
     [JsonConverter(typeof(StringEnumConverter))]
     public TileSetShapeEnum tileSetShape { get; set; }
+    public string resourcePath { get; set; }
 }
