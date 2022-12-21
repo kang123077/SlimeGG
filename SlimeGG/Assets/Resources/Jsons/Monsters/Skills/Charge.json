@@ -1,9 +1,17 @@
 {
-  "name": "Charge",
-  "damage": 12,
+  "skillName": "Charge",
+  "skillType": "ATTACK_DASH",
+  "numberOfTarget": 1,
+  "range" : 3.3,
+  "amount": 12,
   "coolTime": 10,
-  "type": {
-    "Wind": 0.6,
-    "Golem": 0.4
-  }
+  "delayTime": 10,
+  "elements": [
+    "Earth",
+    "Golem"
+  ],
+  "stats": [
+    1.0,
+    1.5
+  ]
 }

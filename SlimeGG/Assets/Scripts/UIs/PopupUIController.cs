@@ -24,7 +24,7 @@ public class PopupUIController : MonoBehaviour
         infoUI.text =
             string.Format(
             $"NickName : {monsterInfo.nickName}\n" +
-            $"Species : {monsterInfo.monsterName}\n" +
+            $"Species : {monsterInfo.accuSpecies[-1]}\n" +
             $"Home : Volcano"
             );
     }
