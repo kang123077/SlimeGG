@@ -1,5 +1,5 @@
 [System.Serializable]
-public class MonsterAbilityStat : MonsterElementStat
+public class MonsterAbilityStat : ElementStat
 {
     public int hp { get; set; }
     public int def { get; set; }

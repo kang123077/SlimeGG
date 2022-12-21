@@ -37,8 +37,8 @@ public class MonsterBattleGenerator : MonoBehaviour
 
     private void generateMonster(MonsterInfo monsterInfo, int side, int numPos)
     {
-        GameObject newMonster = Instantiate(monsterBase);
-        newMonster.GetComponent<MonsterBattleController>().initInfo(monsterInfo);
-        fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, side, numPos);
+        //GameObject newMonster = Instantiate(monsterBase);
+        //newMonster.GetComponent<MonsterBattleController>().initInfo(monsterInfo);
+        //fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, side, numPos);
     }
 }

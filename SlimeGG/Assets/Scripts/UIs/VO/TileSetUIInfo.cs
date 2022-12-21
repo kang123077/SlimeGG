@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class TileSetUIInfo
 {
-    public TileType _tileType;
-    public TileShape _tileShape;
+    //public TileType _tileType;
+    //public TileShape _tileShape;
 
-    public TileSetUIInfo(TileType tileType, TileShape tileShape)
-    {
-        this._tileType = tileType;
-        this._tileShape = tileShape;
-    }
+    //public TileSetUIInfo(TileType tileType, TileShape tileShape)
+    //{
+    //    this._tileType = tileType;
+    //    this._tileShape = tileShape;
+    //}
 }

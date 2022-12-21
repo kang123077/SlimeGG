@@ -4,42 +4,42 @@ using UnityEngine;
 
 public class FieldController : MonoBehaviour
 {
-    private FieldVO fieldVO = new FieldVO(2, 2);
-    private Transform monsterContainer = null;
+    //private FieldVO fieldVO = new FieldVO(2, 2);
+    //private Transform monsterContainer = null;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        //fieldVO.numberRestrictPerSide = 1;
-        //fieldVO.initPosList = new List<Vector2>() { new Vector2(-2f, 0f), new Vector2(2f, 0f) };
+    //// Start is called before the first frame update
+    //void Start()
+    //{
+    //    //fieldVO.numberRestrictPerSide = 1;
+    //    //fieldVO.initPosList = new List<Vector2>() { new Vector2(-2f, 0f), new Vector2(2f, 0f) };
 
-    }
+    //}
 
-    // Update is called once per frame
-    void Update()
-    {
+    //// Update is called once per frame
+    //void Update()
+    //{
 
-    }
+    //}
 
-    public void setMonsterInPosition(Transform monster, int side, int numPos)
-    {
-        if (monsterContainer == null)
-        {
-            monsterContainer = transform.Find("Monster Container");
-        }
-        fieldVO.monsterControllers[side][numPos] = monster;
-        monster.SetParent(monsterContainer);
-        monster.localPosition = fieldVO.initPosList[side][numPos];
-    }
+    //public void setMonsterInPosition(Transform monster, int side, int numPos)
+    //{
+    //    if (monsterContainer == null)
+    //    {
+    //        monsterContainer = transform.Find("Monster Container");
+    //    }
+    //    fieldVO.monsterControllers[side][numPos] = monster;
+    //    monster.SetParent(monsterContainer);
+    //    monster.localPosition = fieldVO.initPosList[side][numPos];
+    //}
 
-    public void setFieldInfoForMonsters()
-    {
-        for (int i = 0; i < 2; i++)
-        {
-            for (int j = 0; j < fieldVO.numberRestrictPerSide[i]; j++)
-            {
-                fieldVO.monsterControllers[i][j].GetComponent<MonsterBattleController>().setFieldInfo(new Vector2(i, j), fieldVO.monsterControllers[i], fieldVO.monsterControllers[j]);
-            }
-        }
-    }
+    //public void setFieldInfoForMonsters()
+    //{
+    //    for (int i = 0; i < 2; i++)
+    //    {
+    //        for (int j = 0; j < fieldVO.numberRestrictPerSide[i]; j++)
+    //        {
+    //            fieldVO.monsterControllers[i][j].GetComponent<MonsterBattleController>().setFieldInfo(new Vector2(i, j), fieldVO.monsterControllers[i], fieldVO.monsterControllers[j]);
+    //        }
+    //    }
+    //}
 }

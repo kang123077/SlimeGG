@@ -24,92 +24,92 @@ public class TileSetController : MonoBehaviour
 
     public void initTileSet()
     {
-        bgSprite = transform.Find("bg").GetComponent<SpriteRenderer>();
-        bgSprite.sprite = Resources.Load<Sprite>(sprite_path + tileSetInfo.tileShape.ToString());
-        bgSprite.transform.position = new Vector3(tileSetInfo.adjCoor.x, tileSetInfo.adjCoor.y, zCoor);
-        tiles = new GameObject[tileSetInfo.tileInfos.Length];
-        size.z = tileSetInfo.tileInfos.Length;
-        for (int i = 0; i < tileSetInfo.tileInfos.Length; i++)
-        {
-            int x = tileSetInfo.tileInfos[i].x;
-            size.x = Mathf.Max(size.x, x);
-            int y = tileSetInfo.tileInfos[i].y;
-            size.y = Mathf.Max(size.y, y);
-            GameObject newTile = Instantiate(tileBase);
-            newTile.transform.position = new Vector3(y % 2 == 0 ? x * 2 : ((x * 2) + 1), -y * 2, zCoor);
-            (tiles[i] = newTile).transform.SetParent(transform);
-        }
-        size.x += 1;
-        size.y += 1;
+        //bgSprite = transform.Find("bg").GetComponent<SpriteRenderer>();
+        //bgSprite.sprite = Resources.Load<Sprite>(sprite_path + tileSetInfo.tileShape.ToString());
+        //bgSprite.transform.position = new Vector3(tileSetInfo.adjCoor.x, tileSetInfo.adjCoor.y, zCoor);
+        //tiles = new GameObject[tileSetInfo.tileInfos.Length];
+        //size.z = tileSetInfo.tileInfos.Length;
+        //for (int i = 0; i < tileSetInfo.tileInfos.Length; i++)
+        //{
+        //    int x = tileSetInfo.tileInfos[i].x;
+        //    size.x = Mathf.Max(size.x, x);
+        //    int y = tileSetInfo.tileInfos[i].y;
+        //    size.y = Mathf.Max(size.y, y);
+        //    GameObject newTile = Instantiate(tileBase);
+        //    newTile.transform.position = new Vector3(y % 2 == 0 ? x * 2 : ((x * 2) + 1), -y * 2, zCoor);
+        //    (tiles[i] = newTile).transform.SetParent(transform);
+        //}
+        //size.x += 1;
+        //size.y += 1;
     }
 
     public void setTileSetInfo(TileSetInfo tileSetInfo)
     {
-        this.tileSetInfo = tileSetInfo;
-        initTileSet();
-        if (tileSetInfo.isFixed)
-        {
-            transform.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Outlines;
-            tryAttachTileSet();
-        }
+        //this.tileSetInfo = tileSetInfo;
+        //initTileSet();
+        //if (tileSetInfo.isFixed)
+        //{
+        //    transform.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Outlines;
+        //    tryAttachTileSet();
+        //}
     }
 
     void OnMouseDrag()
     {
-        if (tileSetInfo.isFixed || monsters.Count > 0) return;
-        Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, zCoor);
-        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
-        transform.position = objPosition - new Vector3(correctionCoor.x, correctionCoor.y, 0f);
+        //if (tileSetInfo.isFixed || monsters.Count > 0) return;
+        //Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, zCoor);
+        //Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
+        //transform.position = objPosition - new Vector3(correctionCoor.x, correctionCoor.y, 0f);
     }
 
     private void OnMouseDown()
     {
-        if (tileSetInfo.isFixed || monsters.Count > 0) return;
-        Vector3 mousePos = new Vector3(
-       Input.mousePosition.x - correctionCoor.x,
-       Input.mousePosition.y - correctionCoor.y,
-       10f
-       );
-        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
-        correctionCoor = objPosition - transform.position;
+       // if (tileSetInfo.isFixed || monsters.Count > 0) return;
+       // Vector3 mousePos = new Vector3(
+       //Input.mousePosition.x - correctionCoor.x,
+       //Input.mousePosition.y - correctionCoor.y,
+       //10f
+       //);
+       // Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
+       // correctionCoor = objPosition - transform.position;
 
-        GameObject.Find("UI").GetComponent<UIController>().UIOnChecker();
-        GameObject.Find("Popup UI").GetComponent<PopupUIController>().generateUI(tileSetInfo);
+       // GameObject.Find("UI").GetComponent<UIController>().UIOnChecker();
+       // GameObject.Find("Popup UI").GetComponent<PopupUIController>().generateUI(tileSetInfo);
 
-        tileSetInventory.GetComponent<TileSetInventoryController>().removeTileSet(transform);
-        for (int i = 0; i < tiles.Length; i++)
-        {
-            tiles[i].GetComponent<TileBaseController>().detach();
-        }
-        transform.gameObject.layer = 7;
+       // tileSetInventory.GetComponent<TileSetInventoryController>().removeTileSet(transform);
+       // for (int i = 0; i < tiles.Length; i++)
+       // {
+       //     tiles[i].GetComponent<TileBaseController>().detach();
+       // }
+       // transform.gameObject.layer = 7;
     }
 
     private void OnMouseUp()
     {
-        if (tileSetInfo.isFixed || monsters.Count > 0) return;
-        transform.gameObject.layer = 3;
-        if (tileSetInventory.GetComponent<TileSetInventoryController>().getIsMouseIn())
-        {
-            sendTileSetToInventory();
-        }
-        else
-        {
-            tileSetInventory.GetComponent<TileSetInventoryController>().removeTileSet(transform);
-        }
-        if (!isInInventory)
-        {
-            if (!tryAttachTileSet())
-            {
-                if (installedCoor.x != -1f)
-                {
-                    sendTileSetToPrevPosition();
-                }
-                else
-                {
-                    sendTileSetToInventory();
-                }
-            }
-        }
+        //if (tileSetInfo.isFixed || monsters.Count > 0) return;
+        //transform.gameObject.layer = 3;
+        //if (tileSetInventory.GetComponent<TileSetInventoryController>().getIsMouseIn())
+        //{
+        //    sendTileSetToInventory();
+        //}
+        //else
+        //{
+        //    tileSetInventory.GetComponent<TileSetInventoryController>().removeTileSet(transform);
+        //}
+        //if (!isInInventory)
+        //{
+        //    if (!tryAttachTileSet())
+        //    {
+        //        if (installedCoor.x != -1f)
+        //        {
+        //            sendTileSetToPrevPosition();
+        //        }
+        //        else
+        //        {
+        //            sendTileSetToInventory();
+        //        }
+        //    }
+        //}
     }
 
     public void setIsInInventory(bool isInInventory)

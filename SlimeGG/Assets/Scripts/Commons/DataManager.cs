@@ -1,30 +1,33 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class DataManager : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        MonsterSpeciesInfo temp = CommonFunctions.LoadObjectFromJson<MonsterSpeciesInfo>(
+        MonsterSpeciesInfo temp = CommonFunctions.loadObjectFromJson<MonsterSpeciesInfo>(
             "Assets/Resources/Jsons/Monsters/Infants/Ore"
             );
         LocalDictionary.monsters[MonsterSpeciesEnum.Ore] = temp;
-        temp = CommonFunctions.LoadObjectFromJson<MonsterSpeciesInfo>(
+        temp = CommonFunctions.loadObjectFromJson<MonsterSpeciesInfo>(
             "Assets/Resources/Jsons/Monsters/Eggs/Egg"
             );
         LocalDictionary.monsters[MonsterSpeciesEnum.Egg] = temp;
 
-        LocalStorage.monsters = CommonFunctions.LoadObjectFromJson<List<MonsterInfo>>(
+        LocalStorage.monsters = CommonFunctions.loadObjectFromJson<List<MonsterInfo>>(
             "Assets/Resources/Jsons/Save/Monsters"
             );
-
-
-
-        //SkillStat chargeTest = CommonFunctions.LoadObjectFromJson<SkillStat>(
-        //    "Assets/Resources/Jsons/Monsters/Skills/Charge"
-        //    );
-        //print(chargeTest);
+        foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
+            "Assets/Resources/Jsons/TileSets/Shapes"
+            ))
+        {
+            LocalDictionary.tileSetCoors[Enum.Parse<TileSetShapeEnum>(fileName)] =
+                CommonFunctions.loadObjectFromJson<TileSetShapeStat>(
+                    "Assets/Resources/Jsons/TileSets/Shapes/" + fileName
+                    );
+        }
     }
 
     // Update is called once per frame
