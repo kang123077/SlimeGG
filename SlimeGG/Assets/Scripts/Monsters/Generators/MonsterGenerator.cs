@@ -6,8 +6,8 @@ public class MonsterGenerator : MonoBehaviour
 {
     [SerializeField]
     private GameObject monsterBase;
-    private MonsterInfo[] monsterInfos;
     public GameObject baseTileSet;
+    private bool isMonsterInitialized = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,19 +16,21 @@ public class MonsterGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (!isMonsterInitialized)
+        {
+            if (LocalStorage.monsters != null)
+            {
+                initGeneration();
+            }
+        }
     }
-
     public void initGeneration()
     {
-        //MonsterInfo monsterInfo = new MonsterInfo("CuteOre", SpeciesName.Ore);
-        //generateMonster(monsterInfo);
-        //monsterInfo = new MonsterInfo(InfantType.Lava);
-        //generateMonster(monsterInfo);
-        //monsterInfo = new MonsterInfo(InfantType.Dark);
-        //generateMonster(monsterInfo);
-        //monsterInfo = new MonsterInfo(InfantType.Ore);
-        //generateMonster(monsterInfo);
+        LocalStorage.monsters.ForEach((monsterInfo) =>
+        {
+            generateMonster(monsterInfo);
+        });
+        isMonsterInitialized = true;
     }
 
     private void generateMonster(MonsterInfo monsterInfo)

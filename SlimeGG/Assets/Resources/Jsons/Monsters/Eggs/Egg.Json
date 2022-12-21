@@ -1,0 +1,14 @@
+{
+  "species": "Egg",
+  "stage": "Egg",
+  "elements": [
+  ],
+  "skills": [
+  ],
+  "resourcePath": "Monsters/Egg/Egg",
+  "hp": 1,
+  "def": 1,
+  "spd": 1,
+  "stats": [
+  ]
+}

@@ -18,13 +18,13 @@ public class MonsterBattleController : MonoBehaviour
         this.monsterInfo = monsterInfo;
         bg = transform.Find("Image");
         bg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(
-            PathInfo.SPRITE + monsterInfo.accuSpecies[-1].resourcePath
+            PathInfo.SPRITE + LocalDictionary.monsters[monsterInfo.accuSpecies[-1]].resourcePath
             );
         Destroy(bg.GetComponent<PolygonCollider2D>());
         bg.AddComponent<PolygonCollider2D>();
         anim = bg.GetComponent<Animator>();
         anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
-            PathInfo.ANIMATION + monsterInfo.accuSpecies[-1].resourcePath + "/Controller"
+            PathInfo.ANIMATION + LocalDictionary.monsters[monsterInfo.accuSpecies[-1]].resourcePath + "/Controller"
             );
     }
 

@@ -1,22 +1,30 @@
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
-using Newtonsoft.Json;
 
 public class DataManager : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        MonsterSpeciesInfo oreTest = CommonFunctions.LoadObjectFromJson<MonsterSpeciesInfo>(
+        MonsterSpeciesInfo temp = CommonFunctions.LoadObjectFromJson<MonsterSpeciesInfo>(
             "Assets/Resources/Jsons/Monsters/Infants/Ore"
             );
-        print(oreTest);
-
-        SkillStat chargeTest = CommonFunctions.LoadObjectFromJson<SkillStat>(
-            "Assets/Resources/Jsons/Monsters/Skills/Charge"
+        LocalDictionary.monsters[MonsterSpeciesEnum.Ore] = temp;
+        temp = CommonFunctions.LoadObjectFromJson<MonsterSpeciesInfo>(
+            "Assets/Resources/Jsons/Monsters/Eggs/Egg"
             );
-        print(chargeTest);
+        LocalDictionary.monsters[MonsterSpeciesEnum.Egg] = temp;
+
+        LocalStorage.monsters = CommonFunctions.LoadObjectFromJson<List<MonsterInfo>>(
+            "Assets/Resources/Jsons/Save/Monsters"
+            );
+
+
+
+        //SkillStat chargeTest = CommonFunctions.LoadObjectFromJson<SkillStat>(
+        //    "Assets/Resources/Jsons/Monsters/Skills/Charge"
+        //    );
+        //print(chargeTest);
     }
 
     // Update is called once per frame

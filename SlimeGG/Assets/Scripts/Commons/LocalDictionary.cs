@@ -2,5 +2,6 @@ using System.Collections.Generic;
 
 public static class LocalDictionary
 {
-    public static Dictionary<MonsterSpeciesEnum, MonsterSpeciesInfo> monsters;
+    public static Dictionary<MonsterSpeciesEnum, MonsterSpeciesInfo> monsters = 
+        new Dictionary<MonsterSpeciesEnum, MonsterSpeciesInfo>();
 }
