@@ -1,0 +1,22 @@
+[
+  {
+    "nickName": "1번 골렘",
+    "accuSpecies": [
+      "Egg",
+      "Ore"
+    ],
+    "hp": 100,
+    "def": 100,
+    "spd": 100,
+    "elements": [
+      "Earth",
+      "Golem",
+      "Fire"
+    ],
+    "stats": [
+      1.0,
+      1.5,
+      0.7
+    ]
+  }
+]
