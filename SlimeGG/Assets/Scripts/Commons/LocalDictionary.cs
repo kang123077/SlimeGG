@@ -7,4 +7,6 @@ public static class LocalDictionary
         new Dictionary<MonsterSpeciesEnum, MonsterSpeciesInfo>();
     public static Dictionary<TileSetShapeEnum, TileSetShapeStat> tileSetCoors =
         new Dictionary<TileSetShapeEnum, TileSetShapeStat>();
+    public static Dictionary<TileSetNameEnum, TileSetInfo> tileSets =
+        new Dictionary<TileSetNameEnum, TileSetInfo>();
 }

@@ -4,7 +4,8 @@ using Newtonsoft.Json.Converters;
 [System.Serializable]
 public class TileSetInfo : ElementStat
 {
-    public string name { get; set; }
+    [JsonConverter(typeof(StringEnumConverter))]
+    public TileSetNameEnum tileName { get; set; }
     public string nickName { get; set; }
     public int tier { get; set; }
     [JsonConverter(typeof(StringEnumConverter))]
