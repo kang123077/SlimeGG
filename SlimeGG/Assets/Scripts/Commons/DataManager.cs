@@ -8,10 +8,15 @@ public class DataManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MonsterSpeciesInfo test = CommonFunctions.LoadObjectFromJson<MonsterSpeciesInfo>(
+        MonsterSpeciesInfo oreTest = CommonFunctions.LoadObjectFromJson<MonsterSpeciesInfo>(
             "Assets/Resources/Jsons/Monsters/Infants/Ore"
             );
-        print(test);
+        print(oreTest);
+
+        SkillStat chargeTest = CommonFunctions.LoadObjectFromJson<SkillStat>(
+            "Assets/Resources/Jsons/Monsters/Skills/Charge"
+            );
+        print(chargeTest);
     }
 
     // Update is called once per frame

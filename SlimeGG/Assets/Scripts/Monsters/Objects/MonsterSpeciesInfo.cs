@@ -13,20 +13,6 @@ public class MonsterSpeciesInfo : MonsterAbilityStat
     public List<MonsterSkillEnum> skills { get; set; }
     public string resourcePath { get; set; }
 
-    public MonsterSpeciesInfo(
-        string species, string stage, List<string> elements, List<string> skills,
-        int hp, int def, int spd, List<float> stats)
-    {
-        this.species = CommonFunctions.convertEnumFromString<MonsterSpeciesEnum>(species);
-        this.stage = CommonFunctions.convertEnumFromString<MonsterStageEnum>(stage);
-        this.elements = CommonFunctions.convertEnumFromStringArr<ElementEnum>(elements);
-        this.skills = CommonFunctions.convertEnumFromStringArr<MonsterSkillEnum>(skills);
-        this.hp = hp;
-        this.def = def;
-        this.spd = spd;
-        this.stats = stats;
-        resourcePath = "Monsters/" + stage.ToString() + "/" + species.ToString();
-    }
     override public string ToString()
     {
         string elementToString = string.Empty;

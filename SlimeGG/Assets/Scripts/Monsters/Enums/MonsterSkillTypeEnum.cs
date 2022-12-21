@@ -1,4 +1,7 @@
 public enum MonsterSkillTypeEnum
 {
-    ATTACK_NORMAL, ATTACK_ASSASSIN, HEAL,
+    ATTACK_NORMAL,
+    ATTACK_DASH,
+    ATTACK_ASSASSIN, 
+    HEAL,
 }
