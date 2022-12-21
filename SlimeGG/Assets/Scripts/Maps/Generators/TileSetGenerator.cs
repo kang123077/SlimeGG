@@ -8,37 +8,31 @@ public class TileSetGenerator : MonoBehaviour
     private GameObject tileSetInventoy;
     [SerializeField]
     private GameObject tileSet;
-    private List<TileInfo[]> tileSetInfos;
+
     // Start is called before the first frame update
     void Start()
     {
-        TileSetInfo newTileSetInfo;
-        newTileSetInfo = new TileSetInfo(TileShape.StraightVertical3);
-        addTileSetToInventory(newTileSetInfo);
-        newTileSetInfo = new TileSetInfo(TileType.Ocean, TileShape.Triangle3);
-        addTileSetToInventory(newTileSetInfo);
-        //newTileSetInfo = new TileSetInfo(TileType.Volcano, TileShape.Seven4);
-        //addTileSetToInventory(newTileSetInfo);
-        //newTileSetInfo = new TileSetInfo(TileType.Volcano, TileShape.SevenReverse4);
-        //addTileSetToInventory(newTileSetInfo);
-        //newTileSetInfo = new TileSetInfo(TileType.Volcano, TileShape.L4);
-        //addTileSetToInventory(newTileSetInfo);
-        //newTileSetInfo = new TileSetInfo(TileType.Volcano, TileShape.LReverse4);
-        //addTileSetToInventory(newTileSetInfo);
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (!LocalStorage.TILESET_LOADING_DONE && LocalStorage.TILESET_DATACALL_DONE && LocalStorage.SOCKET_LOADING_DONE)
+        {
+            LocalStorage.tileSets.ForEach((tileSetBriefInfo) =>
+            {
+                generateTileset(tileSetBriefInfo);
+            });
+            LocalStorage.TILESET_LOADING_DONE = true;
+        }
     }
 
-    private void addTileSetToInventory(TileSetInfo newTileSetInfo)
+    private void generateTileset(TileSetBriefInfo tileSetBriefInfo)
     {
         GameObject newTileSet = Instantiate(tileSet);
+        LocalStorage.tileSetTransforms.Add(newTileSet.transform);
         newTileSet.GetComponent<TileSetController>().setTileSetInstalledStore(transform);
         newTileSet.GetComponent<TileSetController>().setTileSetInventory(tileSetInventoy);
-        newTileSet.GetComponent<TileSetController>().setTileSetInfo(newTileSetInfo);
-        tileSetInventoy.GetComponent<TileSetInventoryController>().addTileSet(newTileSet.transform);
+        newTileSet.GetComponent<TileSetController>().setTileSetBriefInfo(tileSetBriefInfo);
     }
 }

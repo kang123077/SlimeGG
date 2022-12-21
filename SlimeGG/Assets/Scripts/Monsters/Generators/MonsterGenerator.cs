@@ -6,8 +6,6 @@ public class MonsterGenerator : MonoBehaviour
 {
     [SerializeField]
     private GameObject monsterBase;
-    public GameObject baseTileSet;
-    private bool isMonsterInitialized = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,28 +14,21 @@ public class MonsterGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isMonsterInitialized)
+        if (!LocalStorage.MONSTER_LOADING_DONE && LocalStorage.TILESET_LOADING_DONE && LocalStorage.MONSTER_DATACALL_DONE)
         {
-            if (LocalStorage.monsters != null)
+            LocalStorage.monsters.ForEach((monsterInfo) =>
             {
-                initGeneration();
-            }
+                generateMonster(monsterInfo);
+            });
+            LocalStorage.MONSTER_LOADING_DONE = true;
         }
-    }
-    public void initGeneration()
-    {
-        LocalStorage.monsters.ForEach((monsterInfo) =>
-        {
-            generateMonster(monsterInfo);
-        });
-        isMonsterInitialized = true;
     }
 
     private void generateMonster(MonsterInfo monsterInfo)
     {
         GameObject newMonster = Instantiate(monsterBase);
         newMonster.GetComponent<MonsterBaseController>().initInfo(monsterInfo);
-        newMonster.GetComponent<MonsterBaseController>().assignMonsterToTileSet(baseTileSet.transform);
+        newMonster.GetComponent<MonsterBaseController>().assignMonsterToTileSet(LocalStorage.tileSetTransforms[monsterInfo.installedPosition], false);
         newMonster.transform.localPosition = new Vector3(0f, 0f, 0f);
     }
 }

@@ -9,9 +9,9 @@ public class TileSetUIGenerator : MonoBehaviour
 
     public void generateTileSetUI(TileSetInfo tileSetInfo)
     {
-        TileSetUIInfo newTileSetUIInfo = new TileSetUIInfo(tileSetInfo.tileType, tileSetInfo.tileShape);
-        GameObject newTileSetUI = Instantiate(tileSetUI);
-        newTileSetUI.GetComponent<TileSetUIController>().setTileSetUIInfo(newTileSetUIInfo);
-        newTileSetUI.transform.SetParent(transform.Find("Viewport").Find("Content"));
+        //TileSetUIInfo newTileSetUIInfo = new TileSetUIInfo(tileSetInfo.tileType, tileSetInfo.tileShape);
+        //GameObject newTileSetUI = Instantiate(tileSetUI);
+        //newTileSetUI.GetComponent<TileSetUIController>().setTileSetUIInfo(newTileSetUIInfo);
+        //newTileSetUI.transform.SetParent(transform.Find("Viewport").Find("Content"));
     }
 }

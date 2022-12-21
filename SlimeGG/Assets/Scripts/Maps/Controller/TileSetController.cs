@@ -5,12 +5,11 @@ using UnityEngine;
 
 public class TileSetController : MonoBehaviour
 {
-    private static string sprite_path = "Sprites/Tiles/";
     [SerializeField]
     private GameObject tileBase;
-    private TileSetInfo tileSetInfo;
     private GameObject tileSetInventory;
     private Transform tileSetInstalledStore;
+    private TileSetBriefInfo tileSetBriefInfo;
     private bool isInInventory = false;
     private Vector2 installedCoor = new Vector2(-1f, -1f);
     private SpriteRenderer bgSprite;
@@ -25,29 +24,41 @@ public class TileSetController : MonoBehaviour
     public void initTileSet()
     {
         bgSprite = transform.Find("bg").GetComponent<SpriteRenderer>();
-        bgSprite.sprite = Resources.Load<Sprite>(sprite_path + tileSetInfo.tileShape.ToString());
-        bgSprite.transform.position = new Vector3(tileSetInfo.adjCoor.x, tileSetInfo.adjCoor.y, zCoor);
-        tiles = new GameObject[tileSetInfo.tileInfos.Length];
-        size.z = tileSetInfo.tileInfos.Length;
-        for (int i = 0; i < tileSetInfo.tileInfos.Length; i++)
+        bgSprite.sprite = Resources.Load<Sprite>(
+            PathInfo.SPRITE + LocalDictionary.tileSets[tileSetBriefInfo.name].resourcePath
+            );
+        TileSetShapeStat tileSetShapeStat = LocalDictionary.tileSetCoors[LocalDictionary.tileSets[tileSetBriefInfo.name].tileSetShape];
+        bgSprite.transform.position = new Vector3(
+            tileSetShapeStat.correctionCoor[0],
+            tileSetShapeStat.correctionCoor[1],
+            zCoor);
+        List<List<float>> tilePosList = tileSetShapeStat.tilePosition;
+        size.z = tilePosList.Count;
+        tiles = new GameObject[(int)size.z];
+        for (int i = 0; i < (int)size.z; i++)
         {
-            int x = tileSetInfo.tileInfos[i].x;
-            size.x = Mathf.Max(size.x, x);
-            int y = tileSetInfo.tileInfos[i].y;
-            size.y = Mathf.Max(size.y, y);
+            size.x = Mathf.Max(size.x, tilePosList[i][0]);
+            size.y = Mathf.Max(size.y, tilePosList[i][1]);
             GameObject newTile = Instantiate(tileBase);
-            newTile.transform.position = new Vector3(y % 2 == 0 ? x * 2 : ((x * 2) + 1), -y * 2, zCoor);
+            newTile.transform.position = new Vector3(
+                tilePosList[i][1] % 2 == 0 ? tilePosList[i][0] * 2 : ((tilePosList[i][0] * 2) + 1),
+                -tilePosList[i][1] * 2,
+                zCoor);
             (tiles[i] = newTile).transform.SetParent(transform);
         }
         size.x += 1;
         size.y += 1;
     }
 
-    public void setTileSetInfo(TileSetInfo tileSetInfo)
+    public void setTileSetBriefInfo(TileSetBriefInfo tileSetBriefInfo)
     {
-        this.tileSetInfo = tileSetInfo;
+        this.tileSetBriefInfo = tileSetBriefInfo;
         initTileSet();
-        if (tileSetInfo.isFixed)
+        if (tileSetBriefInfo.installedPosition[0] == -1f && tileSetBriefInfo.installedPosition[1] == -1f)
+        {
+            tileSetInventory.GetComponent<TileSetInventoryController>().addTileSet(transform);
+        }
+        else
         {
             transform.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Outlines;
             tryAttachTileSet();
@@ -56,7 +67,7 @@ public class TileSetController : MonoBehaviour
 
     void OnMouseDrag()
     {
-        if (tileSetInfo.isFixed || monsters.Count > 0) return;
+        if ((tileSetBriefInfo.installedPosition[0] == -1f && tileSetBriefInfo.installedPosition[1] == -1f) || monsters.Count > 0) return;
         Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, zCoor);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
         transform.position = objPosition - new Vector3(correctionCoor.x, correctionCoor.y, 0f);
@@ -64,7 +75,7 @@ public class TileSetController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (tileSetInfo.isFixed || monsters.Count > 0) return;
+        if ((tileSetBriefInfo.installedPosition[0] == -1f && tileSetBriefInfo.installedPosition[1] == -1f) || monsters.Count > 0) return;
         Vector3 mousePos = new Vector3(
        Input.mousePosition.x - correctionCoor.x,
        Input.mousePosition.y - correctionCoor.y,
@@ -74,7 +85,7 @@ public class TileSetController : MonoBehaviour
         correctionCoor = objPosition - transform.position;
 
         GameObject.Find("UI").GetComponent<UIController>().UIOnChecker();
-        GameObject.Find("Popup UI").GetComponent<PopupUIController>().generateUI(tileSetInfo);
+        GameObject.Find("Popup UI").GetComponent<PopupUIController>().generateUI(LocalDictionary.tileSets[tileSetBriefInfo.name]);
 
         tileSetInventory.GetComponent<TileSetInventoryController>().removeTileSet(transform);
         for (int i = 0; i < tiles.Length; i++)
@@ -86,7 +97,7 @@ public class TileSetController : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (tileSetInfo.isFixed || monsters.Count > 0) return;
+        if ((tileSetBriefInfo.installedPosition[0] == -1f && tileSetBriefInfo.installedPosition[1] == -1f) || monsters.Count > 0) return;
         transform.gameObject.layer = 3;
         if (tileSetInventory.GetComponent<TileSetInventoryController>().getIsMouseIn())
         {
@@ -171,11 +182,18 @@ public class TileSetController : MonoBehaviour
         return isAllAttachable;
     }
 
-    public void addMonster(Transform targetMonster)
+    public void addMonster(Transform targetMonster, bool isReturned)
     {
         transform.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Outlines;
         targetMonster.SetParent(transform.Find("Monster Container"));
-        targetMonster.localPosition = new Vector3(targetMonster.localPosition.x, targetMonster.localPosition.y, 0f);
+        if (isReturned)
+        {
+            targetMonster.localPosition = new Vector3(0f, 0f, 0f);
+        }
+        else
+        {
+            targetMonster.localPosition = new Vector3(targetMonster.localPosition.x, targetMonster.localPosition.y, 0f);
+        }
         monsters.Add(targetMonster);
     }
 

@@ -20,13 +20,23 @@ public static class CommonFunctions
         return res;
     }
 
-    public static T LoadObjectFromJson<T>(string jsonPath)
+    public static T loadObjectFromJson<T>(string jsonPath)
     {
         string jsonData = File.ReadAllText(jsonPath + ".json");
         return JsonConvert.DeserializeObject<T>(jsonData);
     }
+    public static List<string> loadFileNamesFromFolder(string folderPath)
+    {
+        DirectoryInfo di = new DirectoryInfo(folderPath);
+        List<string> files = new List<string>();
+        foreach (FileInfo file in di.GetFiles())
+        {
+            files.Add(file.Name.Split(".")[0]);
+        }
+        return files;
+    }
 
-    public static void saveObjectFromJson<T>(string jsonPath, T objectToSave)
+    public static void saveObjectToJson<T>(string jsonPath, T objectToSave)
     {
         File.WriteAllText(
             jsonPath + ".json",
