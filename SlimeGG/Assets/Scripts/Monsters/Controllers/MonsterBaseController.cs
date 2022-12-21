@@ -7,7 +7,6 @@ public class MonsterBaseController : MonoBehaviour
     private float zCoor = 18f;
     private Vector2 direction = new Vector2(0f, 0f);
     private Transform curTileSet;
-    private int layerMask;
     private MonsterInfo monsterInfo;
     private float moveTime = 0f;
     private bool isStopped = false;
@@ -34,7 +33,6 @@ public class MonsterBaseController : MonoBehaviour
     {
         direction.x = Random.Range(-10, 10) / 10.0f;
         direction.y = Random.Range(-10, 10) / 10.0f;
-        layerMask = 1 << LayerMask.NameToLayer("TileSet");
     }
 
     // Update is called once per frame
@@ -103,9 +101,14 @@ public class MonsterBaseController : MonoBehaviour
         {
             if (hit3D.collider.transform.tag == "Socket")
             {
-                assignMonsterToTileSet(hit3D.collider.transform.GetComponent<SocketController>().tileSetInstalled);
+                if (hit3D.collider.transform.GetComponent<SocketController>().tileSetInstalled != null)
+                {
+                    assignMonsterToTileSet(hit3D.collider.transform.GetComponent<SocketController>().tileSetInstalled, false);
+                    return;
+                }
             }
         }
+        assignMonsterToTileSet(curTileSet, true);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -135,9 +138,10 @@ public class MonsterBaseController : MonoBehaviour
         transform.Translate(direction * speed * Time.deltaTime);
     }
 
-    public void assignMonsterToTileSet(Transform tileSet)
+    public void assignMonsterToTileSet(Transform tileSet, bool isReturned)
     {
+        monsterInfo.installedPosition = LocalStorage.tileSetTransforms.IndexOf(tileSet);
         curTileSet = tileSet;
-        curTileSet.GetComponent<TileSetController>().addMonster(transform);
+        curTileSet.GetComponent<TileSetController>().addMonster(transform, isReturned);
     }
 }

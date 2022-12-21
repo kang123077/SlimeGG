@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using TMPro;
 
@@ -11,11 +12,11 @@ public class PopupUIController : MonoBehaviour
     public void generateUI(TileSetInfo tileSetInfo)
     {
         headerUI.text = string.Format($"TileSet");
-        infoUI.text =
-            string.Format(
-            $"TileName : {tileSetInfo.tileShape}\n" +
-            $"Terrain : {tileSetInfo.tileType}"
-            );
+        //infoUI.text =
+        //    string.Format(
+        //    $"TileName : {tileSetInfo.tileShape}\n" +
+        //    $"Terrain : {tileSetInfo.tileType}"
+        //    );
     }
 
     public void generateUI(MonsterInfo monsterInfo)
@@ -24,7 +25,7 @@ public class PopupUIController : MonoBehaviour
         infoUI.text =
             string.Format(
             $"NickName : {monsterInfo.nickName}\n" +
-            $"Species : {monsterInfo.accuSpecies[-1]}\n" +
+            $"Species : {monsterInfo.accuSpecies.Last()}\n" +
             $"Home : Volcano"
             );
     }

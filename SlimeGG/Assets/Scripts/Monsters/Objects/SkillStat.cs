@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 [System.Serializable]
-public class SkillStat : MonsterElementStat
+public class SkillStat : ElementStat
 {
     [JsonConverter(typeof(StringEnumConverter))]
     public MonsterSkillEnum skillName { get; set; }
