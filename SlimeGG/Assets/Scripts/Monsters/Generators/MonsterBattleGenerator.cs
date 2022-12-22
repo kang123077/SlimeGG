@@ -37,7 +37,8 @@ public class MonsterBattleGenerator : MonoBehaviour
         monsterInfo = LocalStorage.monsters[0];
         generateMonster(monsterInfo, 1, 1);
 
-        //fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
+        fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
+        LocalStorage.BATTLE_SCENE_LOADING_DONE = true;
     }
 
     private void generateMonster(MonsterInfo monsterInfo, int side, int numPos)

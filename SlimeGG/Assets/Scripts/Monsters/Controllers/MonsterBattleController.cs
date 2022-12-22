@@ -47,6 +47,11 @@ public class MonsterBattleController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (LocalStorage.BATTLE_SCENE_LOADING_DONE)
+        {
+            int[] closest = identifyTarget();
+            moveTo(enemies[closest[1]]);
+        }
 
     }
 
@@ -62,8 +67,9 @@ public class MonsterBattleController : MonoBehaviour
         int closestAllyIndex = 0;
         for (int i = 0; i < allies.Length; i++)
         {
+            distanceAllies[i] = Vector2.Distance(transform.localPosition, allies[i].localPosition);
             if (closestLength == 0f ||
-                closestLength > (distanceAllies[i] = Vector2.Distance(transform.position, allies[i].position)))
+                closestLength > distanceAllies[i])
             {
                 closestLength = distanceAllies[i];
                 closestAllyIndex = i;
@@ -73,8 +79,9 @@ public class MonsterBattleController : MonoBehaviour
         int closestEnemyIndex = 0;
         for (int i = 0; i < enemies.Length; i++)
         {
+            distanceEnemies[i] = Vector2.Distance(transform.localPosition, enemies[i].localPosition);
             if (closestLength == 0f ||
-                closestLength > (distanceEnemies[i] = Vector2.Distance(transform.position, enemies[i].position)))
+                closestLength > distanceEnemies[i])
             {
                 closestLength = distanceEnemies[i];
                 closestEnemyIndex = i;
@@ -96,6 +103,18 @@ public class MonsterBattleController : MonoBehaviour
     }
 
     // 해당 적에게 이동
+
+    private void moveTo(Transform target)
+    {
+        transform.Translate(
+            new Vector3(
+                target.localPosition.x - transform.localPosition.x,
+                target.localPosition.y - transform.localPosition.y,
+                0f
+                ) * Time.deltaTime,
+            Space.Self
+            );
+    }
 
     // 해당 적으로부터 도망
 
