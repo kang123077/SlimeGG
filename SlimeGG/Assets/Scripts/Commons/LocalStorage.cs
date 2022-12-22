@@ -3,6 +3,8 @@ using UnityEngine;
 
 public static class LocalStorage
 {
+    public static bool DICTIONARY_LOADING_DONE = false;
+
     public static bool SOCKET_LOADING_DONE = false;
     public static bool TILESET_LOADING_DONE = false;
     public static bool MONSTER_LOADING_DONE = false;

@@ -1,0 +1,11 @@
+{
+  "skillName": "Charge",
+  "skillType": "ATTACK_NORMAL",
+  "numberOfTarget": 1,
+  "range": 1.0,
+  "amount": 10,
+  "coolTime": 10,
+  "delayTime": 10,
+  "elements": [],
+  "stats": []
+}

@@ -27,6 +27,32 @@ public class DataManager : MonoBehaviour
                     );
         }
 
+        /** 스킬 별 정보 불러오기::
+         */
+        foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
+            "Assets/Resources/Jsons/Monsters/Skills"
+            ))
+        {
+            LocalDictionary.skills[Enum.Parse<MonsterSkillEnum>(fileName)] =
+                CommonFunctions.loadObjectFromJson<SkillStat>(
+                    $"Assets/Resources/Jsons/Monsters/Skills/{fileName}"
+                    );
+        }
+
+        /** 필드 별 정보 불러오기::
+         */
+        foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
+            "Assets/Resources/Jsons/Fields"
+            ))
+        {
+            LocalDictionary.fields[Enum.Parse<FieldNameEnum>(fileName)] =
+                CommonFunctions.loadObjectFromJson<FieldInfo>(
+                    $"Assets/Resources/Jsons/Fields/{fileName}"
+                    );
+        }
+
+        LocalStorage.DICTIONARY_LOADING_DONE = true;
+
         /** 타일 종류 별 정보 불러오기::
          *      타일 형태
          *      타일 티어
