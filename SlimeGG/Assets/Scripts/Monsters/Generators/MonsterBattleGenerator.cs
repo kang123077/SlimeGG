@@ -32,9 +32,9 @@ public class MonsterBattleGenerator : MonoBehaviour
         generateMonster(monsterInfo, 0, 0);
         monsterInfo = LocalStorage.monsters[0];
         generateMonster(monsterInfo, 0, 1);
-        monsterInfo = LocalStorage.monsters[0];
+        monsterInfo = LocalStorage.monsters[1];
         generateMonster(monsterInfo, 1, 0);
-        monsterInfo = LocalStorage.monsters[0];
+        monsterInfo = LocalStorage.monsters[1];
         generateMonster(monsterInfo, 1, 1);
 
         fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();

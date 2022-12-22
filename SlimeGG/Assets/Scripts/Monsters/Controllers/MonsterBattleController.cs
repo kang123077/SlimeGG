@@ -107,11 +107,11 @@ public class MonsterBattleController : MonoBehaviour
     private void moveTo(Transform target)
     {
         transform.Translate(
-            new Vector3(
+            Vector3.Normalize(new Vector3(
                 target.localPosition.x - transform.localPosition.x,
                 target.localPosition.y - transform.localPosition.y,
                 0f
-                ) * Time.deltaTime,
+                )) * monsterInfo.spd * Time.deltaTime,
             Space.Self
             );
     }
