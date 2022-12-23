@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
+using System.Collections.Generic;
 
 public class MonsterBattleController : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class MonsterBattleController : MonoBehaviour
 
     public float[] distanceAllies;
     public float[] distanceEnemies;
+
+    private SkillStat curSkillStat;
 
     public void initInfo(MonsterInfo monsterInfo)
     {
@@ -52,7 +55,11 @@ public class MonsterBattleController : MonoBehaviour
             int[] closest = identifyTarget();
             moveTo(enemies[closest[1]]);
 
-            checkSkillsAvailable();
+            List<int> skillAvailableList = checkSkillsAvailable();
+            if (skillAvailableList.Count > 0)
+            {
+                executeSkill(curSkillStat, skillAvailableList);
+            }
         }
 
     }
@@ -92,24 +99,27 @@ public class MonsterBattleController : MonoBehaviour
         return new int[] { closestAllyIndex, closestEnemyIndex };
     }
 
-    // 2. 스킬 사용 가능 여부 체크
-    //  1번에서 각 몬스터 별 거리를 기준으로 사용 가능한 스킬이 있는가?
-    //  일반 공격도 스킬로 처리
-    //  두개 이상의 스킬이 사용 가능하다고 판명이 난 경우:
-    //      쿨타임이 긴 쪽을 우선 사용
-    // return -> 사용할 스킬 번호
-    int checkSkillsAvailable()
+    // 사용 가능한 스킬 중 가장 쿨타임이 긴 스킬 반환
+    // res 길이 0 <= 사용 가능 스킬 없음
+    List<int> checkSkillsAvailable()
     {
-        foreach(MonsterSkillEnum skillName 
+        List<int> res = new List<int>();
+        foreach (MonsterSkillEnum skillName
             in LocalDictionary.monsters[monsterInfo.accuSpecies.Last()].skills)
         {
             SkillStat skillStat = LocalDictionary.skills[skillName];
-            for (int i = 0; i < skillStat.numberOfTarget; i++)
+            List<int> targetIndexList = SkillExecutor.selectTargetIndexList(skillStat, this);
+            if (targetIndexList.Count > 0)
             {
-                if ()
+                if (curSkillStat.coolTime == 0 ||
+                    skillStat.coolTime <= curSkillStat.coolTime)
+                {
+                    curSkillStat = skillStat;
+                    res = targetIndexList;
+                }
             }
         }
-        return 0;
+        return res;
     }
 
     // 해당 적에게 이동
@@ -129,9 +139,9 @@ public class MonsterBattleController : MonoBehaviour
     // 해당 적으로부터 도망
 
     // n번 스킬을 해당 적을 대상으로 사용
-    void executeSkill(int num)
+    void executeSkill(SkillStat skillStat, List<int> targetList)
     {
-
+        SkillExecutor.execute(skillStat, this, targetList);
     }
 
 }

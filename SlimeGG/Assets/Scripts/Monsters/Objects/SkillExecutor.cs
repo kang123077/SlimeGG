@@ -1,114 +1,163 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class SkillExecutor
 {
-    public static List<int> checkAvailable(SkillStat skillToUse, MonsterBattleController caster)
+
+    public static void tryExecuteSkill(SkillStat skillToUse, MonsterBattleController caster)
+    {
+        if (selectTargetIndexList(skillToUse, caster).Count > 0)
+        {
+
+        }
+    }
+    public static List<int> selectTargetIndexList(SkillStat skillToUse, MonsterBattleController caster)
     {
         switch (skillToUse.skilType)
         {
             case MonsterSkillTypeEnum.ATTACK_NORMAL:
-                return checkEnemyInRangeClosest(skillToUse, caster);
+                return checkTargetsInRangeClosest(skillToUse, caster, true);
             case MonsterSkillTypeEnum.ATTACK_DASH:
-                return checkEnemyInRangeClosest(skillToUse, caster);
+                return checkTargetsInRangeClosest(skillToUse, caster, true);
             case MonsterSkillTypeEnum.ATTACK_ASSASSIN:
-                return checkEnemyInRangeFarthest(skillToUse, caster);
+                return checkTargetsInRangeFarthest(skillToUse, caster, true);
             case MonsterSkillTypeEnum.HEAL:
-                return checkAllyClosest(skillToUse, caster);
+                return checkTargetsInRangeClosest(skillToUse, caster, false);
         }
-        return false;
+        return new List<int>();
     }
 
-    /** 0. 적들
+    /** 0. 타겟들
      *  1. 사정거리 내
      *  2. 가장 가까운 순서
+     *  3. 타겟 최대수:: 스킬 최대 타겟 수
+     *  4. return:: 해당 타겟들 인덱스 List
      */
-    public static List<int> checkEnemyInRangeClosest(SkillStat skillToUse, MonsterBattleController caster)
+    public static List<int> checkTargetsInRangeClosest(
+        SkillStat skillToUse,
+        MonsterBattleController caster,
+        bool isTargetEnemy
+        )
     {
+        float[] arrToUse = isTargetEnemy ? caster.distanceEnemies : caster.distanceAllies;
         List<int> res = new List<int>();
-        for (int j = 0; j < caster.distanceEnemies.Length; j++)
+        Dictionary<float, int> sort = new Dictionary<float, int>();
+        for (int j = 0; j < arrToUse.Length; j++)
         {
-            if (res.Count == skillToUse.numberOfTarget)
-                return res;
-            if (skillToUse.range >= caster.distanceEnemies[j])
+            if (skillToUse.range >= arrToUse[j])
             {
-                res.Add(j);
+                sort[arrToUse[j]] = j;
             }
+        }
+        sort.OrderBy((i) => i.Key);
+        foreach (KeyValuePair<float, int> index in sort)
+        {
+            if (res.Count == skillToUse.numberOfTarget) return res;
+            res.Add(index.Value);
         }
         return res;
     }
 
-    /** 0. 적들
+
+    /** 0. 타겟들
      *  1. 사정거리 내
      *  2. 가장 먼 순서
+     *  3. 타겟 최대수:: 스킬 최대 타겟 수
+     *  4. return:: 해당 타겟들 인덱스 List
      */
-    public static List<int> checkEnemyInRangeFarthest(SkillStat skillToUse, MonsterBattleController caster)
+    public static List<int> checkTargetsInRangeFarthest(
+        SkillStat skillToUse,
+        MonsterBattleController caster,
+        bool isTargetEnemy
+        )
     {
-        List<int> res = new List<int>();
-        for (int j = 0; j < caster.distanceEnemies.Length; j++)
-        {
-            if (res.Count == skillToUse.numberOfTarget)
-                return res;
-            if (skillToUse.range >= caster.distanceEnemies[j])
-            {
-                res.Add(j);
-            }
-        }
+        List<int> res = checkTargetsInRangeClosest(skillToUse, caster, isTargetEnemy);
+        res.Reverse();
         return res;
-    }
-    public static int[] checkEnemyFarthest(SkillStat skillToUse, MonsterBattleController caster)
-    {
-        bool res = false;
-        for (int i = 0; i < skillToUse.numberOfTarget; i++)
-        {
-            if (skillToUse.range >= caster.distanceEnemies[i])
-            {
-                res = true;
-            }
-        }
-        return res;
-    }
-    public static int[] checkAllyClosest(SkillStat skillToUse, MonsterBattleController caster)
-    {
-        return false;
     }
 
-    public static void execute(SkillStat skillToUse, MonsterBattleController caster)
+    /** 0. 타겟들
+     *  1. 사정거리 없음
+     *  2. 가장 먼 순서
+     *  3. 타겟 최대수:: 스킬 최대 타겟 수
+     *  4. return:: 해당 타겟들 인덱스 List
+     */
+    public static List<int> checkTargetsOutRangeClosest(
+        SkillStat skillToUse,
+        MonsterBattleController caster,
+        bool isTargetEnemy
+        )
+    {
+        float[] arrToUse = isTargetEnemy ? caster.distanceEnemies : caster.distanceAllies;
+        List<int> res = new List<int>();
+        Dictionary<float, int> sort = new Dictionary<float, int>();
+        for (int j = 0; j < arrToUse.Length; j++)
+        {
+            sort[arrToUse[j]] = j;
+        }
+        sort.OrderBy((i) => i.Key);
+        foreach (KeyValuePair<float, int> index in sort)
+        {
+            if (res.Count == skillToUse.numberOfTarget) return res;
+            res.Add(index.Value);
+        }
+        return res;
+    }
+
+    /** 0. 타겟들
+     *  1. 사정거리 없음
+     *  2. 가장 가까운 순서
+     *  3. 타겟 최대수:: 스킬 최대 타겟 수
+     *  4. return:: 해당 타겟들 인덱스 List
+     */
+    public static List<int> checkTargetsOutRangeFarthest(
+        SkillStat skillToUse,
+        MonsterBattleController caster,
+        bool isTargetEnemy
+        )
+    {
+        List<int> res = checkTargetsOutRangeClosest(skillToUse, caster, isTargetEnemy);
+        res.Reverse();
+        return res;
+    }
+
+    public static void execute(SkillStat skillToUse, MonsterBattleController caster, List<int> targetIndexList)
     {
         switch (skillToUse.skilType)
         {
             case MonsterSkillTypeEnum.ATTACK_NORMAL:
-                attackNormal(skillToUse, caster);
+                attackNormal(skillToUse, caster, targetIndexList);
                 break;
             case MonsterSkillTypeEnum.ATTACK_DASH:
-                attackDash(skillToUse, caster);
+                attackDash(skillToUse, caster, targetIndexList);
                 break;
             case MonsterSkillTypeEnum.ATTACK_ASSASSIN:
-                attackAssassin(skillToUse, caster);
+                attackAssassin(skillToUse, caster, targetIndexList);
                 break;
             case MonsterSkillTypeEnum.HEAL:
-                healNormal(skillToUse, caster);
+                healNormal(skillToUse, caster, targetIndexList);
                 break;
         }
     }
 
-    private static void attackNormal(SkillStat skillStat, MonsterBattleController caster)
+    private static void attackNormal(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
     {
 
     }
 
-    private static void attackDash(SkillStat skillStat, MonsterBattleController caster)
+    private static void attackDash(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
     {
 
     }
 
-    private static void attackAssassin(SkillStat skillStat, MonsterBattleController caster)
+    private static void attackAssassin(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
     {
 
     }
 
-    private static void healNormal(SkillStat skillStat, MonsterBattleController caster)
+    private static void healNormal(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
     {
 
     }
