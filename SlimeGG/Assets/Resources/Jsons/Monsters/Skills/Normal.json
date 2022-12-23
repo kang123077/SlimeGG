@@ -1,5 +1,5 @@
 {
-  "skillName": "Charge",
+  "skillName": "Normal",
   "skillType": "ATTACK_NORMAL",
   "numberOfTarget": 1,
   "range": 1.0,

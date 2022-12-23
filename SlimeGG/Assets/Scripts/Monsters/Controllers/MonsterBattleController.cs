@@ -11,8 +11,8 @@ public class MonsterBattleController : MonoBehaviour
     private Transform bg;
     private Animator anim;
 
-    private float[] distanceAllies;
-    private float[] distanceEnemies;
+    public float[] distanceAllies;
+    public float[] distanceEnemies;
 
     public void initInfo(MonsterInfo monsterInfo)
     {
@@ -51,6 +51,8 @@ public class MonsterBattleController : MonoBehaviour
         {
             int[] closest = identifyTarget();
             moveTo(enemies[closest[1]]);
+
+            checkSkillsAvailable();
         }
 
     }
@@ -98,7 +100,15 @@ public class MonsterBattleController : MonoBehaviour
     // return -> 사용할 스킬 번호
     int checkSkillsAvailable()
     {
-
+        foreach(MonsterSkillEnum skillName 
+            in LocalDictionary.monsters[monsterInfo.accuSpecies.Last()].skills)
+        {
+            SkillStat skillStat = LocalDictionary.skills[skillName];
+            for (int i = 0; i < skillStat.numberOfTarget; i++)
+            {
+                if ()
+            }
+        }
         return 0;
     }
 

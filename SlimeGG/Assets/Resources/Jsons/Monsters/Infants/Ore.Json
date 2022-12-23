@@ -6,8 +6,8 @@
     "Golem"
   ],
   "skills": [
-    "Charge",
-    "Scratch"
+    "Normal",
+    "Charge"
   ],
   "resourcePath": "Monsters/Infants/Ore",
   "hp": 100,
