@@ -20,6 +20,7 @@ public class MonsterBattleController : MonoBehaviour
     private Dictionary<MonsterSkillEnum, float> skillTimer = new Dictionary<MonsterSkillEnum, float>();
 
     public Vector3 curKnockback = Vector3.zero;
+    public Vector3 curDash = Vector3.zero;
     public float distanceToKeep { get; set; }
 
     public void initInfo(MonsterInfo monsterInfo)
@@ -68,7 +69,7 @@ public class MonsterBattleController : MonoBehaviour
         if (LocalStorage.BATTLE_SCENE_LOADING_DONE)
         {
             curKnockback *= 0.9f;
-            //curKnockback = Vector3.zero;
+            curDash *= 0.9f;
             List<MonsterSkillEnum> skillEnums = skillTimer.Keys.ToList();
             foreach (MonsterSkillEnum skillEnum in skillEnums)
             {
@@ -139,7 +140,7 @@ public class MonsterBattleController : MonoBehaviour
                 if (targetIndexList.Count > 0)
                 {
                     if (curSkillStat == null ||
-                        skillStat.coolTime <= curSkillStat.coolTime)
+                        skillStat.coolTime >= curSkillStat.coolTime)
                     {
                         curSkillStat = skillStat;
                         res = targetIndexList;
@@ -161,11 +162,11 @@ public class MonsterBattleController : MonoBehaviour
                 ((
                     Vector3.Normalize(
                         new Vector3(
-                            target.localPosition.x - transform.localPosition.x,
-                            target.localPosition.y - transform.localPosition.y,
+                            (target.localPosition.x - transform.localPosition.x) * Random.Range(1f, 5f),
+                            (target.localPosition.y - transform.localPosition.y) * Random.Range(1f, 5f),
                             0f
                         ) * monsterInfo.spd
-                    ) + curKnockback
+                    ) + curKnockback + curDash
                 ) * Time.deltaTime),
                 Space.Self
             );
@@ -176,11 +177,11 @@ public class MonsterBattleController : MonoBehaviour
                 ((
                     Vector3.Normalize(
                         new Vector3(
-                            transform.localPosition.x - target.localPosition.x,
-                            transform.localPosition.y - target.localPosition.y,
+                            (transform.localPosition.x - target.localPosition.x) * Random.Range(1f, 5f),
+                            (transform.localPosition.y - target.localPosition.y) * Random.Range(1f, 5f),
                             0f
                         ) * monsterInfo.spd
-                    ) + curKnockback
+                    ) + curKnockback + curDash
                 ) * Time.deltaTime),
                 Space.Self
             );
@@ -192,6 +193,7 @@ public class MonsterBattleController : MonoBehaviour
     // n번 스킬을 해당 적을 대상으로 사용
     void executeSkill(SkillStat skillStat, List<int> targetList)
     {
+        curSkillStat = null;
         skillTimer[skillStat.skillName] = 0f;
         SkillExecutor.execute(skillStat, this, targetList);
     }

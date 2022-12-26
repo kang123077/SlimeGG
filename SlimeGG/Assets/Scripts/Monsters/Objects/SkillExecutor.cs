@@ -15,7 +15,7 @@ public static class SkillExecutor
     }
     public static List<int> selectTargetIndexList(SkillStat skillToUse, MonsterBattleController caster)
     {
-        switch (skillToUse.skilType)
+        switch (skillToUse.skillType)
         {
             case MonsterSkillTypeEnum.ATTACK_NORMAL:
                 return checkTargetsInRangeClosest(skillToUse, caster, true);
@@ -123,7 +123,7 @@ public static class SkillExecutor
 
     public static void execute(SkillStat skillToUse, MonsterBattleController caster, List<int> targetIndexList)
     {
-        switch (skillToUse.skilType)
+        switch (skillToUse.skillType)
         {
             case MonsterSkillTypeEnum.ATTACK_NORMAL:
                 attackNormal(skillToUse, caster, targetIndexList);
@@ -169,7 +169,7 @@ public static class SkillExecutor
 
     private static void attackDash(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
     {
-        float knockBackRate = skillStat.amount * Random.Range(1f, 3f);
+        float knockBackRate = skillStat.amount * Random.Range(3f, 5f);
         int targetCnt = 0;
         foreach (int i in targetIndexList)
         {
@@ -184,8 +184,15 @@ public static class SkillExecutor
                             targetTf.localPosition.y - caster.transform.localPosition.y,
                             0f
                             )
-                        ) * knockBackRate
-                    ;
+                        ) * knockBackRate;
+                caster.curDash =
+                    Vector3.Normalize(
+                        new Vector3(
+                            caster.transform.localPosition.x - targetTf.localPosition.x,
+                            caster.transform.localPosition.y - targetTf.localPosition.y,
+                            0f
+                            )
+                        ) * knockBackRate;
             }
             else
             {

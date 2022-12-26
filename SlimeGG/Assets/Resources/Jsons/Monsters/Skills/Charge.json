@@ -2,7 +2,7 @@
   "skillName": "Charge",
   "skillType": "ATTACK_DASH",
   "numberOfTarget": 1,
-  "range" : 3.3,
+  "range" : 5.3,
   "amount": 12,
   "coolTime": 4.0,
   "delayTime": 10,
