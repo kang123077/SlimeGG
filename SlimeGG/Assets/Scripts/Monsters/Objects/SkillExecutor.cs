@@ -236,6 +236,7 @@ public static class SkillExecutor
         }
 
         res *= Mathf.Pow(Mathf.Log10(targetSum), 0.5f);
+        res = Mathf.Floor(res);
         //Debug.Log($"Actual Damage:: {res}");
         if ((target.curHp -= res) <= 0f)
         {
