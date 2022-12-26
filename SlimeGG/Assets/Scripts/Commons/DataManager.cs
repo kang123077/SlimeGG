@@ -7,14 +7,24 @@ public class DataManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MonsterSpeciesInfo temp = CommonFunctions.loadObjectFromJson<MonsterSpeciesInfo>(
-            "Assets/Resources/Jsons/Monsters/Infants/Ore"
-            );
-        LocalDictionary.monsters[MonsterSpeciesEnum.Ore] = temp;
-        temp = CommonFunctions.loadObjectFromJson<MonsterSpeciesInfo>(
-            "Assets/Resources/Jsons/Monsters/Eggs/Egg"
-            );
-        LocalDictionary.monsters[MonsterSpeciesEnum.Egg] = temp;
+        // 몬스터 정보 불러오기
+        foreach (string folderName in CommonFunctions.loadFileNamesFromFolder(
+            "Assets/Resources/Jsons/Monsters"
+            ))
+        {
+            if (folderName != "Skills")
+            {
+                foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
+                $"Assets/Resources/Jsons/Monsters/{folderName}"
+                ))
+                {
+                    LocalDictionary.monsters[Enum.Parse<MonsterSpeciesEnum>(fileName)] =
+                        CommonFunctions.loadObjectFromJson<MonsterSpeciesInfo>(
+                            $"Assets/Resources/Jsons/Monsters/{folderName}/{fileName}"
+                            );
+                }
+            }
+        }
 
         // 타일 형태 별 좌표 정보 불러오기
         foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
@@ -26,6 +36,32 @@ public class DataManager : MonoBehaviour
                     "Assets/Resources/Jsons/TileSets/Shapes/" + fileName
                     );
         }
+
+        /** 스킬 별 정보 불러오기::
+         */
+        foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
+            "Assets/Resources/Jsons/Monsters/Skills"
+            ))
+        {
+            LocalDictionary.skills[Enum.Parse<MonsterSkillEnum>(fileName)] =
+                CommonFunctions.loadObjectFromJson<SkillStat>(
+                    $"Assets/Resources/Jsons/Monsters/Skills/{fileName}"
+                    );
+        }
+
+        /** 필드 별 정보 불러오기::
+         */
+        foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
+            "Assets/Resources/Jsons/Fields"
+            ))
+        {
+            LocalDictionary.fields[Enum.Parse<FieldNameEnum>(fileName)] =
+                CommonFunctions.loadObjectFromJson<FieldInfo>(
+                    $"Assets/Resources/Jsons/Fields/{fileName}"
+                    );
+        }
+
+        LocalStorage.DICTIONARY_LOADING_DONE = true;
 
         /** 타일 종류 별 정보 불러오기::
          *      타일 형태

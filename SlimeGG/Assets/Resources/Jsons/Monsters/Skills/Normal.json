@@ -1,0 +1,11 @@
+{
+  "skillName": "Normal",
+  "skillType": "ATTACK_NORMAL",
+  "numberOfTarget": 1,
+  "range": 1.0,
+  "amount": 10,
+  "coolTime": 1.0,
+  "delayTime": 10,
+  "elements": [],
+  "stats": []
+}

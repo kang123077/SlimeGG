@@ -1,17 +1,17 @@
 {
-  "skillName": "Scratch",
+  "skillName": "Spit",
   "skillType": "ATTACK_NORMAL",
   "numberOfTarget": 1,
-  "range" : 3.3,
-  "amount": 12,
-  "coolTime": 5.0,
-  "delayTime": 10,
+  "range" : 3.4,
+  "amount": 8,
+  "coolTime": 1.0,
+  "delayTime": 2,
   "elements": [
     "Wind",
-    "Golem"
+    "Spirit"
   ],
   "stats": [
     0.6,
-    0.4
+    0.7
   ]
 }

@@ -7,7 +7,7 @@ public class SkillStat : ElementStat
     [JsonConverter(typeof(StringEnumConverter))]
     public MonsterSkillEnum skillName { get; set; }
     [JsonConverter(typeof(StringEnumConverter))]
-    public MonsterSkillTypeEnum skilType { get; set; }
+    public MonsterSkillTypeEnum skillType { get; set; }
     public int numberOfTarget { get; set; }
     public float range { get; set; }
     public float amount { get; set; }
@@ -29,7 +29,7 @@ public class SkillStat : ElementStat
 
         return $"\n" +
             $"{skillName.ToString()}\n" +
-            $"{skilType.ToString()}\n" +
+            $"{skillType.ToString()}\n" +
             $"{numberOfTarget}\n" +
             $"{range}\n" +
             $"{amount}\n" +

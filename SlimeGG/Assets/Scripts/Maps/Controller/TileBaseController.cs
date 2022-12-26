@@ -21,7 +21,6 @@ public class TileBaseController : MonoBehaviour
         socketMounted = tempSocketMountable;
         tempSocketMountable = null;
         socketMounted.GetComponent<SocketController>().tileSetInstalled = parentTileSet;
-        print(socketMounted.GetComponent<SocketController>().tileSetInstalled);
         return socketMounted.GetComponent<SocketController>().coor;
     }
 
