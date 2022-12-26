@@ -81,7 +81,7 @@ public class MonsterBaseController : MonoBehaviour
         correctionCoor = objPosition - transform.position;
 
         GameObject.Find("UI").GetComponent<UIController>().UIOnChecker();
-        GameObject.Find("Popup UI").GetComponent<PopupUIController>().generateUI(monsterInfo);
+        GameObject.Find("Popup UI").GetComponent<PopupUIController>().generateUI(monsterInfo, curTileSet);
 
         transform.SetParent(null);
         if (curTileSet != null)

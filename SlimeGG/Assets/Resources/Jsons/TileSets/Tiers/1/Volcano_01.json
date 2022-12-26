@@ -1,0 +1,17 @@
+{
+  "name": "Volcano_01",
+  "nickName": "용암 타일 01",
+  "tier": 1,
+  "tileSetShape": "CurvedClock3",
+  "elements": [
+    "Earth",
+    "Golem",
+    "Fire"
+  ],
+  "stats": [
+    1.0,
+    1.5,
+    0.7
+  ],
+  "resourcePath": "TileSets/1/Volcano_01"
+}

@@ -2,5 +2,9 @@
   {
     "name": "Normal_01",
     "installedPosition": [0, 0]
+  },
+  {
+    "name": "Volcano_01",
+    "installedPosition": [1, 1]
   }
 ]

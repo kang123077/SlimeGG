@@ -206,6 +206,11 @@ public class TileSetController : MonoBehaviour
         }
     }
 
+    public string getTileSetBriefInfoName()
+    {
+        return tileSetBriefInfo.name.ToString();
+    }
+
     /**
      * Send TileSet to Inventory
      */

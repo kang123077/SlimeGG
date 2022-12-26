@@ -19,15 +19,26 @@ public class PopupUIController : MonoBehaviour
         //    );
     }
 
-    public void generateUI(MonsterInfo monsterInfo)
+    public void generateUI(MonsterInfo monsterInfo, Transform curTileSet)
     {
         headerUI.text = string.Format($"Monster");
-        infoUI.text =
-            string.Format(
-            $"NickName : {monsterInfo.nickName}\n" +
-            $"Species : {monsterInfo.accuSpecies.Last()}\n" +
-            $"Home : Volcano"
-            );
+        if (curTileSet == null)
+        {
+            infoUI.text =
+                string.Format(
+                $"NickName : {monsterInfo.nickName}\n" +
+                $"Species : {monsterInfo.accuSpecies.Last()}\n"
+                );
+        }
+        else
+        {
+            infoUI.text =
+                string.Format(
+                $"NickName : {monsterInfo.nickName}\n" +
+                $"Species : {monsterInfo.accuSpecies.Last()}\n" +
+                $"Home : {curTileSet.GetComponent<TileSetController>().getTileSetBriefInfoName()}\n"
+                );
+        }
     }
 
     private void deleteBeforeUI()
