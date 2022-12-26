@@ -12,7 +12,7 @@
   "resourcePath": "Monsters/Infants/Ore",
   "hp": 30,
   "def": 40,
-  "spd": 7,
+  "spd": 1.7,
   "stats": [
     1.0,
     1.5

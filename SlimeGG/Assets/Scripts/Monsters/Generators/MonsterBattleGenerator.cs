@@ -31,9 +31,9 @@ public class MonsterBattleGenerator : MonoBehaviour
         MonsterInfo monsterInfo = LocalStorage.monsters[0];
         generateMonster(monsterInfo, 0, 0);
         monsterInfo = LocalStorage.monsters[0];
-        generateMonster(monsterInfo, 1, 0);
-        monsterInfo = LocalStorage.monsters[1];
         generateMonster(monsterInfo, 0, 1);
+        monsterInfo = LocalStorage.monsters[1];
+        generateMonster(monsterInfo, 1, 0);
         monsterInfo = LocalStorage.monsters[1];
         generateMonster(monsterInfo, 1, 1);
 

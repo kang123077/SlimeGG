@@ -11,7 +11,7 @@
   "resourcePath": "Monsters/Infants/Insect",
   "hp": 20,
   "def": 15,
-  "spd": 5,
+  "spd": 1,
   "stats": [
     2.0,
     1.5

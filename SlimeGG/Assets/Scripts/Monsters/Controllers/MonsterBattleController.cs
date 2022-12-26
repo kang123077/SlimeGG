@@ -8,9 +8,11 @@ public class MonsterBattleController : MonoBehaviour
     private Vector2 entryNum { get; set; }
     public Transform[] allies { get; set; }
     public Transform[] enemies { get; set; }
-    private MonsterInfo monsterInfo { get; set; }
+    public MonsterInfo monsterInfo { get; set; }
+    public MonsterSpeciesInfo speciesInfo { get; set; }
     private Transform bg { get; set; }
     private Animator anim { get; set; }
+    public float maxHp, curHp, def;
 
     public float[] distanceAllies;
     public float[] distanceEnemies;
@@ -23,11 +25,13 @@ public class MonsterBattleController : MonoBehaviour
     public Vector3 curDash = Vector3.zero;
     public float distanceToKeep { get; set; }
 
+    public bool isDead { get; set; }
+
     public void initInfo(MonsterInfo monsterInfo)
     {
         this.monsterInfo = monsterInfo;
 
-        MonsterSpeciesInfo speciesInfo = LocalDictionary.monsters[monsterInfo.accuSpecies.Last()];
+        speciesInfo = LocalDictionary.monsters[monsterInfo.accuSpecies.Last()];
         bg = transform.Find("Image");
         bg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(
             PathInfo.SPRITE + speciesInfo.resourcePath
@@ -46,6 +50,10 @@ public class MonsterBattleController : MonoBehaviour
             float ran = LocalDictionary.skills[skillEnum].range;
             if (distanceToKeep > ran) distanceToKeep = Mathf.Max(ran - 1f, 0f);
         }
+        maxHp = monsterInfo.hp * speciesInfo.hp;
+        curHp = monsterInfo.hp * speciesInfo.hp;
+        def = monsterInfo.def * speciesInfo.def;
+        isDead = false;
     }
 
     public void setFieldInfo(Vector2 entryNum, Transform[] allies, Transform[] enemies)
@@ -66,7 +74,7 @@ public class MonsterBattleController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (LocalStorage.BATTLE_SCENE_LOADING_DONE)
+        if (LocalStorage.BATTLE_SCENE_LOADING_DONE && !isDead)
         {
             curKnockback *= 0.9f;
             curDash *= 0.9f;
@@ -101,12 +109,19 @@ public class MonsterBattleController : MonoBehaviour
         {
             if (i != entryNum.y)
             {
-                distanceAllies[i] = Vector2.Distance(transform.localPosition, allies[i].localPosition);
-                if (closestLength == 0f ||
-                    closestLength > distanceAllies[i])
+                if (!allies[i].GetComponent<MonsterBattleController>().isDead)
                 {
-                    closestLength = distanceAllies[i];
-                    closestAllyIndex = i;
+                    distanceAllies[i] = Vector2.Distance(transform.localPosition, allies[i].localPosition);
+                    if (closestLength == 0f ||
+                        closestLength > distanceAllies[i])
+                    {
+                        closestLength = distanceAllies[i];
+                        closestAllyIndex = i;
+                    }
+                    else
+                    {
+                        distanceAllies[i] = -1f;
+                    }
                 }
             }
         }
@@ -114,12 +129,19 @@ public class MonsterBattleController : MonoBehaviour
         int closestEnemyIndex = 0;
         for (int i = 0; i < enemies.Length; i++)
         {
-            distanceEnemies[i] = Vector2.Distance(transform.localPosition, enemies[i].localPosition);
-            if (closestLength == 0f ||
-                closestLength > distanceEnemies[i])
+            if (!enemies[i].GetComponent<MonsterBattleController>().isDead)
             {
-                closestLength = distanceEnemies[i];
-                closestEnemyIndex = i;
+                distanceEnemies[i] = Vector2.Distance(transform.localPosition, enemies[i].localPosition);
+                if (closestLength == 0f ||
+                    closestLength > distanceEnemies[i])
+                {
+                    closestLength = distanceEnemies[i];
+                    closestEnemyIndex = i;
+                }
+            }
+            else
+            {
+                distanceEnemies[i] = -1f;
             }
         }
         return new int[] { closestAllyIndex, closestEnemyIndex };
@@ -160,13 +182,13 @@ public class MonsterBattleController : MonoBehaviour
         {
             transform.Translate(
                 ((
-                    Vector3.Normalize(
+                    (Vector3.Normalize(
                         new Vector3(
                             (target.localPosition.x - transform.localPosition.x) * Random.Range(1f, 5f),
                             (target.localPosition.y - transform.localPosition.y) * Random.Range(1f, 5f),
                             0f
-                        ) * monsterInfo.spd
-                    ) + curKnockback + curDash
+                        )
+                    ) * monsterInfo.spd * speciesInfo.spd) + curKnockback + curDash
                 ) * Time.deltaTime),
                 Space.Self
             );
@@ -175,13 +197,13 @@ public class MonsterBattleController : MonoBehaviour
         {
             transform.Translate(
                 ((
-                    Vector3.Normalize(
+                    (Vector3.Normalize(
                         new Vector3(
                             (transform.localPosition.x - target.localPosition.x) * Random.Range(1f, 5f),
                             (transform.localPosition.y - target.localPosition.y) * Random.Range(1f, 5f),
                             0f
-                        ) * monsterInfo.spd
-                    ) + curKnockback + curDash
+                        )
+                    ) * monsterInfo.spd * speciesInfo.spd) + curKnockback + curDash
                 ) * Time.deltaTime),
                 Space.Self
             );
@@ -198,4 +220,8 @@ public class MonsterBattleController : MonoBehaviour
         SkillExecutor.execute(skillStat, this, targetList);
     }
 
+    public void makeDead()
+    {
+        isDead = true;
+    }
 }

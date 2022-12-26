@@ -1,18 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class SkillExecutor
 {
-
-    public static void tryExecuteSkill(SkillStat skillToUse, MonsterBattleController caster)
-    {
-        if (selectTargetIndexList(skillToUse, caster).Count > 0)
-        {
-
-        }
-    }
     public static List<int> selectTargetIndexList(SkillStat skillToUse, MonsterBattleController caster)
     {
         switch (skillToUse.skillType)
@@ -46,7 +39,7 @@ public static class SkillExecutor
         Dictionary<float, int> sort = new Dictionary<float, int>();
         for (int j = 0; j < distArr.Length; j++)
         {
-            if (skillToUse.range >= distArr[j])
+            if (distArr[j] != -1f && skillToUse.range >= distArr[j])
             {
                 sort[distArr[j]] = j;
             }
@@ -94,7 +87,7 @@ public static class SkillExecutor
         Dictionary<float, int> sort = new Dictionary<float, int>();
         for (int j = 0; j < arrToUse.Length; j++)
         {
-            sort[arrToUse[j]] = j;
+            if (arrToUse[j] != -1f) sort[arrToUse[j]] = j;
         }
         foreach (KeyValuePair<float, int> index in sort.OrderBy((i) => i.Key))
         {
@@ -142,7 +135,7 @@ public static class SkillExecutor
 
     private static void attackNormal(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
     {
-        float knockBackRate = skillStat.amount * Random.Range(1f, 3f);
+        float knockBackRate = skillStat.amount * Random.Range(0.5f, 1f);
         int targetCnt = 0;
         foreach (int i in targetIndexList)
         {
@@ -157,8 +150,8 @@ public static class SkillExecutor
                             targetTf.localPosition.y - caster.transform.localPosition.y,
                             0f
                             )
-                        ) * knockBackRate
-                    ;
+                        ) * knockBackRate;
+                calculateDamage(skillStat, caster, targetTf.GetComponent<MonsterBattleController>());
             }
             else
             {
@@ -169,7 +162,7 @@ public static class SkillExecutor
 
     private static void attackDash(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
     {
-        float knockBackRate = skillStat.amount * Random.Range(3f, 5f);
+        float knockBackRate = skillStat.amount * Random.Range(1f, 3f);
         int targetCnt = 0;
         foreach (int i in targetIndexList)
         {
@@ -188,11 +181,12 @@ public static class SkillExecutor
                 caster.curDash =
                     Vector3.Normalize(
                         new Vector3(
-                            caster.transform.localPosition.x - targetTf.localPosition.x,
-                            caster.transform.localPosition.y - targetTf.localPosition.y,
+                            targetTf.localPosition.x - caster.transform.localPosition.x,
+                            targetTf.localPosition.y - caster.transform.localPosition.y,
                             0f
                             )
-                        ) * knockBackRate;
+                        ) * knockBackRate * 2;
+                calculateDamage(skillStat, caster, targetTf.GetComponent<MonsterBattleController>());
             }
             else
             {
@@ -209,5 +203,44 @@ public static class SkillExecutor
     private static void healNormal(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
     {
 
+    }
+
+    private static void calculateDamage(SkillStat skillStat, MonsterBattleController caster, MonsterBattleController target)
+    {
+        float res = skillStat.amount;
+        res *= 100f / (100f + target.def);
+
+        List<ElementEnum> elementsRelated = new List<ElementEnum>();
+        elementsRelated.AddRange(caster.speciesInfo.elements);
+        elementsRelated.AddRange(target.speciesInfo.elements);
+        elementsRelated = elementsRelated.Distinct().ToList();
+        float targetSum = 10f;
+        float casterAccu = 0f, targetAccu = 0f;
+        foreach (ElementEnum element in elementsRelated)
+        {
+            int idx;
+            if ((idx = caster.speciesInfo.elements.IndexOf(element)) != -1)
+            {
+                casterAccu += caster.monsterInfo.stats[idx];
+                casterAccu += caster.speciesInfo.stats[idx];
+            }
+            if ((idx = target.speciesInfo.elements.IndexOf(element)) != -1)
+            {
+                targetAccu += target.monsterInfo.stats[idx];
+                targetAccu += target.speciesInfo.stats[idx];
+            }
+        }
+        if (targetAccu > casterAccu)
+        {
+            targetSum += targetAccu - casterAccu;
+        }
+
+        res *= Mathf.Pow(Mathf.Log10(targetSum), 0.5f);
+        //Debug.Log($"Actual Damage:: {res}");
+        if ((target.curHp -= res) <= 0f)
+        {
+            //Debug.Log($"Dead!!");
+            target.makeDead();
+        }
     }
 }
