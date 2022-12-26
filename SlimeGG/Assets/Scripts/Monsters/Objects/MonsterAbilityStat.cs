@@ -1,7 +1,7 @@
 [System.Serializable]
 public class MonsterAbilityStat : ElementStat
 {
-    public int hp { get; set; }
-    public int def { get; set; }
-    public int spd { get; set; }
+    public float hp { get; set; }
+    public float def { get; set; }
+    public float spd { get; set; }
 }

@@ -1,31 +1,59 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Linq;
+using System.Collections.Generic;
 
 public class MonsterBattleController : MonoBehaviour
 {
-    private Vector2 entryNum;
-    Transform[] allies;
-    Transform[] enemies;
-    private MonsterInfo monsterInfo;
-    private Transform bg;
-    private Animator anim;
+    private Vector2 entryNum { get; set; }
+    public Transform[] allies { get; set; }
+    public Transform[] enemies { get; set; }
+    public MonsterInfo monsterInfo { get; set; }
+    public MonsterSpeciesInfo speciesInfo { get; set; }
+    private Transform bg { get; set; }
+    private Animator anim { get; set; }
+    public float maxHp, curHp, def;
 
-    private float[] distanceAllies;
-    private float[] distanceEnemies;
+    public float[] distanceAllies;
+    public float[] distanceEnemies;
+
+    private SkillStat curSkillStat = null;
+
+    private Dictionary<MonsterSkillEnum, float> skillTimer = new Dictionary<MonsterSkillEnum, float>();
+
+    public Vector3 curKnockback = Vector3.zero;
+    public Vector3 curDash = Vector3.zero;
+    public float distanceToKeep { get; set; }
+
+    public bool isDead { get; set; }
 
     public void initInfo(MonsterInfo monsterInfo)
     {
         this.monsterInfo = monsterInfo;
+
+        speciesInfo = LocalDictionary.monsters[monsterInfo.accuSpecies.Last()];
         bg = transform.Find("Image");
         bg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(
-            PathInfo.SPRITE + LocalDictionary.monsters[monsterInfo.accuSpecies[-1]].resourcePath
+            PathInfo.SPRITE + speciesInfo.resourcePath
             );
         Destroy(bg.GetComponent<PolygonCollider2D>());
         bg.AddComponent<PolygonCollider2D>();
+
         anim = bg.GetComponent<Animator>();
         anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
-            PathInfo.ANIMATION + LocalDictionary.monsters[monsterInfo.accuSpecies[-1]].resourcePath + "/Controller"
+            PathInfo.ANIMATION + speciesInfo.resourcePath + "/Controller"
             );
+        distanceToKeep = 100f;
+        foreach (MonsterSkillEnum skillEnum in speciesInfo.skills)
+        {
+            skillTimer[skillEnum] = 0f;
+            float ran = LocalDictionary.skills[skillEnum].range;
+            if (distanceToKeep > ran) distanceToKeep = Mathf.Max(ran - 1f, 0f);
+        }
+        maxHp = monsterInfo.hp * speciesInfo.hp;
+        curHp = monsterInfo.hp * speciesInfo.hp;
+        def = monsterInfo.def * speciesInfo.def;
+        isDead = false;
     }
 
     public void setFieldInfo(Vector2 entryNum, Transform[] allies, Transform[] enemies)
@@ -46,6 +74,24 @@ public class MonsterBattleController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (LocalStorage.BATTLE_SCENE_LOADING_DONE && !isDead)
+        {
+            curKnockback *= 0.9f;
+            curDash *= 0.9f;
+            List<MonsterSkillEnum> skillEnums = skillTimer.Keys.ToList();
+            foreach (MonsterSkillEnum skillEnum in skillEnums)
+            {
+                skillTimer[skillEnum] += Time.deltaTime;
+            }
+            int[] closest = identifyTarget();
+            moveTo(enemies[closest[1]]);
+
+            List<int> skillAvailableList = checkSkillsAvailable();
+            if (skillAvailableList.Count > 0)
+            {
+                executeSkill(curSkillStat, skillAvailableList);
+            }
+        }
 
     }
 
@@ -61,47 +107,121 @@ public class MonsterBattleController : MonoBehaviour
         int closestAllyIndex = 0;
         for (int i = 0; i < allies.Length; i++)
         {
-            if (closestLength == 0f ||
-                closestLength > (distanceAllies[i] = Vector2.Distance(transform.position, allies[i].position)))
+            if (i != entryNum.y)
             {
-                closestLength = distanceAllies[i];
-                closestAllyIndex = i;
+                if (!allies[i].GetComponent<MonsterBattleController>().isDead)
+                {
+                    distanceAllies[i] = Vector2.Distance(transform.localPosition, allies[i].localPosition);
+                    if (closestLength == 0f ||
+                        closestLength > distanceAllies[i])
+                    {
+                        closestLength = distanceAllies[i];
+                        closestAllyIndex = i;
+                    }
+                    else
+                    {
+                        distanceAllies[i] = -1f;
+                    }
+                }
             }
         }
         closestLength = 0f;
         int closestEnemyIndex = 0;
         for (int i = 0; i < enemies.Length; i++)
         {
-            if (closestLength == 0f ||
-                closestLength > (distanceEnemies[i] = Vector2.Distance(transform.position, enemies[i].position)))
+            if (!enemies[i].GetComponent<MonsterBattleController>().isDead)
             {
-                closestLength = distanceEnemies[i];
-                closestEnemyIndex = i;
+                distanceEnemies[i] = Vector2.Distance(transform.localPosition, enemies[i].localPosition);
+                if (closestLength == 0f ||
+                    closestLength > distanceEnemies[i])
+                {
+                    closestLength = distanceEnemies[i];
+                    closestEnemyIndex = i;
+                }
+            }
+            else
+            {
+                distanceEnemies[i] = -1f;
             }
         }
         return new int[] { closestAllyIndex, closestEnemyIndex };
     }
 
-    // 2. 스킬 사용 가능 여부 체크
-    //  1번에서 각 몬스터 별 거리를 기준으로 사용 가능한 스킬이 있는가?
-    //  일반 공격도 스킬로 처리
-    //  두개 이상의 스킬이 사용 가능하다고 판명이 난 경우:
-    //      쿨타임이 긴 쪽을 우선 사용
-    // return -> 사용할 스킬 번호
-    int checkSkillsAvailable()
+    // 사용 가능한 스킬 중 가장 쿨타임이 긴 스킬 반환
+    // res 길이 0 <= 사용 가능 스킬 없음
+    List<int> checkSkillsAvailable()
     {
-
-        return 0;
+        List<int> res = new List<int>();
+        foreach (MonsterSkillEnum skillName
+            in LocalDictionary.monsters[monsterInfo.accuSpecies.Last()].skills)
+        {
+            SkillStat skillStat = LocalDictionary.skills[skillName];
+            if (skillStat.coolTime <= skillTimer[skillName])
+            {
+                List<int> targetIndexList = SkillExecutor.selectTargetIndexList(skillStat, this);
+                if (targetIndexList.Count > 0)
+                {
+                    if (curSkillStat == null ||
+                        skillStat.coolTime >= curSkillStat.coolTime)
+                    {
+                        curSkillStat = skillStat;
+                        res = targetIndexList;
+                    }
+                }
+            }
+        }
+        return res;
     }
 
     // 해당 적에게 이동
 
+    private void moveTo(Transform target)
+    {
+        float curDistance = Vector3.Distance(target.localPosition, transform.localPosition);
+        if (curDistance > distanceToKeep)
+        {
+            transform.Translate(
+                ((
+                    (Vector3.Normalize(
+                        new Vector3(
+                            (target.localPosition.x - transform.localPosition.x) * Random.Range(1f, 5f),
+                            (target.localPosition.y - transform.localPosition.y) * Random.Range(1f, 5f),
+                            0f
+                        )
+                    ) * monsterInfo.spd * speciesInfo.spd) + curKnockback + curDash
+                ) * Time.deltaTime),
+                Space.Self
+            );
+        }
+        else
+        {
+            transform.Translate(
+                ((
+                    (Vector3.Normalize(
+                        new Vector3(
+                            (transform.localPosition.x - target.localPosition.x) * Random.Range(1f, 5f),
+                            (transform.localPosition.y - target.localPosition.y) * Random.Range(1f, 5f),
+                            0f
+                        )
+                    ) * monsterInfo.spd * speciesInfo.spd) + curKnockback + curDash
+                ) * Time.deltaTime),
+                Space.Self
+            );
+        }
+    }
+
     // 해당 적으로부터 도망
 
     // n번 스킬을 해당 적을 대상으로 사용
-    void executeSkill(int num)
+    void executeSkill(SkillStat skillStat, List<int> targetList)
     {
-
+        curSkillStat = null;
+        skillTimer[skillStat.skillName] = 0f;
+        SkillExecutor.execute(skillStat, this, targetList);
     }
 
+    public void makeDead()
+    {
+        isDead = true;
+    }
 }

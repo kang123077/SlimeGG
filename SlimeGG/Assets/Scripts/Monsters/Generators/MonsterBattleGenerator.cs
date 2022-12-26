@@ -8,37 +8,43 @@ public class MonsterBattleGenerator : MonoBehaviour
     private GameObject monsterBase;
     [SerializeField]
     private GameObject fieldGenerated;
-    private MonsterInfo[] monsterInfos;
+    private MonsterInfo[] monsterInfos = null;
     // Start is called before the first frame update
     void Start()
     {
-        initGeneration();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (fieldGenerated.GetComponent<FieldController>().monstersInBattle == null && monsterInfos == null &&
+            LocalStorage.DICTIONARY_LOADING_DONE && LocalStorage.MONSTER_DATACALL_DONE)
+        {
+            fieldGenerated.GetComponent<FieldController>().initField(LocalDictionary.fields[FieldNameEnum.Normal]);
+            initGeneration();
+        }
     }
 
     public void initGeneration()
     {
-        //MonsterInfo monsterInfo = new MonsterInfo("M L 0", SpeciesName.Ore);
-        //generateMonster(monsterInfo, 0, 0);
-        //monsterInfo = new MonsterInfo("M L 1", SpeciesName.Ore);
-        //generateMonster(monsterInfo, 0, 1);
-        //monsterInfo = new MonsterInfo("M R 0", SpeciesName.Ore);
-        //generateMonster(monsterInfo, 1, 0);
-        //monsterInfo = new MonsterInfo("M R 2", SpeciesName.Ore);
-        //generateMonster(monsterInfo, 1, 1);
+        monsterInfos = new MonsterInfo[4];
+        MonsterInfo monsterInfo = LocalStorage.monsters[0];
+        generateMonster(monsterInfo, 0, 0);
+        monsterInfo = LocalStorage.monsters[0];
+        generateMonster(monsterInfo, 0, 1);
+        monsterInfo = LocalStorage.monsters[1];
+        generateMonster(monsterInfo, 1, 0);
+        monsterInfo = LocalStorage.monsters[1];
+        generateMonster(monsterInfo, 1, 1);
 
-        //fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
+        fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
+        LocalStorage.BATTLE_SCENE_LOADING_DONE = true;
     }
 
     private void generateMonster(MonsterInfo monsterInfo, int side, int numPos)
     {
-        //GameObject newMonster = Instantiate(monsterBase);
-        //newMonster.GetComponent<MonsterBattleController>().initInfo(monsterInfo);
-        //fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, side, numPos);
+        GameObject newMonster = Instantiate(monsterBase);
+        newMonster.GetComponent<MonsterBattleController>().initInfo(monsterInfo);
+        fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, side, numPos);
     }
 }
