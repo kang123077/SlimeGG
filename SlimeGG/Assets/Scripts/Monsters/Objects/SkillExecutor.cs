@@ -146,8 +146,8 @@ public static class SkillExecutor
                 targetTf.GetComponent<MonsterBattleController>().curKnockback =
                     Vector3.Normalize(
                         new Vector3(
-                            targetTf.localPosition.x - caster.transform.localPosition.x,
-                            targetTf.localPosition.y - caster.transform.localPosition.y,
+                            (targetTf.localPosition.x - caster.transform.localPosition.x) * Random.Range(1f, 10f),
+                            (targetTf.localPosition.y - caster.transform.localPosition.y) * Random.Range(1f, 10f),
                             0f
                             )
                         ) * knockBackRate;
@@ -173,16 +173,16 @@ public static class SkillExecutor
                 targetTf.GetComponent<MonsterBattleController>().curKnockback =
                     Vector3.Normalize(
                         new Vector3(
-                            targetTf.localPosition.x - caster.transform.localPosition.x,
-                            targetTf.localPosition.y - caster.transform.localPosition.y,
+                            (targetTf.localPosition.x - caster.transform.localPosition.x) * Random.Range(1f, 10f),
+                            (targetTf.localPosition.y - caster.transform.localPosition.y) * Random.Range(1f, 10f),
                             0f
                             )
                         ) * knockBackRate;
                 caster.curDash =
                     Vector3.Normalize(
                         new Vector3(
-                            targetTf.localPosition.x - caster.transform.localPosition.x,
-                            targetTf.localPosition.y - caster.transform.localPosition.y,
+                            (targetTf.localPosition.x - caster.transform.localPosition.x) * Random.Range(1f, 10f),
+                            (targetTf.localPosition.y - caster.transform.localPosition.y) * Random.Range(1f, 10f),
                             0f
                             )
                         ) * knockBackRate * 2;

@@ -184,8 +184,8 @@ public class MonsterBattleController : MonoBehaviour
                 ((
                     (Vector3.Normalize(
                         new Vector3(
-                            (target.localPosition.x - transform.localPosition.x) * Random.Range(1f, 5f),
-                            (target.localPosition.y - transform.localPosition.y) * Random.Range(1f, 5f),
+                            (target.localPosition.x - transform.localPosition.x) * Random.Range(1f, 10f),
+                            (target.localPosition.y - transform.localPosition.y) * Random.Range(1f, 10f),
                             0f
                         )
                     ) * monsterInfo.spd * speciesInfo.spd) + curKnockback + curDash
@@ -199,8 +199,8 @@ public class MonsterBattleController : MonoBehaviour
                 ((
                     (Vector3.Normalize(
                         new Vector3(
-                            (transform.localPosition.x - target.localPosition.x) * Random.Range(1f, 5f),
-                            (transform.localPosition.y - target.localPosition.y) * Random.Range(1f, 5f),
+                            (transform.localPosition.x - target.localPosition.x) * Random.Range(1f, 10f),
+                            (transform.localPosition.y - target.localPosition.y) * Random.Range(1f, 10f),
                             0f
                         )
                     ) * monsterInfo.spd * speciesInfo.spd) + curKnockback + curDash
