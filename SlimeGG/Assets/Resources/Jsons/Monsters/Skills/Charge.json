@@ -4,7 +4,7 @@
   "numberOfTarget": 1,
   "range" : 3.3,
   "amount": 12,
-  "coolTime": 12,
+  "coolTime": 4.0,
   "delayTime": 10,
   "elements": [
     "Earth",

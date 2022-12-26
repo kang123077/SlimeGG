@@ -5,31 +5,43 @@ using System.Collections.Generic;
 
 public class MonsterBattleController : MonoBehaviour
 {
-    private Vector2 entryNum;
-    Transform[] allies;
-    Transform[] enemies;
-    private MonsterInfo monsterInfo;
-    private Transform bg;
-    private Animator anim;
+    private Vector2 entryNum { get; set; }
+    public Transform[] allies { get; set; }
+    public Transform[] enemies { get; set; }
+    private MonsterInfo monsterInfo { get; set; }
+    private Transform bg { get; set; }
+    private Animator anim { get; set; }
 
     public float[] distanceAllies;
     public float[] distanceEnemies;
 
-    private SkillStat curSkillStat;
+    private SkillStat curSkillStat = null;
+
+    private Dictionary<MonsterSkillEnum, float> skillTimer = new Dictionary<MonsterSkillEnum, float>();
+
+    public Vector3 curKnockback = Vector3.zero;
 
     public void initInfo(MonsterInfo monsterInfo)
     {
         this.monsterInfo = monsterInfo;
+
+        MonsterSpeciesInfo speciesInfo = LocalDictionary.monsters[monsterInfo.accuSpecies.Last()];
         bg = transform.Find("Image");
         bg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(
-            PathInfo.SPRITE + LocalDictionary.monsters[monsterInfo.accuSpecies.Last()].resourcePath
+            PathInfo.SPRITE + speciesInfo.resourcePath
             );
         Destroy(bg.GetComponent<PolygonCollider2D>());
         bg.AddComponent<PolygonCollider2D>();
+
         anim = bg.GetComponent<Animator>();
         anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
-            PathInfo.ANIMATION + LocalDictionary.monsters[monsterInfo.accuSpecies.Last()].resourcePath + "/Controller"
+            PathInfo.ANIMATION + speciesInfo.resourcePath + "/Controller"
             );
+
+        foreach (MonsterSkillEnum skillEnum in speciesInfo.skills)
+        {
+            skillTimer[skillEnum] = 0f;
+        }
     }
 
     public void setFieldInfo(Vector2 entryNum, Transform[] allies, Transform[] enemies)
@@ -52,6 +64,13 @@ public class MonsterBattleController : MonoBehaviour
     {
         if (LocalStorage.BATTLE_SCENE_LOADING_DONE)
         {
+            curKnockback *= 0.9f;
+            //curKnockback = Vector3.zero;
+            List<MonsterSkillEnum> skillEnums = skillTimer.Keys.ToList();
+            foreach (MonsterSkillEnum skillEnum in skillEnums)
+            {
+                skillTimer[skillEnum] += Time.deltaTime;
+            }
             int[] closest = identifyTarget();
             moveTo(enemies[closest[1]]);
 
@@ -76,12 +95,15 @@ public class MonsterBattleController : MonoBehaviour
         int closestAllyIndex = 0;
         for (int i = 0; i < allies.Length; i++)
         {
-            distanceAllies[i] = Vector2.Distance(transform.localPosition, allies[i].localPosition);
-            if (closestLength == 0f ||
-                closestLength > distanceAllies[i])
+            if (i != entryNum.y)
             {
-                closestLength = distanceAllies[i];
-                closestAllyIndex = i;
+                distanceAllies[i] = Vector2.Distance(transform.localPosition, allies[i].localPosition);
+                if (closestLength == 0f ||
+                    closestLength > distanceAllies[i])
+                {
+                    closestLength = distanceAllies[i];
+                    closestAllyIndex = i;
+                }
             }
         }
         closestLength = 0f;
@@ -108,14 +130,17 @@ public class MonsterBattleController : MonoBehaviour
             in LocalDictionary.monsters[monsterInfo.accuSpecies.Last()].skills)
         {
             SkillStat skillStat = LocalDictionary.skills[skillName];
-            List<int> targetIndexList = SkillExecutor.selectTargetIndexList(skillStat, this);
-            if (targetIndexList.Count > 0)
+            if (skillStat.coolTime <= skillTimer[skillName])
             {
-                if (curSkillStat.coolTime == 0 ||
-                    skillStat.coolTime <= curSkillStat.coolTime)
+                List<int> targetIndexList = SkillExecutor.selectTargetIndexList(skillStat, this);
+                if (targetIndexList.Count > 0)
                 {
-                    curSkillStat = skillStat;
-                    res = targetIndexList;
+                    if (curSkillStat == null ||
+                        skillStat.coolTime <= curSkillStat.coolTime)
+                    {
+                        curSkillStat = skillStat;
+                        res = targetIndexList;
+                    }
                 }
             }
         }
@@ -127,13 +152,17 @@ public class MonsterBattleController : MonoBehaviour
     private void moveTo(Transform target)
     {
         transform.Translate(
-            Vector3.Normalize(new Vector3(
-                target.localPosition.x - transform.localPosition.x,
-                target.localPosition.y - transform.localPosition.y,
-                0f
-                )) * monsterInfo.spd * Time.deltaTime,
+            ((
+                Vector3.Normalize(
+                    new Vector3(
+                        target.localPosition.x - transform.localPosition.x,
+                        target.localPosition.y - transform.localPosition.y,
+                        0f
+                    ) * monsterInfo.spd
+                ) + curKnockback
+            ) * Time.deltaTime),
             Space.Self
-            );
+        );
     }
 
     // 해당 적으로부터 도망
@@ -141,6 +170,7 @@ public class MonsterBattleController : MonoBehaviour
     // n번 스킬을 해당 적을 대상으로 사용
     void executeSkill(SkillStat skillStat, List<int> targetList)
     {
+        skillTimer[skillStat.skillName] = 0f;
         SkillExecutor.execute(skillStat, this, targetList);
     }
 

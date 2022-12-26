@@ -144,12 +144,56 @@ public static class SkillExecutor
 
     private static void attackNormal(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
     {
-
+        float knockBackRate = Random.Range(10, 50);
+        int targetCnt = 0;
+        foreach (int i in targetIndexList)
+        {
+            if (targetCnt < skillStat.numberOfTarget)
+            {
+                targetCnt++;
+                Transform targetTf = caster.enemies[i];
+                targetTf.GetComponent<MonsterBattleController>().curKnockback =
+                    Vector3.Normalize(
+                        new Vector3(
+                            targetTf.localPosition.x - caster.transform.localPosition.x,
+                            targetTf.localPosition.y - caster.transform.localPosition.y,
+                            0f
+                            )
+                        ) * knockBackRate
+                    ;
+            }
+            else
+            {
+                break;
+            }
+        }
     }
 
     private static void attackDash(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
     {
-
+        float knockBackRate = Random.Range(10, 50);
+        int targetCnt = 0;
+        foreach (int i in targetIndexList)
+        {
+            if (targetCnt < skillStat.numberOfTarget)
+            {
+                targetCnt++;
+                Transform targetTf = caster.enemies[i];
+                targetTf.GetComponent<MonsterBattleController>().curKnockback =
+                    Vector3.Normalize(
+                        new Vector3(
+                            targetTf.localPosition.x - caster.transform.localPosition.x,
+                            targetTf.localPosition.y - caster.transform.localPosition.y,
+                            0f
+                            )
+                        ) * knockBackRate
+                    ;
+            }
+            else
+            {
+                break;
+            }
+        }
     }
 
     private static void attackAssassin(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
