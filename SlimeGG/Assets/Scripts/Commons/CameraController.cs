@@ -8,6 +8,10 @@ public class CameraController : MonoBehaviour
     private float speed_wheel = 0.2f;
     private float zoom_max = 8.0f;
     private float zoom_min = 2.5f;
+    [SerializeField]
+    private Vector2 minLimit;
+    [SerializeField]
+    private Vector2 maxLimit;
 
     void Start() { }
 
@@ -25,9 +29,9 @@ public class CameraController : MonoBehaviour
         keyV = keyV * speed_move * Time.deltaTime;
         keyD = keyD * speed_wheel * Time.deltaTime;
 
-        if ((transform.position.x >= 3 && keyH <= 0) || (transform.position.x <= 8 && keyH >= 0))
+        if ((transform.position.x >= minLimit.x && keyH <= 0) || (transform.position.x <= maxLimit.x && keyH >= 0))
             transform.Translate(Vector3.right * keyH);
-        if ((transform.position.y >= -5 && keyV <= 0) || (transform.position.y <= -1 && keyV >= 0))
+        if ((transform.position.y >= minLimit.y && keyV <= 0) || (transform.position.y <= maxLimit.y && keyV >= 0))
             transform.Translate(Vector3.up * keyV);
 
         if (
