@@ -41,18 +41,17 @@ public static class SkillExecutor
         bool isTargetEnemy
         )
     {
-        float[] arrToUse = isTargetEnemy ? caster.distanceEnemies : caster.distanceAllies;
+        float[] distArr = isTargetEnemy ? caster.distanceEnemies : caster.distanceAllies;
         List<int> res = new List<int>();
         Dictionary<float, int> sort = new Dictionary<float, int>();
-        for (int j = 0; j < arrToUse.Length; j++)
+        for (int j = 0; j < distArr.Length; j++)
         {
-            if (skillToUse.range >= arrToUse[j])
+            if (skillToUse.range >= distArr[j])
             {
-                sort[arrToUse[j]] = j;
+                sort[distArr[j]] = j;
             }
         }
-        sort.OrderBy((i) => i.Key);
-        foreach (KeyValuePair<float, int> index in sort)
+        foreach (KeyValuePair<float, int> index in sort.OrderBy((i) => i.Key))
         {
             if (res.Count == skillToUse.numberOfTarget) return res;
             res.Add(index.Value);
@@ -97,8 +96,7 @@ public static class SkillExecutor
         {
             sort[arrToUse[j]] = j;
         }
-        sort.OrderBy((i) => i.Key);
-        foreach (KeyValuePair<float, int> index in sort)
+        foreach (KeyValuePair<float, int> index in sort.OrderBy((i) => i.Key))
         {
             if (res.Count == skillToUse.numberOfTarget) return res;
             res.Add(index.Value);
@@ -144,7 +142,7 @@ public static class SkillExecutor
 
     private static void attackNormal(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
     {
-        float knockBackRate = Random.Range(10, 50);
+        float knockBackRate = skillStat.amount * Random.Range(1f, 3f);
         int targetCnt = 0;
         foreach (int i in targetIndexList)
         {
@@ -171,7 +169,7 @@ public static class SkillExecutor
 
     private static void attackDash(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
     {
-        float knockBackRate = Random.Range(10, 50);
+        float knockBackRate = skillStat.amount * Random.Range(1f, 3f);
         int targetCnt = 0;
         foreach (int i in targetIndexList)
         {

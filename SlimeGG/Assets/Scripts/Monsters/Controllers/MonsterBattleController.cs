@@ -20,6 +20,7 @@ public class MonsterBattleController : MonoBehaviour
     private Dictionary<MonsterSkillEnum, float> skillTimer = new Dictionary<MonsterSkillEnum, float>();
 
     public Vector3 curKnockback = Vector3.zero;
+    public float distanceToKeep { get; set; }
 
     public void initInfo(MonsterInfo monsterInfo)
     {
@@ -37,10 +38,12 @@ public class MonsterBattleController : MonoBehaviour
         anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
             PathInfo.ANIMATION + speciesInfo.resourcePath + "/Controller"
             );
-
+        distanceToKeep = 100f;
         foreach (MonsterSkillEnum skillEnum in speciesInfo.skills)
         {
             skillTimer[skillEnum] = 0f;
+            float ran = LocalDictionary.skills[skillEnum].range;
+            if (distanceToKeep > ran) distanceToKeep = Mathf.Max(ran - 1f, 0f);
         }
     }
 
@@ -151,18 +154,37 @@ public class MonsterBattleController : MonoBehaviour
 
     private void moveTo(Transform target)
     {
-        transform.Translate(
-            ((
-                Vector3.Normalize(
-                    new Vector3(
-                        target.localPosition.x - transform.localPosition.x,
-                        target.localPosition.y - transform.localPosition.y,
-                        0f
-                    ) * monsterInfo.spd
-                ) + curKnockback
-            ) * Time.deltaTime),
-            Space.Self
-        );
+        float curDistance = Vector3.Distance(target.localPosition, transform.localPosition);
+        if (curDistance > distanceToKeep)
+        {
+            transform.Translate(
+                ((
+                    Vector3.Normalize(
+                        new Vector3(
+                            target.localPosition.x - transform.localPosition.x,
+                            target.localPosition.y - transform.localPosition.y,
+                            0f
+                        ) * monsterInfo.spd
+                    ) + curKnockback
+                ) * Time.deltaTime),
+                Space.Self
+            );
+        }
+        else
+        {
+            transform.Translate(
+                ((
+                    Vector3.Normalize(
+                        new Vector3(
+                            transform.localPosition.x - target.localPosition.x,
+                            transform.localPosition.y - target.localPosition.y,
+                            0f
+                        ) * monsterInfo.spd
+                    ) + curKnockback
+                ) * Time.deltaTime),
+                Space.Self
+            );
+        }
     }
 
     // 해당 적으로부터 도망

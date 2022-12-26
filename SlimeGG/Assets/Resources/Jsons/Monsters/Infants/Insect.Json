@@ -1,0 +1,19 @@
+{
+  "species": "Insect",
+  "stage": "Infant",
+  "elements": [
+    "Insect",
+    "Spirit"
+  ],
+  "skills": [
+    "Spit"
+  ],
+  "resourcePath": "Monsters/Infants/Insect",
+  "hp": 20,
+  "def": 15,
+  "spd": 5,
+  "stats": [
+    2.0,
+    1.5
+  ]
+}

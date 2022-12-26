@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4623696448461650825}
   - component: {fileID: 4289330377178876118}
   - component: {fileID: 4747307068288458777}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: MonsterForBattle
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -92,6 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distanceAllies: []
   distanceEnemies: []
+  curKnockback: {x: 0, y: 0, z: 0}
 --- !u!1 &6165975831812234595
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,7 +105,7 @@ GameObject:
   - component: {fileID: 4722114362218260756}
   - component: {fileID: 2334586654158232492}
   - component: {fileID: 3542733438881295501}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}

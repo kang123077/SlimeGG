@@ -10,9 +10,9 @@
     "Charge"
   ],
   "resourcePath": "Monsters/Infants/Ore",
-  "hp": 100,
-  "def": 100,
-  "spd": 100,
+  "hp": 30,
+  "def": 40,
+  "spd": 7,
   "stats": [
     1.0,
     1.5
