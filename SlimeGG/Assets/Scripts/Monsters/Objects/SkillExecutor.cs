@@ -207,7 +207,9 @@ public static class SkillExecutor
 
     private static void calculateDamage(SkillStat skillStat, MonsterBattleController caster, MonsterBattleController target)
     {
+        bool isCrit = Random.Range(0f, 1f) > 0.9f;
         float res = skillStat.amount;
+        res *= isCrit ? 1.5f : 1f;
         res *= 100f / (100f + target.def);
 
         List<ElementEnum> elementsRelated = new List<ElementEnum>();
@@ -237,10 +239,9 @@ public static class SkillExecutor
 
         res *= Mathf.Pow(Mathf.Log10(targetSum), 0.5f);
         res = Mathf.Floor(res);
-        //Debug.Log($"Actual Damage:: {res}");
+        target.calcHpDamage((int) res);
         if ((target.curHp -= res) <= 0f)
         {
-            //Debug.Log($"Dead!!");
             target.makeDead();
         }
     }

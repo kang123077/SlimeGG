@@ -27,10 +27,11 @@ public class MonsterBattleController : MonoBehaviour
 
     public bool isDead { get; set; }
 
+    private GaugeController hpController { get; set; }
+
     public void initInfo(MonsterInfo monsterInfo)
     {
         this.monsterInfo = monsterInfo;
-
         speciesInfo = LocalDictionary.monsters[monsterInfo.accuSpecies.Last()];
         bg = transform.Find("Image");
         bg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(
@@ -54,6 +55,9 @@ public class MonsterBattleController : MonoBehaviour
         curHp = monsterInfo.hp * speciesInfo.hp;
         def = monsterInfo.def * speciesInfo.def;
         isDead = false;
+
+        hpController = transform.Find("HP Bar").GetComponent<GaugeController>();
+        hpController.initData((int)maxHp, 8, 1);
     }
 
     public void setFieldInfo(Vector2 entryNum, Transform[] allies, Transform[] enemies)
@@ -221,6 +225,11 @@ public class MonsterBattleController : MonoBehaviour
         curSkillStat = null;
         skillTimer[skillStat.skillName] = 0f;
         SkillExecutor.execute(skillStat, this, targetList);
+    }
+
+    public void calcHpDamage(int amount)
+    {
+        hpController.addOrSubGauge(amount);
     }
 
     public void makeDead()
