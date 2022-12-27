@@ -18,4 +18,6 @@ public static class LocalStorage
     public static List<TileSetBriefInfo> tileSets = new List<TileSetBriefInfo>();
 
     public static List<Transform> tileSetTransforms = new List<Transform>();
+
+    public static bool IS_GAME_PAUSE = true;
 }

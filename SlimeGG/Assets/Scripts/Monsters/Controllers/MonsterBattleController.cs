@@ -74,22 +74,25 @@ public class MonsterBattleController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (LocalStorage.BATTLE_SCENE_LOADING_DONE && !isDead)
+        if (!LocalStorage.IS_GAME_PAUSE)
         {
-            curKnockback *= 0.9f;
-            curDash *= 0.9f;
-            List<MonsterSkillEnum> skillEnums = skillTimer.Keys.ToList();
-            foreach (MonsterSkillEnum skillEnum in skillEnums)
+            if (LocalStorage.BATTLE_SCENE_LOADING_DONE && !isDead)
             {
-                skillTimer[skillEnum] += Time.deltaTime;
-            }
-            int[] closest = identifyTarget();
-            moveTo(enemies[closest[1]]);
+                curKnockback *= 0.9f;
+                curDash *= 0.9f;
+                List<MonsterSkillEnum> skillEnums = skillTimer.Keys.ToList();
+                foreach (MonsterSkillEnum skillEnum in skillEnums)
+                {
+                    skillTimer[skillEnum] += Time.deltaTime;
+                }
+                int[] closest = identifyTarget();
+                moveTo(enemies[closest[1]]);
 
-            List<int> skillAvailableList = checkSkillsAvailable();
-            if (skillAvailableList.Count > 0)
-            {
-                executeSkill(curSkillStat, skillAvailableList);
+                List<int> skillAvailableList = checkSkillsAvailable();
+                if (skillAvailableList.Count > 0)
+                {
+                    executeSkill(curSkillStat, skillAvailableList);
+                }
             }
         }
 
