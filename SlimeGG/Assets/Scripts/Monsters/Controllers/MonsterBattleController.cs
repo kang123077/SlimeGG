@@ -49,7 +49,7 @@ public class MonsterBattleController : MonoBehaviour
         {
             skillTimer[skillEnum] = 0f;
             float ran = LocalDictionary.skills[skillEnum].range;
-            if (distanceToKeep > ran) distanceToKeep = Mathf.Max(ran - 1f, 0f);
+            if (distanceToKeep > ran) distanceToKeep = Mathf.Max(ran - 1f, 0.5f);
         }
         maxHp = monsterInfo.hp * speciesInfo.hp;
         curHp = monsterInfo.hp * speciesInfo.hp;
@@ -160,7 +160,7 @@ public class MonsterBattleController : MonoBehaviour
     {
         List<int> res = new List<int>();
         foreach (MonsterSkillEnum skillName
-            in LocalDictionary.monsters[monsterInfo.accuSpecies.Last()].skills)
+            in speciesInfo.skills)
         {
             SkillStat skillStat = LocalDictionary.skills[skillName];
             if (skillStat.coolTime <= skillTimer[skillName])

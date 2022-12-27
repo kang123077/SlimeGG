@@ -177,7 +177,7 @@ public static class SkillExecutor
                             (targetTf.localPosition.y - caster.transform.localPosition.y) * Random.Range(1f, 10f),
                             0f
                             )
-                        ) * knockBackRate;
+                        ) * knockBackRate / 2f;
                 caster.curDash =
                     Vector3.Normalize(
                         new Vector3(
