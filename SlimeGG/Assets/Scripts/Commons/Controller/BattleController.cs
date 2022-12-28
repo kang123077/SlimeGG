@@ -25,7 +25,7 @@ public class BattleController : MonoBehaviour
                 {
                     isOneSideAllDead = isOneSideAllDead && battleController.isDead;
                 }
-                if (isOneSideAllDead) pauseOrResumeBattle();
+                if (isOneSideAllDead) finishBattle();
             }
         }
     }
@@ -34,5 +34,10 @@ public class BattleController : MonoBehaviour
     {
         LocalStorage.IS_GAME_PAUSE = !LocalStorage.IS_GAME_PAUSE;
         PenalForPause.SetActive(LocalStorage.IS_GAME_PAUSE);
+    }
+
+    public void finishBattle()
+    {
+        LocalStorage.IS_BATTLE_FINISH = true;
     }
 }

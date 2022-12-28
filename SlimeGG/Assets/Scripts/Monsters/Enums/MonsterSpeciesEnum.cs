@@ -5,5 +5,5 @@ public enum MonsterSpeciesEnum
     Insect,
     Ore,
     BabySpirit,
-
+    Sleepion,
 }

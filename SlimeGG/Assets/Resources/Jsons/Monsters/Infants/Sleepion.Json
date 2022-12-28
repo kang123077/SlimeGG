@@ -1,0 +1,20 @@
+{
+  "species": "Sleepion",
+  "stage": "Infant",
+  "elements": [
+    "Earth",
+    "Insect"
+  ],
+  "skills": [
+    "Normal",
+    "Charge"
+  ],
+  "resourcePath": "Monsters/Infants/Sleepion",
+  "hp": 100,
+  "def": 25,
+  "spd": 0.5,
+  "stats": [
+    1.0,
+    4.0
+  ]
+}

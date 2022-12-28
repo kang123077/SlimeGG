@@ -11,7 +11,8 @@ public class MonsterBattleController : MonoBehaviour
     public MonsterInfo monsterInfo { get; set; }
     public MonsterSpeciesInfo speciesInfo { get; set; }
     private Transform bg { get; set; }
-    private Animator anim { get; set; }
+    public Animator anim { get; set; }
+    private float animTime = 0f;
     public float maxHp, curHp, def;
 
     public float[] distanceAllies;
@@ -83,21 +84,45 @@ public class MonsterBattleController : MonoBehaviour
         {
             if (LocalStorage.BATTLE_SCENE_LOADING_DONE && !isDead)
             {
-                curKnockback *= 0.9f;
-                curDash *= 0.9f;
-                List<MonsterSkillEnum> skillEnums = skillTimer.Keys.ToList();
-                foreach (MonsterSkillEnum skillEnum in skillEnums)
+                if (LocalStorage.IS_BATTLE_FINISH)
                 {
-                    skillTimer[skillEnum] += Time.deltaTime;
+                    Destroy(anim);
                 }
-                int[] closest = identifyTarget();
-                moveTo(enemies[closest[1]]);
+                else
+                {
+                    curKnockback *= 0.9f;
+                    curDash *= 0.9f;
+                    List<MonsterSkillEnum> skillEnums = skillTimer.Keys.ToList();
+                    foreach (MonsterSkillEnum skillEnum in skillEnums)
+                    {
+                        skillTimer[skillEnum] += Time.deltaTime;
+                    }
+                    int[] closest = identifyTarget();
+                    moveTo(enemies[closest[1]]);
 
-                List<int> skillAvailableList = checkSkillsAvailable();
-                if (skillAvailableList.Count > 0)
-                {
-                    executeSkill(curSkillStat, skillAvailableList);
+                    List<int> skillAvailableList = checkSkillsAvailable();
+                    if (skillAvailableList.Count > 0)
+                    {
+                        executeSkill(curSkillStat, skillAvailableList);
+                    }
+
+                    if (anim.GetInteger("BehaviorState") != 0 && animTime <= 1f)
+                    {
+                        animTime += Time.deltaTime;
+                    }
+                    if (animTime > 1f)
+                    {
+                        anim.SetInteger("BehaviorState", 0);
+                        animTime = 0f;
+                    }
                 }
+            }
+            if (isDead)
+            {
+                Destroy(anim);
+                bg.GetComponent<SpriteRenderer>().sprite = Resources.LoadAll<Sprite>(
+                    PathInfo.SPRITE + speciesInfo.resourcePath
+                    )[entryNum.x == 0 ? 13 : 12];
             }
         }
 
@@ -227,6 +252,7 @@ public class MonsterBattleController : MonoBehaviour
     {
         curSkillStat = null;
         skillTimer[skillStat.skillName] = 0f;
+        anim.SetInteger("BehaviorState", 1);
         SkillExecutor.execute(skillStat, this, targetList);
     }
 

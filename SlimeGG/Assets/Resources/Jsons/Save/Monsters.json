@@ -1,9 +1,9 @@
 [
   {
-    "nickName": "1번 골렘",
+    "nickName": "식곤충",
     "accuSpecies": [
       "Egg",
-      "Ore"
+      "Sleepion"
     ],
     "hp": 1.2,
     "def": 1.3,
