@@ -8,6 +8,7 @@ public class MonsterBaseController : MonoBehaviour
     private Vector2 direction = new Vector2(0f, 0f);
     private Transform curTileSet;
     private MonsterInfo monsterInfo;
+    private MonsterSpeciesInfo speciesInfo;
     private float moveTime = 0f;
     private bool isStopped = false;
     private Vector2 correctionCoor;
@@ -17,6 +18,7 @@ public class MonsterBaseController : MonoBehaviour
     public void initInfo(MonsterInfo monsterInfo)
     {
         this.monsterInfo = monsterInfo;
+        speciesInfo = LocalDictionary.monsters[monsterInfo.accuSpecies.Last()];
         bg = transform.Find("Image");
         bg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(
             PathInfo.SPRITE + LocalDictionary.monsters[monsterInfo.accuSpecies.Last()].resourcePath

@@ -1,8 +1,8 @@
 {
   "name": "Volcano_01",
-  "nickName": "용암 타일 01",
+  "nickName": "VolcanoTile01",
   "tier": 1,
-  "tileSetShape": "CurvedClock3",
+  "tileSetShape": "Single",
   "elements": [
     "Earth",
     "Golem",

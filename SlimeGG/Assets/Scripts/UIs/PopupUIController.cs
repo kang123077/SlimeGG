@@ -27,7 +27,20 @@ public class PopupUIController : MonoBehaviour
             infoUI.text =
                 string.Format(
                 $"NickName : {monsterInfo.nickName}\n" +
-                $"Species : {monsterInfo.accuSpecies.Last()}\n"
+                // $"Stage : {}\n" +
+                $"Species : {monsterInfo.accuSpecies.Last()}\n" +
+                $"\n" +
+                $"HP : {monsterInfo.hp}\n" +
+                $"DEF : {monsterInfo.def}\n" +
+                $"SPD : {monsterInfo.spd}\n" +
+                $"\n" +
+                $"Elements\n" +
+                $"{monsterInfo.elements[0]} : " +
+                $"{monsterInfo.stats[0]}\n" +
+                $"{monsterInfo.elements[1]} : " +
+                $"{monsterInfo.stats[1]}\n" +
+                $"{monsterInfo.elements[2]} : " +
+                $"{monsterInfo.stats[2]}\n"
                 );
         }
         else
@@ -35,8 +48,24 @@ public class PopupUIController : MonoBehaviour
             infoUI.text =
                 string.Format(
                 $"NickName : {monsterInfo.nickName}\n" +
+                // $"Stage : {}\n" +
                 $"Species : {monsterInfo.accuSpecies.Last()}\n" +
-                $"Home : {curTileSet.GetComponent<TileSetController>().getTileSetBriefInfoName()}\n"
+                $"\n" +
+                $"HP : {monsterInfo.hp}\n" +
+                $"DEF : {monsterInfo.def}\n" +
+                $"SPD : {monsterInfo.spd}\n" +
+                $"\n" +
+                $"Elements\n" +
+                $"{monsterInfo.elements[0]} : " +
+                $"{monsterInfo.stats[0]}\n" +
+                $"{monsterInfo.elements[1]} : " +
+                $"{monsterInfo.stats[1]}\n" +
+                $"{monsterInfo.elements[2]} : " +
+                $"{monsterInfo.stats[2]}\n" +
+                $"\n" +
+                $"HomeTile : {curTileSet.GetComponent<TileSetController>().getTileSetBriefInfoName()}\n" +
+                $"Skills\n" +
+                $""
                 );
         }
     }
