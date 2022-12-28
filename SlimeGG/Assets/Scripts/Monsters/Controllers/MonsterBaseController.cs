@@ -83,7 +83,7 @@ public class MonsterBaseController : MonoBehaviour
         correctionCoor = objPosition - transform.position;
 
         GameObject.Find("UI").GetComponent<UIController>().UIOnChecker();
-        GameObject.Find("Popup UI").GetComponent<PopupUIController>().generateUI(monsterInfo, curTileSet);
+        GameObject.Find("Popup UI").GetComponent<PopupUIController>().generateUI(monsterInfo, curTileSet, speciesInfo);
 
         transform.SetParent(null);
         if (curTileSet != null)
@@ -106,6 +106,7 @@ public class MonsterBaseController : MonoBehaviour
                 if (hit3D.collider.transform.GetComponent<SocketController>().tileSetInstalled != null)
                 {
                     assignMonsterToTileSet(hit3D.collider.transform.GetComponent<SocketController>().tileSetInstalled, false);
+                    GameObject.Find("Popup UI").GetComponent<PopupUIController>().generateUI(monsterInfo, curTileSet, speciesInfo);
                     return;
                 }
             }

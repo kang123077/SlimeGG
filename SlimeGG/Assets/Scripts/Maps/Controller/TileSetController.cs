@@ -63,7 +63,7 @@ public class TileSetController : MonoBehaviour
             float x = tileSetBriefInfo.installedPosition[0];
             float y = tileSetBriefInfo.installedPosition[1];
             transform.position = new Vector3(y % 2 == 0 ? x * 2 : ((x * 2) + 1), -y * 2, zCoor);
-            transform.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Outlines;
+            transform.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Polygons;
             tryAttachTileSet();
         }
     }
@@ -163,7 +163,6 @@ public class TileSetController : MonoBehaviour
         {
             isAllAttachable = isAllAttachable && (tiles[i].GetComponent<TileBaseController>().returnSocketMountable() != null);
         }
-        print(isAllAttachable);
         if (isAllAttachable)
         {
             transform.SetParent(tileSetInstalledStore);
