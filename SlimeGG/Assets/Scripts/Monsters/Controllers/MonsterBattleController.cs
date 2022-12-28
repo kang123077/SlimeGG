@@ -67,6 +67,7 @@ public class MonsterBattleController : MonoBehaviour
         this.enemies = enemies;
         distanceAllies = new float[allies.Length];
         distanceEnemies = new float[enemies.Length];
+        anim.SetInteger("DirectionState", entryNum.x == 0 ? 2 : 1);
     }
 
     // Start is called before the first frame update
@@ -185,17 +186,25 @@ public class MonsterBattleController : MonoBehaviour
     private void moveTo(Transform target)
     {
         float curDistance = Vector3.Distance(target.localPosition, transform.localPosition);
-        if (curDistance > distanceToKeep)
-        {
-            transform.Translate(
-                ((
-                    (Vector3.Normalize(
+        Vector3 direction =
                         new Vector3(
                             (target.localPosition.x - transform.localPosition.x) * Random.Range(1f, 10f),
                             (target.localPosition.y - transform.localPosition.y) * Random.Range(1f, 10f),
                             0f
-                        )
-                    ) * monsterInfo.spd * speciesInfo.spd) + curKnockback + curDash
+                        );
+        if (anim.GetInteger("DirectionState") == 1 && direction.x >= 0f)
+        {
+            anim.SetInteger("DirectionState", 2);
+        }
+        else if (anim.GetInteger("DirectionState") == 2 && direction.x < 0f)
+        {
+            anim.SetInteger("DirectionState", 1);
+        }
+        if (curDistance > distanceToKeep)
+        {
+            transform.Translate(
+                ((
+                    (Vector3.Normalize(direction) * monsterInfo.spd * speciesInfo.spd) + curKnockback + curDash
                 ) * Time.deltaTime),
                 Space.Self
             );
@@ -204,13 +213,7 @@ public class MonsterBattleController : MonoBehaviour
         {
             transform.Translate(
                 ((
-                    (Vector3.Normalize(
-                        new Vector3(
-                            (transform.localPosition.x - target.localPosition.x) * Random.Range(1f, 10f),
-                            (transform.localPosition.y - target.localPosition.y) * Random.Range(1f, 10f),
-                            0f
-                        )
-                    ) * monsterInfo.spd * speciesInfo.spd) + curKnockback + curDash
+                    (Vector3.Normalize(-direction) * monsterInfo.spd * speciesInfo.spd) + curKnockback + curDash
                 ) * Time.deltaTime),
                 Space.Self
             );
