@@ -24,7 +24,7 @@ BlendTree:
   m_Name: NormalTree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 014a5ad2e2946a14a95062575c8ae1af, type: 2}
+    m_Motion: {fileID: 7400000, guid: 917cab156cbfcc342907b903462184a8, type: 2}
     m_Threshold: -1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 0.4
@@ -32,7 +32,7 @@ BlendTree:
     m_DirectBlendParameter: BattleState
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: a472658dc5024f94890bb28ced7abf69, type: 2}
+    m_Motion: {fileID: 7400000, guid: e444167c5e6d5ff40bcecf4985bc52c8, type: 2}
     m_Threshold: 1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 0.4
@@ -55,7 +55,7 @@ BlendTree:
   m_Name: HitTree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: ec56799cf9ee1904fb46ee66a68a3564, type: 2}
+    m_Motion: {fileID: 7400000, guid: 1fc345eafbca9cc4090496d43de0e467, type: 2}
     m_Threshold: -1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 0.4
@@ -63,7 +63,7 @@ BlendTree:
     m_DirectBlendParameter: BattleState
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 2267296a6034d45439dd85fecc58e7d5, type: 2}
+    m_Motion: {fileID: 7400000, guid: a597a1c2a2c985c468d1923f6f129aec, type: 2}
     m_Threshold: 1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 0.4
@@ -91,13 +91,13 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: DirectionX
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -120,7 +120,7 @@ BlendTree:
   m_Name: AttackTree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 143dbcf8e1183df4992fff9ac4eb1ddb, type: 2}
+    m_Motion: {fileID: 7400000, guid: bfd498e189665904abca6e0a0a5e49fb, type: 2}
     m_Threshold: -1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 0.4
@@ -128,7 +128,7 @@ BlendTree:
     m_DirectBlendParameter: BattleState
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 47c2115534273b94ead0470730fdeb15, type: 2}
+    m_Motion: {fileID: 7400000, guid: 5bad91baf9da505438f86f997c1c65aa, type: 2}
     m_Threshold: 1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 0.4

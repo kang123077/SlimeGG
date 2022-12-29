@@ -1,20 +1,20 @@
 {
-  "species": "Ore",
+  "species": "Sleepion",
   "stage": "Infant",
   "elements": [
     "Earth",
-    "Golem"
+    "Insect"
   ],
   "skills": [
     "Normal",
     "Charge"
   ],
-  "resourcePath": "Monsters/Infants/Ore",
-  "hp": 150,
-  "def": 40,
-  "spd": 1.7,
+  "resourcePath": "Monsters/Lv2s/Sleepion",
+  "hp": 200,
+  "def": 45,
+  "spd": 0.5,
   "stats": [
     1.0,
-    1.5
+    4.0
   ]
 }

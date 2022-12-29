@@ -1,14 +1,16 @@
 {
   "name": "Normal",
-  "numberRestrictPerSide": [3, 3],
+  "numberRestrictPerSide": [4, 4],
   "initPosList": [
     [
       [-2, 1],
+      [-3, 1],
       [-3, 0],
       [-2, -1]
     ], [
       [2, 1],
       [3, 0],
+      [3, -1],
       [2, -1]
     ]
   ]
