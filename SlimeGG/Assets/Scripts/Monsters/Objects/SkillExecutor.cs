@@ -240,7 +240,7 @@ public static class SkillExecutor
         res *= Mathf.Pow(Mathf.Log10(targetSum), 0.5f);
         res = Mathf.Floor(res);
         target.calcHpDamage((int) res);
-        target.anim.SetInteger("BehaviorState", 2);
+        target.anim.SetFloat("BattleState", -1f);
         if ((target.curHp -= res) <= 0f)
         {
             target.makeDead();

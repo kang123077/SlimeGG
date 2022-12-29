@@ -68,7 +68,7 @@ public class MonsterBattleController : MonoBehaviour
         this.enemies = enemies;
         distanceAllies = new float[allies.Length];
         distanceEnemies = new float[enemies.Length];
-        anim.SetInteger("DirectionState", entryNum.x == 0 ? 2 : 1);
+        anim.SetFloat("DirectionX", entryNum.x == 0f ? -1f : 1f);
     }
 
     // Start is called before the first frame update
@@ -106,13 +106,13 @@ public class MonsterBattleController : MonoBehaviour
                         executeSkill(curSkillStat, skillAvailableList);
                     }
 
-                    if (anim.GetInteger("BehaviorState") != 0 && animTime <= 1f)
+                    if (anim.GetFloat("BattleState") != 0f && animTime <= 1f)
                     {
                         animTime += Time.deltaTime;
                     }
                     if (animTime > 1f)
                     {
-                        anim.SetInteger("BehaviorState", 0);
+                        anim.SetFloat("BattleState", 0f);
                         animTime = 0f;
                     }
                 }
@@ -217,14 +217,7 @@ public class MonsterBattleController : MonoBehaviour
                             (target.localPosition.y - transform.localPosition.y) * Random.Range(1f, 10f),
                             0f
                         );
-        if (anim.GetInteger("DirectionState") == 1 && direction.x >= 0f)
-        {
-            anim.SetInteger("DirectionState", 2);
-        }
-        else if (anim.GetInteger("DirectionState") == 2 && direction.x < 0f)
-        {
-            anim.SetInteger("DirectionState", 1);
-        }
+        anim.SetFloat("DirectionX", direction.x);
         if (curDistance > distanceToKeep)
         {
             transform.Translate(
@@ -252,7 +245,7 @@ public class MonsterBattleController : MonoBehaviour
     {
         curSkillStat = null;
         skillTimer[skillStat.skillName] = 0f;
-        anim.SetInteger("BehaviorState", 1);
+        anim.SetFloat("BattleState", 1f);
         SkillExecutor.execute(skillStat, this, targetList);
     }
 
