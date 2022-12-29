@@ -5,7 +5,7 @@
   "range" : 5.3,
   "amount": 12,
   "coolTime": 4.0,
-  "delayTime": 10,
+  "delayTime": 0.7,
   "elements": [
     "Earth",
     "Golem"

@@ -13,6 +13,7 @@ public class MonsterBattleController : MonoBehaviour
     private Transform bg { get; set; }
     public Animator anim { get; set; }
     private float animTime = 0f;
+    private float stopTime = 0f;
     public float maxHp, curHp, def;
 
     public float[] distanceAllies;
@@ -68,7 +69,7 @@ public class MonsterBattleController : MonoBehaviour
         this.enemies = enemies;
         distanceAllies = new float[allies.Length];
         distanceEnemies = new float[enemies.Length];
-        anim.SetFloat("DirectionX", entryNum.x == 0f ? -1f : 1f);
+        anim.SetFloat("DirectionX", entryNum.x == 0f ? 1f : -1f);
     }
 
     // Start is called before the first frame update
@@ -92,8 +93,7 @@ public class MonsterBattleController : MonoBehaviour
                 {
                     curKnockback *= 0.9f;
                     curDash *= 0.9f;
-                    List<MonsterSkillEnum> skillEnums = skillTimer.Keys.ToList();
-                    foreach (MonsterSkillEnum skillEnum in skillEnums)
+                    foreach (MonsterSkillEnum skillEnum in skillTimer.Keys.ToList())
                     {
                         skillTimer[skillEnum] += Time.deltaTime;
                     }
@@ -222,7 +222,10 @@ public class MonsterBattleController : MonoBehaviour
         {
             transform.Translate(
                 ((
-                    (Vector3.Normalize(direction) * monsterInfo.spd * speciesInfo.spd) + curKnockback + curDash
+                    (stopTime <= 0f 
+                    ? (Vector3.Normalize(direction) * monsterInfo.spd * speciesInfo.spd)
+                    : Vector3.zero)
+                    + curKnockback + curDash
                 ) * Time.deltaTime),
                 Space.Self
             );
@@ -231,22 +234,32 @@ public class MonsterBattleController : MonoBehaviour
         {
             transform.Translate(
                 ((
-                    (Vector3.Normalize(-direction) * monsterInfo.spd * speciesInfo.spd) + curKnockback + curDash
+                    (stopTime <= 0f
+                     ? (Vector3.Normalize(-direction) * monsterInfo.spd * speciesInfo.spd)
+                     : Vector3.zero)
+                     + curKnockback + curDash
                 ) * Time.deltaTime),
                 Space.Self
             );
         }
     }
-
-    // 해당 적으로부터 도망
-
-    // n번 스킬을 해당 적을 대상으로 사용
     void executeSkill(SkillStat skillStat, List<int> targetList)
     {
-        curSkillStat = null;
-        skillTimer[skillStat.skillName] = 0f;
-        anim.SetFloat("BattleState", 1f);
-        SkillExecutor.execute(skillStat, this, targetList);
+        if (stopTime == 0f)
+        {
+            stopTime = skillStat.delayTime;
+        }
+        else if (stopTime > 0f)
+        {
+            stopTime = stopTime - Time.deltaTime == 0f ? -1f : stopTime - Time.deltaTime;
+        } else
+        {
+            curSkillStat = null;
+            skillTimer[skillStat.skillName] = 0f;
+            anim.SetFloat("BattleState", 1f);
+            SkillExecutor.execute(skillStat, this, targetList);
+            stopTime = 0f;
+        }
     }
 
     public void calcHpDamage(int amount)

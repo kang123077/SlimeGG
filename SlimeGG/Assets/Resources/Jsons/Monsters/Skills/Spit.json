@@ -5,7 +5,7 @@
   "range" : 3.4,
   "amount": 8,
   "coolTime": 1.0,
-  "delayTime": 2,
+  "delayTime": 0.2,
   "elements": [
     "Wind",
     "Spirit"
