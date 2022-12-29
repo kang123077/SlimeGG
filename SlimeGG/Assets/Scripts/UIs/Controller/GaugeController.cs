@@ -10,6 +10,9 @@ public class GaugeController : MonoBehaviour
     private int maxGauge = 10, curGauge = 10;
     private float sideMargin = 0.1f;
 
+    private static Color colorL = new Color(0f, 1f, 0.67f);
+    private static Color colorR = new Color(1f, 0f, 0.18f);
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,5 +54,10 @@ public class GaugeController : MonoBehaviour
         float newWidth = maxWidth * curGauge / maxGauge;
         currentGaugeTf.GetComponent<SpriteRenderer>().size = new Vector2(newWidth - sideMargin, maxHeight - sideMargin);
         currentGaugeTf.GetComponent<RectTransform>().localPosition = new Vector3(-(maxWidth - newWidth) / 2, 0f, 0f);
+    }
+
+    public void setSide(float side)
+    {
+        currentGaugeTf.GetComponent<SpriteRenderer>().color = side == 0f ? colorL : colorR;
     }
 }

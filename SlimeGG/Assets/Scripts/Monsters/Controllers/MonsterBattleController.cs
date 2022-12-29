@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using static UnityEngine.GraphicsBuffer;
 
 public class MonsterBattleController : MonoBehaviour
 {
@@ -11,7 +12,9 @@ public class MonsterBattleController : MonoBehaviour
     public MonsterInfo monsterInfo { get; set; }
     public MonsterSpeciesInfo speciesInfo { get; set; }
     private Transform bg { get; set; }
-    public Animator anim { get; set; }
+    private Animator anim { get; set; }
+    private Animator animHit { get; set; }
+    private SpriteRenderer spriteHit { get; set; }
     private float animTime = 0f;
     private float stopTime = 0f;
     public float maxHp, curHp, def;
@@ -60,6 +63,12 @@ public class MonsterBattleController : MonoBehaviour
 
         hpController = transform.Find("HP Bar").GetComponent<GaugeController>();
         hpController.initData((int)maxHp, 8, 1);
+
+        spriteHit = transform.Find("Hit Effect").GetComponent<SpriteRenderer>();
+        animHit = spriteHit.GetComponent<Animator>();
+        animHit.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
+            PathInfo.ANIMATION + "Effects/Hits" + "/Normal" + "/Controller"
+            );
     }
 
     public void setFieldInfo(Vector2 entryNum, Transform[] allies, Transform[] enemies)
@@ -69,6 +78,7 @@ public class MonsterBattleController : MonoBehaviour
         this.enemies = enemies;
         distanceAllies = new float[allies.Length];
         distanceEnemies = new float[enemies.Length];
+        hpController.setSide(entryNum.x);
         anim.SetFloat("DirectionX", entryNum.x == 0f ? 1f : -1f);
     }
 
@@ -88,6 +98,7 @@ public class MonsterBattleController : MonoBehaviour
                 if (LocalStorage.IS_BATTLE_FINISH)
                 {
                     Destroy(anim);
+                    Destroy(animHit);
                 }
                 else
                 {
@@ -110,7 +121,11 @@ public class MonsterBattleController : MonoBehaviour
                     {
                         animTime += Time.deltaTime;
                     }
-                    if (animTime > 1f)
+                    if (animTime > 0.25f)
+                    {
+                        animHit.SetFloat("isCritical", 0f);
+                    }
+                    if (animTime > 0.5f)
                     {
                         anim.SetFloat("BattleState", 0f);
                         animTime = 0f;
@@ -120,6 +135,8 @@ public class MonsterBattleController : MonoBehaviour
             if (isDead)
             {
                 Destroy(anim);
+                Destroy(animHit);
+                Destroy(spriteHit);
                 bg.GetComponent<SpriteRenderer>().sprite = Resources.LoadAll<Sprite>(
                     PathInfo.SPRITE + speciesInfo.resourcePath
                     )[entryNum.x == 0 ? 13 : 12];
@@ -218,11 +235,12 @@ public class MonsterBattleController : MonoBehaviour
                             0f
                         );
         anim.SetFloat("DirectionX", direction.x);
+        animHit.SetFloat("DirectionX", direction.x);
         if (curDistance > distanceToKeep)
         {
             transform.Translate(
                 ((
-                    (stopTime <= 0f 
+                    (stopTime <= 0f
                     ? (Vector3.Normalize(direction) * monsterInfo.spd * speciesInfo.spd)
                     : Vector3.zero)
                     + curKnockback + curDash
@@ -252,7 +270,8 @@ public class MonsterBattleController : MonoBehaviour
         else if (stopTime > 0f)
         {
             stopTime = stopTime - Time.deltaTime == 0f ? -1f : stopTime - Time.deltaTime;
-        } else
+        }
+        else
         {
             curSkillStat = null;
             skillTimer[skillStat.skillName] = 0f;
@@ -270,5 +289,13 @@ public class MonsterBattleController : MonoBehaviour
     public void makeDead()
     {
         isDead = true;
+    }
+
+    public void activateHitEffect(MonsterSkillTypeEnum skillType, bool isCritical)
+    {
+        float dir = anim.GetFloat("DirectionX");
+        animHit.transform.localPosition = Vector3.Normalize(new Vector3(dir, Random.Range(-dir, dir), 0f)) / 5f;
+        anim.SetFloat("BattleState", -1f);
+        animHit.SetFloat("isCritical", isCritical ? 2f : 1f);
     }
 }
