@@ -30,7 +30,7 @@ public class BulletController : MonoBehaviour
             else
             {
                 transform.Translate(
-                    (target.transform.position - transform.position) * speed * Time.deltaTime
+                    Vector3.Normalize(target.transform.position - transform.position) * speed * Time.deltaTime
                     );
             }
         }

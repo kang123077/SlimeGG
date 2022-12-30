@@ -296,6 +296,7 @@ public class MonsterBattleController : MonoBehaviour
 
     public void activateHitEffect(MonsterSkillTypeEnum skillType, bool isCritical)
     {
+        if (anim == null) return;
         float dir = anim.GetFloat("DirectionX");
         animHit.transform.localPosition = Vector3.Normalize(new Vector3(dir, Random.Range(-dir, dir), 0f)) / 5f;
         anim.SetFloat("BattleState", -1f);
