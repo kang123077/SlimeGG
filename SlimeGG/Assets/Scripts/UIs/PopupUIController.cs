@@ -12,9 +12,21 @@ public class PopupUIController : MonoBehaviour
 
     public void generateUI(TileSetInfo tileSetInfo)
     {
+        StringBuilder elementUI = new StringBuilder();
+        for (int i = 0; i < tileSetInfo.elements.Count; i++)
+        {
+            elementUI.Append($"{tileSetInfo.elements[i]} : ");
+            elementUI.Append($"{tileSetInfo.stats[i]}\n");
+        }
+
         headerUI.text = string.Format($"TileSet");
         infoUI.text =
-            string.Format($""
+            string.Format($"Tilename : {tileSetInfo.tileName}\n" +
+            $"Nickname : {tileSetInfo.nickName}\n" +
+            $"Tier : {tileSetInfo.tier}\n" +
+            $"\n" +
+            $"Elements\n" +
+            $"{elementUI}"
             );
     }
 
