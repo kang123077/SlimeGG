@@ -34,6 +34,9 @@ public class MonsterBattleController : MonoBehaviour
 
     private GaugeController hpController { get; set; }
 
+    [SerializeField]
+    private GameObject bulletPrefab;
+
     public void initInfo(MonsterInfo monsterInfo)
     {
         this.monsterInfo = monsterInfo;
@@ -297,5 +300,13 @@ public class MonsterBattleController : MonoBehaviour
         animHit.transform.localPosition = Vector3.Normalize(new Vector3(dir, Random.Range(-dir, dir), 0f)) / 5f;
         anim.SetFloat("BattleState", -1f);
         animHit.SetFloat("isCritical", isCritical ? 2f : 1f);
+    }
+
+    public GameObject generateBullet()
+    {
+        float dir = anim.GetFloat("DirectionX");
+        GameObject res = Instantiate(bulletPrefab);
+        res.transform.position = transform.position + (Vector3.Normalize(new Vector3(dir, Random.Range(-dir, dir), 0f)) / 5f);
+        return res;
     }
 }

@@ -99,6 +99,7 @@ MonoBehaviour:
   distanceEnemies: []
   curKnockback: {x: 0, y: 0, z: 0}
   curDash: {x: 0, y: 0, z: 0}
+  bulletPrefab: {fileID: 2817938927849035747, guid: ac7b6b614ca4e724586c56427b1d9456, type: 3}
 --- !u!1 &5761165158749941463
 GameObject:
   m_ObjectHideFlags: 0

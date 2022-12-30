@@ -6,6 +6,8 @@
   "amount": 8,
   "coolTime": 1.0,
   "delayTime": 0.2,
+  "speed": 5,
+  "resourcePath": "Effects/Attacks/FarNormal",
   "elements": [
     "Wind",
     "Spirit"
