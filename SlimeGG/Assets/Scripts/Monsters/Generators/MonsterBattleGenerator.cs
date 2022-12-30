@@ -31,11 +31,19 @@ public class MonsterBattleGenerator : MonoBehaviour
         MonsterInfo monsterInfo = LocalStorage.monsters[0];
         generateMonster(monsterInfo, 0, 0);
         monsterInfo = LocalStorage.monsters[0];
+        generateMonster(monsterInfo, 1, 1);
+        monsterInfo = LocalStorage.monsters[2];
+        generateMonster(monsterInfo, 0, 2);
+        monsterInfo = LocalStorage.monsters[1];
         generateMonster(monsterInfo, 0, 1);
         monsterInfo = LocalStorage.monsters[1];
         generateMonster(monsterInfo, 1, 0);
-        monsterInfo = LocalStorage.monsters[1];
-        generateMonster(monsterInfo, 1, 1);
+        monsterInfo = LocalStorage.monsters[2];
+        generateMonster(monsterInfo, 1, 2);
+        monsterInfo = LocalStorage.monsters[2];
+        generateMonster(monsterInfo, 1, 3);
+        monsterInfo = LocalStorage.monsters[3];
+        generateMonster(monsterInfo, 0, 3);
 
         fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
         LocalStorage.BATTLE_SCENE_LOADING_DONE = true;
@@ -45,6 +53,7 @@ public class MonsterBattleGenerator : MonoBehaviour
     {
         GameObject newMonster = Instantiate(monsterBase);
         newMonster.GetComponent<MonsterBattleController>().initInfo(monsterInfo);
+        LocalStorage.monsterBattleControllerList[side].Add(newMonster.GetComponent<MonsterBattleController>());
         fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, side, numPos);
     }
 }

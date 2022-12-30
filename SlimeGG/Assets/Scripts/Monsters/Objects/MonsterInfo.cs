@@ -9,30 +9,4 @@ public class MonsterInfo : MonsterAbilityStat
     [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
     public List<MonsterSpeciesEnum> accuSpecies { get; set; }
     public int installedPosition { get; set; }
-    override public string ToString()
-    {
-        string elementToString = string.Empty;
-        string statsToString = string.Empty;
-        string treeToString = string.Empty;
-
-        elements.ForEach((str) =>
-        {
-            elementToString += str + ", ";
-        });
-        stats.ForEach((str) =>
-        {
-            statsToString += str + ", ";
-        });
-        accuSpecies.ForEach((str) =>
-        {
-            treeToString += str + ", ";
-        });
-
-        return $"\n" +
-            $"{nickName.ToString()}\n" +
-            $"{elementToString}\n" +
-            $"{statsToString}\n" +
-            $"{treeToString}\n"
-            ;
-    }
 }

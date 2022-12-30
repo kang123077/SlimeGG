@@ -18,4 +18,11 @@ public static class LocalStorage
     public static List<TileSetBriefInfo> tileSets = new List<TileSetBriefInfo>();
 
     public static List<Transform> tileSetTransforms = new List<Transform>();
+
+    public static bool IS_GAME_PAUSE = true;
+    public static bool IS_BATTLE_FINISH = false;
+    public static List<MonsterBattleController>[] monsterBattleControllerList =
+        new List<MonsterBattleController>[2] { 
+            new List<MonsterBattleController>(), new List<MonsterBattleController>() 
+        };
 }
