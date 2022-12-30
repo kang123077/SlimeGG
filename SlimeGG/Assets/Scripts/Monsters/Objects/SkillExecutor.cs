@@ -146,12 +146,12 @@ public static class SkillExecutor
                 targetTf.GetComponent<MonsterBattleController>().curKnockback =
                     Vector3.Normalize(
                         new Vector3(
-                            targetTf.localPosition.x - caster.transform.localPosition.x,
-                            targetTf.localPosition.y - caster.transform.localPosition.y,
+                            (targetTf.localPosition.x - caster.transform.localPosition.x) * Random.Range(1f, 10f),
+                            (targetTf.localPosition.y - caster.transform.localPosition.y) * Random.Range(1f, 10f),
                             0f
                             )
                         ) * knockBackRate;
-                calculateDamage(skillStat, caster, targetTf.GetComponent<MonsterBattleController>());
+                createBullet(skillStat, caster, targetTf.GetComponent<MonsterBattleController>());
             }
             else
             {
@@ -173,20 +173,20 @@ public static class SkillExecutor
                 targetTf.GetComponent<MonsterBattleController>().curKnockback =
                     Vector3.Normalize(
                         new Vector3(
-                            targetTf.localPosition.x - caster.transform.localPosition.x,
-                            targetTf.localPosition.y - caster.transform.localPosition.y,
+                            (targetTf.localPosition.x - caster.transform.localPosition.x) * Random.Range(1f, 10f),
+                            (targetTf.localPosition.y - caster.transform.localPosition.y) * Random.Range(1f, 10f),
                             0f
                             )
-                        ) * knockBackRate;
+                        ) * knockBackRate / 2f;
                 caster.curDash =
                     Vector3.Normalize(
                         new Vector3(
-                            targetTf.localPosition.x - caster.transform.localPosition.x,
-                            targetTf.localPosition.y - caster.transform.localPosition.y,
+                            (targetTf.localPosition.x - caster.transform.localPosition.x) * Random.Range(1f, 10f),
+                            (targetTf.localPosition.y - caster.transform.localPosition.y) * Random.Range(1f, 10f),
                             0f
                             )
                         ) * knockBackRate * 2;
-                calculateDamage(skillStat, caster, targetTf.GetComponent<MonsterBattleController>());
+                createBullet(skillStat, caster, targetTf.GetComponent<MonsterBattleController>());
             }
             else
             {
@@ -205,43 +205,10 @@ public static class SkillExecutor
 
     }
 
-    private static void calculateDamage(SkillStat skillStat, MonsterBattleController caster, MonsterBattleController target)
+    private static void createBullet(SkillStat skillStat, MonsterBattleController caster, MonsterBattleController target)
     {
-        float res = skillStat.amount;
-        res *= 100f / (100f + target.def);
-
-        List<ElementEnum> elementsRelated = new List<ElementEnum>();
-        elementsRelated.AddRange(caster.speciesInfo.elements);
-        elementsRelated.AddRange(target.speciesInfo.elements);
-        elementsRelated = elementsRelated.Distinct().ToList();
-        float targetSum = 10f;
-        float casterAccu = 0f, targetAccu = 0f;
-        foreach (ElementEnum element in elementsRelated)
-        {
-            int idx;
-            if ((idx = caster.speciesInfo.elements.IndexOf(element)) != -1)
-            {
-                casterAccu += caster.monsterInfo.stats[idx];
-                casterAccu += caster.speciesInfo.stats[idx];
-            }
-            if ((idx = target.speciesInfo.elements.IndexOf(element)) != -1)
-            {
-                targetAccu += target.monsterInfo.stats[idx];
-                targetAccu += target.speciesInfo.stats[idx];
-            }
-        }
-        if (targetAccu > casterAccu)
-        {
-            targetSum += targetAccu - casterAccu;
-        }
-
-        res *= Mathf.Pow(Mathf.Log10(targetSum), 0.5f);
-        res = Mathf.Floor(res);
-        //Debug.Log($"Actual Damage:: {res}");
-        if ((target.curHp -= res) <= 0f)
-        {
-            //Debug.Log($"Dead!!");
-            target.makeDead();
-        }
+        GameObject bullet = caster.generateBullet();
+        bullet.GetComponent<BulletController>().initInfo(skillStat, caster, target, skillStat.speed);
     }
+
 }
