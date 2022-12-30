@@ -21,6 +21,10 @@ public class BulletController : MonoBehaviour
     {
         if (target != null && !LocalStorage.IS_GAME_PAUSE && !LocalStorage.IS_BATTLE_FINISH)
         {
+            if (LocalStorage.IS_BATTLE_FINISH)
+            {
+                Destroy(transform.gameObject);
+            }
             if (Vector3.Distance(transform.position, target.transform.position) < 0.25f)
             {
                 calculateDamage();
@@ -30,8 +34,14 @@ public class BulletController : MonoBehaviour
             else
             {
                 transform.Translate(
-                    (target.transform.position - transform.position) * speed * Time.deltaTime
+                    Vector3.Normalize(target.transform.position - transform.position) * speed * Time.deltaTime
                     );
+                if (anim != null)
+                {
+                    anim.SetFloat("DirectionX",
+                        (target.transform.position.x - transform.position.x) > 0f ? 1f : -1f
+                    );
+                }
             }
         }
     }
