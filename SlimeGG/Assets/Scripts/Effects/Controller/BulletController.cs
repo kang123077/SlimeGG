@@ -21,6 +21,10 @@ public class BulletController : MonoBehaviour
     {
         if (target != null && !LocalStorage.IS_GAME_PAUSE && !LocalStorage.IS_BATTLE_FINISH)
         {
+            if (LocalStorage.IS_BATTLE_FINISH)
+            {
+                Destroy(transform.gameObject);
+            }
             if (Vector3.Distance(transform.position, target.transform.position) < 0.25f)
             {
                 calculateDamage();

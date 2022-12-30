@@ -2,11 +2,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
-using static UnityEngine.GraphicsBuffer;
 
 public class MonsterBattleController : MonoBehaviour
 {
     private Vector2 entryNum { get; set; }
+    private Vector2 fieldSize { get; set; }
     public Transform[] allies { get; set; }
     public Transform[] enemies { get; set; }
     public MonsterInfo monsterInfo { get; set; }
@@ -74,7 +74,7 @@ public class MonsterBattleController : MonoBehaviour
             );
     }
 
-    public void setFieldInfo(Vector2 entryNum, Transform[] allies, Transform[] enemies)
+    public void setFieldInfo(Vector2 fieldSize, Vector2 entryNum, Transform[] allies, Transform[] enemies)
     {
         this.entryNum = entryNum;
         this.allies = allies;
@@ -83,6 +83,7 @@ public class MonsterBattleController : MonoBehaviour
         distanceEnemies = new float[enemies.Length];
         hpController.setSide(entryNum.x);
         anim.SetFloat("DirectionX", entryNum.x == 0f ? 1f : -1f);
+        this.fieldSize = fieldSize;
     }
 
     // Start is called before the first frame update
@@ -226,15 +227,14 @@ public class MonsterBattleController : MonoBehaviour
         return res;
     }
 
-    // 해당 적에게 이동
-
     private void moveTo(Transform target)
     {
         float curDistance = Vector3.Distance(target.localPosition, transform.localPosition);
+        Vector2 dirFromCenter = new Vector2(transform.position.x, transform.position.y) - (fieldSize / 2) / 5f;
         Vector3 direction =
                         new Vector3(
-                            (target.localPosition.x - transform.localPosition.x) * Random.Range(1f, 10f),
-                            (target.localPosition.y - transform.localPosition.y) * Random.Range(1f, 10f),
+                            target.localPosition.x - transform.localPosition.x - dirFromCenter.x,
+                            target.localPosition.y - transform.localPosition.y - dirFromCenter.y,
                             0f
                         );
         anim.SetFloat("DirectionX", direction.x);

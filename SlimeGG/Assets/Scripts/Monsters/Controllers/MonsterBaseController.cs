@@ -44,7 +44,7 @@ public class MonsterBaseController : MonoBehaviour
             if (!isStopped)
             {
                 direction.x = Random.Range(6f, 10f) / 5.0f * (direction.x > 1.5f ? -1f : 1f);
-                anim.SetInteger("DirectionState", direction.x < 0f ? 1 : 2);
+                anim.SetFloat("DirectionX", direction.x);
                 direction.y = Random.Range(6f, 10f) / 5.0f * (direction.y > 1.5f ? -1f : 1f);
             }
             isStopped = !isStopped;
@@ -130,7 +130,7 @@ public class MonsterBaseController : MonoBehaviour
             ? 1f
             : Random.Range(-1f, 1f)
             );
-        anim.SetInteger("DirectionState", direction.x < 0f ? 1 : 2);
+        anim.SetFloat("DirectionX", direction.x);
     }
 
     private void moveTo(Vector2 direction, float speed)
