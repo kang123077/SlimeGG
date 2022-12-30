@@ -36,6 +36,12 @@ public class BulletController : MonoBehaviour
                 transform.Translate(
                     Vector3.Normalize(target.transform.position - transform.position) * speed * Time.deltaTime
                     );
+                if (anim != null)
+                {
+                    anim.SetFloat("DirectionX",
+                        (target.transform.position.x - transform.position.x) > 0f ? 1f : -1f
+                    );
+                }
             }
         }
     }
