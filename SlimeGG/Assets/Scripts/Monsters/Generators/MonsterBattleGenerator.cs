@@ -8,6 +8,10 @@ public class MonsterBattleGenerator : MonoBehaviour
     private GameObject monsterBase;
     [SerializeField]
     private GameObject fieldGenerated;
+    [SerializeField]
+    private GameObject monsterUIBase;
+    [SerializeField]
+    private GameObject monsterInfoUIGenerated;
     private MonsterInfo[] monsterInfos = null;
     // Start is called before the first frame update
     void Start()
@@ -46,6 +50,7 @@ public class MonsterBattleGenerator : MonoBehaviour
         generateMonster(monsterInfo, 0, 3);
 
         fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
+
         LocalStorage.BATTLE_SCENE_LOADING_DONE = true;
     }
 
@@ -55,5 +60,13 @@ public class MonsterBattleGenerator : MonoBehaviour
         newMonster.GetComponent<MonsterBattleController>().initInfo(monsterInfo);
         LocalStorage.monsterBattleControllerList[side].Add(newMonster.GetComponent<MonsterBattleController>());
         fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, side, numPos);
+
+        GameObject newMonsterInfoUI = Instantiate(monsterUIBase);
+        newMonsterInfoUI.transform.SetParent(monsterInfoUIGenerated.transform.Find($"{side}"));
+        newMonsterInfoUI
+            .GetComponent<MonsterBattleUIController>()
+            .initInfo(newMonster.GetComponent<MonsterBattleController>(),
+            side, numPos);
+
     }
 }

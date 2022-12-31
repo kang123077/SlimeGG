@@ -24,7 +24,8 @@ public class MonsterBattleController : MonoBehaviour
 
     private SkillStat curSkillStat = null;
 
-    private Dictionary<MonsterSkillEnum, float> skillTimer = new Dictionary<MonsterSkillEnum, float>();
+    public Dictionary<MonsterSkillEnum, float> skillTimer = new Dictionary<MonsterSkillEnum, float>();
+    public List<SkillStat> skillStatList = new List<SkillStat>();
 
     public Vector3 curKnockback = Vector3.zero;
     public Vector3 curDash = Vector3.zero;
@@ -55,8 +56,10 @@ public class MonsterBattleController : MonoBehaviour
         distanceToKeep = 100f;
         foreach (MonsterSkillEnum skillEnum in speciesInfo.skills)
         {
+            SkillStat temp = LocalDictionary.skills[skillEnum];
+            skillStatList.Add(LocalDictionary.skills[skillEnum]);
             skillTimer[skillEnum] = 0f;
-            float ran = LocalDictionary.skills[skillEnum].range;
+            float ran = temp.range;
             if (distanceToKeep > ran) distanceToKeep = Mathf.Max(ran - 1f, 0.5f);
         }
         maxHp = monsterInfo.hp * speciesInfo.hp;
@@ -206,11 +209,10 @@ public class MonsterBattleController : MonoBehaviour
     List<int> checkSkillsAvailable()
     {
         List<int> res = new List<int>();
-        foreach (MonsterSkillEnum skillName
-            in speciesInfo.skills)
+        foreach (SkillStat skillStat
+            in skillStatList)
         {
-            SkillStat skillStat = LocalDictionary.skills[skillName];
-            if (skillStat.coolTime <= skillTimer[skillName])
+            if (skillStat.coolTime <= skillTimer[skillStat.skillName])
             {
                 List<int> targetIndexList = SkillExecutor.selectTargetIndexList(skillStat, this);
                 if (targetIndexList.Count > 0)
