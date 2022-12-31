@@ -8,6 +8,10 @@ public class MonsterBattleGenerator : MonoBehaviour
     private GameObject monsterBase;
     [SerializeField]
     private GameObject fieldGenerated;
+    [SerializeField]
+    private GameObject monsterUIBase;
+    [SerializeField]
+    private GameObject monsterInfoUIGenerated;
     private MonsterInfo[] monsterInfos = null;
     // Start is called before the first frame update
     void Start()
@@ -28,24 +32,10 @@ public class MonsterBattleGenerator : MonoBehaviour
     public void initGeneration()
     {
         monsterInfos = new MonsterInfo[4];
-        MonsterInfo monsterInfo = LocalStorage.monsters[0];
-        generateMonster(monsterInfo, 0, 0);
-        monsterInfo = LocalStorage.monsters[0];
-        generateMonster(monsterInfo, 1, 1);
-        monsterInfo = LocalStorage.monsters[2];
-        generateMonster(monsterInfo, 0, 2);
-        monsterInfo = LocalStorage.monsters[1];
-        generateMonster(monsterInfo, 0, 1);
-        monsterInfo = LocalStorage.monsters[1];
-        generateMonster(monsterInfo, 1, 0);
-        monsterInfo = LocalStorage.monsters[2];
-        generateMonster(monsterInfo, 1, 2);
-        monsterInfo = LocalStorage.monsters[2];
-        generateMonster(monsterInfo, 1, 3);
-        monsterInfo = LocalStorage.monsters[3];
-        generateMonster(monsterInfo, 0, 3);
+        test4on4();
 
         fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
+
         LocalStorage.BATTLE_SCENE_LOADING_DONE = true;
     }
 
@@ -55,5 +45,40 @@ public class MonsterBattleGenerator : MonoBehaviour
         newMonster.GetComponent<MonsterBattleController>().initInfo(monsterInfo);
         LocalStorage.monsterBattleControllerList[side].Add(newMonster.GetComponent<MonsterBattleController>());
         fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, side, numPos);
+
+        GameObject newMonsterInfoUI = Instantiate(monsterUIBase);
+        newMonsterInfoUI.transform.SetParent(monsterInfoUIGenerated.transform.Find($"{side}"));
+        newMonsterInfoUI
+            .GetComponent<MonsterBattleUIController>()
+            .initInfo(newMonster.GetComponent<MonsterBattleController>(),
+            side, numPos);
+
+    }
+
+    private void test1on1()
+    {
+        MonsterInfo monsterInfo = LocalStorage.monsters[4];
+        generateMonster(monsterInfo, 0, 0);
+        monsterInfo = LocalStorage.monsters[5];
+        generateMonster(monsterInfo, 1, 0);
+    }
+
+    private void test4on4()
+    {
+        MonsterInfo monsterInfo = LocalStorage.monsters[1];
+        generateMonster(monsterInfo, 0, 0);
+        monsterInfo = LocalStorage.monsters[0];
+        generateMonster(monsterInfo, 1, 1);
+        monsterInfo = LocalStorage.monsters[4];
+        generateMonster(monsterInfo, 0, 2);
+        monsterInfo = LocalStorage.monsters[4];
+        generateMonster(monsterInfo, 0, 1);
+        monsterInfo = LocalStorage.monsters[5];
+        generateMonster(monsterInfo, 1, 0);
+        monsterInfo = LocalStorage.monsters[2];
+        generateMonster(monsterInfo, 1, 2);
+        monsterInfo = LocalStorage.monsters[2];
+        generateMonster(monsterInfo, 1, 3);
+        monsterInfo = LocalStorage.monsters[1];
     }
 }

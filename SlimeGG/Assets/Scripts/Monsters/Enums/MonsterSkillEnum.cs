@@ -1,4 +1,10 @@
 public enum MonsterSkillEnum
 {
-    Normal, Charge, Scratch, Spit,
+    Normal,
+    Scratch,
+
+        Spit,
+        SpitDouble,
+
+    Charge,
 }

@@ -6,6 +6,8 @@ public enum MonsterSpeciesEnum
     BabySpirit,
     Sleepion,
     MudBall,
-    Eartipede,
     BundleFur,
+
+    Eartipede,
+    Sneaklower,
 }
