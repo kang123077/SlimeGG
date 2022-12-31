@@ -7,7 +7,7 @@ public class MonsterBaseController : MonoBehaviour
     private float zCoor = 18f;
     private Vector2 direction = new Vector2(0f, 0f);
     private Transform curTileSet;
-    private MonsterInfo monsterInfo;
+    public MonsterInfo monsterInfo;
     private MonsterSpeciesInfo speciesInfo;
     private float moveTime = 0f;
     private bool isStopped = false;

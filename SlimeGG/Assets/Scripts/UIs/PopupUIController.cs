@@ -9,7 +9,6 @@ public class PopupUIController : MonoBehaviour
 {
     public TMP_Text headerUI;
     public TMP_Text infoUI;
-
     public void generateUI(TileSetInfo tileSetInfo)
     {
         StringBuilder elementUI = new StringBuilder();
@@ -64,13 +63,5 @@ public class PopupUIController : MonoBehaviour
             $"Skills\n" +
             $"{skillUI}"
             );
-    }
-
-    private void deleteBeforeUI()
-    {
-        if (infoUI)
-        {
-            Destroy(infoUI);
-        }
     }
 }

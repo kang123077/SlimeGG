@@ -9,17 +9,20 @@ public class TileSetController : MonoBehaviour
     private GameObject tileBase;
     private GameObject tileSetInventory;
     private Transform tileSetInstalledStore;
-    private TileSetBriefInfo tileSetBriefInfo;
     private bool isInInventory = false;
     private Vector2 installedCoor = new Vector2(-1f, -1f);
     private SpriteRenderer bgSprite;
 
-    private GameObject[] tiles;
-    private List<Transform> monsters = new List<Transform>();
     private float zCoor = 19f;
     private Vector3 size;
 
     private Vector2 correctionCoor;
+
+    public GameObject[] tiles;
+    public List<Transform> monsters = new List<Transform>();
+    public TileSetBriefInfo tileSetBriefInfo;
+
+    private float coolTime = 0f;
 
     public void initTileSet()
     {
@@ -65,6 +68,19 @@ public class TileSetController : MonoBehaviour
             transform.position = new Vector3(y % 2 == 0 ? x * 2 : ((x * 2) + 1), -y * 2, zCoor);
             transform.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Polygons;
             tryAttachTileSet();
+        }
+    }
+
+    public void Update()
+    {
+        if (LocalDictionary.tileSets[tileSetBriefInfo.name].elements != null && monsters.Count != 0)
+        {
+            coolTime += Time.deltaTime;
+            if (coolTime >= 1f)
+            {
+                sendTileInfluenceToMonsters();
+                coolTime -= 1f;
+            }
         }
     }
 
@@ -233,5 +249,37 @@ public class TileSetController : MonoBehaviour
             -installedCoor.y * 2,
             zCoor);
         tryAttachTileSet();
+    }
+
+    private void sendTileInfluenceToMonsters()
+    {
+        bool newElements;
+        if (LocalDictionary.tileSets[tileSetBriefInfo.name].elements == null) return;
+        for (int i = 0; i < LocalDictionary.tileSets[tileSetBriefInfo.name].elements.Count; i++)
+        {
+            newElements = true;
+            for (int j = 0; j < monsters.Count; j++)
+            {
+                for (int k = 0; k < monsters[j].GetComponent<MonsterBaseController>().monsterInfo.elements.Count; k++)
+                {
+                    if (LocalDictionary.tileSets[tileSetBriefInfo.name].elements[i] ==
+                            monsters[j].GetComponent<MonsterBaseController>().monsterInfo.elements[k])
+                    {
+                        monsters[j].GetComponent<MonsterBaseController>().monsterInfo.stats[k] +=
+                            LocalDictionary.tileSets[tileSetBriefInfo.name].stats[i];
+                        newElements = false;
+                        break;
+                    }
+                }
+                if (newElements == true)
+                {
+                    monsters[j].GetComponent<MonsterBaseController>().monsterInfo.elements.Add(
+                        LocalDictionary.tileSets[tileSetBriefInfo.name].elements[i]);
+                    monsters[j].GetComponent<MonsterBaseController>().monsterInfo.stats.Add(
+                        LocalDictionary.tileSets[tileSetBriefInfo.name].stats[i]);
+                    break;
+                }
+            }
+        }
     }
 }
