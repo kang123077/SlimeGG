@@ -39,6 +39,10 @@ public class MonsterBattleController : MonoBehaviour
     [SerializeField]
     private GameObject bulletPrefab;
 
+    private Vector3 curDirection = Vector3.zero;
+    private Vector2 dirFromCenter;
+    private bool onlyMove = false;
+
     public void initInfo(MonsterInfo monsterInfo)
     {
         this.monsterInfo = monsterInfo;
@@ -89,7 +93,7 @@ public class MonsterBattleController : MonoBehaviour
         anim.SetFloat("DirectionX", entryNum.x == 0f ? 1f : -1f);
         this.fieldSize = fieldSize;
 
-        setTexturetoCamera((int) entryNum.x, (int) entryNum.y);
+        setTexturetoCamera((int)entryNum.x, (int)entryNum.y);
     }
 
     // Start is called before the first frame update
@@ -172,7 +176,7 @@ public class MonsterBattleController : MonoBehaviour
         {
             if (i != entryNum.y)
             {
-                if (!allies[i].GetComponent<MonsterBattleController>().isDead)
+                if (allies[i] != null && !allies[i].GetComponent<MonsterBattleController>().isDead)
                 {
                     distanceAllies[i] = Vector2.Distance(transform.localPosition, allies[i].localPosition);
                     if (closestLength == 0f ||
@@ -192,7 +196,7 @@ public class MonsterBattleController : MonoBehaviour
         int closestEnemyIndex = 0;
         for (int i = 0; i < enemies.Length; i++)
         {
-            if (!enemies[i].GetComponent<MonsterBattleController>().isDead)
+            if (enemies[i] != null && !enemies[i].GetComponent<MonsterBattleController>().isDead)
             {
                 distanceEnemies[i] = Vector2.Distance(transform.localPosition, enemies[i].localPosition);
                 if (closestLength == 0f ||
@@ -238,7 +242,7 @@ public class MonsterBattleController : MonoBehaviour
     private void moveTo(Transform target)
     {
         float curDistance = Vector3.Distance(target.localPosition, transform.localPosition);
-        Vector2 dirFromCenter = new Vector2(transform.position.x, transform.position.y) - (fieldSize / 2) / 5f;
+        dirFromCenter = new Vector2(transform.position.x, transform.position.y) - (fieldSize / 2) / 5f;
         Vector3 direction =
                         new Vector3(
                             target.localPosition.x - transform.localPosition.x - dirFromCenter.x,
@@ -247,30 +251,15 @@ public class MonsterBattleController : MonoBehaviour
                         );
         anim.SetFloat("DirectionX", direction.x);
         animHit.SetFloat("DirectionX", direction.x);
-        if (curDistance > distanceToKeep)
-        {
-            transform.Translate(
-                ((
-                    (stopTime <= 0f
-                    ? (Vector3.Normalize(direction) * monsterInfo.spd * speciesInfo.spd)
+        curDirection = (stopTime <= 0f
+                    ? (Vector3.Normalize((curDistance > distanceToKeep ? 1f : -1f) * direction) * monsterInfo.spd * speciesInfo.spd)
                     : Vector3.zero)
-                    + curKnockback + curDash
-                ) * Time.deltaTime),
-                Space.Self
-            );
-        }
-        else
-        {
-            transform.Translate(
-                ((
-                    (stopTime <= 0f
-                     ? (Vector3.Normalize(-direction) * monsterInfo.spd * speciesInfo.spd)
-                     : Vector3.zero)
-                     + curKnockback + curDash
-                ) * Time.deltaTime),
-                Space.Self
-            );
-        }
+                    + (onlyMove ? Vector3.zero : (curKnockback + curDash));
+
+        transform.Translate(
+            curDirection * Time.deltaTime,
+            Space.Self
+        );
     }
     void executeSkill(SkillStat skillStat, List<int> targetList)
     {
@@ -322,8 +311,23 @@ public class MonsterBattleController : MonoBehaviour
             );
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        //print("Collision!!" + collision.transform.name);
-    }
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.transform.name == "Barrier")
+    //    {
+    //        onlyMove = true;
+    //        print("충돌 진입");
+    //        print(collision.GetContact(0).point);
+    //    }
+    //}
+
+    //private void OnCollisionExit2D(Collision2D collision)
+    //{
+    //    if (collision.transform.name == "Barrier")
+    //    {
+    //        onlyMove = false;
+    //        print("충돌 종료");
+    //        print(collision.GetContact(0).point);
+    //    }
+    //}
 }

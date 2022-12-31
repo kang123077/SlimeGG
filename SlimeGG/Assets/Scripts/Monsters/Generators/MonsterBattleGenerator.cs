@@ -32,22 +32,7 @@ public class MonsterBattleGenerator : MonoBehaviour
     public void initGeneration()
     {
         monsterInfos = new MonsterInfo[4];
-        MonsterInfo monsterInfo = LocalStorage.monsters[1];
-        generateMonster(monsterInfo, 0, 0);
-        monsterInfo = LocalStorage.monsters[0];
-        generateMonster(monsterInfo, 1, 1);
-        monsterInfo = LocalStorage.monsters[2];
-        generateMonster(monsterInfo, 0, 2);
-        monsterInfo = LocalStorage.monsters[4];
-        generateMonster(monsterInfo, 0, 1);
-        monsterInfo = LocalStorage.monsters[5];
-        generateMonster(monsterInfo, 1, 0);
-        monsterInfo = LocalStorage.monsters[2];
-        generateMonster(monsterInfo, 1, 2);
-        monsterInfo = LocalStorage.monsters[2];
-        generateMonster(monsterInfo, 1, 3);
-        monsterInfo = LocalStorage.monsters[3];
-        generateMonster(monsterInfo, 0, 3);
+        test4on4();
 
         fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
 
@@ -68,5 +53,32 @@ public class MonsterBattleGenerator : MonoBehaviour
             .initInfo(newMonster.GetComponent<MonsterBattleController>(),
             side, numPos);
 
+    }
+
+    private void test1on1()
+    {
+        MonsterInfo monsterInfo = LocalStorage.monsters[4];
+        generateMonster(monsterInfo, 0, 0);
+        monsterInfo = LocalStorage.monsters[5];
+        generateMonster(monsterInfo, 1, 0);
+    }
+
+    private void test4on4()
+    {
+        MonsterInfo monsterInfo = LocalStorage.monsters[1];
+        generateMonster(monsterInfo, 0, 0);
+        monsterInfo = LocalStorage.monsters[0];
+        generateMonster(monsterInfo, 1, 1);
+        monsterInfo = LocalStorage.monsters[4];
+        generateMonster(monsterInfo, 0, 2);
+        monsterInfo = LocalStorage.monsters[4];
+        generateMonster(monsterInfo, 0, 1);
+        monsterInfo = LocalStorage.monsters[5];
+        generateMonster(monsterInfo, 1, 0);
+        monsterInfo = LocalStorage.monsters[2];
+        generateMonster(monsterInfo, 1, 2);
+        monsterInfo = LocalStorage.monsters[2];
+        generateMonster(monsterInfo, 1, 3);
+        monsterInfo = LocalStorage.monsters[1];
     }
 }
