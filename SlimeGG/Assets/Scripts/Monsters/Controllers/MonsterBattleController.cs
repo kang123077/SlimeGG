@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 public class MonsterBattleController : MonoBehaviour
 {
@@ -87,6 +88,8 @@ public class MonsterBattleController : MonoBehaviour
         hpController.setSide(entryNum.x);
         anim.SetFloat("DirectionX", entryNum.x == 0f ? 1f : -1f);
         this.fieldSize = fieldSize;
+
+        setTexturetoCamera((int) entryNum.x, (int) entryNum.y);
     }
 
     // Start is called before the first frame update
@@ -311,5 +314,12 @@ public class MonsterBattleController : MonoBehaviour
         GameObject res = Instantiate(bulletPrefab);
         res.transform.position = transform.position + (Vector3.Normalize(new Vector3(dir, Random.Range(-dir, dir), 0f)) / 5f);
         return res;
+    }
+
+    private void setTexturetoCamera(int side, int numPos)
+    {
+        transform.Find("Tracking Camera").GetComponent<Camera>().targetTexture = Resources.Load<RenderTexture>(
+            PathInfo.TEXTURE + "MonsterTracking/" + $"{side}_{numPos}"
+            );
     }
 }

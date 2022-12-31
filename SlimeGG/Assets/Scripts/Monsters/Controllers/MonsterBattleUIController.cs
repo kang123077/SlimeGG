@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.Rendering;
 
 public class MonsterBattleUIController : MonoBehaviour
 {
@@ -11,7 +12,6 @@ public class MonsterBattleUIController : MonoBehaviour
     new Vector3(125f, 275f, 0f),
     new Vector3(375, 100f, 0f),
     new Vector3(125f, 450f, 0f)};
-    private HorizontalLayoutGroup horizontalLayout;
     private MonsterBattleController target;
     private Transform trackingTf;
     private Dictionary<MonsterSkillEnum, Transform> skillTfList = new Dictionary<MonsterSkillEnum, Transform>();
@@ -19,16 +19,14 @@ public class MonsterBattleUIController : MonoBehaviour
 
     void Start()
     {
-        Transform tempTf = transform.Find("Contents");
-        horizontalLayout = tempTf.GetComponent<HorizontalLayoutGroup>();
-        trackingTf = tempTf.Find("Tracking");
     }
 
     void Update()
     {
         if (LocalStorage.BATTLE_SCENE_LOADING_DONE &&
             !LocalStorage.IS_BATTLE_FINISH &&
-            !LocalStorage.IS_GAME_PAUSE)
+            !LocalStorage.IS_GAME_PAUSE &&
+            !isDead)
         {
             updateCoolTime();
         }
@@ -47,8 +45,10 @@ public class MonsterBattleUIController : MonoBehaviour
 
     public void initInfo(MonsterBattleController target, int side, int numPos)
     {
+        Transform tempTf = transform.Find("Contents");
+        trackingTf = tempTf.Find("Tracking");
         transform.localScale = Vector3.one;
-        Transform tempTf = transform.Find("Contents").Find("Skills");
+        tempTf = tempTf.Find("Skills");
         this.target = target;
         int affordable = 1;
         foreach (SkillStat skillStat in target.skillStatList)
@@ -63,6 +63,7 @@ public class MonsterBattleUIController : MonoBehaviour
         // 위치 잡기
         Vector3 tragetPos = posList[numPos];
         transform.localPosition = new Vector3(side == 0 ? tragetPos.x : -tragetPos.x, tragetPos.y, tragetPos.z);
+        setTextureToTracking(side, numPos);
 
     }
 
@@ -70,6 +71,7 @@ public class MonsterBattleUIController : MonoBehaviour
     {
         if (target.isDead)
         {
+            trackingTf.GetComponent<RawImage>().color = new Vector4(0.5f, 0.5f, 0.5f, 1f);
             foreach (SkillStat skillStat in target.skillStatList)
             {
                 skillTfList[skillStat.skillName].Find("CoolTime").GetComponent<Image>().type = Image.Type.Simple;
@@ -81,5 +83,12 @@ public class MonsterBattleUIController : MonoBehaviour
             skillTfList[skillStat.skillName].Find("CoolTime").GetComponent<Image>().fillAmount = 
                 1 - (target.skillTimer[skillStat.skillName] / skillStat.coolTime);
         }
+    }
+
+    private void setTextureToTracking(int side, int numPos)
+    {
+        trackingTf.GetComponent<RawImage>().texture = Resources.Load<RenderTexture>(
+            PathInfo.TEXTURE + "MonsterTracking/" + $"{side}_{numPos}"
+            );
     }
 }
