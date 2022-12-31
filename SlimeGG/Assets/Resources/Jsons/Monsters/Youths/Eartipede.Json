@@ -1,16 +1,16 @@
 {
-  "species": "Sleepion",
-  "stage": "Infant",
+  "species": "Eartipede",
+  "stage": "Youths",
   "elements": [
     "Earth",
     "Insect"
   ],
   "skills": [
-    "Normal",
+    "Scratch",
     "Charge"
   ],
-  "resourcePath": "Monsters/Lv2s/Sleepion",
-  "hp": 200,
+  "resourcePath": "Monsters/Youths/Eartipede",
+  "hp": 140,
   "def": 45,
   "spd": 0.5,
   "stats": [

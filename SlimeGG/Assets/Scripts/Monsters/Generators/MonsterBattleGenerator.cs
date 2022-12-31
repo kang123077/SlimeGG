@@ -32,15 +32,15 @@ public class MonsterBattleGenerator : MonoBehaviour
     public void initGeneration()
     {
         monsterInfos = new MonsterInfo[4];
-        MonsterInfo monsterInfo = LocalStorage.monsters[0];
+        MonsterInfo monsterInfo = LocalStorage.monsters[1];
         generateMonster(monsterInfo, 0, 0);
         monsterInfo = LocalStorage.monsters[0];
         generateMonster(monsterInfo, 1, 1);
         monsterInfo = LocalStorage.monsters[2];
         generateMonster(monsterInfo, 0, 2);
-        monsterInfo = LocalStorage.monsters[1];
+        monsterInfo = LocalStorage.monsters[4];
         generateMonster(monsterInfo, 0, 1);
-        monsterInfo = LocalStorage.monsters[1];
+        monsterInfo = LocalStorage.monsters[5];
         generateMonster(monsterInfo, 1, 0);
         monsterInfo = LocalStorage.monsters[2];
         generateMonster(monsterInfo, 1, 2);

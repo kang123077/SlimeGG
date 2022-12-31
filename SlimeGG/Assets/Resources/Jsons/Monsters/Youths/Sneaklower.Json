@@ -1,0 +1,20 @@
+{
+  "species": "Sneaklower",
+  "stage": "Youths",
+  "elements": [
+    "Spirit",
+    "Grass"
+  ],
+  "skills": [
+    "Spit",
+    "SpitDouble"
+  ],
+  "resourcePath": "Monsters/Youths/Sneaklower",
+  "hp": 60,
+  "def": 25,
+  "spd": 1.7,
+  "stats": [
+    2.0,
+    3.0
+  ]
+}

@@ -17,7 +17,7 @@ public class MonsterBattleController : MonoBehaviour
     private Animator animHit { get; set; }
     private SpriteRenderer spriteHit { get; set; }
     private float animTime = 0f;
-    private float stopTime = 0f;
+    public float stopTime = 0f;
     public float maxHp, curHp, def;
 
     public float[] distanceAllies;
@@ -120,7 +120,10 @@ public class MonsterBattleController : MonoBehaviour
                     }
                     int[] closest = identifyTarget();
                     moveTo(enemies[closest[1]]);
-
+                    if (stopTime > 0f)
+                    {
+                        stopTime = (stopTime - Time.deltaTime) == 0f ? -1f : (stopTime - Time.deltaTime);
+                    }
                     List<int> skillAvailableList = checkSkillsAvailable();
                     if (skillAvailableList.Count > 0)
                     {
@@ -275,11 +278,7 @@ public class MonsterBattleController : MonoBehaviour
         {
             stopTime = skillStat.delayTime;
         }
-        else if (stopTime > 0f)
-        {
-            stopTime = stopTime - Time.deltaTime == 0f ? -1f : stopTime - Time.deltaTime;
-        }
-        else
+        if (stopTime < 0f)
         {
             curSkillStat = null;
             skillTimer[skillStat.skillName] = 0f;
@@ -321,5 +320,10 @@ public class MonsterBattleController : MonoBehaviour
         transform.Find("Tracking Camera").GetComponent<Camera>().targetTexture = Resources.Load<RenderTexture>(
             PathInfo.TEXTURE + "MonsterTracking/" + $"{side}_{numPos}"
             );
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //print("Collision!!" + collision.transform.name);
     }
 }

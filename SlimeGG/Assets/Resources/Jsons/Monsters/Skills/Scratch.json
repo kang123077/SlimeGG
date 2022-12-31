@@ -2,17 +2,17 @@
   "skillName": "Scratch",
   "skillType": "ATTACK_NORMAL",
   "numberOfTarget": 1,
-  "range" : 3.3,
-  "amount": 12,
+  "range" : 1.3,
+  "amount": 17,
   "coolTime": 5.0,
-  "delayTime": 10,
+  "delayTime": 0.4,
   "speed": -1,
   "elements": [
-    "Wind",
-    "Golem"
+    "Earth",
+    "Insect"
   ],
   "stats": [
-    0.6,
-    0.4
+    0.8,
+    0.2
   ]
 }

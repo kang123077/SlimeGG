@@ -11,6 +11,7 @@ public class SkillStat : ElementStat
     public int numberOfTarget { get; set; }
     public float range { get; set; }
     public float amount { get; set; }
+    public int count = 1;
     public float coolTime { get; set; }
     public float delayTime { get; set; }
     public float speed { get; set; }
