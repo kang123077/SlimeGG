@@ -82,5 +82,49 @@
       11
     ],
     "installedPosition": 0
+  }, 
+  {
+    "nickName": "지ㅡ네",
+    "accuSpecies": [
+      "Egg",
+      "MudBall",
+      "Eartipede"
+    ],
+    "hp": 1.4,
+    "def": 1,
+    "spd": 1,
+    "elements": [
+      "Spirit",
+      "Insect",
+      "Earth"
+    ],
+    "stats": [
+      2,
+      8,
+      4
+    ],
+    "installedPosition": 0
+  }, 
+  {
+    "nickName": "못숨는데?",
+    "accuSpecies": [
+      "Egg",
+      "MudBall",
+      "Sneaklower"
+    ],
+    "hp": 1,
+    "def": 1.1,
+    "spd": 1.2,
+    "elements": [
+      "Spirit",
+      "Wind",
+      "Grass"
+    ],
+    "stats": [
+      5,
+      2,
+      11
+    ],
+    "installedPosition": 0
   }
 ]

@@ -1,0 +1,20 @@
+{
+  "skillName": "SpitDouble",
+  "skillType": "ATTACK_NORMAL",
+  "numberOfTarget": 1,
+  "range" : 4.2,
+  "amount": 7,
+  "coolTime": 2.5,
+  "delayTime": 0.3,
+  "speed": 5,
+  "count": 2,
+  "resourcePath": "Effects/Attacks/FarNormal",
+  "elements": [
+    "Grass",
+    "Spirit"
+  ],
+  "stats": [
+    0.8,
+    0.5
+  ]
+}

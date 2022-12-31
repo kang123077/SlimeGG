@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public static class SkillExecutor
@@ -207,8 +206,11 @@ public static class SkillExecutor
 
     private static void createBullet(SkillStat skillStat, MonsterBattleController caster, MonsterBattleController target)
     {
-        GameObject bullet = caster.generateBullet();
-        bullet.GetComponent<BulletController>().initInfo(skillStat, caster, target, skillStat.speed);
+        for (int i = 0; i < skillStat.count; i++)
+        {
+            GameObject bullet = caster.generateBullet();
+            bullet.GetComponent<BulletController>().initInfo(skillStat, caster, target, skillStat.speed);
+        }
     }
 
 }

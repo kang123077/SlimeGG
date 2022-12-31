@@ -44,7 +44,16 @@ public class FieldController : MonoBehaviour
         {
             for (int j = 0; j < fieldInfo.numberRestrictPerSide[i]; j++)
             {
-                monstersInBattle[i][j].GetComponent<MonsterBattleController>().setFieldInfo(new Vector2(fieldInfo.size[0], fieldInfo.size[1]), new Vector2(i, j), monstersInBattle[i], monstersInBattle[i == 0 ? 1 : 0]);
+                if (monstersInBattle[i][j] != null)
+                {
+                    monstersInBattle[i][j].GetComponent<MonsterBattleController>()
+                        .setFieldInfo(
+                            new Vector2(fieldInfo.size[0], fieldInfo.size[1]),
+                            new Vector2(i, j),
+                            monstersInBattle[i],
+                            monstersInBattle[i == 0 ? 1 : 0]
+                        );
+                }
             }
         }
     }
