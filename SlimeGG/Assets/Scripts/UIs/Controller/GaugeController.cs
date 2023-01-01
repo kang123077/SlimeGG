@@ -34,13 +34,6 @@ public class GaugeController : MonoBehaviour
         currentGaugeTf = transform.Find("Current Gauge");
         updateSize();
     }
-
-    public void addOrSubGauge(int amount)
-    {
-        curGauge = curGauge - amount > 0 ? curGauge - amount : 0;
-        updateGauge();
-    }
-
     private void updateSize()
     {
 
@@ -51,6 +44,14 @@ public class GaugeController : MonoBehaviour
 
     private void updateGauge()
     {
+        float newWidth = maxWidth * curGauge / maxGauge;
+        currentGaugeTf.GetComponent<SpriteRenderer>().size = new Vector2(newWidth - sideMargin, maxHeight - sideMargin);
+        currentGaugeTf.GetComponent<RectTransform>().localPosition = new Vector3(-(maxWidth - newWidth) / 2, 0f, 0f);
+    }
+
+    public void updateGauge(int curHp)
+    {
+        curGauge = curHp;
         float newWidth = maxWidth * curGauge / maxGauge;
         currentGaugeTf.GetComponent<SpriteRenderer>().size = new Vector2(newWidth - sideMargin, maxHeight - sideMargin);
         currentGaugeTf.GetComponent<RectTransform>().localPosition = new Vector3(-(maxWidth - newWidth) / 2, 0f, 0f);

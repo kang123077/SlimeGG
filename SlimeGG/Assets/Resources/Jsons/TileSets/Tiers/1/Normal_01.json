@@ -1,5 +1,5 @@
 {
-  "name": "Normal_01",
+  "tileName": "Normal_01",
   "nickName": "고정 타일",
   "tier": 1,
   "tileSetShape": "Single",
