@@ -118,7 +118,6 @@ public static class SkillExecutor
         switch (skillToUse.skillType)
         {
             case MonsterSkillTypeEnum.ATTACK_NORMAL:
-                controllPosition(0f, caster, targetIndexList);
                 break;
             case MonsterSkillTypeEnum.ATTACK_DASH:
                 controllPosition(5f, caster, targetIndexList);
@@ -135,7 +134,7 @@ public static class SkillExecutor
     {
         Vector3 movPos = caster.transform.position;
         Vector3 tarPos = caster.enemies[targetIndexList[0]].transform.position;
-        caster.extraMovement += Vector3.Normalize(tarPos - movPos) * amount;
+        caster.extraMovement += Vector3.Normalize(tarPos - movPos) * amount * 3f;
     }
 
     private static void createProjectile(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)

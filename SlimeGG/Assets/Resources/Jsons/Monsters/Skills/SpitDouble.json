@@ -1,6 +1,7 @@
 {
   "skillName": "SpitDouble",
   "skillType": "ATTACK_NORMAL",
+  "projectileType": "Bullet",
   "numberOfTarget": 1,
   "range" : 4.2,
   "coolTime": 2.5,
@@ -12,6 +13,6 @@
   "effect": {
     "type": "None",
     "isMultiple": false,
-    "amount": 7
+    "amount": -7
   }
 }

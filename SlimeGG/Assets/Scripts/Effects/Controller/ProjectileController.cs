@@ -42,13 +42,13 @@ public class ProjectileController : MonoBehaviour
 
     private bool isArrived()
     {
-        return Vector3.Distance(isTargeting ? transform.position : targetPos, target.transform.position) < 0.25f;
+        return Vector3.Distance((isTargeting ? transform.position : targetPos), target.transform.position) < 0.25f;
     }
 
     private void moveTo()
     {
         transform.Translate(
-            Vector3.Normalize(isTargeting ? target.transform.position : targetPos - transform.position) * skillStat.speed * Time.deltaTime
+            Vector3.Normalize((isTargeting ? target.transform.position : targetPos) - transform.position) * skillStat.speed * Time.deltaTime
             );
         if (anim != null)
         {

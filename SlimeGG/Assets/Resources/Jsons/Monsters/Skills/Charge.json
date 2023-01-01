@@ -1,14 +1,15 @@
 {
   "skillName": "Charge",
   "skillType": "ATTACK_DASH",
+  "projectileType": "Bullet",
   "numberOfTarget": 1,
   "range" : 5.3,
   "coolTime": 4.0,
-  "speed": -1,
+  "speed": 100,
   "castingTime": 0.55,
   "effect": {
     "type": "Stun",
     "isMultiple": false,
-    "amount": 12
+    "amount": -12
   }
 }

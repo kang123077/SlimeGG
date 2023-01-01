@@ -1,6 +1,7 @@
 {
   "skillName": "Spit",
   "skillType": "ATTACK_NORMAL",
+  "projectileType": "Bullet",
   "numberOfTarget": 1,
   "range" : 3.4,
   "coolTime": 1.0,
@@ -10,6 +11,6 @@
   "effect": {
     "type": "None",
     "isMultiple": false,
-    "amount": 8
+    "amount": -8
   }
 }

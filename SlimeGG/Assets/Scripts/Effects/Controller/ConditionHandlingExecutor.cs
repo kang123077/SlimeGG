@@ -17,14 +17,6 @@ public static class ConditionHandlingExecutor
                         ),
                     caster,
                     targetList);
-                controllBasicStat(
-                    new MonsterVariableStat(
-                        MonsterVariableEnum.spd,
-                        -0.5f,
-                        false
-                        ),
-                    caster,
-                    targetList);
                 break;
             case ConditionHandlingTypeEnum.Stun:
                 controllBasicStat(
@@ -64,14 +56,14 @@ public static class ConditionHandlingExecutor
             float res =
                 targetStat.name != MonsterVariableEnum.hp ?
                 targetStat.amount :
-                calculateDemage(targetStat.amount, caster.monsterInfo, target.monsterInfo);
+                calculateDemage(targetStat.amount, caster.currentMonsterInfo, target.currentMonsterInfo);
             if (!targetStat.isMultiple)
             {
-                target.monsterInfo.basicDict[targetStat.name].amount += res;
+                target.currentMonsterInfo.basicDict[targetStat.name].amount += res;
             }
             else
             {
-                target.monsterInfo.basicDict[targetStat.name].amount *= res;
+                target.currentMonsterInfo.basicDict[targetStat.name].amount *= res;
             }
         }
     }

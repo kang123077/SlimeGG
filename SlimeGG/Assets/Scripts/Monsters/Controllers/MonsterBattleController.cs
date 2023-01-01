@@ -18,7 +18,7 @@ public class MonsterBattleController : MonoBehaviour
     private Animator animHit { get; set; }
     private SpriteRenderer spriteHit { get; set; }
     private float animTime = 0f;
-    public float stopTime = 0f;
+    private float castingTime = -1f;
     public float maxHp;
 
     public float[] distanceAllies;
@@ -30,7 +30,7 @@ public class MonsterBattleController : MonoBehaviour
     public List<SkillStat> skillStatList = new List<SkillStat>();
 
     public Vector3 extraMovement = Vector3.zero;
-    public float distanceToKeep { get; set; }
+    private float distanceToKeep { get; set; }
 
     public bool isDead { get; set; }
 
@@ -39,7 +39,6 @@ public class MonsterBattleController : MonoBehaviour
     [SerializeField]
     private GameObject projectilePrefab;
 
-    private Vector3 curDirection = Vector3.zero;
     private Vector2 dirFromCenter;
     private bool onlyMove = false;
 
@@ -110,59 +109,54 @@ public class MonsterBattleController : MonoBehaviour
             {
                 if (!isDead)
                 {
-                    checkCurrentHp();
-                }
-                if (isDead)
-                {
-                    Destroy(anim);
-                    Destroy(animHit);
-                    Destroy(spriteHit);
-                    bg.GetComponent<SpriteRenderer>().sprite = Resources.LoadAll<Sprite>(
-                        PathInfo.SPRITE + speciesInfo.resourcePath
-                        )[entryNum.x == 0 ? 13 : 12];
-                    return;
-                }
-                if (LocalStorage.IS_BATTLE_FINISH)
-                {
-                    Destroy(anim);
-                    Destroy(animHit);
-                }
-                else
-                {
-                    extraMovement *= 0.9f;
-                    foreach (MonsterSkillEnum skillEnum in skillTimer.Keys.ToList())
+                    if (LocalStorage.IS_BATTLE_FINISH)
                     {
-                        skillTimer[skillEnum] += Time.deltaTime;
+                        Destroy(anim);
+                        Destroy(animHit);
                     }
-                    int[] closest = identifyTarget();
-                    moveTo(enemies[closest[1]]);
-                    if (stopTime > 0f)
+                    else
                     {
-                        stopTime = (stopTime - Time.deltaTime) == 0f ? -1f : (stopTime - Time.deltaTime);
-                    }
-                    List<int> skillAvailableList = checkSkillsAvailable();
-                    if (skillAvailableList.Count > 0)
-                    {
-                        executeSkill(curSkillStat, skillAvailableList);
-                    }
+                        extraMovement *= 0.9f;
+                        foreach (MonsterSkillEnum skillEnum in skillTimer.Keys.ToList())
+                        {
+                            skillTimer[skillEnum] += Time.deltaTime;
+                        }
+                        int[] closest = identifyTarget();
+                        moveTo(enemies[closest[1]]);
+                        passTimer();
+                        List<int> skillAvailableList = checkSkillsAvailable();
+                        if (skillAvailableList.Count > 0)
+                        {
+                            executeSkill(curSkillStat, skillAvailableList);
+                        } else
+                        {
 
-                    if (anim.GetFloat("BattleState") != 0f && animTime <= 1f)
-                    {
-                        animTime += Time.deltaTime;
+                        }
+
+                        if (anim.GetFloat("BattleState") != 0f && animTime <= 1f)
+                        {
+                            animTime += Time.deltaTime;
+                        }
+                        if (animTime > 0.25f)
+                        {
+                            animHit.SetFloat("isCritical", 0f);
+                        }
+                        if (animTime > 0.5f)
+                        {
+                            anim.SetFloat("BattleState", 0f);
+                            animTime = 0f;
+                        }
                     }
-                    if (animTime > 0.25f)
-                    {
-                        animHit.SetFloat("isCritical", 0f);
-                    }
-                    if (animTime > 0.5f)
-                    {
-                        anim.SetFloat("BattleState", 0f);
-                        animTime = 0f;
-                    }
+                    checkCurrentHp();
                 }
             }
         }
 
+    }
+
+    private void passTimer()
+    {
+        if (castingTime > 0f) castingTime = Mathf.Max(castingTime - Time.deltaTime, 0f);
     }
 
     private int[] identifyTarget()
@@ -246,12 +240,11 @@ public class MonsterBattleController : MonoBehaviour
                         );
         anim.SetFloat("DirectionX", direction.x);
         animHit.SetFloat("DirectionX", direction.x);
-        curDirection = (stopTime <= 0f
+        Vector3 curDirection = (castingTime <= 0f
                     ? (Vector3.Normalize((curDistance > distanceToKeep ? 1f : -1f) * direction)
-                    * currentMonsterInfo.basicDict[MonsterVariableEnum.spd].amount)
+                        * currentMonsterInfo.basicDict[MonsterVariableEnum.spd].amount)
                     : Vector3.zero)
                     + (onlyMove ? Vector3.zero : extraMovement);
-
         transform.Translate(
             curDirection * Time.deltaTime,
             Space.Self
@@ -259,17 +252,16 @@ public class MonsterBattleController : MonoBehaviour
     }
     void executeSkill(SkillStat skillStat, List<int> targetList)
     {
-        if (stopTime == 0f)
+        if (castingTime == -1f)
         {
-            stopTime = skillStat.castingTime;
-        }
-        if (stopTime < 0f)
+            castingTime = skillStat.castingTime;
+        } else if (castingTime == 0f)
         {
             curSkillStat = null;
             skillTimer[skillStat.skillName] = 0f;
             anim.SetFloat("BattleState", 1f);
             SkillExecutor.execute(skillStat, this, targetList);
-            stopTime = 0f;
+            castingTime = -1f;
         }
     }
 
@@ -279,6 +271,12 @@ public class MonsterBattleController : MonoBehaviour
         hpController.updateGauge(curHp <= 0f ? 0 : (int)curHp);
         if (curHp <= 0f)
         {
+            Destroy(anim);
+            Destroy(animHit);
+            Destroy(spriteHit);
+            bg.GetComponent<SpriteRenderer>().sprite = Resources.LoadAll<Sprite>(
+                PathInfo.SPRITE + speciesInfo.resourcePath
+                )[entryNum.x == 0 ? 13 : 12];
             isDead = true;
         }
     }
