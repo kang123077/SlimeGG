@@ -93,15 +93,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b9e4a6d127e4334fa4cd26119c939e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stopTime: 0
   maxHp: 0
-  curHp: 0
-  def: 0
   distanceAllies: []
   distanceEnemies: []
   skillStatList: []
-  curKnockback: {x: 0, y: 0, z: 0}
-  curDash: {x: 0, y: 0, z: 0}
-  bulletPrefab: {fileID: 2817938927849035747, guid: ac7b6b614ca4e724586c56427b1d9456, type: 3}
+  extraMovement: {x: 0, y: 0, z: 0}
+  projectilePrefab: {fileID: 2817938927849035747, guid: ac7b6b614ca4e724586c56427b1d9456, type: 3}
 --- !u!1 &4468889928661400888
 GameObject:
   m_ObjectHideFlags: 0

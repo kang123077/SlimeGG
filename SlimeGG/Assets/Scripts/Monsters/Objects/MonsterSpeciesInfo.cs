@@ -3,8 +3,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 [System.Serializable]
-public class MonsterSpeciesInfo : MonsterAbilityStat
+public class MonsterSpeciesInfo
 {
+    // 저장을 위한 구성
+    public List<MonsterVariableStat> basic { get; set; }
+    public List<ElementStat> element { get; set; }
     [JsonConverter(typeof(StringEnumConverter))]
     public MonsterSpeciesEnum species { get; set; }
     [JsonConverter(typeof(StringEnumConverter))]
@@ -13,32 +16,21 @@ public class MonsterSpeciesInfo : MonsterAbilityStat
     public List<MonsterSkillEnum> skills { get; set; }
     public string resourcePath { get; set; }
 
-    override public string ToString()
+    // 실제로 사용하는 값
+    public Dictionary<MonsterVariableEnum, MonsterVariableStat> basicDict { get; set; }
+    public Dictionary<ElementEnum, ElementStat> elementDict { get; set; }
+
+    public void extractInfo()
     {
-        string elementToString = string.Empty;
-        string statsToString = string.Empty;
-        string skillsToString = string.Empty;
-
-        elements.ForEach((str) =>
+        basicDict = new Dictionary<MonsterVariableEnum, MonsterVariableStat>();
+        elementDict = new Dictionary<ElementEnum, ElementStat>();
+        foreach (MonsterVariableStat stat in basic)
         {
-            elementToString += str + ", ";
-        });
-        stats.ForEach((str) =>
+            basicDict[stat.name] = stat;
+        }
+        foreach (ElementStat stat in element)
         {
-            statsToString += str + ", ";
-        });
-        skills.ForEach((str) =>
-        {
-            skillsToString += str + ", ";
-        });
-
-        return $"\n" +
-            $"{species.ToString()}\n" +
-            $"{stage.ToString()}\n" +
-            $"{elementToString}\n" +
-            $"{statsToString}\n" +
-            $"{skillsToString}\n"
-            ;
+            elementDict[stat.name] = stat;
+        }
     }
-
 }

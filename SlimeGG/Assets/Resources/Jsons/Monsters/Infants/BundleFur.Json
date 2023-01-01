@@ -1,17 +1,32 @@
 {
   "species": "BundleFur",
   "stage": "Infant",
-  "elements": [
-    "Animal"
-  ],
   "skills": [
     "Normal"
   ],
   "resourcePath": "Monsters/Infants/BundleFur",
-  "hp": 100,
-  "def": 20,
-  "spd": 1.2,
-  "stats": [
-    2.0
+  "basic": [
+    {
+      "name": "hp",
+      "amount": 100
+    },
+    {
+      "name": "atk",
+      "amount": 1
+    },
+    {
+      "name": "def",
+      "amount": 20
+    },
+    {
+      "name": "spd",
+      "amount": 1.2
+    }
+  ],
+  "element": [
+    {
+      "name": "Animal",
+      "amount": 3
+    }
   ]
 }

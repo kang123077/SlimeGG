@@ -1,19 +1,36 @@
 {
   "species": "BabySpirit",
   "stage": "Infant",
-  "elements": [
-    "Wind",
-    "Spirit"
-  ],
   "skills": [
     "Spit"
   ],
   "resourcePath": "Monsters/Infants/BabySpirit",
-  "hp": 50,
-  "def": 15,
-  "spd": 1,
-  "stats": [
-    2.0,
-    2.0
+  "basic": [
+    {
+      "name": "hp",
+      "amount": 50
+    },
+    {
+      "name": "atk",
+      "amount": 1
+    },
+    {
+      "name": "def",
+      "amount": 15
+    },
+    {
+      "name": "spd",
+      "amount": 1
+    }
+  ],
+  "element": [
+    {
+      "name": "Wind",
+      "amount": 2
+    },
+    {
+      "name": "Spirit",
+      "amount": 1
+    }
   ]
 }
