@@ -1,12 +1,14 @@
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-[System.Serializable]
-public class ElementStat
+[SerializeField]
+public class ConditionHandlingStat
 {
     [JsonConverter(typeof(StringEnumConverter))]
-    public ElementEnum name;
-    public float amount;
+    public ConditionHandlingTypeEnum type;
     public bool isMultiple;
+    public float amount;
 }

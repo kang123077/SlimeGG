@@ -1,18 +1,15 @@
 {
   "skillName": "Scratch",
   "skillType": "ATTACK_NORMAL",
+  "projectileType": "Bullet",
   "numberOfTarget": 1,
   "range" : 1.3,
-  "amount": 17,
   "coolTime": 2.0,
-  "delayTime": 0.4,
-  "speed": -1,
-  "elements": [
-    "Earth",
-    "Insect"
-  ],
-  "stats": [
-    0.8,
-    0.2
-  ]
+  "speed": 100,
+  "castingTime": 0.4,
+  "effect": {
+    "type": "None",
+    "isMultiple": false,
+    "amount": -17
+  }
 }

@@ -1,18 +1,33 @@
 {
   "species": "MudBall",
   "stage": "Infant",
-  "elements": [
-    "Earth"
-  ],
   "skills": [
     "Normal",
     "Charge"
   ],
   "resourcePath": "Monsters/Infants/MudBall",
-  "hp": 80,
-  "def": 25,
-  "spd": 1.7,
-  "stats": [
-    4.0
+  "basic": [
+    {
+      "name": "hp",
+      "amount": 80
+    },
+    {
+      "name": "atk",
+      "amount": 1
+    },
+    {
+      "name": "def",
+      "amount": 25
+    },
+    {
+      "name": "spd",
+      "amount": 1.7
+    }
+  ],
+  "element": [
+    {
+      "name": "Earth",
+      "amount": 4
+    }
   ]
 }

@@ -1,20 +1,37 @@
 {
   "species": "Eartipede",
   "stage": "Youths",
-  "elements": [
-    "Earth",
-    "Insect"
-  ],
   "skills": [
     "Scratch",
     "Charge"
   ],
   "resourcePath": "Monsters/Youths/Eartipede",
-  "hp": 140,
-  "def": 45,
-  "spd": 1,
-  "stats": [
-    1.0,
-    4.0
+  "basic": [
+    {
+      "name": "hp",
+      "amount": 140
+    },
+    {
+      "name": "atk",
+      "amount": 1
+    },
+    {
+      "name": "def",
+      "amount": 20
+    },
+    {
+      "name": "spd",
+      "amount": 1
+    }
+  ],
+  "element": [
+    {
+      "name": "Animal",
+      "amount": 3
+    },
+    {
+      "name": "Insect",
+      "amount": 4
+    }
   ]
 }

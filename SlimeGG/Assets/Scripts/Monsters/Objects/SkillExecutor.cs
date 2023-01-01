@@ -118,99 +118,41 @@ public static class SkillExecutor
         switch (skillToUse.skillType)
         {
             case MonsterSkillTypeEnum.ATTACK_NORMAL:
-                attackNormal(skillToUse, caster, targetIndexList);
                 break;
             case MonsterSkillTypeEnum.ATTACK_DASH:
-                attackDash(skillToUse, caster, targetIndexList);
+                controllPosition(5f, caster, targetIndexList);
                 break;
             case MonsterSkillTypeEnum.ATTACK_ASSASSIN:
-                attackAssassin(skillToUse, caster, targetIndexList);
                 break;
             case MonsterSkillTypeEnum.HEAL:
-                healNormal(skillToUse, caster, targetIndexList);
                 break;
         }
+        createProjectile(skillToUse, caster, targetIndexList);
     }
 
-    private static void attackNormal(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
+    private static void controllPosition(float amount, MonsterBattleController caster, List<int> targetIndexList)
     {
-        float knockBackRate = skillStat.amount * Random.Range(0.5f, 1f);
-        int targetCnt = 0;
-        foreach (int i in targetIndexList)
-        {
-            if (targetCnt < skillStat.numberOfTarget)
-            {
-                targetCnt++;
-                Transform targetTf = caster.enemies[i];
-                targetTf.GetComponent<MonsterBattleController>().curKnockback =
-                    Vector3.Normalize(
-                        new Vector3(
-                            (targetTf.localPosition.x - caster.transform.localPosition.x) * Random.Range(1f, 10f),
-                            (targetTf.localPosition.y - caster.transform.localPosition.y) * Random.Range(1f, 10f),
-                            0f
-                            )
-                        ) * knockBackRate;
-                createBullet(skillStat, caster, targetTf.GetComponent<MonsterBattleController>());
-            }
-            else
-            {
-                break;
-            }
-        }
+        Vector3 movPos = caster.transform.position;
+        Vector3 tarPos = caster.enemies[targetIndexList[0]].transform.position;
+        caster.extraMovement += Vector3.Normalize(tarPos - movPos) * amount * 3f;
     }
 
-    private static void attackDash(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
-    {
-        float knockBackRate = skillStat.amount * Random.Range(1f, 3f);
-        int targetCnt = 0;
-        foreach (int i in targetIndexList)
-        {
-            if (targetCnt < skillStat.numberOfTarget)
-            {
-                targetCnt++;
-                Transform targetTf = caster.enemies[i];
-                targetTf.GetComponent<MonsterBattleController>().curKnockback =
-                    Vector3.Normalize(
-                        new Vector3(
-                            (targetTf.localPosition.x - caster.transform.localPosition.x) * Random.Range(1f, 10f),
-                            (targetTf.localPosition.y - caster.transform.localPosition.y) * Random.Range(1f, 10f),
-                            0f
-                            )
-                        ) * knockBackRate / 2f;
-                caster.curDash =
-                    Vector3.Normalize(
-                        new Vector3(
-                            (targetTf.localPosition.x - caster.transform.localPosition.x) * Random.Range(1f, 10f),
-                            (targetTf.localPosition.y - caster.transform.localPosition.y) * Random.Range(1f, 10f),
-                            0f
-                            )
-                        ) * knockBackRate * 2;
-                createBullet(skillStat, caster, targetTf.GetComponent<MonsterBattleController>());
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
-
-    private static void attackAssassin(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
-    {
-
-    }
-
-    private static void healNormal(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
-    {
-
-    }
-
-    private static void createBullet(SkillStat skillStat, MonsterBattleController caster, MonsterBattleController target)
+    private static void createProjectile(SkillStat skillStat, MonsterBattleController caster, List<int> targetIndexList)
     {
         for (int i = 0; i < skillStat.count; i++)
         {
-            GameObject bullet = caster.generateBullet();
-            bullet.GetComponent<BulletController>().initInfo(skillStat, caster, target, skillStat.speed);
+            if (i < targetIndexList.Count)
+            {
+                GameObject bullet = caster.generateBullet();
+                bullet.GetComponent<ProjectileController>().initInfo(
+                    skillStat, 
+                    caster, 
+                    caster.enemies[targetIndexList[i]].GetComponent<MonsterBattleController>()
+                    );
+            } else
+            {
+                return;
+            }
         }
     }
-
 }

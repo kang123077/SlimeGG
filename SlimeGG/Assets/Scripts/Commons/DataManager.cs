@@ -7,6 +7,7 @@ public class DataManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         // 몬스터 정보 불러오기
         foreach (string folderName in CommonFunctions.loadFileNamesFromFolder(
             "Assets/Resources/Jsons/Monsters"
@@ -18,10 +19,12 @@ public class DataManager : MonoBehaviour
                 $"Assets/Resources/Jsons/Monsters/{folderName}"
                 ))
                 {
-                    LocalDictionary.monsters[Enum.Parse<MonsterSpeciesEnum>(fileName)] =
+                    MonsterSpeciesInfo tempMM =
                         CommonFunctions.loadObjectFromJson<MonsterSpeciesInfo>(
                             $"Assets/Resources/Jsons/Monsters/{folderName}/{fileName}"
                             );
+                    tempMM.extractInfo();
+                    LocalDictionary.monsters[Enum.Parse<MonsterSpeciesEnum>(fileName)] = tempMM;
                 }
             }
         }
@@ -86,10 +89,15 @@ public class DataManager : MonoBehaviour
         }
 
         // 세이브 정보 불러오기
-        //      몬스터
-        LocalStorage.monsters = CommonFunctions.loadObjectFromJson<List<MonsterInfo>>(
+        //      몬스터4
+        List<MonsterInfo> temp = CommonFunctions.loadObjectFromJson<List<MonsterInfo>>(
             "Assets/Resources/Jsons/Save/Monsters"
             );
+        foreach(MonsterInfo tempM in temp)
+        {
+            tempM.extractInfo();
+            LocalStorage.monsters.Add(tempM);
+        }
         LocalStorage.MONSTER_DATACALL_DONE = true;
 
         //      타일셋

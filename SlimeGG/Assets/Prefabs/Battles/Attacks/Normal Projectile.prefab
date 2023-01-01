@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5973414225921957594}
-  - component: {fileID: 8436654093277218236}
   - component: {fileID: 8971843685243670609}
   - component: {fileID: 4885210274877451193}
+  - component: {fileID: 8853143298711886979}
   m_Layer: 0
-  m_Name: Normal Bullet
+  m_Name: Normal Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,18 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8436654093277218236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2817938927849035747}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82f1a8ab49324de4baf1ccfdb8a02720, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &8971843685243670609
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -118,3 +106,15 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8853143298711886979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2817938927849035747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1b2acaea8691334db327d936d97d892, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
