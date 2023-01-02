@@ -1,0 +1,54 @@
+{
+  "range": 6,
+  "targetType": "ENEMY_FAR",
+  "coolTime": 5.0,
+  "castingTime": 2.2,
+  "toCaster": [
+    {
+      "name": "position",
+      "amount": -1,
+      "isMultiple": false,
+      "duration": 0,
+      "tickTime": 0
+    }
+  ],
+  "projectiles": [
+    {
+      "spd": 6,
+      "src": "",
+      "isTarget": false,
+      "area": {
+        "duration": 3,
+        "range": 2.5,
+        "src": "",
+        "effects": {
+          "instant": [
+            {
+              "name": "spd",
+              "amount": -0.1,
+              "isMultiple": true,
+              "durationTime": 0.5,
+              "tickTime": 0
+            },
+            {
+              "name": "hp",
+              "amount": -31,
+              "isMultiple": false,
+              "durationTime": 0,
+              "tickTime": 0
+            }
+          ],
+          "sustain": [
+            {
+              "name": "hp",
+              "amount": -5,
+              "isMultiple": false,
+              "durationTime": 2,
+              "tickTime": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

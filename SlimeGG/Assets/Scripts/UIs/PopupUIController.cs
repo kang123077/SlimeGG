@@ -19,7 +19,7 @@ public class PopupUIController : MonoBehaviour
         //    );
     }
 
-    public void generateUI(MonsterInfo monsterInfo)
+    public void generateUI(MonsterFarmInfo monsterInfo)
     {
         headerUI.text = string.Format($"Monster");
         infoUI.text =

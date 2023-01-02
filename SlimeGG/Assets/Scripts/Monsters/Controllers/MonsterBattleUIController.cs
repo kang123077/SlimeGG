@@ -14,7 +14,7 @@ public class MonsterBattleUIController : MonoBehaviour
     new Vector3(125f, 450f, 0f)};
     private MonsterBattleController target;
     private Transform trackingTf;
-    private Dictionary<MonsterSkillEnum, Transform> skillTfList = new Dictionary<MonsterSkillEnum, Transform>();
+    private Dictionary<string, Transform> skillTfList = new Dictionary<string, Transform>();
     private bool isDead = false;
 
     void Start()
@@ -23,7 +23,7 @@ public class MonsterBattleUIController : MonoBehaviour
 
     void Update()
     {
-        if (LocalStorage.BATTLE_SCENE_LOADING_DONE &&
+        if (BattleManager.isBattleReady &&
             !LocalStorage.IS_BATTLE_FINISH &&
             !LocalStorage.IS_GAME_PAUSE &&
             !isDead)
@@ -51,9 +51,9 @@ public class MonsterBattleUIController : MonoBehaviour
         tempTf = tempTf.Find("Skills");
         this.target = target;
         int affordable = 1;
-        foreach (SkillStat skillStat in target.skillStatList)
+        foreach (KeyValuePair<string, SkillStat> skillStat in target.monsterBattleInfo.skills)
         {
-            skillTfList[skillStat.skillName] = tempTf.Find($"{affordable}");
+            skillTfList[skillStat.Key] = tempTf.Find($"{affordable}");
             affordable++;
         }
         if (side == 1)
@@ -72,16 +72,16 @@ public class MonsterBattleUIController : MonoBehaviour
         if (target.isDead)
         {
             trackingTf.GetComponent<RawImage>().color = new Vector4(0.5f, 0.5f, 0.5f, 1f);
-            foreach (SkillStat skillStat in target.skillStatList)
+            foreach (KeyValuePair<string, SkillStat> skillStat in target.monsterBattleInfo.skills)
             {
-                skillTfList[skillStat.skillName].Find("CoolTime").GetComponent<Image>().type = Image.Type.Simple;
+                skillTfList[skillStat.Key].Find("CoolTime").GetComponent<Image>().type = Image.Type.Simple;
             }
             isDead = true;
         }
-        foreach (SkillStat skillStat in target.skillStatList)
+        foreach (KeyValuePair<string, SkillStat> skillStat in target.monsterBattleInfo.skills)
         {
-            skillTfList[skillStat.skillName].Find("CoolTime").GetComponent<Image>().fillAmount = 
-                1 - (target.skillTimer[skillStat.skillName] / skillStat.coolTime);
+            skillTfList[skillStat.Key].Find("CoolTime").GetComponent<Image>().fillAmount = 
+                1 - Mathf.Min((skillStat.Value.timeCharging / skillStat.Value.coolTime), 1f);
         }
     }
 

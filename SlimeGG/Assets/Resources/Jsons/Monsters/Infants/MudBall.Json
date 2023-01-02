@@ -1,11 +1,8 @@
 {
-  "species": "MudBall",
-  "stage": "Infant",
   "skills": [
-    "Normal",
     "Charge"
   ],
-  "resourcePath": "Monsters/Infants/MudBall",
+  "src": "Monsters/Infants/MudBall",
   "basic": [
     {
       "name": "hp",

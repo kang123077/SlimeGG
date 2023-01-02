@@ -1,11 +1,9 @@
 {
-  "species": "Sneaklower",
-  "stage": "Youths",
   "skills": [
     "Spit",
     "SpitDouble"
   ],
-  "resourcePath": "Monsters/Youths/Sneaklower",
+  "src": "Monsters/Youths/Sneaklower",
   "basic": [
     {
       "name": "hp",

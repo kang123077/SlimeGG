@@ -1,10 +1,8 @@
 {
-  "species": "BundleFur",
-  "stage": "Infant",
   "skills": [
-    "Normal"
+    "Scratch"
   ],
-  "resourcePath": "Monsters/Infants/BundleFur",
+  "src": "Monsters/Infants/BundleFur",
   "basic": [
     {
       "name": "hp",

@@ -1,10 +1,8 @@
 {
-  "species": "Sleepion",
-  "stage": "Infant",
   "skills": [
-    "Normal"
+    "Scratch"
   ],
-  "resourcePath": "Monsters/Infants/Sleepion",
+  "src": "Monsters/Infants/Sleepion",
   "basic": [
     {
       "name": "hp",
