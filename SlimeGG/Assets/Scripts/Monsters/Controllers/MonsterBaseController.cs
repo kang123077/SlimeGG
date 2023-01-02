@@ -7,25 +7,25 @@ public class MonsterBaseController : MonoBehaviour
     private float zCoor = 18f;
     private Vector2 direction = new Vector2(0f, 0f);
     private Transform curTileSet;
-    private MonsterInfo monsterInfo;
+    private MonsterFarmInfo monsterInfo;
     private float moveTime = 0f;
     private bool isStopped = false;
     private Vector2 correctionCoor;
     private Transform bg;
     private Animator anim;
 
-    public void initInfo(MonsterInfo monsterInfo)
+    public void initInfo(MonsterFarmInfo monsterInfo)
     {
         this.monsterInfo = monsterInfo;
         bg = transform.Find("Image");
         bg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(
-            PathInfo.SPRITE + LocalDictionary.monsters[monsterInfo.accuSpecies.Last()].resourcePath
+            PathInfo.SPRITE + monsterInfo.src
             );
         Destroy(bg.GetComponent<PolygonCollider2D>());
         bg.AddComponent<PolygonCollider2D>();
         anim = bg.GetComponent<Animator>();
         anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
-            PathInfo.ANIMATION + LocalDictionary.monsters[monsterInfo.accuSpecies.Last()].resourcePath + "/Controller"
+            PathInfo.ANIMATION + monsterInfo.src + "/Controller"
             );
     }
 

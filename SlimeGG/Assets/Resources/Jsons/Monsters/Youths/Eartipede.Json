@@ -1,11 +1,9 @@
 {
-  "species": "Eartipede",
-  "stage": "Youths",
   "skills": [
     "Scratch",
     "Charge"
   ],
-  "resourcePath": "Monsters/Youths/Eartipede",
+  "src": "Monsters/Youths/Eartipede",
   "basic": [
     {
       "name": "hp",

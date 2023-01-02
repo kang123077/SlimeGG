@@ -1,9 +1,7 @@
 {
-  "species": "Egg",
-  "stage": "Egg",
   "skills": [
   ],
-  "resourcePath": "Monsters/Egg/Egg",
+  "src": "Monsters/Egg/Egg",
   "basic": [
     {
       "name": "hp",

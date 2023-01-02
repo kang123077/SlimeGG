@@ -47,15 +47,15 @@ public class ProjectileController : MonoBehaviour
 
     private void moveTo()
     {
-        transform.Translate(
-            Vector3.Normalize((isTargeting ? target.transform.position : targetPos) - transform.position) * skillStat.speed * Time.deltaTime
-            );
-        if (anim != null)
-        {
-            anim.SetFloat("DirectionX",
-                (target.transform.position.x - transform.position.x) > 0f ? 1f : -1f
-            );
-        }
+        //transform.Translate(
+        //    Vector3.Normalize((isTargeting ? target.transform.position : targetPos) - transform.position) * skillStat.speed * Time.deltaTime
+        //    );
+        //if (anim != null)
+        //{
+        //    anim.SetFloat("DirectionX",
+        //        (target.transform.position.x - transform.position.x) > 0f ? 1f : -1f
+        //    );
+        //}
     }
 
     public void initInfo(
@@ -112,31 +112,31 @@ public class ProjectileController : MonoBehaviour
 
     private void handleCondition()
     {
-        switch (projectileType)
-        {
-            case ProjectileTypeEnum.Bullet:
-                ConditionHandlingExecutor.execute(skillStat, caster, new MonsterBattleController[] { target });
-                Destroy(transform.gameObject);
-                return;
-            case ProjectileTypeEnum.Explosive:
-                ConditionHandlingExecutor.execute(skillStat, caster, identifyTargetList());
-                Destroy(transform.gameObject);
-                return;
-            case ProjectileTypeEnum.Aura:
-            case ProjectileTypeEnum.Area:
-                tickTime += Time.deltaTime;
-                if (tickTime >= 0f)
-                {
-                    ConditionHandlingExecutor.execute(skillStat, caster, identifyTargetList());
-                    tickTime -= skillStat.delayTime;
-                }
-                installTime += Time.deltaTime;
-                if (installTime >= skillStat.durationTime)
-                {
-                    Destroy(transform.gameObject);
-                }
-                break;
-        }
+        //switch (projectileType)
+        //{
+        //    case ProjectileTypeEnum.Bullet:
+        //        ConditionHandlingExecutor.execute(skillStat, caster, new MonsterBattleController[] { target });
+        //        Destroy(transform.gameObject);
+        //        return;
+        //    case ProjectileTypeEnum.Explosive:
+        //        ConditionHandlingExecutor.execute(skillStat, caster, identifyTargetList());
+        //        Destroy(transform.gameObject);
+        //        return;
+        //    case ProjectileTypeEnum.Aura:
+        //    case ProjectileTypeEnum.Area:
+        //        tickTime += Time.deltaTime;
+        //        if (tickTime >= 0f)
+        //        {
+        //            ConditionHandlingExecutor.execute(skillStat, caster, identifyTargetList());
+        //            tickTime -= skillStat.delayTime;
+        //        }
+        //        installTime += Time.deltaTime;
+        //        if (installTime >= skillStat.durationTime)
+        //        {
+        //            Destroy(transform.gameObject);
+        //        }
+        //        break;
+        //}
     }
 
     private MonsterBattleController[] identifyTargetList()

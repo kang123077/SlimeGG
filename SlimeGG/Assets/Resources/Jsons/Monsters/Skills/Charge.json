@@ -1,15 +1,54 @@
 {
-  "skillName": "Charge",
-  "skillType": "ATTACK_DASH",
-  "projectileType": "Bullet",
-  "numberOfTarget": 1,
-  "range" : 5.3,
-  "coolTime": 4.0,
-  "speed": 100,
+  "range": 3,
+  "targetType": "ENEMY_CLOSE",
+  "coolTime": 3.0,
   "castingTime": 0.55,
-  "effect": {
-    "type": "Stun",
-    "isMultiple": false,
-    "amount": -12
-  }
+  "toCaster": [
+    {
+      "name": "position",
+      "amount": 3,
+      "isMultiple": false,
+      "duration": 0,
+      "tickTime": 0
+    }
+  ],
+  "projectiles": [
+    {
+      "spd": 100,
+      "src": null,
+      "isTarget": true,
+      "effects": {
+        "instant": [
+          {
+            "name": "position",
+            "amount": -1.5,
+            "isMultiple": false,
+            "duration": 0,
+            "tickTime": 0
+          },
+          {
+            "name": "hp",
+            "amount": -13,
+            "isMultiple": false,
+            "duration": 0,
+            "tickTime": 0
+          },
+          {
+            "name": "timeMoveCycle",
+            "amount": -1,
+            "isMultiple": false,
+            "duration": 0.5,
+            "tickTime": 0
+          },
+          {
+            "name": "timeCoolCycle",
+            "amount": -1,
+            "isMultiple": false,
+            "duration": 0.5,
+            "tickTime": 0
+          }
+        ]
+      }
+    }
+  ]
 }
