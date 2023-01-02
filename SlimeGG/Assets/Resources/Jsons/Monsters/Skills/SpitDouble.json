@@ -1,18 +1,41 @@
 {
-  "skillName": "SpitDouble",
-  "skillType": "ATTACK_NORMAL",
-  "projectileType": "Bullet",
-  "numberOfTarget": 1,
-  "range" : 4.2,
-  "coolTime": 2.5,
-  "speed": 5,
-  "count": 2,
-  "resourcePath": "Effects/Attacks/FarNormal",
+  "range": 4.2,
+  "targetType": "ENEMY_CLOSE",
+  "coolTime": 2.6,
   "castingTime": 0.3,
-  "delayTime": 0.2,
-  "effect": {
-    "type": "None",
-    "isMultiple": false,
-    "amount": -7
-  }
+  "delayProjectile": 0.1,
+  "projectiles": [
+    {
+      "spd": 5,
+      "src": "Effects/Attacks/FarNormal",
+      "isTarget": true,
+      "effects": {
+        "instant": [
+          {
+            "name": "hp",
+            "amount": -7,
+            "isMultiple": false,
+            "duration": 0,
+            "tickTime": 0
+          }
+        ]
+      }
+    },
+    {
+      "spd": 5,
+      "src": "Effects/Attacks/FarNormal",
+      "isTarget": true,
+      "effects": {
+        "instant": [
+          {
+            "name": "hp",
+            "amount": -7,
+            "isMultiple": false,
+            "duration": 0,
+            "tickTime": 0
+          }
+        ]
+      }
+    }
+  ]
 }

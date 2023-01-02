@@ -1,10 +1,8 @@
 {
-  "species": "BabySpirit",
-  "stage": "Infant",
   "skills": [
     "Spit"
   ],
-  "resourcePath": "Monsters/Infants/BabySpirit",
+  "src": "Monsters/Infants/BabySpirit",
   "basic": [
     {
       "name": "hp",

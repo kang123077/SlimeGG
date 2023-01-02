@@ -1,16 +1,24 @@
 {
-  "skillName": "Spit",
-  "skillType": "ATTACK_NORMAL",
-  "projectileType": "Bullet",
-  "numberOfTarget": 1,
-  "range" : 3.4,
+  "range": 3.4,
+  "targetType": "ENEMY_CLOSE",
   "coolTime": 1.0,
-  "speed": 5,
-  "resourcePath": "Effects/Attacks/FarNormal",
   "castingTime": 0.2,
-  "effect": {
-    "type": "None",
-    "isMultiple": false,
-    "amount": -8
-  }
+  "projectiles": [
+    {
+      "spd": 5,
+      "src": "Effects/Attacks/FarNormal",
+      "isTarget": true,
+      "effects": {
+        "instant": [
+          {
+            "name": "hp",
+            "amount": -8,
+            "isMultiple": false,
+            "duration": 0,
+            "tickTime": 0
+          }
+        ]
+      }
+    }
+  ]
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MonsterGenerator : MonoBehaviour
@@ -24,10 +25,10 @@ public class MonsterGenerator : MonoBehaviour
         }
     }
 
-    private void generateMonster(MonsterInfo monsterInfo)
+    private void generateMonster(MonsterVO monsterInfo)
     {
         GameObject newMonster = Instantiate(monsterBase);
-        newMonster.GetComponent<MonsterBaseController>().initInfo(monsterInfo);
+        newMonster.GetComponent<MonsterBaseController>().initInfo(MonsterCommonFunction.generateMonsterFarmInfo(monsterInfo, LocalDictionary.speices[monsterInfo.accuSpecies.Last()]));
         newMonster.GetComponent<MonsterBaseController>().assignMonsterToTileSet(LocalStorage.tileSetTransforms[monsterInfo.installedPosition], false);
         newMonster.transform.localPosition = new Vector3(0f, 0f, 0f);
     }

@@ -1,15 +1,40 @@
 {
-  "skillName": "Scratch",
-  "skillType": "ATTACK_NORMAL",
-  "projectileType": "Bullet",
-  "numberOfTarget": 1,
-  "range" : 1.3,
+  "range": 1.3,
+  "targetType": "ENEMY_CLOSE",
   "coolTime": 2.0,
-  "speed": 100,
-  "castingTime": 0.4,
-  "effect": {
-    "type": "None",
-    "isMultiple": false,
-    "amount": -17
-  }
+  "castingTime": 0.35,
+  "toCaster": [
+    {
+      "name": "position",
+      "amount": 0.5,
+      "isMultiple": false,
+      "duration": 0,
+      "tickTime": 0
+    }
+  ],
+  "projectiles": [
+    {
+      "spd": 100,
+      "src": null,
+      "isTarget": true,
+      "effects": {
+        "instant": [
+          {
+            "name": "position",
+            "amount": -0.5,
+            "isMultiple": false,
+            "duration": 0,
+            "tickTime": 0
+          },
+          {
+            "name": "hp",
+            "amount": -9,
+            "isMultiple": false,
+            "duration": 0,
+            "tickTime": 0
+          }
+        ]
+      }
+    }
+  ]
 }
