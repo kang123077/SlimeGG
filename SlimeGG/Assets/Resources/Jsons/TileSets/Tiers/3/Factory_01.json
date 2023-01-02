@@ -1,0 +1,17 @@
+{
+	"name": "Factory_01",
+	"nickName": "FactoryTile01",
+	"tier": 3,
+	"tileSetShape": "StraightHorizontal3",
+	"elements": [
+	  "Electric",
+	  "Machine",
+	  "Steel"
+	],
+	"stats": [
+	  0.8,
+	  1.2,
+	  0.6
+	],
+	"resourcePath": "TileSets/3/Factory_01"
+  }

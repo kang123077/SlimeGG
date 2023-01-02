@@ -10,7 +10,7 @@ public enum ElementEnum
     Light, // 빛 ★
     Dark, // 어둠 ★
     Electric, // 전기 ★
-    Glass, // 풀 ★
+    Grass, // 풀 ★
     Steel, // 강철 ★
     Devil, // 악마 (Demon?)
     Angel, // 천사

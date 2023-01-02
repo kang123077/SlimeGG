@@ -1,0 +1,22 @@
+{
+  "species": "SteelOre",
+  "stage": "Infant",
+  "elements": [
+    "Earth",
+    "Steel",
+    "Golem"
+  ],
+  "skills": [
+    "Normal",
+    "Charge"
+  ],
+  "resourcePath": "Monsters/Lv2s/MetalOre",
+  "hp": 80,
+  "def": 60,
+  "spd": 1.5,
+  "stats": [
+    24,
+    32,
+    18
+  ]
+}

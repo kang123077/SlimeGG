@@ -5,6 +5,14 @@
   },
   {
     "name": "Volcano_01",
+    "installedPosition": [1, 0]
+  },
+  {
+    "name": "Factory_01",
+    "installedPosition": [2, 0]
+  },
+  {
+    "name": "GrassField_01",
     "installedPosition": [0, 1]
   }
 ]

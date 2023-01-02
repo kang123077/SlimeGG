@@ -35,7 +35,7 @@ public class PopupUIController : MonoBehaviour
         for (int i = 0; i < monsterInfo.elements.Count; i++)
         {
             elementUI.Append($"{monsterInfo.elements[i]} : ");
-            elementUI.Append($"{monsterInfo.stats[i]}\n");
+            elementUI.Append($"{Mathf.Round(monsterInfo.stats[i] * 10) / 10}\n");
         }
 
         StringBuilder skillUI = new StringBuilder();

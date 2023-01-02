@@ -1,0 +1,19 @@
+{
+	"name": "GrassField_01",
+	"nickName": "GrassFieldTile01",
+	"tier": 2,
+	"tileSetShape": "Diamond",
+	"elements": [
+	  "Grass",
+	  "Wind",
+	  "Animal",
+	  "Insect"
+	],
+	"stats": [
+	  1.0,
+	  0.8,
+	  0.6,
+	  0.6
+	],
+	"resourcePath": "TileSets/2/GrassField_01"
+  }

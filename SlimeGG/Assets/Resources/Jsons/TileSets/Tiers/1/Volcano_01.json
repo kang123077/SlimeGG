@@ -2,7 +2,7 @@
   "name": "Volcano_01",
   "nickName": "VolcanoTile01",
   "tier": 1,
-  "tileSetShape": "Single",
+  "tileSetShape": "StraightVertical2",
   "elements": [
     "Earth",
     "Golem",

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+
 public class TileSetController : MonoBehaviour
 {
     [SerializeField]
@@ -266,7 +267,7 @@ public class TileSetController : MonoBehaviour
                             monsters[j].GetComponent<MonsterBaseController>().monsterInfo.elements[k])
                     {
                         monsters[j].GetComponent<MonsterBaseController>().monsterInfo.stats[k] +=
-                            LocalDictionary.tileSets[tileSetBriefInfo.name].stats[i];
+                        LocalDictionary.tileSets[tileSetBriefInfo.name].stats[i];
                         newElements = false;
                         break;
                     }
