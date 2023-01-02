@@ -89,9 +89,9 @@ public static class ConditionHandlingExecutor
 
     private static void activateHitEffect(MonsterSkillTypeEnum skillType, MonsterBattleController[] targetList)
     {
-        foreach (MonsterBattleController target in targetList)
-        {
-            target.activateHitEffect(skillType, false);
-        }
+        //foreach (MonsterBattleController target in targetList)
+        //{
+        //    target.activateHitEffect(skillType, false);
+        //}
     }
 }

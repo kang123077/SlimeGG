@@ -6,10 +6,8 @@ using UnityEngine.Rendering;
 
 public class MonsterBattleController : MonoBehaviour
 {
-    private Vector2 entryNum { get; set; }
+    public Vector2 entryNum { get; set; }
     private Vector2 fieldSize { get; set; }
-    public Transform[] allies { get; set; }
-    public Transform[] enemies { get; set; }
     public MonsterInfo monsterInfo { get; set; }
     public MonsterInfo currentMonsterInfo { get; set; }
     public MonsterSpeciesInfo speciesInfo { get; set; }
@@ -20,9 +18,6 @@ public class MonsterBattleController : MonoBehaviour
     private float animTime = 0f;
     private float castingTime = -1f;
     public float maxHp;
-
-    public float[] distanceAllies;
-    public float[] distanceEnemies;
 
     private SkillStat curSkillStat = null;
 
@@ -87,13 +82,9 @@ public class MonsterBattleController : MonoBehaviour
             );
     }
 
-    public void setFieldInfo(Vector2 fieldSize, Vector2 entryNum, Transform[] allies, Transform[] enemies)
+    public void setFieldInfo(Vector2 fieldSize, Vector2 entryNum)
     {
         this.entryNum = entryNum;
-        this.allies = allies;
-        this.enemies = enemies;
-        distanceAllies = new float[allies.Length];
-        distanceEnemies = new float[enemies.Length];
         hpController.setSide(entryNum.x);
         anim.SetFloat("DirectionX", entryNum.x == 0f ? 1f : -1f);
         this.fieldSize = fieldSize;
@@ -121,17 +112,9 @@ public class MonsterBattleController : MonoBehaviour
                         {
                             skillTimer[skillEnum] += Time.deltaTime;
                         }
-                        int[] closest = identifyTarget();
-                        moveTo(enemies[closest[1]]);
+                        int[] closest = FieldController.getClosestIndex(entryNum);
+                        moveTo(closest[1]);
                         passTimer();
-                        List<int> skillAvailableList = checkSkillsAvailable();
-                        if (skillAvailableList.Count > 0)
-                        {
-                            executeSkill(curSkillStat, skillAvailableList);
-                        } else
-                        {
-
-                        }
 
                         if (anim.GetFloat("BattleState") != 0f && animTime <= 1f)
                         {
@@ -159,89 +142,20 @@ public class MonsterBattleController : MonoBehaviour
         if (castingTime > 0f) castingTime = Mathf.Max(castingTime - Time.deltaTime, 0f);
     }
 
-    private int[] identifyTarget()
+    private void moveTo(int targetIdx)
     {
-        float closestLength = 0f;
-        int closestAllyIndex = 0;
-        for (int i = 0; i < allies.Length; i++)
-        {
-            if (i != entryNum.y)
-            {
-                if (allies[i] != null && !allies[i].GetComponent<MonsterBattleController>().isDead)
-                {
-                    distanceAllies[i] = Vector2.Distance(transform.localPosition, allies[i].localPosition);
-                    if (closestLength == 0f ||
-                        closestLength > distanceAllies[i])
-                    {
-                        closestLength = distanceAllies[i];
-                        closestAllyIndex = i;
-                    }
-                    else
-                    {
-                        distanceAllies[i] = -1f;
-                    }
-                }
-            }
-        }
-        closestLength = 0f;
-        int closestEnemyIndex = 0;
-        for (int i = 0; i < enemies.Length; i++)
-        {
-            if (enemies[i] != null && !enemies[i].GetComponent<MonsterBattleController>().isDead)
-            {
-                distanceEnemies[i] = Vector2.Distance(transform.localPosition, enemies[i].localPosition);
-                if (closestLength == 0f ||
-                    closestLength > distanceEnemies[i])
-                {
-                    closestLength = distanceEnemies[i];
-                    closestEnemyIndex = i;
-                }
-            }
-            else
-            {
-                distanceEnemies[i] = -1f;
-            }
-        }
-        return new int[] { closestAllyIndex, closestEnemyIndex };
-    }
-
-    private List<int> checkSkillsAvailable()
-    {
-        List<int> res = new List<int>();
-        foreach (SkillStat skillStat
-            in skillStatList)
-        {
-            if (skillStat.coolTime <= skillTimer[skillStat.skillName])
-            {
-                List<int> targetIndexList = SkillExecutor.selectTargetIndexList(skillStat, this);
-                if (targetIndexList.Count > 0)
-                {
-                    if (curSkillStat == null ||
-                        skillStat.coolTime >= curSkillStat.coolTime)
-                    {
-                        curSkillStat = skillStat;
-                        res = targetIndexList;
-                    }
-                }
-            }
-        }
-        return res;
-    }
-
-    private void moveTo(Transform target)
-    {
-        float curDistance = Vector3.Distance(target.localPosition, transform.localPosition);
+        MonsterBattleController target = LocalStorage.monsterBattleControllerList[entryNum.x == 0f ? 1 : 0][targetIdx];
         dirFromCenter = new Vector2(transform.position.x, transform.position.y) - (fieldSize / 2) / 5f;
         Vector3 direction =
                         new Vector3(
-                            target.localPosition.x - transform.localPosition.x - dirFromCenter.x,
-                            target.localPosition.y - transform.localPosition.y - dirFromCenter.y,
+                            target.transform.localPosition.x - transform.localPosition.x - dirFromCenter.x,
+                            target.transform.localPosition.y - transform.localPosition.y - dirFromCenter.y,
                             0f
                         );
         anim.SetFloat("DirectionX", direction.x);
         animHit.SetFloat("DirectionX", direction.x);
         Vector3 curDirection = (castingTime <= 0f
-                    ? (Vector3.Normalize((curDistance > distanceToKeep ? 1f : -1f) * direction)
+                    ? (Vector3.Normalize((FieldController.getDistanceBetween(entryNum, target.entryNum) > distanceToKeep ? 1f : -1f) * direction)
                         * currentMonsterInfo.basicDict[MonsterVariableEnum.spd].amount)
                     : Vector3.zero)
                     + (onlyMove ? Vector3.zero : extraMovement);
@@ -249,20 +163,6 @@ public class MonsterBattleController : MonoBehaviour
             curDirection * Time.deltaTime,
             Space.Self
         );
-    }
-    void executeSkill(SkillStat skillStat, List<int> targetList)
-    {
-        if (castingTime == -1f)
-        {
-            castingTime = skillStat.castingTime;
-        } else if (castingTime == 0f)
-        {
-            curSkillStat = null;
-            skillTimer[skillStat.skillName] = 0f;
-            anim.SetFloat("BattleState", 1f);
-            SkillExecutor.execute(skillStat, this, targetList);
-            castingTime = -1f;
-        }
     }
 
     private void checkCurrentHp()
@@ -279,23 +179,6 @@ public class MonsterBattleController : MonoBehaviour
                 )[entryNum.x == 0 ? 13 : 12];
             isDead = true;
         }
-    }
-
-    public void activateHitEffect(MonsterSkillTypeEnum skillType, bool isCritical)
-    {
-        if (anim == null) return;
-        float dir = anim.GetFloat("DirectionX");
-        animHit.transform.localPosition = Vector3.Normalize(new Vector3(dir, Random.Range(-dir, dir), 0f)) / 5f;
-        anim.SetFloat("BattleState", -1f);
-        animHit.SetFloat("isCritical", isCritical ? 2f : 1f);
-    }
-
-    public GameObject generateBullet()
-    {
-        float dir = anim.GetFloat("DirectionX");
-        GameObject res = Instantiate(projectilePrefab);
-        res.transform.position = transform.position + (Vector3.Normalize(new Vector3(dir, Random.Range(-dir, dir), 0f)) / 5f);
-        return res;
     }
 
     private void setTexturetoCamera(int side, int numPos)

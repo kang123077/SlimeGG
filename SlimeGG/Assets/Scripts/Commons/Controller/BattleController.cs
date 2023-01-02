@@ -18,7 +18,7 @@ public class BattleController : MonoBehaviour
         if (LocalStorage.BATTLE_SCENE_LOADING_DONE && !LocalStorage.IS_GAME_PAUSE)
         {
             bool isOneSideAllDead;
-            foreach (List<MonsterBattleController> sideList in LocalStorage.monsterBattleControllerList)
+            foreach (MonsterBattleController[] sideList in LocalStorage.monsterBattleControllerList)
             {
                 isOneSideAllDead = true;
                 foreach (MonsterBattleController battleController in sideList)

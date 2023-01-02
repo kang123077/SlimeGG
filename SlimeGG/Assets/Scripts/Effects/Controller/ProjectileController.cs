@@ -60,32 +60,32 @@ public class ProjectileController : MonoBehaviour
 
     public void initInfo(
         SkillStat skillStat,
-        MonsterBattleController caster,
-        MonsterBattleController target
+        Vector2 entryNum,
+        int target
         )
     {
-        this.skillStat = skillStat;
-        this.caster = caster;
-        projectileType = skillStat.projectileType;
-        if (skillStat.resourcePath != null)
-        {
-            anim = GetComponent<Animator>();
-            anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
-                PathInfo.ANIMATION + skillStat.resourcePath + "/Controller");
-        }
-        switch (projectileType)
-        {
-            case ProjectileTypeEnum.Bullet:
-            case ProjectileTypeEnum.Explosive:
-            case ProjectileTypeEnum.Aura:
-                isTargeting = true;
-                this.target = target;
-                break;
-            case ProjectileTypeEnum.Area:
-                isTargeting = false;
-                targetPos = target.transform.position;
-                break;
-        }
+        //this.skillStat = skillStat;
+        //this.caster = caster;
+        //projectileType = skillStat.projectileType;
+        //if (skillStat.resourcePath != null)
+        //{
+        //    anim = GetComponent<Animator>();
+        //    anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
+        //        PathInfo.ANIMATION + skillStat.resourcePath + "/Controller");
+        //}
+        //switch (projectileType)
+        //{
+        //    case ProjectileTypeEnum.Bullet:
+        //    case ProjectileTypeEnum.Explosive:
+        //    case ProjectileTypeEnum.Aura:
+        //        isTargeting = true;
+        //        this.target = target;
+        //        break;
+        //    case ProjectileTypeEnum.Area:
+        //        isTargeting = false;
+        //        targetPos = target.transform.position;
+        //        break;
+        //}
     }
 
     private void handleArrival()
@@ -142,13 +142,13 @@ public class ProjectileController : MonoBehaviour
     private MonsterBattleController[] identifyTargetList()
     {
         List<MonsterBattleController> res = new List<MonsterBattleController>();
-        foreach (Transform curTargetTf in caster.enemies)
-        {
-            if (Vector3.Distance(transform.position, curTargetTf.position) <= skillStat.durationTime)
-            {
-                res.Add(curTargetTf.GetComponent<MonsterBattleController>());
-            }
-        }
+        //foreach (Transform curTargetTf in caster.enemies)
+        //{
+        //    if (Vector3.Distance(transform.position, curTargetTf.position) <= skillStat.durationTime)
+        //    {
+        //        res.Add(curTargetTf.GetComponent<MonsterBattleController>());
+        //    }
+        //}
         return res.ToArray();
     }
 

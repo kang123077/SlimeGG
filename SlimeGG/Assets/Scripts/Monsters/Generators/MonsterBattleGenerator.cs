@@ -12,17 +12,11 @@ public class MonsterBattleGenerator : MonoBehaviour
     private GameObject monsterUIBase;
     [SerializeField]
     private GameObject monsterInfoUIGenerated;
-    private MonsterInfo[] monsterInfos = null;
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
 
     // Update is called once per frame
     void Update()
     {
-        if (fieldGenerated.GetComponent<FieldController>().monstersInBattle == null && monsterInfos == null &&
-            LocalStorage.DICTIONARY_LOADING_DONE && LocalStorage.MONSTER_DATACALL_DONE)
+        if (!LocalStorage.BATTLE_SCENE_LOADING_DONE && LocalStorage.DICTIONARY_LOADING_DONE && LocalStorage.MONSTER_DATACALL_DONE)
         {
             fieldGenerated.GetComponent<FieldController>().initField(LocalDictionary.fields[FieldNameEnum.Normal]);
             initGeneration();
@@ -31,7 +25,6 @@ public class MonsterBattleGenerator : MonoBehaviour
 
     public void initGeneration()
     {
-        monsterInfos = new MonsterInfo[4];
         test4on4();
 
         fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
@@ -43,7 +36,7 @@ public class MonsterBattleGenerator : MonoBehaviour
     {
         GameObject newMonster = Instantiate(monsterBase);
         newMonster.GetComponent<MonsterBattleController>().initInfo(monsterInfo);
-        LocalStorage.monsterBattleControllerList[side].Add(newMonster.GetComponent<MonsterBattleController>());
+        LocalStorage.monsterBattleControllerList[side][numPos] = newMonster.GetComponent<MonsterBattleController>();
         fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, side, numPos);
 
         GameObject newMonsterInfoUI = Instantiate(monsterUIBase);
