@@ -26,7 +26,8 @@ public class MonsterBattleController : MonoBehaviour
 
     private GaugeController hpController { get; set; }
 
-    private Vector2 dirFromCenter;
+    private int directionDistortion = 0;
+    private float timeDistortion = 0f;
 
     private Vector3 extraMovement = Vector3.zero;
 
@@ -121,6 +122,9 @@ public class MonsterBattleController : MonoBehaviour
         // 캐스팅 타임 관리
         if (castingTime > 0f) castingTime = Mathf.Max(castingTime - (Time.deltaTime * (1 + liveBattleInfo.basic[BasicStatEnum.timeCastingCycle].amount)), 0f);
 
+        // 방향 왜곡 지속 시간 관리
+        timeDistortion += Time.deltaTime;
+
         // 쿨타임 관리
         foreach (SkillStat skill in liveBattleInfo.skills.Values)
         {
@@ -201,20 +205,30 @@ public class MonsterBattleController : MonoBehaviour
     private void moveTo(int targetIdx)
     {
         MonsterBattleController target = BattleManager.monsterBattleControllerList[1 - (int)entryNum.x][targetIdx];
-        dirFromCenter = new Vector2(transform.position.x, transform.position.y) - (BattleManager.fieldSize / 2) / 5f;
         Vector3 direction =
                         new Vector3(
-                            target.transform.localPosition.x - transform.localPosition.x - dirFromCenter.x,
-                            target.transform.localPosition.y - transform.localPosition.y - dirFromCenter.y,
+                            target.transform.localPosition.x - transform.localPosition.x,
+                            target.transform.localPosition.y - transform.localPosition.y,
                             0f
                         );
         anim.SetFloat("DirectionX", direction.x);
         animHit.SetFloat("DirectionX", direction.x);
+        direction *= BattleManager.getDistanceBetween(entryNum, target.entryNum) > distanceToKeep ? 1f : -1f;
+        if (timeDistortion > 3f)
+        {
+            timeDistortion = 0f;
+            directionDistortion = MonsterCommonFunction.decideDistortion(direction, transform.position);
+        }
+        if (BattleManager.getDistanceBetween(entryNum, target.entryNum) <= distanceToKeep)
+        {
+            direction += MonsterCommonFunction.getDistortedDirection(direction, transform.position, directionDistortion);
+        }
+
         Vector3 curDirection = (castingTime <= 0f
-                    ? (Vector3.Normalize((BattleManager.getDistanceBetween(entryNum, target.entryNum) > distanceToKeep ? 1f : -1f) * direction)
-                        * liveBattleInfo.basic[BasicStatEnum.spd].amount)
-                    : Vector3.zero)
-                    + extraMovement;
+                ? (Vector3.Normalize(direction)
+                    * liveBattleInfo.basic[BasicStatEnum.spd].amount)
+                : Vector3.zero)
+                + extraMovement;
         transform.Translate(
             curDirection * Time.deltaTime,
             Space.Self

@@ -55,4 +55,55 @@ public class MonsterCommonFunction
         Vector3 res = new Vector3();
         return res;
     }
+
+    public static int decideDistortion(Vector3 direction, Vector3 location)
+    {
+        int res = 0;
+        float d = Quaternion.FromToRotation(Vector3.up, direction).eulerAngles.z; ;
+        if (325f <= d || d < 45f)
+        {
+            res = location.x >= 0f ? -1 : 1;
+        }
+        else if (45f <= d && d < 135f)
+        {
+            res = location.y >= 0f ? -1 : 1;
+        }
+        else if (135f <= d && d < 225f)
+        {
+            res = location.x >= 0f ? 1 : -1;
+        }
+        else if (225f <= d && d < 325f)
+        {
+            res = location.y >= 0f ? 1 : -1;
+        }
+        return res;
+    }
+
+    public static Vector3 getDistortedDirection(Vector3 direction, Vector3 location, int distortionDirection)
+    {
+        if (distortionDirection == 0) return direction;
+        float heightTop = (BattleManager.fieldSize.y - 4f) / 2;
+        float widthTop = (BattleManager.fieldSize.x - 4f) / 2;
+        float hardness = 0f;
+        Vector3 res = Vector3.Normalize(Quaternion.AngleAxis(distortionDirection == 1 ? -90 : 90, Vector3.forward) * direction) / 10f;
+        float d = Quaternion.FromToRotation(Vector3.up, direction).eulerAngles.z;
+        if (325f <= d || d < 45f)
+        {
+            hardness = (heightTop + location.y) / (heightTop - location.y);
+        }
+        else if (45f <= d && d < 135f)
+        {
+            hardness = (widthTop - location.x) / (widthTop + location.x);
+        }
+        else if (135f <= d && d < 225f)
+        {
+            hardness = (heightTop - location.y) / (heightTop + location.y);
+        }
+        else if (225f <= d && d < 325f)
+        {
+            hardness = (widthTop + location.x) / (widthTop - location.x);
+        }
+        res *= hardness;
+        return res;
+    }
 }

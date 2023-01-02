@@ -1,7 +1,7 @@
 {
   "name": "Normal",
   "numberRestrictPerSide": [4, 4],
-  "size": [12, 9],
+  "size": [12, 10],
   "initPosList": [
     [
       [-2, 1],
