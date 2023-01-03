@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
@@ -54,7 +51,10 @@ public class BattleManager : MonoBehaviour
                 isOneSideAllDead = true;
                 foreach (MonsterBattleController battleController in sideList)
                 {
-                    isOneSideAllDead = isOneSideAllDead && battleController.isDead;
+                    if (battleController != null)
+                    {
+                        isOneSideAllDead = isOneSideAllDead && battleController.isDead;
+                    }
                 }
                 if (isOneSideAllDead) finishBattle();
             }
@@ -111,7 +111,7 @@ public class BattleManager : MonoBehaviour
     public void initGeneration()
     {
         // 몬스터 생성
-        test1on1();
+        test3on4();
 
         fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
         calculateDistance();
@@ -257,15 +257,19 @@ public class BattleManager : MonoBehaviour
         }
         // 만약 먼 순서일 경우: 역정렬
         if (targetType.Contains("FAR")) res.Reverse();
-
-        if (res.Count > numTarget)
+        List<int> resExt = new List<int>();
+        if (res.Count <= numTarget)
         {
-            for (int i = res.Count - 1; i >= numTarget; i++)
+            resExt = res;
+        }
+        else
+        {
+            for (int i = 0; i < numTarget; i++)
             {
-                res.RemoveAt(i);
+                resExt.Add(res[i]);
             }
         }
-        return res.ToArray();
+        return resExt.ToArray();
     }
 
     // 투사체들을 해당 인덱스들을 향해 생성

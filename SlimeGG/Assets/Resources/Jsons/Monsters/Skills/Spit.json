@@ -11,8 +11,15 @@
       "effects": {
         "instant": [
           {
+            "name": "position",
+            "amount": 0.1,
+            "isMultiple": false,
+            "duration": 0,
+            "tickTime": 0
+          },
+          {
             "name": "hp",
-            "amount": -8,
+            "amount": -20,
             "isMultiple": false,
             "duration": 0,
             "tickTime": 0

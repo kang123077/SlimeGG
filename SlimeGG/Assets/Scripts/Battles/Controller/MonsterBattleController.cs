@@ -31,6 +31,7 @@ public class MonsterBattleController : MonoBehaviour
     private int directionDistortion = 0;
     private float timeDistortion = 0f;
 
+    private Vector3 directiontoward { get; set; }
     private Vector3 extraMovement = Vector3.zero;
 
     public void initInfo(MonsterBattleInfo monsterBattleInfo)
@@ -134,6 +135,9 @@ public class MonsterBattleController : MonoBehaviour
             anim.SetFloat("BattleState", 0f);
             animTime = 0f;
         }
+
+        // 넉백/대쉬 등 관리
+        extraMovement *= 0.9f;
     }
 
     private void passEffects()
@@ -142,42 +146,26 @@ public class MonsterBattleController : MonoBehaviour
         List<int> idxEnd = new List<int>();
         for (int i = 0; i < effects.Count; i++)
         {
-            if (effects[i] == null) continue;
-            EffectStat effect = effects[i];
-            // 지속 시간 차감
-            effect.duration -= Time.deltaTime;
-            // 틱 시간 체크
-            if (effect.tickTime == 0)
+            if (effects[i] != null)
             {
-                // 틱 시간이 0이다 -> 최초 1번만 적용
-                // 적용 후 tick 시간을 -1로 변경 -> 다시는 적용 안함
-                if (!effect.isMultiple)
+                EffectStat effect = effects[i];
+                // 지속 시간 차감
+                effect.duration -= Time.deltaTime;
+                // 틱 시간 체크
+                if (effect.tickTime == 0)
                 {
-                    liveBattleInfo.basic[effect.name].amount += effect.amount;
-                }
-                else
-                {
-                    // 곱 연산의 경우:: 현재 수치가 아닌 원래 수치에 곱연산 적용 후 결과값을 현 수치에 합 연산
-                    // 계산 후, 해당 effect가 결괏값을 들고 isMultiple을 false로 바꾸어준다
-                    float actualAmount = monsterBattleInfo.basic[effect.name].amount * effect.amount;
-                    liveBattleInfo.basic[effect.name].amount += actualAmount;
-                    effect.amount = actualAmount;
-                    effect.isMultiple = false;
-                }
-                effect.tickTime = -1f;
-            }
-            else if (effect.tickTime > 0f)
-            {
-                // 틱 시간이 0이 아니다 -> 지속 적용
-                // tickTimer 시간 누적
-                effect.tickTimer += Time.deltaTime;
-                // tickTimer > tickTime -> 작용 후 tickTimer 초기화
-                if (effect.tickTimer > effect.tickTime)
-                {
-                    effect.tickTimer = 0f;
+                    // 틱 시간이 0이다 -> 최초 1번만 적용
+                    // 적용 후 tick 시간을 -1로 변경 -> 다시는 적용 안함
                     if (!effect.isMultiple)
                     {
-                        liveBattleInfo.basic[effect.name].amount += effect.amount;
+                        if (effect.name == BasicStatEnum.position)
+                        {
+                            extraMovement += effect.directionWithPower;
+                        }
+                        else
+                        {
+                            liveBattleInfo.basic[effect.name].amount += effect.amount;
+                        }
                     }
                     else
                     {
@@ -188,16 +176,48 @@ public class MonsterBattleController : MonoBehaviour
                         effect.amount = actualAmount;
                         effect.isMultiple = false;
                     }
+                    effect.tickTime = -1f;
                 }
-            }
-            // duration이 0 이하이다 -> 효과 종료 -> 효과로 인해 깎인 수치 회복:: hp 제외
-            if (effect.duration <= 0f)
-            {
-                if (effect.name != BasicStatEnum.hp)
+                else if (effect.tickTime > 0f)
                 {
-                    liveBattleInfo.basic[effect.name].amount -= effect.amount;
+                    // 틱 시간이 0이 아니다 -> 지속 적용
+                    // tickTimer 시간 누적
+                    effect.tickTimer += Time.deltaTime;
+                    // tickTimer > tickTime -> 작용 후 tickTimer 초기화
+                    if (effect.tickTimer > effect.tickTime)
+                    {
+                        effect.tickTimer = 0f;
+                        if (!effect.isMultiple)
+                        {
+                            if (effect.name == BasicStatEnum.position)
+                            {
+                                extraMovement += effect.directionWithPower;
+                            }
+                            else
+                            {
+                                liveBattleInfo.basic[effect.name].amount += effect.amount;
+                            }
+                        }
+                        else
+                        {
+                            // 곱 연산의 경우:: 현재 수치가 아닌 원래 수치에 곱연산 적용 후 결과값을 현 수치에 합 연산
+                            // 계산 후, 해당 effect가 결괏값을 들고 isMultiple을 false로 바꾸어준다
+                            float actualAmount = monsterBattleInfo.basic[effect.name].amount * effect.amount;
+                            liveBattleInfo.basic[effect.name].amount += actualAmount;
+                            effect.amount = actualAmount;
+                            effect.isMultiple = false;
+                        }
+                    }
                 }
-                idxEnd.Add(i);
+                // duration이 0 이하이다 -> 효과 종료 -> 효과로 인해 깎인 수치 회복:: hp 제외
+                if (effect.duration <= 0f)
+                {
+                    if (effect.name != BasicStatEnum.hp)
+                    {
+                        liveBattleInfo.basic[effect.name].amount -= effect.amount;
+                    }
+                    idxEnd.Add(i);
+                }
             }
         }
         foreach (int i in idxEnd)
@@ -227,10 +247,10 @@ public class MonsterBattleController : MonoBehaviour
         {
             direction += MonsterCommonFunction.getDistortedDirection(direction, transform.position, directionDistortion);
         }
-
+        directiontoward = Vector3.Normalize(direction)
+                    * liveBattleInfo.basic[BasicStatEnum.spd].amount;
         Vector3 curDirection = (castingTime <= 0f
-                ? (Vector3.Normalize(direction)
-                    * liveBattleInfo.basic[BasicStatEnum.spd].amount)
+                ? directiontoward
                 : Vector3.zero)
                 + extraMovement;
         transform.Translate(
@@ -298,12 +318,21 @@ public class MonsterBattleController : MonoBehaviour
         // 주문 영창이 종료되었는가?
         if (castingTime == 0f)
         {
-            // 영창 시간 -1로 변경
-            castingTime = -1f;
             SkillStat targetSkillStat = liveBattleInfo.skills[targetSkillName];
             // 본인에게 미치는 영향 적용
             if (targetSkillStat.toCaster != null)
-                effects.AddRange(targetSkillStat.toCaster);
+                foreach (EffectStat eff in targetSkillStat.toCaster)
+                {
+                    if (eff.name == BasicStatEnum.position)
+                    {
+                        eff.directionWithPower =
+                            MonsterCommonFunction.translatePositionPowerToVector3(
+                                directiontoward,
+                                eff.amount
+                                );
+                    }
+                    effects.Add(new EffectStat(eff));
+                }
             // 스킬 사용
             BattleManager.executeSkill(
                 targetSkillStat.projectiles,
@@ -312,6 +341,11 @@ public class MonsterBattleController : MonoBehaviour
                 transform.position,
                 new int[] { (int)entryNum.x, (int)entryNum.y },
                 targetSkillStat.targetType.Contains("ENEMY") ? (1 - (int)entryNum.x) : (int)entryNum.x);
+
+            // 초기화
+            castingTime = -1f;
+            liveBattleInfo.skills[targetSkillName].timeCharging = 0f;
+            targetSkillName = null;
         }
     }
 }

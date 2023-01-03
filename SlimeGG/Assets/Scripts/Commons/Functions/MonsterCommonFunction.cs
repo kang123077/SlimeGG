@@ -106,4 +106,9 @@ public class MonsterCommonFunction
         res *= hardness;
         return res;
     }
+
+    public static Vector3 translatePositionPowerToVector3(Vector3 direction, float power)
+    {
+        return direction * power * 10;
+    }
 }

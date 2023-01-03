@@ -13,6 +13,8 @@ public class ProjectileController : MonoBehaviour
     private bool isTargeting = true;
     private float delayTime = -1f;
 
+    private Vector3 directiontoward { get; set; }
+
     private Animator anim { get; set; }
 
     // Update is called once per frame
@@ -53,13 +55,14 @@ public class ProjectileController : MonoBehaviour
 
     private void moveTo()
     {
+        directiontoward = Vector3.Normalize((isTargeting ? target.transform.position : targetPos) - transform.position);
         transform.Translate(
-            Vector3.Normalize((isTargeting ? target.transform.position : targetPos) - transform.position) * spd * Time.deltaTime
+            directiontoward * spd * Time.deltaTime
             );
         if (anim != null)
         {
             anim.SetFloat("DirectionX",
-                (target.transform.position.x - transform.position.x) > 0f ? 1f : -1f
+                directiontoward.x > 0f ? 1f : -1f
             );
         }
     }
@@ -102,8 +105,18 @@ public class ProjectileController : MonoBehaviour
     // 도착과 동시 발생 효과 처리
     private void handleArrivalEffects()
     {
-        // 타겟에 피격 효과 주입
-        target.effects.AddRange(effectOnHit.instant);
+        foreach (EffectStat effect in effectOnHit.instant)
+        {
+            if (effect.name == BasicStatEnum.position)
+            {
+                effect.directionWithPower =
+                    MonsterCommonFunction.translatePositionPowerToVector3(
+                        directiontoward,
+                        effect.amount
+                        );
+            }
+            target.effects.Add(new EffectStat(effect));
+        }
     }
 
     private void handleAruaEffects()
