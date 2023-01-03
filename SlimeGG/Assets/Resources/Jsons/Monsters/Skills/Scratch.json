@@ -1,5 +1,5 @@
 {
-  "range": 1.3,
+  "range": 0.45,
   "targetType": "ENEMY_CLOSE",
   "coolTime": 2.0,
   "castingTime": 0.35,

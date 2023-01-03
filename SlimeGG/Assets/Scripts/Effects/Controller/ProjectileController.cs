@@ -4,38 +4,44 @@ using UnityEngine;
 
 public class ProjectileController : MonoBehaviour
 {
-    private SkillStat skillStat;
-    private ProjectileTypeEnum projectileType;
+    private float spd;
     private MonsterBattleController caster { get; set; }
     private MonsterBattleController target { get; set; }
-    private Vector3 targetPos;
-    private bool isTargeting;
-    private float installTime = 0f;
-    private float tickTime = 0f;
+    private EffectBundleStat effectOnHit { get; set; }
+    private EffectAreaStat effectAura { get; set; }
+    private Vector3 targetPos { get; set; }
+    private bool isTargeting = true;
+    private float delayTime = -1f;
 
     private Animator anim { get; set; }
-    void Start()
-    {
-
-    }
 
     // Update is called once per frame
     void Update()
     {
-        if (target != null && !LocalStorage.IS_GAME_PAUSE && !LocalStorage.IS_BATTLE_FINISH)
+        // 전투 정지인지 아닌지
+        if (!LocalStorage.IS_GAME_PAUSE && !LocalStorage.IS_BATTLE_FINISH)
         {
+            // 전투 종료인지
             if (LocalStorage.IS_BATTLE_FINISH)
             {
                 Destroy(transform.gameObject);
             }
-            if (isArrived())
+            // 데이터 로딩이 다 되었는지
+            if (delayTime == 0f)
             {
-                handleArrival();
-                return;
-            }
-            else
-            {
-                moveTo();
+                // 도착했는지
+                if (isArrived())
+                {
+                    // 피격 이벤트 발동 후 투사체 파괴
+                    handleArrival();
+                    Destroy(transform.gameObject);
+                    return;
+                }
+                else
+                {
+                    // 이동
+                    moveTo();
+                }
             }
         }
     }
@@ -47,109 +53,62 @@ public class ProjectileController : MonoBehaviour
 
     private void moveTo()
     {
-        //transform.Translate(
-        //    Vector3.Normalize((isTargeting ? target.transform.position : targetPos) - transform.position) * skillStat.speed * Time.deltaTime
-        //    );
-        //if (anim != null)
-        //{
-        //    anim.SetFloat("DirectionX",
-        //        (target.transform.position.x - transform.position.x) > 0f ? 1f : -1f
-        //    );
-        //}
+        transform.Translate(
+            Vector3.Normalize((isTargeting ? target.transform.position : targetPos) - transform.position) * spd * Time.deltaTime
+            );
+        if (anim != null)
+        {
+            anim.SetFloat("DirectionX",
+                (target.transform.position.x - transform.position.x) > 0f ? 1f : -1f
+            );
+        }
     }
 
     public void initInfo(
-        SkillStat skillStat,
-        Vector2 entryNum,
-        int target
+        ProjectileStat projectileStat,
+        float delay,
+        MonsterBattleController casterController,
+        MonsterBattleController targetController
         )
     {
-        //this.skillStat = skillStat;
-        //this.caster = caster;
-        //projectileType = skillStat.projectileType;
-        //if (skillStat.resourcePath != null)
-        //{
-        //    anim = GetComponent<Animator>();
-        //    anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
-        //        PathInfo.ANIMATION + skillStat.resourcePath + "/Controller");
-        //}
-        //switch (projectileType)
-        //{
-        //    case ProjectileTypeEnum.Bullet:
-        //    case ProjectileTypeEnum.Explosive:
-        //    case ProjectileTypeEnum.Aura:
-        //        isTargeting = true;
-        //        this.target = target;
-        //        break;
-        //    case ProjectileTypeEnum.Area:
-        //        isTargeting = false;
-        //        targetPos = target.transform.position;
-        //        break;
-        //}
+        caster = casterController;
+        if (projectileStat.src != null)
+        {
+            anim = GetComponent<Animator>();
+            anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
+                PathInfo.ANIMATION + projectileStat.src + "/Controller");
+        }
+        spd = projectileStat.spd;
+        isTargeting = projectileStat.isTarget;
+        delayTime = Mathf.Max(delay, 0);
+        if (!(isTargeting = projectileStat.isTarget))
+        {
+            targetPos = targetController.transform.position;
+        }
+        else
+        {
+            target = targetController;
+        }
+        effectOnHit = projectileStat.effects;
+        effectAura = projectileStat.area;
     }
 
     private void handleArrival()
     {
-        switch (projectileType)
-        {
-            case ProjectileTypeEnum.Bullet:
-            case ProjectileTypeEnum.Explosive:
-                // 소멸
-                handleCondition();
-                Destroy(transform.gameObject);
-                break;
-            case ProjectileTypeEnum.Aura:
-                // 계속 추적
-                handleCondition();
-                break;
-            case ProjectileTypeEnum.Area:
-                // 설치
-                isTargeting = false;
-                handleCondition();
-                break;
-        }
+        handleArrivalEffects();
+        handleAruaEffects();
     }
 
-    private void handleCondition()
+    // 도착과 동시 발생 효과 처리
+    private void handleArrivalEffects()
     {
-        //switch (projectileType)
-        //{
-        //    case ProjectileTypeEnum.Bullet:
-        //        ConditionHandlingExecutor.execute(skillStat, caster, new MonsterBattleController[] { target });
-        //        Destroy(transform.gameObject);
-        //        return;
-        //    case ProjectileTypeEnum.Explosive:
-        //        ConditionHandlingExecutor.execute(skillStat, caster, identifyTargetList());
-        //        Destroy(transform.gameObject);
-        //        return;
-        //    case ProjectileTypeEnum.Aura:
-        //    case ProjectileTypeEnum.Area:
-        //        tickTime += Time.deltaTime;
-        //        if (tickTime >= 0f)
-        //        {
-        //            ConditionHandlingExecutor.execute(skillStat, caster, identifyTargetList());
-        //            tickTime -= skillStat.delayTime;
-        //        }
-        //        installTime += Time.deltaTime;
-        //        if (installTime >= skillStat.durationTime)
-        //        {
-        //            Destroy(transform.gameObject);
-        //        }
-        //        break;
-        //}
+        // 타겟에 피격 효과 주입
+        target.effects.AddRange(effectOnHit.instant);
     }
 
-    private MonsterBattleController[] identifyTargetList()
+    private void handleAruaEffects()
     {
-        List<MonsterBattleController> res = new List<MonsterBattleController>();
-        //foreach (Transform curTargetTf in caster.enemies)
-        //{
-        //    if (Vector3.Distance(transform.position, curTargetTf.position) <= skillStat.durationTime)
-        //    {
-        //        res.Add(curTargetTf.GetComponent<MonsterBattleController>());
-        //    }
-        //}
-        return res.ToArray();
+
     }
 
     //private void calculateDamage()

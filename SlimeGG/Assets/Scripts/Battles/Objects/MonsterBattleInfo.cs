@@ -24,5 +24,10 @@ public class MonsterBattleInfo
         skills = monsterBattleInfo.skills;
         basic = monsterBattleInfo.basic;
         element = monsterBattleInfo.element;
+        basic[BasicStatEnum.timeCastingCycle] = new PlainStatVO();
+        basic[BasicStatEnum.timeMoveCycle] = new PlainStatVO();
+        basic[BasicStatEnum.timeCoolCycle] = new PlainStatVO();
+        basic[BasicStatEnum.invincible] = new PlainStatVO();
+        basic[BasicStatEnum.position] = new PlainStatVO();
     }
 }

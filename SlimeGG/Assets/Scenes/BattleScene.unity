@@ -556,6 +556,7 @@ MonoBehaviour:
   fieldGenerated: {fileID: 1887458823}
   monsterUIBase: {fileID: 338069980456689821, guid: 9fa1b56941f0bd74695d94f275051192, type: 3}
   monsterInfoUIGenerated: {fileID: 1048378367}
+  projectilePrefab: {fileID: 2817938927849035747, guid: ac7b6b614ca4e724586c56427b1d9456, type: 3}
 --- !u!4 &875136621
 Transform:
   m_ObjectHideFlags: 0
