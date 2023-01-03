@@ -60,6 +60,15 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
+    public void initGeneration()
+    {
+        // 몬스터 생성
+        test3on2();
+
+        fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
+        calculateDistance();
+    }
+
     private void generateMonster(MonsterBattleInfo monsterInfo, int side, int numPos)
     {
         GameObject newMonster = Instantiate(monsterBase);
@@ -79,42 +88,48 @@ public class BattleManager : MonoBehaviour
 
     private void test1on1()
     {
-        MonsterBattleInfo newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[0], LocalDictionary.speices[LocalStorage.monsters[0].accuSpecies.Last()]);
+        MonsterBattleInfo newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[0]);
         generateMonster(newMon, 0, 0);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[1], LocalDictionary.speices[LocalStorage.monsters[1].accuSpecies.Last()]);
+        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[1]);
         generateMonster(newMon, 1, 0);
+    }
+
+    private void test3on2()
+    {
+        MonsterBattleInfo newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[0]);
+        generateMonster(newMon, 0, 0);
+        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[1]);
+        generateMonster(newMon, 0, 1);
+        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[3]);
+        generateMonster(newMon, 1, 0);
+        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[0]);
+        generateMonster(newMon, 1, 1);
+        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[0]);
+        generateMonster(newMon, 1, 2);
     }
 
     private void test3on4()
     {
-        MonsterBattleInfo newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[0], LocalDictionary.speices[LocalStorage.monsters[0].accuSpecies.Last()]);
+        MonsterBattleInfo newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[0]);
         generateMonster(newMon, 0, 0);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[1], LocalDictionary.speices[LocalStorage.monsters[1].accuSpecies.Last()]);
+        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[1]);
         generateMonster(newMon, 1, 0);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[2], LocalDictionary.speices[LocalStorage.monsters[2].accuSpecies.Last()]);
+        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[2]);
         generateMonster(newMon, 0, 1);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[3], LocalDictionary.speices[LocalStorage.monsters[3].accuSpecies.Last()]);
+        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[3]);
         generateMonster(newMon, 1, 1);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[4], LocalDictionary.speices[LocalStorage.monsters[4].accuSpecies.Last()]);
+        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[4]);
         generateMonster(newMon, 0, 2);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[5], LocalDictionary.speices[LocalStorage.monsters[5].accuSpecies.Last()]);
+        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[5]);
         generateMonster(newMon, 1, 2);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[3], LocalDictionary.speices[LocalStorage.monsters[3].accuSpecies.Last()]);
-        generateMonster(newMon, 1, 3);
+        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[3]);
+        generateMonster(newMon, 1, 3);  
     }
     private void initField(string fieldName)
     {
         float[] size = LocalDictionary.fields[fieldName].size.ToArray();
         fieldSize = new Vector2(size[0], size[1]);
         fieldGenerated.GetComponent<FieldController>().initField(LocalDictionary.fields[fieldName]);
-    }
-    public void initGeneration()
-    {
-        // 몬스터 생성
-        test3on4();
-
-        fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
-        calculateDistance();
     }
 
     public void pauseOrResumeBattle()

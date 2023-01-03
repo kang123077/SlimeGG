@@ -105,18 +105,32 @@ public class ProjectileController : MonoBehaviour
     // 도착과 동시 발생 효과 처리
     private void handleArrivalEffects()
     {
-        foreach (EffectStat effect in effectOnHit.instant)
-        {
-            if (effect.name == BasicStatEnum.position)
+        if (effectOnHit.instant != null)
+            foreach (EffectStat effect in effectOnHit.instant)
             {
-                effect.directionWithPower =
-                    MonsterCommonFunction.translatePositionPowerToVector3(
-                        directiontoward,
-                        effect.amount
-                        );
+                if (effect.name == BasicStatEnum.position)
+                {
+                    effect.directionWithPower =
+                        MonsterCommonFunction.translatePositionPowerToVector3(
+                            directiontoward,
+                            effect.amount
+                            );
+                }
+                target.effects.Add(new EffectStat(effect));
             }
-            target.effects.Add(new EffectStat(effect));
-        }
+        if (effectOnHit.sustain != null)
+            foreach (EffectStat effect in effectOnHit.sustain)
+            {
+                if (effect.name == BasicStatEnum.position)
+                {
+                    effect.directionWithPower =
+                        MonsterCommonFunction.translatePositionPowerToVector3(
+                            directiontoward,
+                            effect.amount
+                            );
+                }
+                target.effects.Add(new EffectStat(effect));
+            }
     }
 
     private void handleAruaEffects()

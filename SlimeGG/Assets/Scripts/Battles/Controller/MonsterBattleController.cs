@@ -31,7 +31,7 @@ public class MonsterBattleController : MonoBehaviour
     private int directionDistortion = 0;
     private float timeDistortion = 0f;
 
-    private Vector3 directiontoward { get; set; }
+    private Vector3 directionToTarget { get; set; }
     private Vector3 extraMovement = Vector3.zero;
 
     public void initInfo(MonsterBattleInfo monsterBattleInfo)
@@ -184,7 +184,7 @@ public class MonsterBattleController : MonoBehaviour
                     // tickTimer 시간 누적
                     effect.tickTimer += Time.deltaTime;
                     // tickTimer > tickTime -> 작용 후 tickTimer 초기화
-                    if (effect.tickTimer > effect.tickTime)
+                    if (effect.tickTimer >= effect.tickTime)
                     {
                         effect.tickTimer = 0f;
                         if (!effect.isMultiple)
@@ -235,6 +235,7 @@ public class MonsterBattleController : MonoBehaviour
                             target.transform.localPosition.y - transform.localPosition.y,
                             0f
                         );
+        directionToTarget = direction.normalized;
         anim.SetFloat("DirectionX", direction.x);
         animHit.SetFloat("DirectionX", direction.x);
         direction *= BattleManager.getDistanceBetween(entryNum, target.entryNum) > distanceToKeep ? 1f : -1f;
@@ -247,10 +248,9 @@ public class MonsterBattleController : MonoBehaviour
         {
             direction += MonsterCommonFunction.getDistortedDirection(direction, transform.position, directionDistortion);
         }
-        directiontoward = Vector3.Normalize(direction)
-                    * liveBattleInfo.basic[BasicStatEnum.spd].amount;
         Vector3 curDirection = (castingTime <= 0f
-                ? directiontoward
+                ? (Vector3.Normalize(direction)
+                    * liveBattleInfo.basic[BasicStatEnum.spd].amount)
                 : Vector3.zero)
                 + extraMovement;
         transform.Translate(
@@ -327,7 +327,7 @@ public class MonsterBattleController : MonoBehaviour
                     {
                         eff.directionWithPower =
                             MonsterCommonFunction.translatePositionPowerToVector3(
-                                directiontoward,
+                                directionToTarget,
                                 eff.amount
                                 );
                     }

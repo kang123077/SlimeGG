@@ -1,7 +1,7 @@
 {
   "range": 3.4,
   "targetType": "ENEMY_CLOSE",
-  "coolTime": 1.0,
+  "coolTime": 3.0,
   "castingTime": 0.2,
   "projectiles": [
     {
@@ -19,10 +19,19 @@
           },
           {
             "name": "hp",
-            "amount": -20,
+            "amount": -5,
             "isMultiple": false,
             "duration": 0,
             "tickTime": 0
+          }
+        ],
+        "sustain": [
+          {
+            "name": "hp",
+            "amount": -5,
+            "isMultiple": false,
+            "duration": 2,
+            "tickTime": 0.5
           }
         ]
       }

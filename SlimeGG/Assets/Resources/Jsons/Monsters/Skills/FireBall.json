@@ -27,14 +27,14 @@
               "name": "spd",
               "amount": -0.1,
               "isMultiple": true,
-              "durationTime": 0.5,
+              "duration": 0.5,
               "tickTime": 0
             },
             {
               "name": "hp",
               "amount": -31,
               "isMultiple": false,
-              "durationTime": 0,
+              "duration": 0,
               "tickTime": 0
             }
           ],
@@ -43,7 +43,7 @@
               "name": "hp",
               "amount": -5,
               "isMultiple": false,
-              "durationTime": 2,
+              "duration": 2,
               "tickTime": 1
             }
           ]

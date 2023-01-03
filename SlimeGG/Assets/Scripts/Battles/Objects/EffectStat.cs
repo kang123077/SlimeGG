@@ -6,7 +6,7 @@ public class EffectStat : BasicStatVO
     public float tickTime { get; set; }
 
     // 틱 타임 계산용
-    public float tickTimer = -1f;
+    public float tickTimer = 0f;
 
     public EffectStat() { }
     public EffectStat(float amount) : base(amount)
