@@ -42,8 +42,6 @@ public class MonsterBattleController : MonoBehaviour
         bg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(
             PathInfo.SPRITE + monsterBattleInfo.src
             );
-        Destroy(bg.GetComponent<PolygonCollider2D>());
-        bg.AddComponent<PolygonCollider2D>();
 
         anim = bg.GetComponent<Animator>();
         anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
