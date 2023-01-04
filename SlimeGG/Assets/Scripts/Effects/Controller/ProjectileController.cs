@@ -29,7 +29,7 @@ public class ProjectileController : MonoBehaviour
                 Destroy(transform.gameObject);
             }
             // 데이터 로딩이 다 되었는지
-            if (delayTime == 0f)
+            if (delayTime <= 0f)
             {
                 // 도착했는지
                 if (isArrived())
@@ -44,6 +44,9 @@ public class ProjectileController : MonoBehaviour
                     // 이동
                     moveTo();
                 }
+            } else
+            {
+                delayTime -= Time.deltaTime;
             }
         }
     }
