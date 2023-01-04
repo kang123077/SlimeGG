@@ -34,6 +34,8 @@ public class MonsterBattleController : MonoBehaviour
     private Vector3 directionToTarget { get; set; }
     private Vector3 extraMovement = Vector3.zero;
 
+    private Animator animCasting { get; set; }
+
     public void initInfo(MonsterBattleInfo monsterBattleInfo)
     {
         this.monsterBattleInfo = monsterBattleInfo;
@@ -64,6 +66,8 @@ public class MonsterBattleController : MonoBehaviour
             PathInfo.ANIMATION + "Effects/Hits" + "/Normal" + "/Controller"
             );
         effects = new List<EffectStat>();
+
+        animCasting = transform.Find("Casting Effect").GetComponent<Animator>();
     }
 
     public void setFieldInfo(Vector2 entryNum)
@@ -108,7 +112,14 @@ public class MonsterBattleController : MonoBehaviour
     private void passTimer()
     {
         // 캐스팅 타임 관리
-        if (castingTime > 0f) castingTime = Mathf.Max(castingTime - (Time.deltaTime * (1 + liveBattleInfo.basic[BasicStatEnum.timeCastingCycle].amount)), 0f);
+        if (castingTime > 0f) 
+        {
+            animCasting.SetFloat("isCasting", 1f);
+            castingTime = Mathf.Max(castingTime - (Time.deltaTime * (1 + liveBattleInfo.basic[BasicStatEnum.timeCastingCycle].amount)), 0f); 
+        } else
+        {
+            animCasting.SetFloat("isCasting", 0f);
+        }
 
         // 방향 왜곡 지속 시간 관리
         timeDistortion += Time.deltaTime;
@@ -304,6 +315,7 @@ public class MonsterBattleController : MonoBehaviour
                             targetSkillName = skillPair.Key;
                             targetSkillCooltime = skill.coolTime;
                             castingTime = skill.castingTime;
+                            animCasting.transform.localPosition = directionToTarget / 3f;
                         }
                     }
                 }
