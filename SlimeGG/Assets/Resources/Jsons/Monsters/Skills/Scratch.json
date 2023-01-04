@@ -1,8 +1,8 @@
 {
-  "range": 1.3,
+  "range": 1,
   "targetType": "ENEMY_CLOSE",
   "coolTime": 2.0,
-  "castingTime": 0.35,
+  "castingTime": 0.05,
   "toCaster": [
     {
       "name": "position",
@@ -21,14 +21,14 @@
         "instant": [
           {
             "name": "position",
-            "amount": -0.5,
+            "amount": 0.2,
             "isMultiple": false,
             "duration": 0,
             "tickTime": 0
           },
           {
             "name": "hp",
-            "amount": -9,
+            "amount": -20,
             "isMultiple": false,
             "duration": 0,
             "tickTime": 0

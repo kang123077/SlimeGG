@@ -6,9 +6,10 @@ using UnityEngine;
 public class MonsterCommonFunction
 {
     // 몬스터 정보 + 몬스터 종족 정보 -> 전투에 필요한 몬스터 객체 생성
-    public static MonsterBattleInfo generateMonsterBattleInfo(MonsterVO monsterVO, MonsterSpeciesVO speciesVO)
+    public static MonsterBattleInfo generateMonsterBattleInfo(MonsterVO monsterVO)
     {
         MonsterBattleInfo res = new MonsterBattleInfo();
+        MonsterSpeciesVO speciesVO = LocalDictionary.speices[monsterVO.accuSpecies.Last()];
         res.nickName = monsterVO.nickName;
         res.src = speciesVO.src;
         // 기본 정보는 곱연산을 통한 설정
@@ -105,5 +106,10 @@ public class MonsterCommonFunction
         }
         res *= hardness;
         return res;
+    }
+
+    public static Vector3 translatePositionPowerToVector3(Vector3 direction, float power)
+    {
+        return direction * power * 10;
     }
 }
