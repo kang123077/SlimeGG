@@ -110,7 +110,7 @@ public class BattleManager : MonoBehaviour
 
     private void test1on1()
     {
-        MonsterBattleInfo newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[0]);
+        MonsterBattleInfo newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[3]);
         generateMonster(newMon, 0, 0);
         newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[1]);
         generateMonster(newMon, 1, 0);
