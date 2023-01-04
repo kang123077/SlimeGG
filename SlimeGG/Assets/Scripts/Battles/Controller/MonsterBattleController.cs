@@ -89,8 +89,6 @@ public class MonsterBattleController : MonoBehaviour
                 {
                     if (LocalStorage.IS_BATTLE_FINISH)
                     {
-                        Destroy(anim);
-                        Destroy(animHit);
                     }
                     else
                     {
@@ -105,7 +103,12 @@ public class MonsterBattleController : MonoBehaviour
                 }
             }
         }
-
+        if (LocalStorage.IS_BATTLE_FINISH)
+        {
+            Destroy(anim);
+            Destroy(animHit);
+            Destroy(animCasting);
+        }
     }
 
     // 시간에 따른 효과 소멸 또는 쿨타임 감소 등은 여기서 관리

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
@@ -28,6 +29,7 @@ public class BattleManager : MonoBehaviour
     public static float[][][] distanceEnemies = new float[2][][];
     public static bool isBattleReady = false;
     public static Vector2 fieldSize;
+    private int sideWin { get; set; }
     // Start is called before the first frame update
     void Start()
     {
@@ -49,6 +51,7 @@ public class BattleManager : MonoBehaviour
         {
             calculateDistance();
             bool isOneSideAllDead;
+            int side = 1;
             foreach (MonsterBattleController[] sideList in monsterBattleControllerList)
             {
                 isOneSideAllDead = true;
@@ -59,14 +62,30 @@ public class BattleManager : MonoBehaviour
                         isOneSideAllDead = isOneSideAllDead && battleController.isDead;
                     }
                 }
-                if (isOneSideAllDead) finishBattle();
+                if (isOneSideAllDead)
+                {
+                    sideWin = side;
+                    finishBattle();
+                }
+                else
+                {
+                    side--;
+                }
             }
+        }
+        if (LocalStorage.IS_BATTLE_FINISH)
+        {
+            Debug.Log($"Battle Finished:: Win => {sideWin} <=");
+            PenalForPause.SetActive(LocalStorage.IS_BATTLE_FINISH);
+            PenalForPause.transform.Find("Text Title").GetComponent<TMP_Text>().text = "BATTLE FINISHED!";
+            PenalForPause.transform.Find("Text Desc").GetComponent<TMP_Text>().text = $"Team {sideWin} Win!";
+            Destroy(gameObject);
         }
     }
     public void initGeneration()
     {
         // 몬스터 생성
-        test3on2();
+        test1on1();
 
         fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
         calculateDistance();
