@@ -21,7 +21,7 @@
         "instant": [
           {
             "name": "position",
-            "amount": -1.5,
+            "amount": 1.5,
             "isMultiple": false,
             "duration": 0,
             "tickTime": 0

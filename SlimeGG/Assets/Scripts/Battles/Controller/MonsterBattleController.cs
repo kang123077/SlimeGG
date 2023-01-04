@@ -21,6 +21,8 @@ public class MonsterBattleController : MonoBehaviour
 
     // ------------------------------------------
     private float castingTime = -1f;
+    private string targetSkillName { get; set; }
+    private int[] targetIdxList { get; set; }
     private float distanceToKeep { get; set; }
     public bool isDead { get; set; }
 
@@ -29,6 +31,7 @@ public class MonsterBattleController : MonoBehaviour
     private int directionDistortion = 0;
     private float timeDistortion = 0f;
 
+    private Vector3 directionToTarget { get; set; }
     private Vector3 extraMovement = Vector3.zero;
 
     public void initInfo(MonsterBattleInfo monsterBattleInfo)
@@ -39,8 +42,6 @@ public class MonsterBattleController : MonoBehaviour
         bg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(
             PathInfo.SPRITE + monsterBattleInfo.src
             );
-        Destroy(bg.GetComponent<PolygonCollider2D>());
-        bg.AddComponent<PolygonCollider2D>();
 
         anim = bg.GetComponent<Animator>();
         anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
@@ -50,8 +51,7 @@ public class MonsterBattleController : MonoBehaviour
         foreach (SkillStat skillStat in monsterBattleInfo.skills.Values)
         {
             skillStat.timeCharging = 0f;
-            float ran = skillStat.range;
-            if (distanceToKeep > ran) distanceToKeep = Mathf.Max(ran - 1f, 0.5f);
+            if (distanceToKeep > skillStat.range) distanceToKeep = Mathf.Max(skillStat.range - 1f, 0.5f);
         }
         isDead = false;
 
@@ -94,20 +94,8 @@ public class MonsterBattleController : MonoBehaviour
                         moveTo(closest[1]);
                         passTimer();
                         passEffects();
-
-                        if (anim.GetFloat("BattleState") != 0f && animTime <= 1f)
-                        {
-                            animTime += Time.deltaTime;
-                        }
-                        if (animTime > 0.25f)
-                        {
-                            animHit.SetFloat("isCritical", 0f);
-                        }
-                        if (animTime > 0.5f)
-                        {
-                            anim.SetFloat("BattleState", 0f);
-                            animTime = 0f;
-                        }
+                        chooseSkillToExecute();
+                        tryExecuteSkill();
                     }
                     checkCurrentHp();
                 }
@@ -130,6 +118,24 @@ public class MonsterBattleController : MonoBehaviour
         {
             skill.timeCharging += Time.deltaTime * (1 + liveBattleInfo.basic[BasicStatEnum.timeCoolCycle].amount);
         }
+
+        // 애니메이션 관리
+        if (anim.GetFloat("BattleState") != 0f && animTime <= 1f)
+        {
+            animTime += Time.deltaTime;
+        }
+        if (animTime > 0.25f)
+        {
+            animHit.SetFloat("isCritical", 0f);
+        }
+        if (animTime > 0.5f)
+        {
+            anim.SetFloat("BattleState", 0f);
+            animTime = 0f;
+        }
+
+        // 넉백/대쉬 등 관리
+        extraMovement *= 0.9f;
     }
 
     private void passEffects()
@@ -138,42 +144,26 @@ public class MonsterBattleController : MonoBehaviour
         List<int> idxEnd = new List<int>();
         for (int i = 0; i < effects.Count; i++)
         {
-            if (effects[i] == null) continue;
-            EffectStat effect = effects[i];
-            // 지속 시간 차감
-            effect.duration -= Time.deltaTime;
-            // 틱 시간 체크
-            if (effect.tickTime == 0)
+            if (effects[i] != null)
             {
-                // 틱 시간이 0이다 -> 최초 1번만 적용
-                // 적용 후 tick 시간을 -1로 변경 -> 다시는 적용 안함
-                if (!effect.isMultiple)
+                EffectStat effect = effects[i];
+                // 지속 시간 차감
+                effect.duration -= Time.deltaTime;
+                // 틱 시간 체크
+                if (effect.tickTime == 0)
                 {
-                    liveBattleInfo.basic[effect.name].amount += effect.amount;
-                }
-                else
-                {
-                    // 곱 연산의 경우:: 현재 수치가 아닌 원래 수치에 곱연산 적용 후 결과값을 현 수치에 합 연산
-                    // 계산 후, 해당 effect가 결괏값을 들고 isMultiple을 false로 바꾸어준다
-                    float actualAmount = monsterBattleInfo.basic[effect.name].amount * effect.amount;
-                    liveBattleInfo.basic[effect.name].amount += actualAmount;
-                    effect.amount = actualAmount;
-                    effect.isMultiple = false;
-                }
-                effect.tickTime = -1f;
-            }
-            else if (effect.tickTime > 0f)
-            {
-                // 틱 시간이 0이 아니다 -> 지속 적용
-                // tickTimer 시간 누적
-                effect.tickTimer += Time.deltaTime;
-                // tickTimer > tickTime -> 작용 후 tickTimer 초기화
-                if (effect.tickTimer > effect.tickTime)
-                {
-                    effect.tickTimer = 0f;
+                    // 틱 시간이 0이다 -> 최초 1번만 적용
+                    // 적용 후 tick 시간을 -1로 변경 -> 다시는 적용 안함
                     if (!effect.isMultiple)
                     {
-                        liveBattleInfo.basic[effect.name].amount += effect.amount;
+                        if (effect.name == BasicStatEnum.position)
+                        {
+                            extraMovement += effect.directionWithPower;
+                        }
+                        else
+                        {
+                            liveBattleInfo.basic[effect.name].amount += effect.amount;
+                        }
                     }
                     else
                     {
@@ -184,16 +174,48 @@ public class MonsterBattleController : MonoBehaviour
                         effect.amount = actualAmount;
                         effect.isMultiple = false;
                     }
+                    effect.tickTime = -1f;
                 }
-            }
-            // duration이 0 이하이다 -> 효과 종료 -> 효과로 인해 깎인 수치 회복:: hp 제외
-            if (effect.duration <= 0f)
-            {
-                if (effect.name != BasicStatEnum.hp)
+                else if (effect.tickTime > 0f)
                 {
-                    liveBattleInfo.basic[effect.name].amount -= effect.amount;
+                    // 틱 시간이 0이 아니다 -> 지속 적용
+                    // tickTimer 시간 누적
+                    effect.tickTimer += Time.deltaTime;
+                    // tickTimer > tickTime -> 작용 후 tickTimer 초기화
+                    if (effect.tickTimer >= effect.tickTime)
+                    {
+                        effect.tickTimer = 0f;
+                        if (!effect.isMultiple)
+                        {
+                            if (effect.name == BasicStatEnum.position)
+                            {
+                                extraMovement += effect.directionWithPower;
+                            }
+                            else
+                            {
+                                liveBattleInfo.basic[effect.name].amount += effect.amount;
+                            }
+                        }
+                        else
+                        {
+                            // 곱 연산의 경우:: 현재 수치가 아닌 원래 수치에 곱연산 적용 후 결과값을 현 수치에 합 연산
+                            // 계산 후, 해당 effect가 결괏값을 들고 isMultiple을 false로 바꾸어준다
+                            float actualAmount = monsterBattleInfo.basic[effect.name].amount * effect.amount;
+                            liveBattleInfo.basic[effect.name].amount += actualAmount;
+                            effect.amount = actualAmount;
+                            effect.isMultiple = false;
+                        }
+                    }
                 }
-                idxEnd.Add(i);
+                // duration이 0 이하이다 -> 효과 종료 -> 효과로 인해 깎인 수치 회복:: hp 제외
+                if (effect.duration <= 0f)
+                {
+                    if (effect.name != BasicStatEnum.hp)
+                    {
+                        liveBattleInfo.basic[effect.name].amount -= effect.amount;
+                    }
+                    idxEnd.Add(i);
+                }
             }
         }
         foreach (int i in idxEnd)
@@ -211,6 +233,7 @@ public class MonsterBattleController : MonoBehaviour
                             target.transform.localPosition.y - transform.localPosition.y,
                             0f
                         );
+        directionToTarget = direction.normalized;
         anim.SetFloat("DirectionX", direction.x);
         animHit.SetFloat("DirectionX", direction.x);
         direction *= BattleManager.getDistanceBetween(entryNum, target.entryNum) > distanceToKeep ? 1f : -1f;
@@ -223,7 +246,6 @@ public class MonsterBattleController : MonoBehaviour
         {
             direction += MonsterCommonFunction.getDistortedDirection(direction, transform.position, directionDistortion);
         }
-
         Vector3 curDirection = (castingTime <= 0f
                 ? (Vector3.Normalize(direction)
                     * liveBattleInfo.basic[BasicStatEnum.spd].amount)
@@ -256,5 +278,77 @@ public class MonsterBattleController : MonoBehaviour
         transform.Find("Tracking Camera").GetComponent<Camera>().targetTexture = Resources.Load<RenderTexture>(
             PathInfo.TEXTURE + "MonsterTracking/" + $"{side}_{numPos}"
             );
+    }
+
+    private void chooseSkillToExecute()
+    {
+        // 현재 영창중인 스킬이 있는지 확인
+        if (castingTime == -1f)
+        {
+            float targetSkillCooltime = 0f;
+            // 쿨타임 관리
+            foreach (KeyValuePair<string, SkillStat> skillPair in liveBattleInfo.skills)
+            {
+                SkillStat skill = skillPair.Value;
+                // 스킬 쿨 다 찼는지?
+                if (skill.timeCharging >= skill.coolTime)
+                {
+                    // 스킬 사용이 가능한지? = 즉, 사정거리 내에 대상이 존재하는지?
+                    targetIdxList = BattleManager.getIndexListByDistance(entryNum, skill.targetType, skill.range, skill.numTarget);
+                    if (targetIdxList.Length != 0)
+                    {
+                        // skillStatToExecute가 비었는지? || skill 쿨타임이 skillStatToExecute의 쿨타임보다 긴지?
+                        if (targetSkillName == null || targetSkillCooltime < skill.coolTime)
+                        {
+                            targetIdxList = targetIdxList;
+                            targetSkillName = skillPair.Key;
+                            targetSkillCooltime = skill.coolTime;
+                            castingTime = skill.castingTime;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void tryExecuteSkill()
+    {
+        // 주문 영창이 종료되었는가?
+        if (castingTime == 0f)
+        {
+            SkillStat targetSkillStat = liveBattleInfo.skills[targetSkillName];
+            // 본인에게 미치는 영향 적용
+            if (targetSkillStat.toCaster != null)
+                foreach (EffectStat eff in targetSkillStat.toCaster)
+                {
+                    if (eff.name == BasicStatEnum.position)
+                    {
+                        eff.directionWithPower =
+                            MonsterCommonFunction.translatePositionPowerToVector3(
+                                directionToTarget,
+                                eff.amount
+                                );
+                    }
+                    effects.Add(new EffectStat(eff));
+                }
+            // 스킬 사용
+            BattleManager.executeProjectiles(
+                targetSkillStat.projectiles,
+                targetSkillStat.delayProjectile,
+                targetIdxList,
+                transform.position,
+                new int[] { (int)entryNum.x, (int)entryNum.y },
+                targetSkillStat.targetType.Contains("ENEMY") ? (1 - (int)entryNum.x) : (int)entryNum.x);
+
+            // 초기화
+            castingTime = -1f;
+            liveBattleInfo.skills[targetSkillName].timeCharging = 0f;
+            targetSkillName = null;
+        }
+    }
+
+    public Vector2 getSide()
+    {
+        return entryNum;
     }
 }

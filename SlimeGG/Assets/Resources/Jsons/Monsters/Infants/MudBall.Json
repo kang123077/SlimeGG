@@ -6,7 +6,7 @@
   "basic": [
     {
       "name": "hp",
-      "amount": 80
+      "amount": 200
     },
     {
       "name": "atk",

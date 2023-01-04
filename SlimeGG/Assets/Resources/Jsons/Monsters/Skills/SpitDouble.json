@@ -1,6 +1,6 @@
 {
-  "range": 4.2,
-  "targetType": "ENEMY_CLOSE",
+  "range": 7.2,
+  "targetType": "ENEMY_FAR",
   "coolTime": 2.6,
   "castingTime": 0.3,
   "delayProjectile": 0.1,
