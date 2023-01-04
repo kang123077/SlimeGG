@@ -12,6 +12,7 @@ public class ProjectileController : MonoBehaviour
     private Vector3 targetPos { get; set; }
     private bool isTargeting = true;
     private float delayTime = -1f;
+    private int targetSide { get; set; }
 
     private Vector3 directiontoward { get; set; }
 
@@ -44,7 +45,8 @@ public class ProjectileController : MonoBehaviour
                     // 이동
                     moveTo();
                 }
-            } else
+            }
+            else
             {
                 delayTime -= Time.deltaTime;
             }
@@ -53,7 +55,7 @@ public class ProjectileController : MonoBehaviour
 
     private bool isArrived()
     {
-        return Vector3.Distance((isTargeting ? transform.position : targetPos), target.transform.position) < 0.25f;
+        return Vector3.Distance((isTargeting ? target.transform.position : targetPos), transform.position) < 0.25f;
     }
 
     private void moveTo()
@@ -74,7 +76,8 @@ public class ProjectileController : MonoBehaviour
         ProjectileStat projectileStat,
         float delay,
         MonsterBattleController casterController,
-        MonsterBattleController targetController
+        MonsterBattleController targetController,
+        int targetSide
         )
     {
         caster = casterController;
@@ -97,6 +100,7 @@ public class ProjectileController : MonoBehaviour
         }
         effectOnHit = projectileStat.effects;
         effectAura = projectileStat.area;
+        this.targetSide = targetSide;
     }
 
     private void handleArrival()
@@ -108,38 +112,55 @@ public class ProjectileController : MonoBehaviour
     // 도착과 동시 발생 효과 처리
     private void handleArrivalEffects()
     {
-        if (effectOnHit.instant != null)
-            foreach (EffectStat effect in effectOnHit.instant)
-            {
-                if (effect.name == BasicStatEnum.position)
-                {
-                    effect.directionWithPower =
-                        MonsterCommonFunction.translatePositionPowerToVector3(
-                            directiontoward,
-                            effect.amount
-                            );
-                }
-                target.effects.Add(new EffectStat(effect));
-            }
-        if (effectOnHit.sustain != null)
-            foreach (EffectStat effect in effectOnHit.sustain)
-            {
-                if (effect.name == BasicStatEnum.position)
-                {
-                    effect.directionWithPower =
-                        MonsterCommonFunction.translatePositionPowerToVector3(
-                            directiontoward,
-                            effect.amount
-                            );
-                }
-                target.effects.Add(new EffectStat(effect));
-            }
+        if (effectOnHit != null)
+        {
+            if (effectOnHit.instant != null)
+                applyEffectListOnTarget(effectOnHit.instant, target, true);
+            if (effectOnHit.sustain != null)
+                applyEffectListOnTarget(effectOnHit.sustain, target, true);
+        }
     }
 
+    // 도착과 동시 장판 생성
     private void handleAruaEffects()
     {
-
+        if (effectAura != null)
+        {
+            // 현재 기준 장판 영역 내 타겟들에게 즉발 효과 적용
+            int[] targetIdxList = BattleManager.getTargetIdxListByDistance(transform.position, targetSide, effectAura.range);
+            MonsterBattleController[] temp = BattleManager.monsterBattleControllerList[targetSide];
+            foreach (int targetIdx in targetIdxList)
+            {
+                applyEffectListOnTarget(effectAura.effects.instant, temp[targetIdx], false);
+            }
+            // 장판 생성
+            BattleManager.executeArea(transform.position, caster, effectAura, targetSide);
+        }
     }
+
+    // 타겟 컨트롤러에 효과 적용
+    private void applyEffectOnTarget(EffectStat effectToApply, MonsterBattleController targetToApply, bool isDirectionSustain)
+    {
+        if (effectToApply.name == BasicStatEnum.position)
+        {
+            effectToApply.directionWithPower =
+                MonsterCommonFunction.translatePositionPowerToVector3(
+                    isDirectionSustain ? directiontoward : Vector3.Normalize(targetToApply.transform.position - transform.position),
+                    effectToApply.amount
+                    );
+        }
+        targetToApply.effects.Add(new EffectStat(effectToApply));
+    }
+
+    private void applyEffectListOnTarget(List<EffectStat> effectListToApply, MonsterBattleController targetToApply, bool isDirectionSustain)
+    {
+        foreach (EffectStat effect in effectListToApply)
+        {
+            applyEffectOnTarget(effect, targetToApply, isDirectionSustain);
+        }
+    }
+
+
 
     //private void calculateDamage()
     //{

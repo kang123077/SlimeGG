@@ -332,7 +332,7 @@ public class MonsterBattleController : MonoBehaviour
                     effects.Add(new EffectStat(eff));
                 }
             // 스킬 사용
-            BattleManager.executeSkill(
+            BattleManager.executeProjectiles(
                 targetSkillStat.projectiles,
                 targetSkillStat.delayProjectile,
                 targetIdxList,
@@ -345,5 +345,10 @@ public class MonsterBattleController : MonoBehaviour
             liveBattleInfo.skills[targetSkillName].timeCharging = 0f;
             targetSkillName = null;
         }
+    }
+
+    public Vector2 getSide()
+    {
+        return entryNum;
     }
 }

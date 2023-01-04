@@ -16,9 +16,11 @@ public class BattleManager : MonoBehaviour
     private GameObject monsterInfoUIGenerated;
     [SerializeField]
     public GameObject projectilePrefab;
-
     [SerializeField]
+    public GameObject areaPrefab;
+
     public static GameObject staticProjectilePrefab;
+    public static GameObject staticAreaPrefab;
 
     public static MonsterBattleController[][] monsterBattleControllerList =
         new MonsterBattleController[2][];
@@ -38,6 +40,7 @@ public class BattleManager : MonoBehaviour
         if (!isBattleReady && LocalStorage.DICTIONARY_LOADING_DONE && LocalStorage.MONSTER_DATACALL_DONE)
         {
             staticProjectilePrefab = projectilePrefab;
+            staticAreaPrefab = areaPrefab;
             initField("Normal");
             initGeneration();
             isBattleReady = true;
@@ -123,7 +126,7 @@ public class BattleManager : MonoBehaviour
         newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[5]);
         generateMonster(newMon, 1, 2);
         newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[3]);
-        generateMonster(newMon, 1, 3);  
+        generateMonster(newMon, 1, 3);
     }
     private void initField(string fieldName)
     {
@@ -287,8 +290,28 @@ public class BattleManager : MonoBehaviour
         return resExt.ToArray();
     }
 
+    // 현재 위치에서 사정거리 criterionDis로 원형 안에 존재하는 모든 대상 인덱스 리스트
+    public static int[] getTargetIdxListByDistance(Vector3 curPos, int targetSide, float criterionDis)
+    {
+        //Debug.Log(curPos);
+        //Debug.Log(targetSide);
+        //Debug.Log(criterionDis);
+        List<int> res = new List<int>();
+        for (int i = 0; i < monsterBattleControllerList[targetSide].Length; i++)
+        {
+            if (monsterBattleControllerList[targetSide][i] != null)
+            {
+                if (Vector3.Distance(curPos, monsterBattleControllerList[targetSide][i].transform.position) <= criterionDis)
+                {
+                    res.Add(i);
+                }
+            }
+        }
+        return res.ToArray();
+    }
+
     // 투사체들을 해당 인덱스들을 향해 생성
-    public static void executeSkill(List<ProjectileStat> projectileStats, float delayProjectile, int[] targetIdxList, Vector3 startingPos, int[] entryNum, int targetSide)
+    public static void executeProjectiles(List<ProjectileStat> projectileStats, float delayProjectile, int[] targetIdxList, Vector3 startingPos, int[] entryNum, int targetSide)
     {
         // 타겟 순서대로 실행
         foreach (int targetIdx in targetIdxList)
@@ -297,16 +320,23 @@ public class BattleManager : MonoBehaviour
             // 투사체 순서대로 생성
             foreach (ProjectileStat projectileStat in projectileStats)
             {
-                createProjectile(projectileStat, d, startingPos, monsterBattleControllerList[entryNum[0]][entryNum[1]], monsterBattleControllerList[targetSide][targetIdx]);
+                createProjectile(projectileStat, d, startingPos, monsterBattleControllerList[entryNum[0]][entryNum[1]], monsterBattleControllerList[targetSide][targetIdx], targetSide);
                 d += delayProjectile;
             }
         }
     }
 
-    public static void createProjectile(ProjectileStat projectileStat, float delay, Vector3 startingPos, MonsterBattleController casterController, MonsterBattleController targetController)
+    public static void createProjectile(ProjectileStat projectileStat, float delay, Vector3 startingPos, MonsterBattleController casterController, MonsterBattleController targetController, int targetSide)
     {
         GameObject res = Instantiate(staticProjectilePrefab);
         res.transform.position = startingPos;
-        res.GetComponent<ProjectileController>().initInfo(projectileStat, delay, casterController, targetController);
+        res.GetComponent<ProjectileController>().initInfo(projectileStat, delay, casterController, targetController, targetSide);
+    }
+
+    public static void executeArea(Vector3 setPos, MonsterBattleController casterController, EffectAreaStat effectAreaStat, int targetSide)
+    {
+        GameObject areaObject = Instantiate(staticAreaPrefab);
+        areaObject.transform.position = setPos;
+        areaObject.GetComponent<AreaController>().initInfo(effectAreaStat, casterController, targetSide);
     }
 }

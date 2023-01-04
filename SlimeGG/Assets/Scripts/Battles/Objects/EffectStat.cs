@@ -23,4 +23,15 @@ public class EffectStat : BasicStatVO
         this.name = origin.name;
         this.directionWithPower = origin.directionWithPower;
     }
+
+    public EffectStat(EffectStat origin, bool isEffectOnce) : base()
+    {
+        this.duration = isEffectOnce ? 0f : origin.duration;
+        this.tickTime = isEffectOnce ? 0f : origin.tickTime;
+        this.tickTimer = isEffectOnce ? 0f : origin.tickTimer;
+        this.amount = origin.amount;
+        this.isMultiple = origin.isMultiple;
+        this.name = origin.name;
+        this.directionWithPower = origin.directionWithPower;
+    }
 }
