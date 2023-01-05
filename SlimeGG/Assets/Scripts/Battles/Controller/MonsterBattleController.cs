@@ -15,8 +15,8 @@ public class MonsterBattleController : MonoBehaviour
     // ------------ 그래픽 관련 변수들 ------------------
     private Transform bg { get; set; }
     private Animator anim { get; set; }
-    private Animator animHit { get; set; }
-    private SpriteRenderer spriteHit { get; set; }
+    private Animator animCasting { get; set; }
+
     private float animTime = 0f;
 
     // ------------------------------------------
@@ -34,7 +34,6 @@ public class MonsterBattleController : MonoBehaviour
     private Vector3 directionToTarget { get; set; }
     private Vector3 extraMovement = Vector3.zero;
 
-    private Animator animCasting { get; set; }
 
     public void initInfo(MonsterBattleInfo monsterBattleInfo)
     {
@@ -60,11 +59,6 @@ public class MonsterBattleController : MonoBehaviour
         hpController = transform.Find("HP Bar").GetComponent<GaugeController>();
         hpController.initData((int)monsterBattleInfo.basic[BasicStatEnum.hp].amount, 8, 1);
 
-        spriteHit = transform.Find("Hit Effect").GetComponent<SpriteRenderer>();
-        animHit = spriteHit.GetComponent<Animator>();
-        animHit.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
-            PathInfo.ANIMATION + "Effects/Hits" + "/Normal" + "/Controller"
-            );
         effects = new List<EffectStat>();
 
         animCasting = transform.Find("Casting Effect").GetComponent<Animator>();
@@ -106,7 +100,6 @@ public class MonsterBattleController : MonoBehaviour
         if (LocalStorage.IS_BATTLE_FINISH)
         {
             Destroy(anim);
-            Destroy(animHit);
             Destroy(animCasting);
         }
     }
@@ -115,11 +108,12 @@ public class MonsterBattleController : MonoBehaviour
     private void passTimer()
     {
         // 캐스팅 타임 관리
-        if (castingTime > 0f) 
+        if (castingTime > 0f)
         {
             animCasting.SetFloat("isCasting", 1f);
-            castingTime = Mathf.Max(castingTime - (Time.deltaTime * (1 + liveBattleInfo.basic[BasicStatEnum.timeCastingCycle].amount)), 0f); 
-        } else
+            castingTime = Mathf.Max(castingTime - (Time.deltaTime * (1 + liveBattleInfo.basic[BasicStatEnum.timeCastingCycle].amount)), 0f);
+        }
+        else
         {
             animCasting.SetFloat("isCasting", 0f);
         }
@@ -137,15 +131,6 @@ public class MonsterBattleController : MonoBehaviour
         if (anim.GetFloat("BattleState") != 0f && animTime <= 1f)
         {
             animTime += Time.deltaTime;
-        }
-        if (animTime > 0.25f)
-        {
-            animHit.SetFloat("isCritical", 0f);
-        }
-        if (animTime > 0.5f)
-        {
-            anim.SetFloat("BattleState", 0f);
-            animTime = 0f;
         }
 
         // 넉백/대쉬 등 관리
@@ -249,7 +234,6 @@ public class MonsterBattleController : MonoBehaviour
                         );
         directionToTarget = direction.normalized;
         anim.SetFloat("DirectionX", direction.x);
-        animHit.SetFloat("DirectionX", direction.x);
         direction *= BattleManager.getDistanceBetween(entryNum, target.entryNum) > distanceToKeep ? 1f : -1f;
         if (timeDistortion > 3f)
         {
@@ -278,8 +262,6 @@ public class MonsterBattleController : MonoBehaviour
         if (curHp <= 0f)
         {
             Destroy(anim);
-            Destroy(animHit);
-            Destroy(spriteHit);
             bg.GetComponent<SpriteRenderer>().sprite = Resources.LoadAll<Sprite>(
                 PathInfo.SPRITE + monsterBattleInfo.src
                 )[entryNum.x == 0 ? 13 : 12];
@@ -318,7 +300,8 @@ public class MonsterBattleController : MonoBehaviour
                             targetSkillName = skillPair.Key;
                             targetSkillCooltime = skill.coolTime;
                             castingTime = skill.castingTime;
-                            animCasting.transform.localPosition = directionToTarget / 3f;
+                            animCasting.SetFloat("scale", castingTime >= 1.5f ? 1f : 0f);
+                            //animCasting.transform.localPosition = directionToTarget / 3f;
                         }
                     }
                 }

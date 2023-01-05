@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f36a4ef9a8406814597111b1941368f3
+guid: 5db8758a6f6e9514599073d22e1b6337
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -102,7 +102,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: WebGL
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -117,91 +117,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Normal_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 128
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 981e0704e38c72d47ab3ae7b8f4d8686
-      internalID: -956676816
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Normal_1
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 128
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ed4da3fb6e1f0c046ab6959c3352ab54
-      internalID: -1397320451
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Normal_2
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 128
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8c0adbb4d50b1c44fa22d365d5722faf
-      internalID: -1948188133
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Normal_3
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 128
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fad6ba74c073396458cef09e6999c313
-      internalID: -1947069960
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Normal_4
+      name: Small_0
       rect:
         serializedVersion: 2
         x: 0
@@ -215,14 +131,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 68a2a82a89bce79469f60e6ca18982b3
-      internalID: -977930702
+      spriteID: dddbd19e1c6273d4da8edb4983515bdd
+      internalID: 306898569
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Normal_5
+      name: Small_1
       rect:
         serializedVersion: 2
         x: 128
@@ -236,14 +152,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3c54f2905ae11ef48a4e9b1800bdf9c4
-      internalID: 2123317962
+      spriteID: 808a4916c14ec114f9bc0c79ef645997
+      internalID: -354811839
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Normal_6
+      name: Small_2
       rect:
         serializedVersion: 2
         x: 256
@@ -257,29 +173,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f52b5dbccc162e94ba754d404654b39a
-      internalID: 1419649724
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Normal_7
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 0
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f5a3c17cc35fc1a4db9995f2b38b4c83
-      internalID: -2085368259
+      spriteID: f5fad64cbf9211d4f9a4c860fbb20577
+      internalID: 403355412
       vertices: []
       indices: 
       edges: []
@@ -295,14 +190,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Normal_3: -1947069960
-      Normal_6: 1419649724
-      Normal_2: -1948188133
-      Normal_7: -2085368259
-      Normal_5: 2123317962
-      Normal_4: -977930702
-      Normal_1: -1397320451
-      Normal_0: -956676816
+      Small_2: 403355412
+      Small_0: 306898569
+      Small_1: -354811839
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
