@@ -17,6 +17,7 @@ public class ProjectileController : MonoBehaviour
     private Vector3 directiontoward { get; set; }
 
     private Animator anim { get; set; }
+    private static string resourcePath = "Effects/Attacks/";
 
     // Update is called once per frame
     void Update()
@@ -85,8 +86,16 @@ public class ProjectileController : MonoBehaviour
         {
             anim = GetComponent<Animator>();
             anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
-                PathInfo.ANIMATION + projectileStat.src + "/Controller");
+                PathInfo.ANIMATION + resourcePath + projectileStat.src + "/Controller");
         }
+
+        if (projectileStat.rgb != null)
+        {
+            Color temp;
+            ColorUtility.TryParseHtmlString(projectileStat.rgb, out temp);
+            GetComponent<SpriteRenderer>().color = temp;
+        }
+
         spd = projectileStat.spd;
         isTargeting = projectileStat.isTarget;
         delayTime = Mathf.Max(delay, 0);

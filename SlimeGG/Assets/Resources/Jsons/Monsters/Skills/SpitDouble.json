@@ -7,7 +7,8 @@
   "projectiles": [
     {
       "spd": 5,
-      "src": "Effects/Attacks/FarNormal",
+      "src": "FarNormal",
+      "rgb": "#06ff94",
       "isTarget": true,
       "effects": {
         "instant": [
@@ -23,7 +24,8 @@
     },
     {
       "spd": 5,
-      "src": "Effects/Attacks/FarNormal",
+      "src": "FarNormal",
+      "rgb": "#ff4b61",
       "isTarget": true,
       "effects": {
         "instant": [

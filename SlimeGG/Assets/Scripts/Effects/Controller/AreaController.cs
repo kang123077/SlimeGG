@@ -23,16 +23,26 @@ public class AreaController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (duration > 0f)
+        // 전투 정지인지 아닌지
+        if (!LocalStorage.IS_GAME_PAUSE && !LocalStorage.IS_BATTLE_FINISH)
         {
-            // 현재 장판 위 타겟들 효과 적용
-            // 이동 가능 시 이동
-            // 시간 감기
-            passTime();
-            handleEffects();
-        } else
-        {
-            Destroy(gameObject);
+            // 전투 종료인지
+            if (LocalStorage.IS_BATTLE_FINISH)
+            {
+                Destroy(transform.gameObject);
+            }
+            if (duration > 0f)
+            {
+                // 현재 장판 위 타겟들 효과 적용
+                // 이동 가능 시 이동
+                // 시간 감기
+                passTime();
+                handleEffects();
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -42,7 +52,19 @@ public class AreaController : MonoBehaviour
         int targetSide)
     {
         this.caster = caster;
-        GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(PathInfo.SPRITE + resourcePath + (areaStat.src != null ? areaStat.src : "Normal"));
+        if (areaStat.src != null)
+        {
+            GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
+                PathInfo.ANIMATION + resourcePath + areaStat.src + "/Controller"
+                );
+        }
+
+        if (areaStat.rgb != null)
+        {
+            Color temp;
+            ColorUtility.TryParseHtmlString(areaStat.rgb, out temp);
+            GetComponent<SpriteRenderer>().color = temp;
+        }
         if (isTarget = areaStat.isTarget)
         {
             target = BattleManager.monsterBattleControllerList[targetSide][BattleManager.getClosestIndex(caster.getSide())[targetSide]];
