@@ -358,4 +358,13 @@ public class BattleManager : MonoBehaviour
         areaObject.transform.position = setPos;
         areaObject.GetComponent<AreaController>().initInfo(effectAreaStat, casterController, targetSide);
     }
+
+    public static int calculateDamage(float amount, MonsterBattleInfo atkInfo, MonsterBattleInfo defInfo)
+    {
+        float pureDmg = amount * atkInfo.basic[BasicStatEnum.atk].amount * (
+            100 / (100 + defInfo.basic[BasicStatEnum.def].amount)
+            );
+        pureDmg *= AttributesFunction.calculateAttributeAgainstWeight(atkInfo.element, defInfo.element);
+        return (int)pureDmg;
+    }
 }

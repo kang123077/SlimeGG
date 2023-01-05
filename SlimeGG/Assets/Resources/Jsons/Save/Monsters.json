@@ -31,10 +31,6 @@
       {
         "name": "Fire",
         "amount": 3
-      },
-      {
-        "name": "Golem",
-        "amount": 3
       }
     ],
     "installedPosition": 0
@@ -69,7 +65,7 @@
         "amount": 5
       },
       {
-        "name": "Insect",
+        "name": "Animal",
         "amount": 2
       },
       {
@@ -111,10 +107,6 @@
       {
         "name": "Fire",
         "amount": 3
-      },
-      {
-        "name": "Golem",
-        "amount": 3
       }
     ],
     "installedPosition": 0
@@ -150,10 +142,6 @@
       },
       {
         "name": "Fire",
-        "amount": 3
-      },
-      {
-        "name": "Golem",
         "amount": 3
       }
     ],
@@ -192,10 +180,6 @@
       {
         "name": "Fire",
         "amount": 3
-      },
-      {
-        "name": "Golem",
-        "amount": 3
       }
     ],
     "installedPosition": 0
@@ -232,10 +216,6 @@
       },
       {
         "name": "Fire",
-        "amount": 3
-      },
-      {
-        "name": "Golem",
         "amount": 3
       }
     ],

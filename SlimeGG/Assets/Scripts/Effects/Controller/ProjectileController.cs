@@ -150,15 +150,20 @@ public class ProjectileController : MonoBehaviour
     // 타겟 컨트롤러에 효과 적용
     private void applyEffectOnTarget(EffectStat effectToApply, MonsterBattleController targetToApply, bool isDirectionSustain)
     {
-        if (effectToApply.name == BasicStatEnum.position)
+        EffectStat temp = new EffectStat(effectToApply);
+        if (temp.name == BasicStatEnum.hp)
         {
-            effectToApply.directionWithPower =
+            temp.amount = BattleManager.calculateDamage(temp.amount, caster.liveBattleInfo, targetToApply.liveBattleInfo);
+        }
+        if (temp.name == BasicStatEnum.position)
+        {
+            temp.directionWithPower =
                 MonsterCommonFunction.translatePositionPowerToVector3(
                     isDirectionSustain ? directiontoward : Vector3.Normalize(targetToApply.transform.position - transform.position),
-                    effectToApply.amount
+                    temp.amount
                     );
         }
-        targetToApply.effects.Add(new EffectStat(effectToApply));
+        targetToApply.effects.Add(temp);
     }
 
     private void applyEffectListOnTarget(List<EffectStat> effectListToApply, MonsterBattleController targetToApply, bool isDirectionSustain)
