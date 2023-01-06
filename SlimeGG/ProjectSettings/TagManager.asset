@@ -19,10 +19,10 @@ TagManager:
   - Monster
   - Moving
   - MonsterInBattle
-  - 
-  - 
-  - 
-  - 
+  - InfoInBattle
+  - FieldForBattle
+  - Effect
+  - Projectile
   - 
   - 
   - 

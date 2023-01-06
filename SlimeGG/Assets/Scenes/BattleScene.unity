@@ -505,7 +505,7 @@ GameObject:
   - component: {fileID: 725388105}
   - component: {fileID: 725388106}
   - component: {fileID: 725388107}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Barrier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1207,7 +1207,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1170488803}
   - component: {fileID: 1170488804}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}

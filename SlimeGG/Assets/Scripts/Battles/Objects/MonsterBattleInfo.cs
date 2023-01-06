@@ -6,6 +6,7 @@ public class MonsterBattleInfo
     public Dictionary<BasicStatEnum, PlainStatVO> basic { get; set; }
     public Dictionary<ElementEnum, PlainStatVO> element { get; set; }
     public Dictionary<string, SkillStat> skills { get; set; }
+    public int[] entryPos { get; set; }
     public string src { get; set; }
 
     public MonsterBattleInfo()
