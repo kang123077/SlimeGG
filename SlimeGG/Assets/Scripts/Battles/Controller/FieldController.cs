@@ -35,31 +35,18 @@ public class FieldController : MonoBehaviour
         }
     }
 
-    public void setMonsterInPosition(Transform monster, int side, int numPos)
+    public void setMonsterInPosition(Transform monster)
     {
         if (monsterContainer == null)
         {
             monsterContainer = transform.Find("Monster Container");
         }
         monster.SetParent(monsterContainer);
-        List<float> initPos = fieldInfo.initPosList[side][numPos];
-        monster.localPosition = new Vector3(initPos[0], initPos[1], 0f);
     }
 
-    public void setFieldInfoForMonsters()
+    public void setMonsterInPosition(Transform monster, int side, int[] setPos)
     {
-        for (int i = 0; i < 2; i++)
-        {
-            for (int j = 0; j < fieldInfo.numberRestrictPerSide[i]; j++)
-            {
-                if (BattleManager.monsterBattleControllerList[i][j] != null)
-                {
-                    BattleManager.monsterBattleControllerList[i][j]
-                        .setFieldInfo(
-                            new Vector2(i, j)
-                        );
-                }
-            }
-        }
+        setMonsterInPosition(monster);
+        monster.localPosition = new Vector3((side == 1 ? 1 : -1) * (1 + (setPos[0])), setPos[1], 0f);
     }
 }

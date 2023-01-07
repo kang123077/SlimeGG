@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.Arm;
 
 public class BattleManager : MonoBehaviour
 {
@@ -18,6 +21,8 @@ public class BattleManager : MonoBehaviour
     public GameObject projectilePrefab;
     [SerializeField]
     public GameObject areaPrefab;
+    [SerializeField]
+    public GameObject entryListUI;
 
     public static GameObject staticProjectilePrefab;
     public static GameObject staticAreaPrefab;
@@ -28,6 +33,15 @@ public class BattleManager : MonoBehaviour
     public static float[][][] distanceEnemies = new float[2][][];
     public static bool isBattleReady = false;
     public static Vector2 fieldSize;
+    private static MonsterVO[] enemyEntry;
+    private static MonsterVO[] sllyCandidateList;
+    public static int entryLimit { get; set; }
+    private int sideWin { get; set; }
+
+    private bool isBaseReady = false;
+    private bool isEnemyReady = false;
+    private bool isEntryReady = false;
+    private bool isAssignReady = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,16 +53,38 @@ public class BattleManager : MonoBehaviour
     {
         if (!isBattleReady && LocalStorage.DICTIONARY_LOADING_DONE && LocalStorage.MONSTER_DATACALL_DONE)
         {
-            staticProjectilePrefab = projectilePrefab;
-            staticAreaPrefab = areaPrefab;
-            initField("Normal");
-            initGeneration();
-            isBattleReady = true;
+            if (!isBaseReady)
+            {
+                staticProjectilePrefab = projectilePrefab;
+                staticAreaPrefab = areaPrefab;
+                initField("Normal");
+                isBaseReady = true;
+            }
+            if (!isEnemyReady)
+            {
+                callEnemyEntry("Test");
+                callAllyEntry();
+                generateEnemies();
+                isEnemyReady = true;
+            }
+            if (!isEntryReady)
+            {
+                setEntryMonsters();
+                isEntryReady = true;
+            }
+            if (isAssignReady)
+            {
+                clearField();
+                generateAllies();
+                calculateDistance();
+                isBattleReady = true;
+            }
         }
         if (isBattleReady && !LocalStorage.IS_GAME_PAUSE)
         {
             calculateDistance();
             bool isOneSideAllDead;
+            int side = 1;
             foreach (MonsterBattleController[] sideList in monsterBattleControllerList)
             {
                 isOneSideAllDead = true;
@@ -59,79 +95,113 @@ public class BattleManager : MonoBehaviour
                         isOneSideAllDead = isOneSideAllDead && battleController.isDead;
                     }
                 }
-                if (isOneSideAllDead) finishBattle();
+                if (isOneSideAllDead)
+                {
+                    sideWin = side;
+                    finishBattle();
+                }
+                else
+                {
+                    side--;
+                }
             }
         }
+        if (LocalStorage.IS_BATTLE_FINISH)
+        {
+            Debug.Log($"Battle Finished:: Win => {sideWin} <=");
+            PenalForPause.SetActive(LocalStorage.IS_BATTLE_FINISH);
+            PenalForPause.transform.Find("Text Title").GetComponent<TMP_Text>().text = "BATTLE FINISHED!";
+            PenalForPause.transform.Find("Text Desc").GetComponent<TMP_Text>().text = $"Team {sideWin} Win!";
+            Destroy(gameObject);
+        }
     }
-    public void initGeneration()
+
+    private void callEnemyEntry(string entryPath)
     {
-        // 몬스터 생성
-        test3on2();
-
-        fieldGenerated.GetComponent<FieldController>().setFieldInfoForMonsters();
-        calculateDistance();
+        enemyEntry =
+                        CommonFunctions.loadObjectFromJson<MonsterVO[]>(
+                            $"Assets/Resources/Jsons/Entries/{entryPath}"
+                            );
     }
 
-    private void generateMonster(MonsterBattleInfo monsterInfo, int side, int numPos)
+    private void callAllyEntry()
+    {
+        sllyCandidateList = LocalStorage.monsters.ToArray();
+    }
+
+    private void generateEnemies()
+    {
+        MonsterBattleInfo temp;
+        int cnt = 0;
+        foreach (MonsterVO enemyVO in enemyEntry)
+        {
+            temp = MonsterCommonFunction.generateMonsterBattleInfo(enemyVO);
+            generateMonster(temp, 1, cnt, temp.entryPos);
+            cnt++;
+        }
+    }
+
+    private void setEntryMonsters()
+    {
+        MonsterBattleInfo temp;
+        int cnt = 0;
+        foreach (MonsterVO enemyVO in sllyCandidateList)
+        {
+            temp = MonsterCommonFunction.generateMonsterBattleInfo(enemyVO);
+            GameObject newMonster = Instantiate(monsterBase);
+            newMonster.GetComponent<MonsterBattleController>().initInfo(temp, fieldGenerated.transform.Find("Monster Container"), entryListUI.transform);
+            entryListUI.GetComponent<EntryController>().addEntry(newMonster);
+            cnt++;
+        }
+    }
+
+    private void generateMonster(MonsterBattleInfo monsterInfo, int side, int numPos, int[] setPos)
     {
         GameObject newMonster = Instantiate(monsterBase);
-        newMonster.GetComponent<MonsterBattleController>().initInfo(monsterInfo);
+        newMonster.GetComponent<MonsterBattleController>().initInfo(monsterInfo, fieldGenerated.transform.Find("Monster Container"));
+        newMonster.GetComponent<MonsterBattleController>().setPlaceInfo(new Vector2(side, numPos));
+
         monsterBattleControllerList[side][numPos] = newMonster.GetComponent<MonsterBattleController>();
 
-        fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, side, numPos);
+        fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, side, setPos);
 
         GameObject newMonsterInfoUI = Instantiate(monsterUIBase);
         newMonsterInfoUI.transform.SetParent(monsterInfoUIGenerated.transform.Find($"{side}"));
         newMonsterInfoUI
-            .GetComponent<MonsterBattleUIController>()
-            .initInfo(newMonster.GetComponent<MonsterBattleController>(),
-            side, numPos);
+            .GetComponent<MonsterBattleUIController>().initInfo(newMonster.GetComponent<MonsterBattleController>()
+            , side
+            , numPos);
 
     }
 
-    private void test1on1()
+    private void generateAllies()
     {
-        MonsterBattleInfo newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[0]);
-        generateMonster(newMon, 0, 0);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[1]);
-        generateMonster(newMon, 1, 0);
+        for (int i = 0; i < monsterBattleControllerList[0].Length; i++)
+        {
+            if (monsterBattleControllerList[0][i] != null)
+            {
+                monsterBattleControllerList[0][i].setPlaceInfo(new Vector2(0, i));
+                GameObject newMonsterInfoUI = Instantiate(monsterUIBase);
+                newMonsterInfoUI.transform.SetParent(monsterInfoUIGenerated.transform.Find($"0"));
+                newMonsterInfoUI
+                    .GetComponent<MonsterBattleUIController>().initInfo(monsterBattleControllerList[0][i].GetComponent<MonsterBattleController>()
+                    , 0
+                    , i);
+            }
+        }
     }
 
-    private void test3on2()
+    private void clearField()
     {
-        MonsterBattleInfo newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[3]);
-        generateMonster(newMon, 0, 0);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[1]);
-        generateMonster(newMon, 0, 1);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[3]);
-        generateMonster(newMon, 1, 0);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[0]);
-        generateMonster(newMon, 1, 1);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[5]);
-        generateMonster(newMon, 1, 2);
-    }
-
-    private void test3on4()
-    {
-        MonsterBattleInfo newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[0]);
-        generateMonster(newMon, 0, 0);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[1]);
-        generateMonster(newMon, 1, 0);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[2]);
-        generateMonster(newMon, 0, 1);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[3]);
-        generateMonster(newMon, 1, 1);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[4]);
-        generateMonster(newMon, 0, 2);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[5]);
-        generateMonster(newMon, 1, 2);
-        newMon = MonsterCommonFunction.generateMonsterBattleInfo(LocalStorage.monsters[3]);
-        generateMonster(newMon, 1, 3);
+        fieldGenerated.transform.Find("Barrier").AddComponent<PolygonCollider2D>();
+        Destroy(fieldGenerated.transform.Find("Entry Slot").gameObject);
+        Destroy(entryListUI.transform.parent.parent.gameObject);
     }
     private void initField(string fieldName)
     {
         float[] size = LocalDictionary.fields[fieldName].size.ToArray();
         fieldSize = new Vector2(size[0], size[1]);
+        entryLimit = LocalDictionary.fields[fieldName].numberRestrictPerSide[0];
         fieldGenerated.GetComponent<FieldController>().initField(LocalDictionary.fields[fieldName]);
     }
 
@@ -338,5 +408,30 @@ public class BattleManager : MonoBehaviour
         GameObject areaObject = Instantiate(staticAreaPrefab);
         areaObject.transform.position = setPos;
         areaObject.GetComponent<AreaController>().initInfo(effectAreaStat, casterController, targetSide);
+    }
+
+    public static int calculateDamage(float amount, MonsterBattleInfo atkInfo, MonsterBattleInfo defInfo)
+    {
+        float pureDmg = amount * atkInfo.basic[BasicStatEnum.atk].amount * (
+            100 / (100 + defInfo.basic[BasicStatEnum.def].amount)
+            );
+        pureDmg *= AttributesFunction.calculateAttributeAgainstWeight(atkInfo.element, defInfo.element);
+        return (int)pureDmg;
+    }
+
+    public void setReady(GameObject btn)
+    {
+        if (monsterBattleControllerList[0][0] == null)
+        {
+            print("몬스터 최소 1기 배치 필요!!");
+            return;
+        }
+        if (monsterBattleControllerList[0].Length > entryLimit)
+        {
+            print("몬스터 배치 최대수 초과!");
+            return;
+        }
+        btn.SetActive(false);
+        isAssignReady = true;
     }
 }

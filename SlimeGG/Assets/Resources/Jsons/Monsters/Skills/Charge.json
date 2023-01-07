@@ -34,9 +34,9 @@
             "tickTime": 0
           },
           {
-            "name": "timeMoveCycle",
+            "name": "spd",
             "amount": -1,
-            "isMultiple": false,
+            "isMultiple": true,
             "duration": 0.5,
             "tickTime": 0
           },

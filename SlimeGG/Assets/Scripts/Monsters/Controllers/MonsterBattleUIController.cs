@@ -2,20 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
-using UnityEngine.Rendering;
 
 public class MonsterBattleUIController : MonoBehaviour
 {
-    private static List<Vector3> posList = new List<Vector3>() {
-    new Vector3(150f, 100f, 0f),
-    new Vector3(125f, 275f, 0f),
-    new Vector3(375, 100f, 0f),
-    new Vector3(125f, 450f, 0f)};
     private MonsterBattleController target;
     private Transform trackingTf;
     private Dictionary<string, Transform> skillTfList = new Dictionary<string, Transform>();
     private bool isDead = false;
+    private int numPos { get; set; }
 
     void Start()
     {
@@ -23,6 +17,7 @@ public class MonsterBattleUIController : MonoBehaviour
 
     void Update()
     {
+        adjustSize();
         if (BattleManager.isBattleReady &&
             !LocalStorage.IS_BATTLE_FINISH &&
             !LocalStorage.IS_GAME_PAUSE &&
@@ -32,9 +27,16 @@ public class MonsterBattleUIController : MonoBehaviour
         }
     }
 
+    private void adjustSize()
+    {
+        GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 6, Screen.width / 6 * 3 / 4);
+        transform.localPosition = new Vector3(0, Screen.width / 6 * 3 / 4 * numPos, 0f);
+    }
+
     private void reverseTrackingAndSkills()
     {
         Vector3 res = transform.localScale.x == 1f ? new Vector3(-1, 1, 1) : Vector3.one;
+        trackingTf.localScale = res;
         transform.localScale = res;
         Transform temp = transform.Find("Contents").Find("Skills");
         for (int i = 1; i <= 3; i++)
@@ -46,7 +48,7 @@ public class MonsterBattleUIController : MonoBehaviour
     public void initInfo(MonsterBattleController target, int side, int numPos)
     {
         Transform tempTf = transform.Find("Contents");
-        trackingTf = tempTf.Find("Tracking");
+        trackingTf = tempTf.Find("Tracking").Find("Screen");
         transform.localScale = Vector3.one;
         tempTf = tempTf.Find("Skills");
         this.target = target;
@@ -60,9 +62,7 @@ public class MonsterBattleUIController : MonoBehaviour
         {
             reverseTrackingAndSkills();
         }
-        // 위치 잡기
-        Vector3 tragetPos = posList[numPos];
-        transform.localPosition = new Vector3(side == 0 ? tragetPos.x : -tragetPos.x, tragetPos.y, tragetPos.z);
+        this.numPos = numPos;
         setTextureToTracking(side, numPos);
 
     }
@@ -80,7 +80,7 @@ public class MonsterBattleUIController : MonoBehaviour
         }
         foreach (KeyValuePair<string, SkillStat> skillStat in target.monsterBattleInfo.skills)
         {
-            skillTfList[skillStat.Key].Find("CoolTime").GetComponent<Image>().fillAmount = 
+            skillTfList[skillStat.Key].Find("CoolTime").GetComponent<Image>().fillAmount =
                 1 - Mathf.Min((skillStat.Value.timeCharging / skillStat.Value.coolTime), 1f);
         }
     }

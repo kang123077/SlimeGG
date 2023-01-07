@@ -1,0 +1,154 @@
+[
+  {
+    "nickName": "숲들숲들",
+    "accuSpecies": [
+      "Egg",
+      "BabySpirit"
+    ],
+    "basic": [
+      {
+        "name": "hp",
+        "amount": 1
+      },
+      {
+        "name": "atk",
+        "amount": 1
+      },
+      {
+        "name": "def",
+        "amount": 1
+      },
+      {
+        "name": "spd",
+        "amount": 1.3
+      }
+    ],
+    "element": [
+      {
+        "name": "Spirit",
+        "amount": 5
+      },
+      {
+        "name": "Animal",
+        "amount": 2
+      },
+      {
+        "name": "Wind",
+        "amount": 11
+      }
+    ],
+    "entryPos": [2, 0]
+  }, 
+  {
+    "nickName": "숲들숲들",
+    "accuSpecies": [
+      "Egg",
+      "BabySpirit"
+    ],
+    "basic": [
+      {
+        "name": "hp",
+        "amount": 1
+      },
+      {
+        "name": "atk",
+        "amount": 1
+      },
+      {
+        "name": "def",
+        "amount": 1
+      },
+      {
+        "name": "spd",
+        "amount": 1.3
+      }
+    ],
+    "element": [
+      {
+        "name": "Spirit",
+        "amount": 5
+      },
+      {
+        "name": "Animal",
+        "amount": 2
+      },
+      {
+        "name": "Wind",
+        "amount": 11
+      }
+    ],
+    "entryPos": [2, 1]
+  }, 
+  {
+    "nickName": "진흙",
+    "accuSpecies": [
+      "Egg",
+      "MudBall"
+    ],
+    "basic": [
+      {
+        "name": "hp",
+        "amount": 1.4
+      },
+      {
+        "name": "atk",
+        "amount": 1
+      },
+      {
+        "name": "def",
+        "amount": 1.1
+      },
+      {
+        "name": "spd",
+        "amount": 1
+      }
+    ],
+    "element": [
+      {
+        "name": "Earth",
+        "amount": 7
+      },
+      {
+        "name": "Fire",
+        "amount": 3
+      }
+    ],
+    "entryPos": [1, -1]
+  }, 
+  {
+    "nickName": "진흙",
+    "accuSpecies": [
+      "Egg",
+      "MudBall"
+    ],
+    "basic": [
+      {
+        "name": "hp",
+        "amount": 1.4
+      },
+      {
+        "name": "atk",
+        "amount": 1
+      },
+      {
+        "name": "def",
+        "amount": 1.1
+      },
+      {
+        "name": "spd",
+        "amount": 1
+      }
+    ],
+    "element": [
+      {
+        "name": "Earth",
+        "amount": 7
+      },
+      {
+        "name": "Fire",
+        "amount": 3
+      }
+    ],
+    "entryPos": [0, 1]
+  }
+]

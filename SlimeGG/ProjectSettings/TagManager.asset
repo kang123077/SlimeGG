@@ -19,10 +19,10 @@ TagManager:
   - Monster
   - Moving
   - MonsterInBattle
-  - 
-  - 
-  - 
-  - 
+  - InfoInBattle
+  - FieldForBattle
+  - Effect
+  - Projectile
   - 
   - 
   - 
@@ -45,4 +45,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: GameObject Above UI
+    uniqueID: 466244633
     locked: 0

@@ -16,8 +16,11 @@
     {
       "spd": 6,
       "isTarget": false,
-      "src": "Effects/Attacks/FarNormal",
+      "rgb": "#ff4b61",
+      "src": "FarNormal",
       "area": {
+        "rgb": "#FF7070",
+        "src": "Smog",
         "duration": 3,
         "range": 2.5,
         "isTarget": false,
