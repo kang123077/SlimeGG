@@ -7,5 +7,6 @@ public class EffectAreaStat
     public bool isTarget { get; set; }
     public float spd { get; set; }
     public string src { get; set; }
+    public string rgb { get; set; }
     public EffectBundleStat effects { get; set; }
 }

@@ -41,7 +41,7 @@ public class MonsterCommonFunction
         res.basic[BasicStatEnum.position] = new PlainStatVO(0f);
         res.basic[BasicStatEnum.invincible] = new PlainStatVO(0f);
         res.basic[BasicStatEnum.timeCoolCycle] = new PlainStatVO(0f);
-        res.basic[BasicStatEnum.timeMoveCycle] = new PlainStatVO(0f);
+        res.entryPos = monsterVO.entryPos != null ? monsterVO.entryPos : new int[2];
         return res;
     }
 

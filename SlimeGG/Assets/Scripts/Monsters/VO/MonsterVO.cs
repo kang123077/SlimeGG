@@ -8,4 +8,5 @@ public class MonsterVO : MonsterSpeciesVO
     public string nickName { get; set; }
     public int installedPosition { get; set; }
     public List<string> accuSpecies { get; set; }
+    public int[] entryPos { get; set; }
 }

@@ -2,11 +2,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
-using UnityEngine.Rendering;
 
 public class MonsterBattleController : MonoBehaviour
 {
-    private Vector2 entryNum { get; set; }
+    private Vector2 entryNum = new Vector2(-1f, -1f);
     public MonsterBattleInfo monsterBattleInfo { get; set; }
     public MonsterBattleInfo liveBattleInfo { get; set; }
     // 부여받은 효과 (디버프, 버프 전부)
@@ -15,8 +14,8 @@ public class MonsterBattleController : MonoBehaviour
     // ------------ 그래픽 관련 변수들 ------------------
     private Transform bg { get; set; }
     private Animator anim { get; set; }
-    private Animator animHit { get; set; }
-    private SpriteRenderer spriteHit { get; set; }
+    private Animator animCasting { get; set; }
+
     private float animTime = 0f;
 
     // ------------------------------------------
@@ -33,9 +32,14 @@ public class MonsterBattleController : MonoBehaviour
 
     private Vector3 directionToTarget { get; set; }
     private Vector3 extraMovement = Vector3.zero;
+    private Vector3 curDirection { get; set; }
 
-    public void initInfo(MonsterBattleInfo monsterBattleInfo)
+    private Transform monsterContainer;
+    private Transform entryContainer;
+
+    public void initInfo(MonsterBattleInfo monsterBattleInfo, Transform monsterContainer)
     {
+        this.monsterContainer = monsterContainer;
         this.monsterBattleInfo = monsterBattleInfo;
         liveBattleInfo = new MonsterBattleInfo(monsterBattleInfo);
         bg = transform.Find("Image");
@@ -58,15 +62,24 @@ public class MonsterBattleController : MonoBehaviour
         hpController = transform.Find("HP Bar").GetComponent<GaugeController>();
         hpController.initData((int)monsterBattleInfo.basic[BasicStatEnum.hp].amount, 8, 1);
 
-        spriteHit = transform.Find("Hit Effect").GetComponent<SpriteRenderer>();
-        animHit = spriteHit.GetComponent<Animator>();
-        animHit.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
-            PathInfo.ANIMATION + "Effects/Hits" + "/Normal" + "/Controller"
-            );
         effects = new List<EffectStat>();
+
+        animCasting = transform.Find("Casting Effect").GetComponent<Animator>();
+
+        transform.Find("Tracking Camera").gameObject.SetActive(false);
+        hpController.gameObject.SetActive(false);
+        transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+
+        anim.SetFloat("DirectionX", 1f);
     }
 
-    public void setFieldInfo(Vector2 entryNum)
+    public void initInfo(MonsterBattleInfo monsterBattleInfo, Transform monsterContainer, Transform entryContainer)
+    {
+        initInfo(monsterBattleInfo, monsterContainer);
+        this.entryContainer = entryContainer;
+    }
+
+    public void setPlaceInfo(Vector2 entryNum)
     {
         this.entryNum = entryNum;
         hpController.setSide(entryNum.x);
@@ -81,12 +94,16 @@ public class MonsterBattleController : MonoBehaviour
         {
             if (BattleManager.isBattleReady)
             {
+                if (!hpController.gameObject.active)
+                {
+                    transform.Find("Tracking Camera").gameObject.SetActive(true);
+                    hpController.gameObject.SetActive(true);
+                    transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+                }
                 if (!isDead)
                 {
                     if (LocalStorage.IS_BATTLE_FINISH)
                     {
-                        Destroy(anim);
-                        Destroy(animHit);
                     }
                     else
                     {
@@ -101,14 +118,26 @@ public class MonsterBattleController : MonoBehaviour
                 }
             }
         }
-
+        if (LocalStorage.IS_BATTLE_FINISH)
+        {
+            Destroy(anim);
+            Destroy(animCasting);
+        }
     }
 
     // 시간에 따른 효과 소멸 또는 쿨타임 감소 등은 여기서 관리
     private void passTimer()
     {
         // 캐스팅 타임 관리
-        if (castingTime > 0f) castingTime = Mathf.Max(castingTime - (Time.deltaTime * (1 + liveBattleInfo.basic[BasicStatEnum.timeCastingCycle].amount)), 0f);
+        if (castingTime > 0f)
+        {
+            animCasting.SetFloat("isCasting", 1f);
+            castingTime = Mathf.Max(castingTime - (Time.deltaTime * (1 + liveBattleInfo.basic[BasicStatEnum.timeCastingCycle].amount)), 0f);
+        }
+        else
+        {
+            animCasting.SetFloat("isCasting", 0f);
+        }
 
         // 방향 왜곡 지속 시간 관리
         timeDistortion += Time.deltaTime;
@@ -123,15 +152,6 @@ public class MonsterBattleController : MonoBehaviour
         if (anim.GetFloat("BattleState") != 0f && animTime <= 1f)
         {
             animTime += Time.deltaTime;
-        }
-        if (animTime > 0.25f)
-        {
-            animHit.SetFloat("isCritical", 0f);
-        }
-        if (animTime > 0.5f)
-        {
-            anim.SetFloat("BattleState", 0f);
-            animTime = 0f;
         }
 
         // 넉백/대쉬 등 관리
@@ -235,7 +255,6 @@ public class MonsterBattleController : MonoBehaviour
                         );
         directionToTarget = direction.normalized;
         anim.SetFloat("DirectionX", direction.x);
-        animHit.SetFloat("DirectionX", direction.x);
         direction *= BattleManager.getDistanceBetween(entryNum, target.entryNum) > distanceToKeep ? 1f : -1f;
         if (timeDistortion > 3f)
         {
@@ -246,7 +265,7 @@ public class MonsterBattleController : MonoBehaviour
         {
             direction += MonsterCommonFunction.getDistortedDirection(direction, transform.position, directionDistortion);
         }
-        Vector3 curDirection = (castingTime <= 0f
+        curDirection = (castingTime <= 0f
                 ? (Vector3.Normalize(direction)
                     * liveBattleInfo.basic[BasicStatEnum.spd].amount)
                 : Vector3.zero)
@@ -264,8 +283,6 @@ public class MonsterBattleController : MonoBehaviour
         if (curHp <= 0f)
         {
             Destroy(anim);
-            Destroy(animHit);
-            Destroy(spriteHit);
             bg.GetComponent<SpriteRenderer>().sprite = Resources.LoadAll<Sprite>(
                 PathInfo.SPRITE + monsterBattleInfo.src
                 )[entryNum.x == 0 ? 13 : 12];
@@ -304,6 +321,8 @@ public class MonsterBattleController : MonoBehaviour
                             targetSkillName = skillPair.Key;
                             targetSkillCooltime = skill.coolTime;
                             castingTime = skill.castingTime;
+                            animCasting.SetFloat("scale", castingTime >= 1.5f ? 1f : 0f);
+                            //animCasting.transform.localPosition = directionToTarget / 3f;
                         }
                     }
                 }
@@ -350,5 +369,74 @@ public class MonsterBattleController : MonoBehaviour
     public Vector2 getSide()
     {
         return entryNum;
+    }
+
+    public void OnMouseDown()
+    {
+        if (entryNum.x == -1f)
+        {
+            entryContainer.GetComponent<EntryController>().removeEntry(transform.gameObject);
+            transform.localScale = Vector3.one;
+            for (int i = 0; i < BattleManager.monsterBattleControllerList[0].Length; i++)
+            {
+                if (BattleManager.monsterBattleControllerList[0][i] == this)
+                {
+                    BattleManager.monsterBattleControllerList[0][i] = null;
+                    break;
+                }
+            }
+        }
+    }
+
+    public void OnMouseDrag()
+    {
+        if (entryNum.x == -1f)
+        {
+            Vector3 mousePos = new Vector3(
+                Input.mousePosition.x,
+                Input.mousePosition.y,
+                10f
+                );
+            Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
+            objPosition.z = 18;
+            transform.position = objPosition;
+        }
+    }
+
+    public void OnMouseUp()
+    {
+        if (entryNum.x == -1f)
+        {
+            RaycastHit temp;
+            if (Physics.Raycast(transform.position, Vector3.forward, out temp, 3f))
+            {
+                if (temp.transform.parent.tag == "Tile")
+                {
+                    EntrySlotController tempSlot = temp.transform.parent.GetComponent<EntrySlotController>();
+                    transform.SetParent(monsterContainer);
+                    transform.localPosition = new Vector3(-1f + tempSlot.x, tempSlot.y, 0f);
+                    for (int i = 0; i < BattleManager.monsterBattleControllerList[0].Length; i++)
+                    {
+                        if (BattleManager.monsterBattleControllerList[0][i] == null)
+                        {
+                            BattleManager.monsterBattleControllerList[0][i] = this;
+                            break;
+                        }
+                    }
+                    transform.localScale = Vector3.one;
+                }
+            }
+            else
+            {
+                entryContainer.GetComponent<EntryController>().addEntry(transform.gameObject);
+            }
+        }
+    }
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.name == "Barrier")
+        {
+            extraMovement = -curDirection / 10;
+        }
     }
 }

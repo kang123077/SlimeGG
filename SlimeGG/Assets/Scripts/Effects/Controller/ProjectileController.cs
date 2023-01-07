@@ -17,6 +17,7 @@ public class ProjectileController : MonoBehaviour
     private Vector3 directiontoward { get; set; }
 
     private Animator anim { get; set; }
+    private static string resourcePath = "Effects/Attacks/";
 
     // Update is called once per frame
     void Update()
@@ -85,8 +86,16 @@ public class ProjectileController : MonoBehaviour
         {
             anim = GetComponent<Animator>();
             anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
-                PathInfo.ANIMATION + projectileStat.src + "/Controller");
+                PathInfo.ANIMATION + resourcePath + projectileStat.src + "/Controller");
         }
+
+        if (projectileStat.rgb != null)
+        {
+            Color temp;
+            ColorUtility.TryParseHtmlString(projectileStat.rgb, out temp);
+            GetComponent<SpriteRenderer>().color = temp;
+        }
+
         spd = projectileStat.spd;
         isTargeting = projectileStat.isTarget;
         delayTime = Mathf.Max(delay, 0);
@@ -141,15 +150,20 @@ public class ProjectileController : MonoBehaviour
     // 타겟 컨트롤러에 효과 적용
     private void applyEffectOnTarget(EffectStat effectToApply, MonsterBattleController targetToApply, bool isDirectionSustain)
     {
-        if (effectToApply.name == BasicStatEnum.position)
+        EffectStat temp = new EffectStat(effectToApply);
+        if (temp.name == BasicStatEnum.hp)
         {
-            effectToApply.directionWithPower =
+            temp.amount = BattleManager.calculateDamage(temp.amount, caster.liveBattleInfo, targetToApply.liveBattleInfo);
+        }
+        if (temp.name == BasicStatEnum.position)
+        {
+            temp.directionWithPower =
                 MonsterCommonFunction.translatePositionPowerToVector3(
                     isDirectionSustain ? directiontoward : Vector3.Normalize(targetToApply.transform.position - transform.position),
-                    effectToApply.amount
+                    temp.amount
                     );
         }
-        targetToApply.effects.Add(new EffectStat(effectToApply));
+        targetToApply.effects.Add(temp);
     }
 
     private void applyEffectListOnTarget(List<EffectStat> effectListToApply, MonsterBattleController targetToApply, bool isDirectionSustain)
