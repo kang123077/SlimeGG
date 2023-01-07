@@ -42,7 +42,7 @@ public class FieldController : MonoBehaviour
             monsterContainer = transform.Find("Monster Container");
         }
         monster.SetParent(monsterContainer);
-        monster.localPosition = new Vector3((side == 1 ? 1 : -1) * (1 + (setPos[0] / 2f)), setPos[1] / 2f, 0f);
+        monster.localPosition = new Vector3((side == 1 ? 1 : -1) * (1 + (setPos[0])), setPos[1], 0f);
     }
 
     public void setFieldInfoForMonsters()
