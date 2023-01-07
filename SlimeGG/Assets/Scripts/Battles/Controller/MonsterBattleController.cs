@@ -2,11 +2,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
-using UnityEngine.Rendering;
 
 public class MonsterBattleController : MonoBehaviour
 {
-    private Vector2 entryNum { get; set; }
+    private Vector2 entryNum = new Vector2(-1f, -1f);
     public MonsterBattleInfo monsterBattleInfo { get; set; }
     public MonsterBattleInfo liveBattleInfo { get; set; }
     // 부여받은 효과 (디버프, 버프 전부)
@@ -34,9 +33,12 @@ public class MonsterBattleController : MonoBehaviour
     private Vector3 directionToTarget { get; set; }
     private Vector3 extraMovement = Vector3.zero;
 
+    private Transform monsterContainer;
+    private Transform entryContainer;
 
-    public void initInfo(MonsterBattleInfo monsterBattleInfo)
+    public void initInfo(MonsterBattleInfo monsterBattleInfo, Transform monsterContainer)
     {
+        this.monsterContainer = monsterContainer;
         this.monsterBattleInfo = monsterBattleInfo;
         liveBattleInfo = new MonsterBattleInfo(monsterBattleInfo);
         bg = transform.Find("Image");
@@ -62,13 +64,26 @@ public class MonsterBattleController : MonoBehaviour
         effects = new List<EffectStat>();
 
         animCasting = transform.Find("Casting Effect").GetComponent<Animator>();
+
+        transform.Find("Tracking Camera").gameObject.SetActive(false);
+        hpController.gameObject.SetActive(false);
+        transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+
+        anim.SetFloat("DirectionX", 1f);
     }
 
-    public void setFieldInfo(Vector2 entryNum)
+    public void initInfo(MonsterBattleInfo monsterBattleInfo, Transform monsterContainer, Transform entryContainer)
+    {
+        initInfo(monsterBattleInfo, monsterContainer);
+        this.entryContainer = entryContainer;
+    }
+
+    public void setPlaceInfo(Vector2 entryNum)
     {
         this.entryNum = entryNum;
         hpController.setSide(entryNum.x);
         anim.SetFloat("DirectionX", entryNum.x == 0f ? 1f : -1f);
+        //transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
         setTexturetoCamera((int)entryNum.x, (int)entryNum.y);
     }
@@ -348,5 +363,50 @@ public class MonsterBattleController : MonoBehaviour
     public Vector2 getSide()
     {
         return entryNum;
+    }
+
+    public void OnMouseDown()
+    {
+        if (entryNum.x == -1f)
+        {
+            entryContainer.GetComponent<EntryController>().removeEntry(transform.gameObject);
+        }
+    }
+
+    public void OnMouseDrag()
+    {
+        if (entryNum.x == -1f)
+        {
+            transform.localScale = Vector3.one;
+            Vector3 mousePos = new Vector3(
+                Input.mousePosition.x,
+                Input.mousePosition.y,
+                10f
+                );
+            Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
+            objPosition.z = 18;
+            transform.position = objPosition;
+        }
+    }
+
+    public void OnMouseUp()
+    {
+        if (entryNum.x == -1f)
+        {
+            RaycastHit temp;
+            if (Physics.Raycast(transform.position, Vector3.forward, out temp, 3f))
+            {
+                if (temp.transform.parent.tag == "Tile")
+                {
+                    EntrySlotController tempSlot = temp.transform.parent.GetComponent<EntrySlotController>();
+                    transform.SetParent(monsterContainer);
+                    transform.localPosition = new Vector3(-1f + tempSlot.x, tempSlot.y, 0f);
+                }
+            }
+            else
+            {
+                entryContainer.GetComponent<EntryController>().addEntry(transform.gameObject);
+            }
+        }
     }
 }

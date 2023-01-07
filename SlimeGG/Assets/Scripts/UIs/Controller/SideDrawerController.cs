@@ -10,6 +10,8 @@ public class SideDrawerController : MonoBehaviour
     private bool isArrived = true;
     [SerializeField]
     public bool isRight;
+    [SerializeField]
+    public bool isHeightFull;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +22,7 @@ public class SideDrawerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 3, transform.GetComponent<RectTransform>().sizeDelta.y);
+        transform.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 3, isHeightFull ? transform.GetComponent<RectTransform>().sizeDelta.y : Screen.height / 5);
         toggleButtonTf.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 3 / 10, Screen.width / 3 / 10 * 2);
         if (isOpen)
         {

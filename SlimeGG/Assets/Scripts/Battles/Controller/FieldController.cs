@@ -44,21 +44,4 @@ public class FieldController : MonoBehaviour
         monster.SetParent(monsterContainer);
         monster.localPosition = new Vector3((side == 1 ? 1 : -1) * (1 + (setPos[0])), setPos[1], 0f);
     }
-
-    public void setFieldInfoForMonsters()
-    {
-        for (int i = 0; i < 2; i++)
-        {
-            for (int j = 0; j < fieldInfo.numberRestrictPerSide[i]; j++)
-            {
-                if (BattleManager.monsterBattleControllerList[i][j] != null)
-                {
-                    BattleManager.monsterBattleControllerList[i][j]
-                        .setFieldInfo(
-                            new Vector2(i, j)
-                        );
-                }
-            }
-        }
-    }
 }
