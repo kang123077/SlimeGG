@@ -35,13 +35,18 @@ public class FieldController : MonoBehaviour
         }
     }
 
-    public void setMonsterInPosition(Transform monster, int side, int[] setPos)
+    public void setMonsterInPosition(Transform monster)
     {
         if (monsterContainer == null)
         {
             monsterContainer = transform.Find("Monster Container");
         }
         monster.SetParent(monsterContainer);
+    }
+
+    public void setMonsterInPosition(Transform monster, int side, int[] setPos)
+    {
+        setMonsterInPosition(monster);
         monster.localPosition = new Vector3((side == 1 ? 1 : -1) * (1 + (setPos[0])), setPos[1], 0f);
     }
 }

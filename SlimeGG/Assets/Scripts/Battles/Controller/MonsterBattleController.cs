@@ -32,6 +32,7 @@ public class MonsterBattleController : MonoBehaviour
 
     private Vector3 directionToTarget { get; set; }
     private Vector3 extraMovement = Vector3.zero;
+    private Vector3 curDirection { get; set; }
 
     private Transform monsterContainer;
     private Transform entryContainer;
@@ -83,7 +84,6 @@ public class MonsterBattleController : MonoBehaviour
         this.entryNum = entryNum;
         hpController.setSide(entryNum.x);
         anim.SetFloat("DirectionX", entryNum.x == 0f ? 1f : -1f);
-        //transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
         setTexturetoCamera((int)entryNum.x, (int)entryNum.y);
     }
@@ -94,6 +94,12 @@ public class MonsterBattleController : MonoBehaviour
         {
             if (BattleManager.isBattleReady)
             {
+                if (!hpController.gameObject.active)
+                {
+                    transform.Find("Tracking Camera").gameObject.SetActive(true);
+                    hpController.gameObject.SetActive(true);
+                    transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+                }
                 if (!isDead)
                 {
                     if (LocalStorage.IS_BATTLE_FINISH)
@@ -259,7 +265,7 @@ public class MonsterBattleController : MonoBehaviour
         {
             direction += MonsterCommonFunction.getDistortedDirection(direction, transform.position, directionDistortion);
         }
-        Vector3 curDirection = (castingTime <= 0f
+        curDirection = (castingTime <= 0f
                 ? (Vector3.Normalize(direction)
                     * liveBattleInfo.basic[BasicStatEnum.spd].amount)
                 : Vector3.zero)
@@ -370,6 +376,15 @@ public class MonsterBattleController : MonoBehaviour
         if (entryNum.x == -1f)
         {
             entryContainer.GetComponent<EntryController>().removeEntry(transform.gameObject);
+            transform.localScale = Vector3.one;
+            for (int i = 0; i < BattleManager.monsterBattleControllerList[0].Length; i++)
+            {
+                if (BattleManager.monsterBattleControllerList[0][i] == this)
+                {
+                    BattleManager.monsterBattleControllerList[0][i] = null;
+                    break;
+                }
+            }
         }
     }
 
@@ -377,7 +392,6 @@ public class MonsterBattleController : MonoBehaviour
     {
         if (entryNum.x == -1f)
         {
-            transform.localScale = Vector3.one;
             Vector3 mousePos = new Vector3(
                 Input.mousePosition.x,
                 Input.mousePosition.y,
@@ -401,12 +415,28 @@ public class MonsterBattleController : MonoBehaviour
                     EntrySlotController tempSlot = temp.transform.parent.GetComponent<EntrySlotController>();
                     transform.SetParent(monsterContainer);
                     transform.localPosition = new Vector3(-1f + tempSlot.x, tempSlot.y, 0f);
+                    for (int i = 0; i < BattleManager.monsterBattleControllerList[0].Length; i++)
+                    {
+                        if (BattleManager.monsterBattleControllerList[0][i] == null)
+                        {
+                            BattleManager.monsterBattleControllerList[0][i] = this;
+                            break;
+                        }
+                    }
+                    transform.localScale = Vector3.one;
                 }
             }
             else
             {
                 entryContainer.GetComponent<EntryController>().addEntry(transform.gameObject);
             }
+        }
+    }
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.name == "Barrier")
+        {
+            extraMovement = -curDirection / 10;
         }
     }
 }

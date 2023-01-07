@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class SideDrawerController : MonoBehaviour
 {
     private Transform toggleButtonTf;
-    private bool isOpen = true;
+    private bool isOpen = false;
     private bool isArrived = true;
     [SerializeField]
     public bool isRight;
