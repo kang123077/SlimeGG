@@ -13,9 +13,10 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - TileSet
+  - 
   - Water
   - UI
+  - TileSet
   - Monster
   - Moving
   - MonsterInBattle
@@ -23,7 +24,6 @@ TagManager:
   - FieldForBattle
   - Effect
   - Projectile
-  - 
   - 
   - 
   - 

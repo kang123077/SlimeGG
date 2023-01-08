@@ -9,6 +9,14 @@ public class TileSetInventoryController : MonoBehaviour, IPointerEnterHandler, I
     private bool isMouseIn = false;
     private Vector2 margin = new Vector2(200f, -50f);
 
+    void Update()
+    {
+        Transform targetTf = transform.Find("Viewport").Find("Content");
+        Vector2 temp = targetTf.GetComponent<RectTransform>().sizeDelta;
+        Vector2 targetSize = transform.parent.GetComponent<RectTransform>().sizeDelta;
+        targetTf.GetComponent<RectTransform>().sizeDelta = new Vector2(temp.x, targetSize.y);
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         isMouseIn = true;
