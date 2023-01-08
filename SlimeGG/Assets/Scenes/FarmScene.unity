@@ -1058,6 +1058,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1199220590}
     m_Modifications:
+    - target: {fileID: 3380359906192366388, guid: c81701ae002ca2546a13b6971935cb10, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3380359906864345070, guid: c81701ae002ca2546a13b6971935cb10, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1386,7 +1390,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!224 &1199220590
 RectTransform:
@@ -1772,8 +1776,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
