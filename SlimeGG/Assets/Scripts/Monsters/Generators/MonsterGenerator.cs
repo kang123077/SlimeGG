@@ -17,10 +17,10 @@ public class MonsterGenerator : MonoBehaviour
     {
         if (!LocalStorage.MONSTER_LOADING_DONE && LocalStorage.TILESET_LOADING_DONE && LocalStorage.MONSTER_DATACALL_DONE)
         {
-            LocalStorage.monsters.ForEach((monsterInfo) =>
-            {
-                generateMonster(monsterInfo);
-            });
+            //LocalStorage.monsters.ForEach((monsterInfo) =>
+            //{
+            //    generateMonster(monsterInfo);
+            //});
             LocalStorage.MONSTER_LOADING_DONE = true;
         }
     }

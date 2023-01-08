@@ -67,7 +67,7 @@ public class TileSetController : MonoBehaviour
 
     void OnMouseDrag()
     {
-        if ((tileSetBriefInfo.installedPosition[0] == -1f && tileSetBriefInfo.installedPosition[1] == -1f) || monsters.Count > 0) return;
+        if (monsters.Count > 0) return;
         Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, zCoor);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
         transform.position = objPosition - new Vector3(correctionCoor.x, correctionCoor.y, 0f);
@@ -75,7 +75,7 @@ public class TileSetController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if ((tileSetBriefInfo.installedPosition[0] == -1f && tileSetBriefInfo.installedPosition[1] == -1f) || monsters.Count > 0) return;
+        if (monsters.Count > 0) return;
         Vector3 mousePos = new Vector3(
        Input.mousePosition.x - correctionCoor.x,
        Input.mousePosition.y - correctionCoor.y,
@@ -97,7 +97,7 @@ public class TileSetController : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if ((tileSetBriefInfo.installedPosition[0] == -1f && tileSetBriefInfo.installedPosition[1] == -1f) || monsters.Count > 0) return;
+        if (monsters.Count > 0) return;
         transform.gameObject.layer = 3;
         if (tileSetInventory.GetComponent<TileSetInventoryController>().getIsMouseIn())
         {
