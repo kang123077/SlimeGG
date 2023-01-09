@@ -97,7 +97,13 @@ public class TileSetController : MonoBehaviour
         GameObject.Find("UI").GetComponent<UIController>().UIOnChecker();
         GameObject.Find("Popup UI").GetComponent<PopupUIController>().generateUI(LocalDictionary.tileSets[tileSetBriefInfo.name]);
 
-        tileSetInventory.GetComponent<TileSetInventoryController>().removeTileSet(transform);
+        if (isInInventory)
+        {
+            tileSetInventory.GetComponent<TileSetInventoryController>().changeOnMoveStatusFromInven(transform);
+        } else
+        {
+            tileSetInventory.GetComponent<TileSetInventoryController>().changeOnMoveStatusFromField(transform);
+        }
         for (int i = 0; i < tiles.Length; i++)
         {
             tiles[i].GetComponent<TileBaseController>().detach();

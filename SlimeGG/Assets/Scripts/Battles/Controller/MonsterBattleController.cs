@@ -375,8 +375,7 @@ public class MonsterBattleController : MonoBehaviour
     {
         if (entryNum.x == -1f)
         {
-            entryContainer.GetComponent<EntryController>().removeEntry(transform.gameObject);
-            transform.localScale = Vector3.one;
+            entryContainer.GetComponent<EntryController>().changeOnMoveStatusFromInven(transform.gameObject);
             for (int i = 0; i < BattleManager.monsterBattleControllerList[0].Length; i++)
             {
                 if (BattleManager.monsterBattleControllerList[0][i] == this)
@@ -412,6 +411,8 @@ public class MonsterBattleController : MonoBehaviour
             {
                 if (temp.transform.parent.tag == "Tile")
                 {
+                    entryContainer.GetComponent<EntryController>().removeEntry(transform.gameObject);
+                    transform.localScale = Vector3.one;
                     EntrySlotController tempSlot = temp.transform.parent.GetComponent<EntrySlotController>();
                     transform.SetParent(monsterContainer);
                     transform.localPosition = new Vector3(-1f + tempSlot.x, tempSlot.y, 0f);
