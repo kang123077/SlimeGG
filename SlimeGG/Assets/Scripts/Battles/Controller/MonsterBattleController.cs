@@ -70,7 +70,7 @@ public class MonsterBattleController : MonoBehaviour
         hpController.gameObject.SetActive(false);
         transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
 
-        anim.SetFloat("DirectionX", 1f);
+        bg.GetComponent<SpriteRenderer>().flipX = true;
     }
 
     public void initInfo(MonsterBattleInfo monsterBattleInfo, Transform monsterContainer, Transform entryContainer)
@@ -83,7 +83,7 @@ public class MonsterBattleController : MonoBehaviour
     {
         this.entryNum = entryNum;
         hpController.setSide(entryNum.x);
-        anim.SetFloat("DirectionX", entryNum.x == 0f ? 1f : -1f);
+        bg.GetComponent<SpriteRenderer>().flipX = entryNum.x == 0f;
 
         setTexturetoCamera((int)entryNum.x, (int)entryNum.y);
     }
@@ -152,6 +152,9 @@ public class MonsterBattleController : MonoBehaviour
         if (anim.GetFloat("BattleState") != 0f && animTime <= 1f)
         {
             animTime += Time.deltaTime;
+        } else
+        {
+            anim.SetFloat("BattleState", 0f);
         }
 
         // 넉백/대쉬 등 관리
@@ -254,7 +257,7 @@ public class MonsterBattleController : MonoBehaviour
                             0f
                         );
         directionToTarget = direction.normalized;
-        anim.SetFloat("DirectionX", direction.x);
+        bg.GetComponent<SpriteRenderer>().flipX = directionToTarget.x >= 0f;
         direction *= BattleManager.getDistanceBetween(entryNum, target.entryNum) > distanceToKeep ? 1f : -1f;
         if (timeDistortion > 3f)
         {
@@ -285,7 +288,8 @@ public class MonsterBattleController : MonoBehaviour
             Destroy(anim);
             bg.GetComponent<SpriteRenderer>().sprite = Resources.LoadAll<Sprite>(
                 PathInfo.SPRITE + monsterBattleInfo.src
-                )[entryNum.x == 0 ? 13 : 12];
+                )[7];
+            bg.GetComponent<SpriteRenderer>().flipX = directionToTarget.x >= 0f;
             isDead = true;
         }
     }
@@ -335,6 +339,7 @@ public class MonsterBattleController : MonoBehaviour
         // 주문 영창이 종료되었는가?
         if (castingTime == 0f)
         {
+            setAnimation(1);
             SkillStat targetSkillStat = liveBattleInfo.skills[targetSkillName];
             // 본인에게 미치는 영향 적용
             if (targetSkillStat.toCaster != null)
@@ -439,5 +444,14 @@ public class MonsterBattleController : MonoBehaviour
         {
             extraMovement = -curDirection / 10;
         }
+    }
+
+    /** 애니메이션 변경용 함수
+     * statusToApply: -1 <- 피격 || 1 <- 공격
+    */
+    public void setAnimation(int statusToApply)
+    {
+        anim.SetFloat("BattleState", statusToApply);
+        animTime = 0f;
     }
 }

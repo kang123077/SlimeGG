@@ -134,5 +134,6 @@ public class AreaController : MonoBehaviour
                     );
         }
         targetToApply.effects.Add(new EffectStat(temp, true));
+        targetToApply.setAnimation(-1);
     }
 }
