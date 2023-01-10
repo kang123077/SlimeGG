@@ -18,8 +18,6 @@ public class EntryController : MonoBehaviour
     {
         newMonster.transform.Find("Image").GetComponent<SpriteRenderer>().sortingLayerName = "Default";
         newMonster.transform.SetParent(null);
-        objectList.Remove(newMonster);
-        alignEntries();
     }
 
     private void alignEntries()
@@ -28,5 +26,14 @@ public class EntryController : MonoBehaviour
         {
             objectList[i].transform.localPosition = new Vector3(i * Screen.width / 24, (i % 2 == 0 ? 1 : -1) * Screen.width / 36, 0f);
         }
+    }
+
+    public void changeOnMoveStatusFromInven(GameObject newMonster)
+    {
+        newMonster.transform.Find("Image").GetComponent<SpriteRenderer>().sortingLayerName = "GameObject Above UI";
+        newMonster.transform.SetParent(transform);
+        newMonster.transform.localScale = new Vector3(56.5f, 56.5f, 1f);
+        objectList.Remove(newMonster);
+        alignEntries();
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TileSetController : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class TileSetController : MonoBehaviour
     private bool isInInventory = false;
     private Vector2 installedCoor = new Vector2(-1f, -1f);
     private SpriteRenderer bgSprite;
+    private Image bgImage;
 
     private GameObject[] tiles;
     private List<Transform> monsters = new List<Transform>();
@@ -23,12 +25,20 @@ public class TileSetController : MonoBehaviour
 
     public void initTileSet()
     {
+        TileSetShapeStat tileSetShapeStat = LocalDictionary.tileSetCoors[LocalDictionary.tileSets[tileSetBriefInfo.name].tileSetShape];
         bgSprite = transform.Find("bg").GetComponent<SpriteRenderer>();
         bgSprite.sprite = Resources.Load<Sprite>(
             PathInfo.SPRITE + LocalDictionary.tileSets[tileSetBriefInfo.name].resourcePath
             );
-        TileSetShapeStat tileSetShapeStat = LocalDictionary.tileSetCoors[LocalDictionary.tileSets[tileSetBriefInfo.name].tileSetShape];
         bgSprite.transform.position = new Vector3(
+            tileSetShapeStat.correctionCoor[0],
+            tileSetShapeStat.correctionCoor[1],
+            zCoor);
+        bgImage = transform.Find("bg").GetComponent<Image>();
+        bgImage.sprite = Resources.Load<Sprite>(
+            PathInfo.SPRITE + LocalDictionary.tileSets[tileSetBriefInfo.name].resourcePath
+            );
+        bgImage.transform.position = new Vector3(
             tileSetShapeStat.correctionCoor[0],
             tileSetShapeStat.correctionCoor[1],
             zCoor);
@@ -87,18 +97,24 @@ public class TileSetController : MonoBehaviour
         GameObject.Find("UI").GetComponent<UIController>().UIOnChecker();
         GameObject.Find("Popup UI").GetComponent<PopupUIController>().generateUI(LocalDictionary.tileSets[tileSetBriefInfo.name]);
 
-        tileSetInventory.GetComponent<TileSetInventoryController>().removeTileSet(transform);
+        if (isInInventory)
+        {
+            tileSetInventory.GetComponent<TileSetInventoryController>().changeOnMoveStatusFromInven(transform);
+        } else
+        {
+            tileSetInventory.GetComponent<TileSetInventoryController>().changeOnMoveStatusFromField(transform);
+        }
         for (int i = 0; i < tiles.Length; i++)
         {
             tiles[i].GetComponent<TileBaseController>().detach();
         }
-        transform.gameObject.layer = 7;
+        transform.gameObject.layer = 8;
     }
 
     private void OnMouseUp()
     {
         if (monsters.Count > 0) return;
-        transform.gameObject.layer = 3;
+        transform.gameObject.layer = 6;
         if (tileSetInventory.GetComponent<TileSetInventoryController>().getIsMouseIn())
         {
             sendTileSetToInventory();
