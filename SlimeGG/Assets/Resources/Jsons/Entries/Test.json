@@ -3,7 +3,7 @@
     "nickName": "숲들숲들",
     "accuSpecies": [
       "Egg",
-      "BabySpirit"
+      "Monster_Dummy"
     ],
     "basic": [
       {
@@ -43,7 +43,7 @@
     "nickName": "숲들숲들",
     "accuSpecies": [
       "Egg",
-      "BabySpirit"
+      "Monster_Dummy"
     ],
     "basic": [
       {
@@ -83,7 +83,7 @@
     "nickName": "진흙",
     "accuSpecies": [
       "Egg",
-      "MudBall"
+      "Monster_Dummy"
     ],
     "basic": [
       {
@@ -119,7 +119,7 @@
     "nickName": "진흙",
     "accuSpecies": [
       "Egg",
-      "MudBall"
+      "Monster_Dummy"
     ],
     "basic": [
       {

@@ -1,0 +1,35 @@
+{
+  "skills": [
+    "Scratch",
+    "Spit"
+  ],
+  "src": "Monsters/Infants/Monster_Dummy",
+  "basic": [
+    {
+      "name": "hp",
+      "amount": 200
+    },
+    {
+      "name": "atk",
+      "amount": 1
+    },
+    {
+      "name": "def",
+      "amount": 15
+    },
+    {
+      "name": "spd",
+      "amount": 1.4
+    }
+  ],
+  "element": [
+    {
+      "name": "Wind",
+      "amount": 2
+    },
+    {
+      "name": "Spirit",
+      "amount": 1
+    }
+  ]
+}
