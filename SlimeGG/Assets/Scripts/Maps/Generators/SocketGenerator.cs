@@ -10,8 +10,6 @@ public class SocketGenerator : MonoBehaviour
     [SerializeField]
     private GameObject tileSetBase;
     [SerializeField]
-    private GameObject tileSetInventoy;
-    [SerializeField]
     private GameObject monsterGenerator;
     [SerializeField]
     private GameObject tileSetStore;
@@ -19,9 +17,6 @@ public class SocketGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //GameObject baseTileSet = Instantiate(tileSetBase);
-        //baseTileSet.GetComponent<TileSetController>().setTileSetInstalledStore(tileSetStore.transform);
-        //baseTileSet.GetComponent<TileSetController>().setTileSetInventory(tileSetInventoy);
         for (int i = 0; i < 4; i++)
         {
             GameObject newLine = new GameObject();
@@ -39,10 +34,6 @@ public class SocketGenerator : MonoBehaviour
                 newSocket.name = "Socket " + j;
                 newSocket.tag = "Socket";
                 newSocket.GetComponent<SocketController>().coor = new Vector2(j, i);
-                if (i == 0 && j == 0)
-                {
-                    //newSocket.GetComponent<SocketController>().tileSetInstalled = baseTileSet.transform;
-                }
                 Transform newSocketTr = newSocket.transform;
                 newSocketTr.position = newLineTr.position;
                 newSocketTr.position = new Vector3(
@@ -53,11 +44,6 @@ public class SocketGenerator : MonoBehaviour
                 newSocketTr.SetParent(newLineTr);
             }
         }
-        //baseTileSet.GetComponent<TileSetController>().setTileSetInfo(newTileSetInfo);
-        //baseTileSet.name = "Base TileSet";
-        //baseTileSet.transform.SetParent(tileSetStore.transform);
-        //monsterGenerator.GetComponent<MonsterGenerator>().baseTileSet = baseTileSet;
-        //monsterGenerator.GetComponent<MonsterGenerator>().initGeneration();
 
         LocalStorage.SOCKET_LOADING_DONE = true;
     }

@@ -13,6 +13,12 @@ public class SideDrawerController : MonoBehaviour
     public bool isFull;
     [SerializeField]
     public bool isVertical = false;
+    [SerializeField]
+    public float ratioStick = 0.5f;
+    [SerializeField]
+    public float ratioOpen = 0.3f;
+
+    private static Vector2 fullSize = new Vector2(1920f, 1080f);
 
     // Start is called before the first frame update
     void Start()
@@ -25,27 +31,37 @@ public class SideDrawerController : MonoBehaviour
     {
         if (isVertical)
         {
-            transform.GetComponent<RectTransform>().sizeDelta = new Vector2(isFull ? 0 : 100f, Screen.height / 2);
-            toggleButtonTf.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 10, Screen.height / 2 / 5);
+            transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                isFull 
+                ? 0 
+                : fullSize.x * ratioStick,
+                fullSize.y * ratioOpen
+            );
+            toggleButtonTf.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 10, Screen.width / 10);
             if (isOpen)
             {
                 transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(0f, 0f, 0f);
             }
             else
             {
-                transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(0f, (isVertical ? -1f : -1f) * Screen.height / 2, 0f);
+                transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(0f, (isVertical ? -1f : -1f) * fullSize.y * ratioOpen);
             }
             return;
         }
-        transform.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 3, isFull ? transform.GetComponent<RectTransform>().sizeDelta.y : Screen.height / 5);
-        toggleButtonTf.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 3 / 10, Screen.width / 3 / 10 * 2);
+        transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
+            fullSize.x * ratioOpen, 
+            isFull 
+            ? fullSize.y
+            : fullSize.y * ratioStick
+        );
+        toggleButtonTf.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 10, Screen.width / 10);
         if (isOpen)
         {
             transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(0f, 0f, 0f);
         }
         else
         {
-            transform.GetComponent<RectTransform>().anchoredPosition = new Vector3((isRight ? 1f : -1f) * Screen.width / 3, 0f, 0f);
+            transform.GetComponent<RectTransform>().anchoredPosition = new Vector3((isRight ? 1f : -1f) * fullSize.x * ratioOpen, 0f, 0f);
         }
     }
 
@@ -55,11 +71,11 @@ public class SideDrawerController : MonoBehaviour
         {
             if (isVertical)
             {
-                transform.localPosition = new Vector3(0f, (isVertical ? 1f : -1f) * Screen.width * 5 / 12, 0f);
+                transform.localPosition = new Vector3(0f, (isVertical ? 1f : -1f) * fullSize.x * ratioOpen, 0f);
             }
             else
             {
-                transform.localPosition = new Vector3((isRight ? 1f : -1f) * Screen.width * 5 / 12, 0f, 0f);
+                transform.localPosition = new Vector3((isRight ? 1f : -1f) * fullSize.x * ratioOpen, 0f, 0f);
             }
             isOpen = false;
         }
@@ -67,11 +83,11 @@ public class SideDrawerController : MonoBehaviour
         {
             if (isVertical)
             {
-                transform.localPosition = new Vector3(0f, (isVertical ? 1f : -1f) * Screen.width / 4, 0f);
+                transform.localPosition = new Vector3(0f, (isVertical ? 1f : -1f) * fullSize.x * ratioOpen);
             }
             else
             {
-                transform.localPosition = new Vector3((isRight ? 1f : -1f) * Screen.width / 2, 0f, 0f);
+                transform.localPosition = new Vector3((isRight ? 1f : -1f) * fullSize.x * ratioOpen, 0f, 0f);
             }
             isOpen = true;
         }

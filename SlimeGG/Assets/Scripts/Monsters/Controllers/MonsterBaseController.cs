@@ -111,7 +111,6 @@ public class MonsterBaseController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("충돌!");
         isStopped = true;
         moveTime = 0f;
         Vector2 colPoint = collision.contacts[0].point;
