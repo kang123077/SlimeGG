@@ -61,4 +61,15 @@ public class TileSetInventoryController : MonoBehaviour, IPointerEnterHandler, I
             accuX += 100f + (tileSetSize.x * 100f);
         }
     }
+
+    public void changeOnMoveStatusFromInven(Transform targetTileSet)
+    {
+        targetTileSet.localScale = new Vector3(108f, 108f, 1f);
+    }
+
+    public void changeOnMoveStatusFromField(Transform targetTileSet)
+    {
+        targetTileSet.SetParent(transform.Find("Viewport").Find("Content"));
+        targetTileSet.localScale = new Vector3(60f, 60f, 1f);
+    }
 }

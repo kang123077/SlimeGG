@@ -88,12 +88,12 @@ public class MonsterBaseController : MonoBehaviour
         {
             curTileSet.GetComponent<TileSetController>().removeMonster(transform);
         }
-        transform.gameObject.layer = 7;
+        transform.gameObject.layer = 8;
     }
 
     private void OnMouseUp()
     {
-        transform.gameObject.layer = 3;
+        transform.gameObject.layer = 7;
         Vector3 rayStartPosition = transform.position;
         rayStartPosition.z += 0.1f;
         RaycastHit hit3D;
