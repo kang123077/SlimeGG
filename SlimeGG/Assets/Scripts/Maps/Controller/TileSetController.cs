@@ -94,8 +94,10 @@ public class TileSetController : MonoBehaviour
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
         correctionCoor = objPosition - transform.position;
 
-        GameObject.Find("UI").GetComponent<UIController>().UIOnChecker();
-        GameObject.Find("Popup UI").GetComponent<PopupUIController>().generateUI(LocalDictionary.tileSets[tileSetBriefInfo.name]);
+        /**
+         * todo
+         * 클릭 시 정보 열람
+         */
 
         if (isInInventory)
         {

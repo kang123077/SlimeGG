@@ -78,8 +78,10 @@ public class MonsterBaseController : MonoBehaviour
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePos);
         correctionCoor = objPosition - transform.position;
 
-        GameObject.Find("UI").GetComponent<UIController>().UIOnChecker();
-        GameObject.Find("Popup UI").GetComponent<PopupUIController>().generateUI(monsterInfo);
+        /**
+         * todo
+         * 클릭 시 정보 열람
+         */
 
         transform.SetParent(null);
         if (curTileSet != null)

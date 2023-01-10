@@ -37,7 +37,7 @@ public class SideDrawerController : MonoBehaviour
                 : fullSize.x * ratioStick,
                 fullSize.y * ratioOpen
             );
-            toggleButtonTf.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 10, Screen.width / 10);
+            toggleButtonTf.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 20, Screen.width / 20);
             if (isOpen)
             {
                 transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(0f, 0f, 0f);
@@ -54,7 +54,7 @@ public class SideDrawerController : MonoBehaviour
             ? fullSize.y
             : fullSize.y * ratioStick
         );
-        toggleButtonTf.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 10, Screen.width / 10);
+        toggleButtonTf.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width / 20, Screen.width / 20);
         if (isOpen)
         {
             transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(0f, 0f, 0f);
