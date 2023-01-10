@@ -17,10 +17,10 @@ public class MonsterGenerator : MonoBehaviour
     {
         if (!LocalStorage.MONSTER_LOADING_DONE && LocalStorage.TILESET_LOADING_DONE && LocalStorage.MONSTER_DATACALL_DONE)
         {
-            //LocalStorage.monsters.ForEach((monsterInfo) =>
-            //{
-            //    generateMonster(monsterInfo);
-            //});
+            LocalStorage.monsters.ForEach((monsterInfo) =>
+            {
+                generateMonster(monsterInfo);
+            });
             LocalStorage.MONSTER_LOADING_DONE = true;
         }
     }
@@ -28,7 +28,7 @@ public class MonsterGenerator : MonoBehaviour
     private void generateMonster(MonsterVO monsterInfo)
     {
         GameObject newMonster = Instantiate(monsterBase);
-        newMonster.GetComponent<MonsterBaseController>().initInfo(MonsterCommonFunction.generateMonsterFarmInfo(monsterInfo, LocalDictionary.speices[monsterInfo.accuSpecies.Last()]));
+        newMonster.GetComponent<MonsterBaseController>().initInfo(MonsterCommonFunction.generateMonsterFarmInfo(monsterInfo));
         newMonster.GetComponent<MonsterBaseController>().assignMonsterToTileSet(LocalStorage.tileSetTransforms[monsterInfo.installedPosition], false);
         newMonster.transform.localPosition = new Vector3(0f, 0f, 0f);
     }

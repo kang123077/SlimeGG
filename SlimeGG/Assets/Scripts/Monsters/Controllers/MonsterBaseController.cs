@@ -21,8 +21,6 @@ public class MonsterBaseController : MonoBehaviour
         bg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(
             PathInfo.SPRITE + monsterInfo.src
             );
-        Destroy(bg.GetComponent<PolygonCollider2D>());
-        bg.AddComponent<PolygonCollider2D>();
         anim = bg.GetComponent<Animator>();
         anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
             PathInfo.ANIMATION + monsterInfo.src + "/Controller"
@@ -44,7 +42,7 @@ public class MonsterBaseController : MonoBehaviour
             if (!isStopped)
             {
                 direction.x = Random.Range(6f, 10f) / 5.0f * (direction.x > 1.5f ? -1f : 1f);
-                anim.SetFloat("DirectionX", direction.x);
+                bg.GetComponent<SpriteRenderer>().flipX = direction.x > 0f;
                 direction.y = Random.Range(6f, 10f) / 5.0f * (direction.y > 1.5f ? -1f : 1f);
             }
             isStopped = !isStopped;
@@ -113,6 +111,7 @@ public class MonsterBaseController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log("충돌!");
         isStopped = true;
         moveTime = 0f;
         Vector2 colPoint = collision.contacts[0].point;
@@ -130,7 +129,7 @@ public class MonsterBaseController : MonoBehaviour
             ? 1f
             : Random.Range(-1f, 1f)
             );
-        anim.SetFloat("DirectionX", direction.x);
+        bg.GetComponent<SpriteRenderer>().flipX = direction.x > 0f;
     }
 
     private void moveTo(Vector2 direction, float speed)

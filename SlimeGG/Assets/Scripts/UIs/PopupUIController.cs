@@ -21,13 +21,13 @@ public class PopupUIController : MonoBehaviour
 
     public void generateUI(MonsterFarmInfo monsterInfo)
     {
-        headerUI.text = string.Format($"Monster");
-        infoUI.text =
-            string.Format(
-            $"NickName : {monsterInfo.nickName}\n" +
-            $"Species : {monsterInfo.accuSpecies.Last()}\n" +
-            $"Home : Volcano"
-            );
+        //headerUI.text = string.Format($"Monster");
+        //infoUI.text =
+        //    string.Format(
+        //    $"NickName : {monsterInfo.nickName}\n" +
+        //    $"Species : {monsterInfo.accuSpecies.Last()}\n" +
+        //    $"Home : Volcano"
+        //    );
     }
 
     private void deleteBeforeUI()

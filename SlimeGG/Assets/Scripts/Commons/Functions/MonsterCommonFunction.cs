@@ -45,9 +45,23 @@ public class MonsterCommonFunction
         return res;
     }
 
-    public static MonsterFarmInfo generateMonsterFarmInfo(MonsterVO monsterVO, MonsterSpeciesVO speciesVO)
+    public static MonsterFarmInfo generateMonsterFarmInfo(MonsterVO monsterVO)
     {
         MonsterFarmInfo res = new MonsterFarmInfo();
+        res.specieInfo = LocalDictionary.speices[monsterVO.accuSpecies.Last()];
+        res.nickName = monsterVO.nickName;
+        res.src = res.specieInfo.src;
+        // 기본 정보는 곱연산을 통한 설정
+        // 속성 정보는 합연산을 통한 설정
+        foreach (BasicStatVO basicStat in monsterVO.basic)
+        {
+            res.basic[basicStat.name] = new PlainStatVO(basicStat.amount);
+        }
+        foreach (ElementStatVO elementStat in monsterVO.element)
+        {
+            res.element[elementStat.name] = new PlainStatVO(elementStat.amount);
+        }
+        res.installedPosition = monsterVO.installedPosition;
         return res;
     }
 
