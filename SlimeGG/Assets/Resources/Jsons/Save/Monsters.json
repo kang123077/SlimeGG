@@ -3,7 +3,7 @@
     "nickName": "식곤충",
     "accuSpecies": [
       "Egg",
-      "Sleepion"
+      "Monster_Dummy"
     ],
     "basic": [
       {
@@ -39,7 +39,7 @@
     "nickName": "숲들숲들",
     "accuSpecies": [
       "Egg",
-      "BabySpirit"
+      "Monster_Dummy"
     ],
     "basic": [
       {
@@ -79,7 +79,7 @@
     "nickName": "털뭉치",
     "accuSpecies": [
       "Egg",
-      "BundleFur"
+      "Monster_Dummy"
     ],
     "basic": [
       {
@@ -115,7 +115,7 @@
     "nickName": "진흙",
     "accuSpecies": [
       "Egg",
-      "MudBall"
+      "Monster_Dummy"
     ],
     "basic": [
       {
@@ -151,8 +151,7 @@
     "nickName": "지ㅡ네",
     "accuSpecies": [
       "Egg",
-      "MudBall",
-      "Eartipede"
+      "Monster_Dummy"
     ],
     "basic": [
       {
@@ -188,8 +187,7 @@
     "nickName": "못숨는데?",
     "accuSpecies": [
       "Egg",
-      "MudBall",
-      "Sneaklower"
+      "Monster_Dummy"
     ],
     "basic": [
       {

@@ -164,6 +164,7 @@ public class ProjectileController : MonoBehaviour
                     );
         }
         targetToApply.effects.Add(temp);
+        targetToApply.setAnimation(-1);
     }
 
     private void applyEffectListOnTarget(List<EffectStat> effectListToApply, MonsterBattleController targetToApply, bool isDirectionSustain)
