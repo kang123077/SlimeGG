@@ -451,7 +451,10 @@ public class MonsterBattleController : MonoBehaviour
     */
     public void setAnimation(int statusToApply)
     {
-        anim.SetFloat("BattleState", statusToApply);
-        animTime = 0f;
+        if (anim != null)
+        {
+            anim.SetFloat("BattleState", statusToApply);
+            animTime = 0f;
+        }
     }
 }

@@ -3,7 +3,7 @@
     "nickName": "식곤충",
     "accuSpecies": [
       "Egg",
-      "Monster_Dummy"
+      "MDummy01"
     ],
     "basic": [
       {
@@ -39,7 +39,7 @@
     "nickName": "숲들숲들",
     "accuSpecies": [
       "Egg",
-      "Monster_Dummy"
+      "MDummy01"
     ],
     "basic": [
       {
@@ -79,7 +79,7 @@
     "nickName": "털뭉치",
     "accuSpecies": [
       "Egg",
-      "Monster_Dummy"
+      "MDummy01"
     ],
     "basic": [
       {
@@ -115,7 +115,7 @@
     "nickName": "진흙",
     "accuSpecies": [
       "Egg",
-      "Monster_Dummy"
+      "MDummy02"
     ],
     "basic": [
       {
@@ -151,7 +151,7 @@
     "nickName": "지ㅡ네",
     "accuSpecies": [
       "Egg",
-      "Monster_Dummy"
+      "MDummy02"
     ],
     "basic": [
       {
@@ -187,7 +187,7 @@
     "nickName": "못숨는데?",
     "accuSpecies": [
       "Egg",
-      "Monster_Dummy"
+      "MDummy02"
     ],
     "basic": [
       {
