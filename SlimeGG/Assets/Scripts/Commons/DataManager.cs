@@ -26,16 +26,6 @@ public class DataManager : MonoBehaviour
         }
 
         foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
-            "Assets/Resources/Jsons/TileSets/Shapes"
-            ))
-        {
-            LocalDictionary.tileSetCoors[Enum.Parse<TileSetShapeEnum>(fileName)] =
-                CommonFunctions.loadObjectFromJson<TileSetShapeStat>(
-                    "Assets/Resources/Jsons/TileSets/Shapes/" + fileName
-                    );
-        }
-
-        foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
             "Assets/Resources/Jsons/Monsters/Skills"
             ))
         {
@@ -56,30 +46,10 @@ public class DataManager : MonoBehaviour
         }
         LocalStorage.DICTIONARY_LOADING_DONE = true;
 
-        foreach (string folderName in CommonFunctions.loadFileNamesFromFolder(
-            "Assets/Resources/Jsons/TileSets/Tiers"
-            ))
-        {
-            foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
-                $"Assets/Resources/Jsons/TileSets/Tiers/{folderName}"
-                ))
-            {
-                LocalDictionary.tileSets[Enum.Parse<TileSetNameEnum>(fileName)] =
-                    CommonFunctions.loadObjectFromJson<TileSetInfo>(
-                        $"Assets/Resources/Jsons/TileSets/Tiers/{folderName}/{fileName}"
-                        );
-            }
-        }
-
         LocalStorage.monsters = CommonFunctions.loadObjectFromJson<List<MonsterVO>>(
             "Assets/Resources/Jsons/Save/Monsters"
             );
         LocalStorage.MONSTER_DATACALL_DONE = true;
-
-        LocalStorage.tileSets = CommonFunctions.loadObjectFromJson<List<TileSetBriefInfo>>(
-            "Assets/Resources/Jsons/Save/TileSets"
-            );
-        LocalStorage.TILESET_DATACALL_DONE = true;
 
     }
 
