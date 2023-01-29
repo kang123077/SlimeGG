@@ -34,9 +34,9 @@ public class MainGameManager : MonoBehaviour
         StartCoroutine(fadeScreen(isStart, targetSceneName));
     }
 
-    public void startGame()
+    public void loadScene(string sceneToLoad)
     {
-        controllLoading(true, "BattleScene");
+        controllLoading(true, sceneToLoad);
     }
 
     public void endGame()

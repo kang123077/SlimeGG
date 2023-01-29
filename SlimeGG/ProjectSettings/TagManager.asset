@@ -16,7 +16,7 @@ TagManager:
   - 
   - Water
   - UI
-  - TileSet
+  - 
   - Monster
   - Moving
   - MonsterInBattle
@@ -25,9 +25,9 @@ TagManager:
   - Effect
   - Projectile
   - 
-  - 
-  - 
-  - 
+  - Stage
+  - Map
+  - Background
   - 
   - 
   - 
