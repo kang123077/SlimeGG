@@ -191,6 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initStage: {fileID: 1818710668}
+  mainCamera: {fileID: 1885784644}
 --- !u!4 &60201563
 Transform:
   m_ObjectHideFlags: 0
