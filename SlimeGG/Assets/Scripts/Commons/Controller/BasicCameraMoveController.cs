@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class BasicCameraMoveController : MonoBehaviour
 {
-    Vector2 clickPoint = Vector2.zero;
+    [SerializeField]
+    Vector2 xLimitCoor;
+    float correctionCoor = -1000f;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,28 +16,25 @@ public class BasicCameraMoveController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (LocalStorage.IS_CAMERA_FREE && Input.GetMouseButton(0))
-        //{
-        //    if (clickPoint != Vector2.zero)
-        //    {
-        //        Vector3 position
-        //            = Camera.main.ScreenToViewportPoint((Vector2)Input.mousePosition - clickPoint);
-        //        Debug.Log(position == Vector3.zero);
-
-        //        Vector3 objPosition = Camera.main.ScreenToWorldPoint(position);
-        //        transform.Translate(Vector3.left * objPosition.x);
-        //        //transform.position = new Vector3(-objPosition.x, 0f, -10f);
-        //    }
-        //    clickPoint = Input.mousePosition;
-        //}
-        //else
-        //{
-        //    clickPoint = Vector2.zero;
-        //}
-    }
-
-    private void OnMouseDrag()
-    {
-        Debug.Log("???00");
+        if (LocalStorage.IS_CAMERA_FREE && Input.GetMouseButton(0))
+        {
+            if (correctionCoor != -1000f)
+            {
+                float curMousePos = Camera.main.transform.position.x - Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
+                float targetCoor = correctionCoor + curMousePos;
+                transform.position = new Vector3(
+                    targetCoor < xLimitCoor.x 
+                    ? xLimitCoor.x
+                    : targetCoor > xLimitCoor.y
+                    ? xLimitCoor.y
+                    : targetCoor
+                    , 0f, -10f);
+            }
+            correctionCoor = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
+        }
+        else if (correctionCoor != -1000f)
+        {
+            correctionCoor = -1000f;
+        }
     }
 }

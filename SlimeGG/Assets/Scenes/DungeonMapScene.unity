@@ -2133,6 +2133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce8370c7f4b7b304fbd0fb01bb9452f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  xLimitCoor: {x: -12, y: 12}
 --- !u!1001 &1941017323
 PrefabInstance:
   m_ObjectHideFlags: 0
