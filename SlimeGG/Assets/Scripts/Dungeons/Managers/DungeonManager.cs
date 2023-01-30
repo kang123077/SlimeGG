@@ -17,6 +17,7 @@ public class DungeonManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        setClear();
         setUser();
     }
 
@@ -32,11 +33,18 @@ public class DungeonManager : MonoBehaviour
     private IEnumerator focusCamera()
     {
         isFocusDone = true;
+        LocalStorage.IS_CAMERA_FREE = false;
         while (Mathf.Abs(mainCamera.position.x - initStage.transform.position.x) > 0.1f)
         {
             mainCamera.Translate(Vector3.left * (mainCamera.position.x - initStage.transform.position.x) * Time.deltaTime * 2.5f);
             yield return new WaitForSeconds(0f);
         }
+        LocalStorage.IS_CAMERA_FREE = true;
+    }
+
+    private void setClear()
+    {
+        initStage.isClear = true;
     }
 
     private void setUser()

@@ -19,4 +19,5 @@ public static class LocalStorage
     public static bool IS_BATTLE_FINISH = false;
 
     public static bool IS_SCENE_FADE_IN = true;
+    public static bool IS_CAMERA_FREE = false;
 }

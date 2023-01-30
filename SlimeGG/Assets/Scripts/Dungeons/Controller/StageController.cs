@@ -13,11 +13,14 @@ public class StageController : MonoBehaviour
     Transform linePrefab;
     Transform[] lineList;
 
+    [SerializeField]
+    StageType stageType;
+
     // Start is called before the first frame update
     void Start()
     {
         bgSprite = GetComponent<SpriteRenderer>();
-        bgSprite.color = new Color(0.4f, 0.4f, 0.4f, 1);
+        bgSprite.color = colorPicker(stageType);
         lineListTf = transform.Find("Lines");
 
         lineList = new Transform[nextStageList.Length];
@@ -26,6 +29,7 @@ public class StageController : MonoBehaviour
             Transform newLineTf = Instantiate(linePrefab);
             newLineTf.SetParent(lineListTf);
             newLineTf.localPosition = Vector3.zero;
+            newLineTf.GetComponent<LineRenderer>().endColor = colorPicker(nextStageList[i].stageType);
             newLineTf.GetComponent<LineRenderer>().SetPositions(new Vector3[]
             {
                 (nextStageList[i].transform.localPosition - transform.localPosition) * 0.1f,
@@ -37,6 +41,31 @@ public class StageController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isClear)
+        {
+            bgSprite.color = new Color(0.4f, 0.4f, 0.4f, 1);
+            isClear = false;
+        }
+    }
 
+    static Color colorPicker(StageType stageType)
+    {
+        Color curColor = new Color();
+        switch (stageType)
+        {
+            case StageType.Normal:
+                curColor = new Color(1f, 0.81f, 0.25f, 1f);
+                break;
+            case StageType.Hard:
+                curColor = new Color(1f, 0.55f, 0.25f, 1f);
+                break;
+            case StageType.Boss:
+                curColor = new Color(0.77f, 0.09f, 0.09f, 1f);
+                break;
+            case StageType.Event:
+                curColor = new Color(0.25f, 1f, 0.62f, 1f);
+                break;
+        }
+        return curColor;
     }
 }

@@ -8,6 +8,7 @@ public class MainGameManager : MonoBehaviour
 {
     [SerializeField]
     GameObject loadingGO;
+
     // Start is called before the first frame update
     void Start()
     {
