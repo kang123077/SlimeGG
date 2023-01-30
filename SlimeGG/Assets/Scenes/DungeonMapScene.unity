@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd8f25de31451a9489a1aa369267d6e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initStage: {fileID: 1818710668}
+  curStage: {fileID: 1818710668}
   mainCamera: {fileID: 1885784644}
   userTf: {fileID: 1848677778}
 --- !u!4 &60201563
@@ -1923,7 +1923,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1875632870
 MonoBehaviour:
   m_ObjectHideFlags: 0

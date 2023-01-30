@@ -6,14 +6,18 @@ public class StageController : MonoBehaviour
 {
     [SerializeField]
     StageController[] nextStageList;
-    public bool isClear { get; set; }
     SpriteRenderer bgSprite;
+    Transform xMarkTf;
     Transform lineListTf;
     [SerializeField]
     Transform linePrefab;
     Transform[] lineList;
 
+    DungeonManager dungeonManager;
+
+    private bool isClear { get; set; }
     private bool isClick = false;
+    private bool isAccessible = false;
 
     [SerializeField]
     StageType stageType;
@@ -24,6 +28,7 @@ public class StageController : MonoBehaviour
         bgSprite = GetComponent<SpriteRenderer>();
         bgSprite.color = colorPicker(stageType);
         lineListTf = transform.Find("Lines");
+        xMarkTf = transform.Find("X Mark");
 
         lineList = new Transform[nextStageList.Length];
         for (int i = 0; i < lineList.Length; i++)
@@ -78,7 +83,15 @@ public class StageController : MonoBehaviour
     {
         if (isClick)
         {
-            Debug.Log("Click!");
+            if (isAccessible)
+            {
+                Debug.Log("Accessible!");
+                dungeonManager.enterStage(this);
+            }
+            else
+            {
+                Debug.Log("InAccessible!");
+            }
         }
         isClick = false;
     }
@@ -91,5 +104,45 @@ public class StageController : MonoBehaviour
     private void OnMouseExit()
     {
         isClick = false;
+    }
+
+    public void setDungeonManager(DungeonManager dungeonManager)
+    {
+        this.dungeonManager = dungeonManager;
+        foreach (StageController nextStage in nextStageList)
+        {
+            nextStage.setDungeonManager(dungeonManager);
+        }
+    }
+
+    public void setIsAccessible(bool isAccessible)
+    {
+        this.isAccessible = isAccessible;
+    }
+
+    public void closeAccessNext()
+    {
+        foreach (StageController nextStage in nextStageList)
+        {
+            nextStage.setIsAccessible(false);
+        }
+    }
+    public void openAccessNext()
+    {
+        isClear = true;
+        foreach (StageController nextStage in nextStageList)
+        {
+            nextStage.setIsAccessible(true);
+        }
+    }
+
+    public void clearStage()
+    {
+        isClear = true;
+        if (xMarkTf == null)
+        {
+            xMarkTf = transform.Find("X Mark");
+        }
+        xMarkTf.gameObject.SetActive(true);
     }
 }
