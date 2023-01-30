@@ -13,6 +13,8 @@ public class StageController : MonoBehaviour
     Transform linePrefab;
     Transform[] lineList;
 
+    private bool isClick = false;
+
     [SerializeField]
     StageType stageType;
 
@@ -65,7 +67,29 @@ public class StageController : MonoBehaviour
             case StageType.Event:
                 curColor = new Color(0.25f, 1f, 0.62f, 1f);
                 break;
+            case StageType.Shop:
+                curColor = new Color(0.91f, 0.53f, 1f, 1f);
+                break;
         }
         return curColor;
+    }
+
+    private void OnMouseUp()
+    {
+        if (isClick)
+        {
+            Debug.Log("Click!");
+        }
+        isClick = false;
+    }
+
+    private void OnMouseEnter()
+    {
+        isClick = true;
+    }
+
+    private void OnMouseExit()
+    {
+        isClick = false;
     }
 }
