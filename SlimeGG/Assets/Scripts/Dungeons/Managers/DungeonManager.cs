@@ -11,22 +11,27 @@ public class DungeonManager : MonoBehaviour
     [SerializeField]
     Transform userTf;
 
+    private bool isFocusDone = false;
+
     int[] curPos = new int[] { 0, 0 };
     // Start is called before the first frame update
     void Start()
     {
         setUser();
-        StartCoroutine(focusCamera());
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (!LocalStorage.IS_SCENE_FADE_IN && !isFocusDone)
+        {
+            StartCoroutine(focusCamera());
+        }
     }
 
     private IEnumerator focusCamera()
     {
+        isFocusDone = true;
         while (Mathf.Abs(mainCamera.position.x - initStage.transform.position.x) > 0.1f)
         {
             mainCamera.Translate(Vector3.left * (mainCamera.position.x - initStage.transform.position.x) * Time.deltaTime * 2.5f);

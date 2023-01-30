@@ -11,7 +11,10 @@ public class MainGameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        controllLoading(false, null);
+        if (LocalStorage.IS_SCENE_FADE_IN)
+        {
+            controllLoading(false, null);
+        }
     }
 
     // Update is called once per frame
@@ -60,10 +63,12 @@ public class MainGameManager : MonoBehaviour
         if (targetSceneName != null)
         {
             SceneManager.LoadScene(targetSceneName);
+            LocalStorage.IS_SCENE_FADE_IN = true;
         }
         if (!isStart)
         {
             loadingGO.SetActive(isStart);
+            LocalStorage.IS_SCENE_FADE_IN = false;
         }
     }
 }
