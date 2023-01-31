@@ -25,7 +25,7 @@ public class DungeonManager : MonoBehaviour
         setClear();
         applyJourney();
         setUser(curStage);
-        activateNewEvent();
+        activateNewEvent(RewardType.Choice);
     }
 
     // Update is called once per frame
@@ -103,22 +103,22 @@ public class DungeonManager : MonoBehaviour
         curStage.openAccessNext();
     }
 
-    public void openRewardModule()
+    public void openRewardModule(RewardType rewardType)
     {
-        StartCoroutine(toggleRewardModuleWithDelay(true, 1f));
+        StartCoroutine(toggleRewardModuleWithDelay(true, rewardType, 1f));
     }
 
-    public IEnumerator toggleRewardModuleWithDelay(bool isOpen, float delay)
+    public IEnumerator toggleRewardModuleWithDelay(bool isOpen, RewardType rewardType, float delay)
     {
         yield return new WaitForSeconds(delay);
-        rewardManager.toggle(true);
+        rewardManager.toggle(isOpen, rewardType);
     }
 
-    private void activateNewEvent()
+    private void activateNewEvent(RewardType rewardType)
     {
         if (isNewStage)
         {
-            openRewardModule();
+            openRewardModule(rewardType);
         }
     }
 }
