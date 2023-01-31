@@ -19,6 +19,7 @@ public static class LocalStorage
 
     public static bool IS_SCENE_FADE_IN = true;
     public static bool IS_CAMERA_FREE = false;
+    public static bool IS_CAMERA_FIX = false;
 
 
     public static List<int> journeyInfo = new List<int>();

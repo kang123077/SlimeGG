@@ -54,6 +54,7 @@ public class RewardManager : MonoBehaviour
     public void toggle(bool isActive, RewardType rewardType)
     {
         setRewardType(rewardType);
+        LocalStorage.IS_CAMERA_FIX = isActive;
         StartCoroutine(toggleCoroutine(isActive));
     }
 
