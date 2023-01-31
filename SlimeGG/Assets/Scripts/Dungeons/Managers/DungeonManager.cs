@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DungeonManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class DungeonManager : MonoBehaviour
     Transform mainCamera;
     [SerializeField]
     Transform userTf;
+    MainGameManager mainGameManager;
 
     private bool isFocusDone = false;
 
@@ -27,11 +29,11 @@ public class DungeonManager : MonoBehaviour
     {
         if (!LocalStorage.IS_SCENE_FADE_IN && !isFocusDone)
         {
-            StartCoroutine(focusCamera(curStage));
+            StartCoroutine(focusCamera(true, curStage));
         }
     }
 
-    private IEnumerator focusCamera(StageController targetStage)
+    private IEnumerator focusCamera(bool isInit, StageController targetStage)
     {
         isFocusDone = true;
         LocalStorage.IS_CAMERA_FREE = false;
@@ -40,11 +42,18 @@ public class DungeonManager : MonoBehaviour
             mainCamera.Translate(Vector3.left * (mainCamera.position.x - targetStage.transform.position.x) * Time.deltaTime * 2.5f);
             yield return new WaitForSeconds(0f);
         }
-        LocalStorage.IS_CAMERA_FREE = true;
+        if (isInit)
+        {
+            LocalStorage.IS_CAMERA_FREE = true;
+        } else
+        {
+            mainGameManager.controllLoading(true, "BattleScene");
+        }
     }
 
     private void setSetting()
     {
+        mainGameManager = transform.GetComponent<MainGameManager>();
         curStage.setDungeonManager(this);
         curStage.openAccessNext();
     }
@@ -63,7 +72,7 @@ public class DungeonManager : MonoBehaviour
     {
         if (LocalStorage.IS_CAMERA_FREE)
         {
-            StartCoroutine(focusCamera(targetStage));
+            StartCoroutine(focusCamera(false, targetStage));
         }
     }
 
@@ -71,7 +80,7 @@ public class DungeonManager : MonoBehaviour
     {
         curStage.closeAccessNext();
         moveCamera(targetStage);
-        curStage.clearStage();
+        //curStage.clearStage();
         curStage = targetStage;
         setUser(curStage);
         curStage.openAccessNext();
