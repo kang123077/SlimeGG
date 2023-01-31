@@ -11,9 +11,12 @@ public class DungeonManager : MonoBehaviour
     Transform mainCamera;
     [SerializeField]
     Transform userTf;
+    [SerializeField]
+    RewardManager rewardManager;
     MainGameManager mainGameManager;
 
     private bool isFocusDone = false;
+    private bool isNewStage = false;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +25,7 @@ public class DungeonManager : MonoBehaviour
         setClear();
         applyJourney();
         setUser(curStage);
+        activateNewEvent();
     }
 
     // Update is called once per frame
@@ -45,7 +49,8 @@ public class DungeonManager : MonoBehaviour
         if (isInit)
         {
             LocalStorage.IS_CAMERA_FREE = true;
-        } else
+        }
+        else
         {
             mainGameManager.controllLoading(true, "BattleScene");
         }
@@ -53,11 +58,14 @@ public class DungeonManager : MonoBehaviour
 
     private void applyJourney()
     {
+        bool isEntryEmpty = true;
         foreach (int stagePos in LocalStorage.journeyInfo)
         {
+            isEntryEmpty = false;
             curStage.clearStage();
             enterStage(curStage.getNextStage(stagePos));
         }
+        isNewStage = isEntryEmpty;
     }
 
     private void setSetting()
@@ -93,5 +101,24 @@ public class DungeonManager : MonoBehaviour
         curStage = targetStage;
         setUser(curStage);
         curStage.openAccessNext();
+    }
+
+    public void openRewardModule()
+    {
+        StartCoroutine(toggleRewardModuleWithDelay(true, 1f));
+    }
+
+    public IEnumerator toggleRewardModuleWithDelay(bool isOpen, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        rewardManager.toggle(true);
+    }
+
+    private void activateNewEvent()
+    {
+        if (isNewStage)
+        {
+            openRewardModule();
+        }
     }
 }
