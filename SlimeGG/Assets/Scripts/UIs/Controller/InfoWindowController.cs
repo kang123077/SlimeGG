@@ -6,6 +6,7 @@ public class InfoWindowController : MonoBehaviour
 {
     bool isOpened = false;
     Vector2 size = new Vector2(300f, 200f);
+    bool flipX = false, flipY = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +18,7 @@ public class InfoWindowController : MonoBehaviour
     {
         if (isOpened)
         {
+            adjustPosition();
             trackMouse();
         }
     }
@@ -37,8 +39,8 @@ public class InfoWindowController : MonoBehaviour
     private void trackMouse()
     {
         Vector3 point = Camera.main.ScreenToWorldPoint(new Vector3(
-            Input.mousePosition.x + (size.x / 2f) + 20f,
-            Input.mousePosition.y - (size.y / 2f) + 20f,
+            Input.mousePosition.x + ((flipX ? -1f : 1f) * ((size.x / 2f) + 20f)),
+            Input.mousePosition.y + ((flipY ? -1f : 1f) * ((size.y / 2f) + 20f)),
             Input.mousePosition.z
             ));
         transform.position = new Vector3(
@@ -50,5 +52,11 @@ public class InfoWindowController : MonoBehaviour
             transform.localPosition.x,
             transform.localPosition.y,
             0f);
+    }
+
+    private void adjustPosition()
+    {
+        flipX = !((Screen.width - Input.mousePosition.x) > (size.x + 100f));
+        flipY = !((Screen.height - Input.mousePosition.y) > (size.y + 100f));
     }
 }
