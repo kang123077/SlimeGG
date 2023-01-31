@@ -8,10 +8,14 @@ public class MainGameManager : MonoBehaviour
 {
     [SerializeField]
     GameObject loadingGO;
+
     // Start is called before the first frame update
     void Start()
     {
-        controllLoading(false, null);
+        if (LocalStorage.IS_SCENE_FADE_IN)
+        {
+            controllLoading(false, null);
+        }
     }
 
     // Update is called once per frame
@@ -28,42 +32,38 @@ public class MainGameManager : MonoBehaviour
         Application.Quit();
 #endif
     }
-
-    private void controllLoading(bool isStart, string targetSceneName)
+    public void loadScene(string sceneToLoad)
     {
-        StartCoroutine(fadeScreen(isStart, targetSceneName));
+        controllLoading(true, sceneToLoad);
     }
 
-    public void startGame()
+    public void controllLoading(bool isFadeIn, string targetSceneName)
     {
-        controllLoading(true, "BattleScene");
+        StartCoroutine(fadeScreen(isFadeIn, targetSceneName));
     }
 
-    public void endGame()
+    private IEnumerator fadeScreen(bool isFadeIn, string targetSceneName)
     {
-        controllLoading(false, null);
-    }
-
-    private IEnumerator fadeScreen(bool isStart, string targetSceneName)
-    {
-        if (isStart)
+        if (isFadeIn)
         {
-            loadingGO.SetActive(isStart);
+            loadingGO.SetActive(isFadeIn);
         }
         float cnt = 0f;
         while (cnt < 1f)
         {
             cnt += 0.01f;
             yield return new WaitForSeconds(0.01f);
-            loadingGO.GetComponent<Image>().color = new Color(0f, 0f, 0f, isStart ? cnt : (1f - cnt));
+            loadingGO.GetComponent<Image>().color = new Color(0f, 0f, 0f, isFadeIn ? cnt : (1f - cnt));
         }
         if (targetSceneName != null)
         {
             SceneManager.LoadScene(targetSceneName);
+            LocalStorage.IS_SCENE_FADE_IN = true;
         }
-        if (!isStart)
+        if (!isFadeIn)
         {
-            loadingGO.SetActive(isStart);
+            loadingGO.SetActive(isFadeIn);
+            LocalStorage.IS_SCENE_FADE_IN = false;
         }
     }
 }

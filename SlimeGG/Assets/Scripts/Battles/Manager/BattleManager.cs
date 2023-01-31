@@ -3,7 +3,6 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using static Unity.Burst.Intrinsics.Arm;
 
 public class BattleManager : MonoBehaviour
 {
@@ -51,7 +50,7 @@ public class BattleManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isBattleReady && LocalStorage.DICTIONARY_LOADING_DONE && LocalStorage.MONSTER_DATACALL_DONE)
+        if (!isBattleReady && LocalStorage.DataCall.DICTIONARY && LocalStorage.DataCall.MONSTER)
         {
             if (!isBaseReady)
             {
