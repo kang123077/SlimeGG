@@ -3,13 +3,12 @@ using UnityEngine;
 
 public static class LocalStorage
 {
-    public static bool DICTIONARY_LOADING_DONE = false;
-
-    public static bool SOCKET_LOADING_DONE = false;
-    public static bool TILESET_LOADING_DONE = false;
-    public static bool MONSTER_LOADING_DONE = false;
-
-    public static bool MONSTER_DATACALL_DONE = false;
+    public static class DataCall
+    {
+        public static bool DICTIONARY = false;
+        public static bool MONSTER = false;
+        public static bool JOURNEY = false;
+    }
 
     public static List<MonsterVO> monsters = new List<MonsterVO>();
 
@@ -20,4 +19,7 @@ public static class LocalStorage
 
     public static bool IS_SCENE_FADE_IN = true;
     public static bool IS_CAMERA_FREE = false;
+
+
+    public static List<int> journeyInfo = new List<int>();
 }

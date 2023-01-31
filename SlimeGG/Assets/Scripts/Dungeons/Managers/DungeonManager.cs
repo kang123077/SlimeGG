@@ -15,12 +15,12 @@ public class DungeonManager : MonoBehaviour
 
     private bool isFocusDone = false;
 
-    int[] curPos = new int[] { 0, 0 };
     // Start is called before the first frame update
     void Start()
     {
         setSetting();
         setClear();
+        applyJourney();
         setUser(curStage);
     }
 
@@ -51,16 +51,25 @@ public class DungeonManager : MonoBehaviour
         }
     }
 
+    private void applyJourney()
+    {
+        foreach (int stagePos in LocalStorage.journeyInfo)
+        {
+            curStage.clearStage();
+            enterStage(curStage.getNextStage(stagePos));
+        }
+    }
+
     private void setSetting()
     {
         mainGameManager = transform.GetComponent<MainGameManager>();
         curStage.setDungeonManager(this);
-        curStage.openAccessNext();
     }
 
     private void setClear()
     {
         curStage.clearStage();
+        curStage.openAccessNext();
     }
 
     private void setUser(StageController targetStage)

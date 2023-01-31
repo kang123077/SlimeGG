@@ -145,4 +145,9 @@ public class StageController : MonoBehaviour
         }
         xMarkTf.gameObject.SetActive(true);
     }
+
+    public StageController getNextStage(int num)
+    {
+        return nextStageList[num];
+    }
 }

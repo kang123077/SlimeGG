@@ -44,12 +44,17 @@ public class DataManager : MonoBehaviour
                     $"Assets/Resources/Jsons/Fields/{fileName}"
                     );
         }
-        LocalStorage.DICTIONARY_LOADING_DONE = true;
+        LocalStorage.DataCall.DICTIONARY = true;
 
         LocalStorage.monsters = CommonFunctions.loadObjectFromJson<List<MonsterVO>>(
             "Assets/Resources/Jsons/Save/Monsters"
             );
-        LocalStorage.MONSTER_DATACALL_DONE = true;
+        LocalStorage.DataCall.MONSTER = true;
+
+        LocalStorage.journeyInfo = CommonFunctions.loadObjectFromJson<List<int>>(
+            "Assets/Resources/Jsons/Save/Journey"
+            );
+        LocalStorage.DataCall.JOURNEY = true;
 
     }
 

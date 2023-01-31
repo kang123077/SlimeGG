@@ -32,6 +32,10 @@ public class MainGameManager : MonoBehaviour
         Application.Quit();
 #endif
     }
+    public void loadScene(string sceneToLoad)
+    {
+        controllLoading(true, sceneToLoad);
+    }
 
     public void controllLoading(bool isFadeIn, string targetSceneName)
     {
