@@ -38,6 +38,7 @@ public class RewardManager : MonoBehaviour
     private IEnumerator toggleCoroutine(bool isActive)
     {
         this.isActive = isActive;
+        LocalStorage.IS_CAMERA_FREE = false;
         yield return new WaitForSeconds(3f);
         while (isActive ? (transform.position.y > 0.01) : (transform.position.y < 9.99))
         {
@@ -49,6 +50,7 @@ public class RewardManager : MonoBehaviour
             isActive ? 0f : 10f,
             1f
             );
+        LocalStorage.IS_CAMERA_FREE = !isActive;
     }
 
     public void toggle(bool isActive, RewardType rewardType)
@@ -61,7 +63,7 @@ public class RewardManager : MonoBehaviour
     {
         switch (rewardType)
         {
-            case RewardType.Choice:
+            case RewardType.Choice_Monster:
                 GameObject listGO = new GameObject();
                 listGO.transform.SetParent(transform);
                 listGO.transform.localScale = Vector3.one;

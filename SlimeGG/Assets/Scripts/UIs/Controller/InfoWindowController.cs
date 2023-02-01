@@ -16,9 +16,9 @@ public class InfoWindowController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        adjustPosition();
         if (isOpened)
         {
-            adjustPosition();
             trackMouse();
         }
     }

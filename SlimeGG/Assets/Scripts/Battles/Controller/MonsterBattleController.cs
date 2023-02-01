@@ -94,7 +94,7 @@ public class MonsterBattleController : MonoBehaviour
         {
             if (BattleManager.isBattleReady)
             {
-                if (!hpController.gameObject.active)
+                if (!hpController.gameObject.activeSelf)
                 {
                     transform.Find("Tracking Camera").gameObject.SetActive(true);
                     hpController.gameObject.SetActive(true);
