@@ -22,4 +22,11 @@ public static class LocalStorage
 
 
     public static List<int> journeyInfo = new List<int>();
+    
+    public static class Inventory
+    {
+        public static List<SlotController> monster = new List<SlotController>();
+        public static List<SlotController> equipment = new List<SlotController>();
+        public static List<SlotController> item = new List<SlotController>();
+    }
 }
