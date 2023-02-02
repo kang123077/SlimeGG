@@ -989,6 +989,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   keyToToggle: i
   slotPrefab: {fileID: 3699539852172333448, guid: 3d0edc3ece306f34db8da6e60c3d401b, type: 3}
+  infoWindowController: {fileID: 1776884747}
 --- !u!224 &425750379
 RectTransform:
   m_ObjectHideFlags: 0

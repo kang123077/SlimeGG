@@ -10,6 +10,8 @@ public class InventoryManager : MonoBehaviour
     string keyToToggle;
     [SerializeField]
     Transform slotPrefab;
+    [SerializeField]
+    InfoWindowController infoWindowController;
     bool isActive = false;
     bool isAnimating = false;
     bool isInit = false;
@@ -186,6 +188,7 @@ public class InventoryManager : MonoBehaviour
         newSlot.localPosition = Vector3.one;
         newSlot.localScale = Vector3.one;
         newSlot.GetComponent<SlotController>().initSlot(type);
+        newSlot.GetComponent<SlotController>().setInfoWindowController(infoWindowController);
         LocalStorage.inventory[targetParent.name].Add(newSlot.GetComponent<SlotController>());
     }
 
@@ -196,13 +199,11 @@ public class InventoryManager : MonoBehaviour
 
     void loadInventory()
     {
-        Debug.Log("Monster:: " + LocalStorage.monsters.Count);
         foreach (MonsterVO monsterVO in LocalStorage.monsters)
         {
             addMonster(monsterVO);
         }
 
-        Debug.Log("Item:: " + LocalStorage.items.Count);
         foreach (ItemVO itemVO in LocalStorage.items)
         {
             addItem(itemVO);

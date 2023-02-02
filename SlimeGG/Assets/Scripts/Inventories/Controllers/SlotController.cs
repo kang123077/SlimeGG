@@ -7,20 +7,29 @@ public class SlotController : MonoBehaviour
 {
     [SerializeField]
     InventoryType type = InventoryType.Item;
-    private bool isMouseIn = false;
+    private bool isMouseOn = false;
+    float cntMouseOn = 0f;
+    bool isWindowOpen = false;
+    private bool isClicked = false;
     private Image bg { get; set; }
     private InventoryStat stat = null;
+
+    InfoWindowController infoWindowController;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
         adjustSize();
-        if (isMouseIn && Input.GetMouseButton(0) && type == InventoryType.Item)
+        if (stat != null && type == InventoryType.Item)
+        {
+            checkMouseForWindow();
+        }
+        if (isClicked && Input.GetMouseButton(0) && type == InventoryType.Item)
         {
             Debug.Log("Dragging...");
         }
@@ -64,28 +73,53 @@ public class SlotController : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        isMouseIn = true;
-        Debug.Log("In!");
+        isMouseOn = true;
     }
 
     private void OnMouseExit()
     {
-        isMouseIn = false;
-        Debug.Log("Out");
+        isMouseOn = false;
+        cntMouseOn = 0f;
+        isWindowOpen = false;
+        infoWindowController.closeWindow();
     }
 
     private void OnMouseDown()
     {
-        Debug.Log("Down!");
+        isClicked = true;
     }
 
     private void OnMouseUp()
     {
-        Debug.Log("UP!");
+        isClicked = false;
     }
 
     private void adjustSize()
     {
         GetComponent<BoxCollider2D>().size = GetComponent<RectTransform>().sizeDelta;
+    }
+    public void setInfoWindowController(InfoWindowController infoWindowController)
+    {
+        this.infoWindowController = infoWindowController;
+    }
+
+    private void checkMouseForWindow()
+    {
+        if (isMouseOn)
+        {
+            if (cntMouseOn < 0.25f)
+            {
+                cntMouseOn += Time.deltaTime;
+            }
+            else
+            {
+                if (!isWindowOpen)
+                {
+                    // open info window
+                    isWindowOpen = true;
+                    infoWindowController.openWindow();
+                }
+            }
+        }
     }
 }
