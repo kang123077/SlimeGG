@@ -5,6 +5,16 @@ using UnityEngine;
 
 public class MonsterCommonFunction
 {
+    // 인벤토리에 필요한 몬스터 정보 객체 생성
+    public static MonsterStat generateMonsterInventoryStat(MonsterVO monsterVO)
+    {
+        MonsterStat res = new MonsterStat();
+        MonsterSpeciesVO speciesVO = LocalDictionary.speices[monsterVO.accuSpecies.Last()];
+        res.nickName = monsterVO.nickName;
+        res.src = speciesVO.src;
+        return res;
+    }
+
     // 몬스터 정보 + 몬스터 종족 정보 -> 전투에 필요한 몬스터 객체 생성
     public static MonsterBattleInfo generateMonsterBattleInfo(MonsterVO monsterVO)
     {
@@ -42,12 +52,6 @@ public class MonsterCommonFunction
         res.basic[BasicStatEnum.invincible] = new PlainStatVO(0f);
         res.basic[BasicStatEnum.timeCoolCycle] = new PlainStatVO(0f);
         res.entryPos = monsterVO.entryPos != null ? monsterVO.entryPos : new int[2];
-        return res;
-    }
-
-    public static MonsterFarmInfo generateMonsterFarmInfo(MonsterVO monsterVO, MonsterSpeciesVO speciesVO)
-    {
-        MonsterFarmInfo res = new MonsterFarmInfo();
         return res;
     }
 

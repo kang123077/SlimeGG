@@ -25,7 +25,7 @@ public class DungeonManager : MonoBehaviour
         setClear();
         applyJourney();
         setUser(curStage);
-        activateNewEvent(RewardType.Choice);
+        //activateNewEvent(RewardType.Choice_Monster);
     }
 
     // Update is called once per frame

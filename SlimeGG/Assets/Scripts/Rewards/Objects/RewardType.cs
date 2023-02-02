@@ -1,4 +1,6 @@
 public enum RewardType
 {
-    Choice
+    Choice_Item,
+    Choice_Monster,
+    Exp
 }
