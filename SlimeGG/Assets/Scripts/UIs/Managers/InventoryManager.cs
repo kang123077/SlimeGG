@@ -17,10 +17,15 @@ public class InventoryManager : MonoBehaviour
     Transform monsterSlot;
     Transform equipmentSlot;
     Transform itemSlot;
+
+    List<SlotController> monsterList = new List<SlotController>();
+
     void Start()
     {
         getScreenSize();
         initSetting();
+        loadInventory();
+        isInit = true;
     }
 
     // Update is called once per frame
@@ -44,26 +49,17 @@ public class InventoryManager : MonoBehaviour
         monsterSlot = slots.GetChild(0).GetChild(1);
         equipmentSlot = slots.GetChild(0).GetChild(3);
         itemSlot = slots.GetChild(0).GetChild(5);
-        void addSlot(InventoryType type, Transform parent)
-        {
-            Transform newSlot = Instantiate(slotPrefab);
-            newSlot.GetComponent<SlotController>().initSlot(type);
-            newSlot.SetParent(parent);
-            newSlot.localPosition = Vector3.one;
-            newSlot.localScale = Vector3.one;
-        }
-        for (int i = 0; i < 2; i++)
-        {
-            addSlot(InventoryType.Monster, monsterSlot);
-            addSlot(InventoryType.Item, equipmentSlot);
-            addSlot(InventoryType.Item, itemSlot);
-        }
-        for (int i = 0; i < 4; i++)
-        {
-            addSlot(InventoryType.Monster, monsterSlot);
-            addSlot(InventoryType.Item, itemSlot);
-        }
-        isInit = true;
+        //for (int i = 0; i < 2; i++)
+        //{
+        //    addSlot(InventoryType.Monster, monsterSlot);
+        //    addSlot(InventoryType.Item, equipmentSlot);
+        //    addSlot(InventoryType.Item, itemSlot);
+        //}
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    addSlot(InventoryType.Monster, monsterSlot);
+        //    addSlot(InventoryType.Item, itemSlot);
+        //}
     }
 
     private void trackCamera()
@@ -151,10 +147,45 @@ public class InventoryManager : MonoBehaviour
         itemSlot.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -screenSize.y * 0.65f);
         itemSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * screenSize.y * 0.1f * 1.2f;
         itemSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.one * screenSize.y * 0.1f * 0.2f;
+
+
     }
 
     void getScreenSize()
     {
         screenSize = new Vector2(Screen.width, Screen.height);
+    }
+
+    void addMonster(MonsterVO monsterVO)
+    {
+        Transform newSlot = Instantiate(slotPrefab);
+        newSlot.SetParent(monsterSlot);
+        newSlot.localPosition = Vector3.one;
+        newSlot.localScale = Vector3.one;
+        newSlot.GetComponent<SlotController>().initSlot(monsterVO);
+        monsterList.Add(newSlot.GetComponent<SlotController>());
+    }
+
+    void addItem(Object itemVO)
+    {
+        Transform newSlot = Instantiate(slotPrefab);
+        newSlot.SetParent(itemSlot);
+        newSlot.localPosition = Vector3.one;
+        newSlot.localScale = Vector3.one;
+        newSlot.GetComponent<SlotController>().initSlot(itemVO);
+    }
+
+    void equipItemToMonster()
+    {
+
+    }
+
+    void loadInventory()
+    {
+        Debug.Log(LocalStorage.monsters.Count);
+        foreach (MonsterVO monsterVO in LocalStorage.monsters)
+        {
+            addMonster(monsterVO);
+        }
     }
 }
