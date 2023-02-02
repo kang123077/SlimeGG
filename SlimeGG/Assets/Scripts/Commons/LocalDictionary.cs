@@ -9,4 +9,7 @@ public static class LocalDictionary
         new Dictionary<string, SkillStat>();
     public static Dictionary<string, FieldInfo> fields =
         new Dictionary<string, FieldInfo>();
+
+    public static Dictionary<string, ItemStat> items = 
+        new Dictionary<string, ItemStat>();
 }

@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 112566255}
   - component: {fileID: 112566256}
   m_Layer: 0
-  m_Name: Slots For Item
+  m_Name: items
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1022,7 +1022,7 @@ GameObject:
   - component: {fileID: 696982002}
   - component: {fileID: 696982003}
   m_Layer: 0
-  m_Name: Slots For Monster
+  m_Name: monsters
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2046,7 +2046,7 @@ GameObject:
   - component: {fileID: 1482766340}
   - component: {fileID: 1482766341}
   m_Layer: 0
-  m_Name: Slots For Equipment
+  m_Name: equipments
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

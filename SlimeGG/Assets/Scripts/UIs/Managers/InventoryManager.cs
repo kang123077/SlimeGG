@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -17,8 +18,6 @@ public class InventoryManager : MonoBehaviour
     Transform monsterSlot;
     Transform equipmentSlot;
     Transform itemSlot;
-
-    List<SlotController> monsterList = new List<SlotController>();
 
     void Start()
     {
@@ -49,17 +48,17 @@ public class InventoryManager : MonoBehaviour
         monsterSlot = slots.GetChild(0).GetChild(1);
         equipmentSlot = slots.GetChild(0).GetChild(3);
         itemSlot = slots.GetChild(0).GetChild(5);
-        //for (int i = 0; i < 2; i++)
-        //{
-        //    addSlot(InventoryType.Monster, monsterSlot);
-        //    addSlot(InventoryType.Item, equipmentSlot);
-        //    addSlot(InventoryType.Item, itemSlot);
-        //}
-        //for (int i = 0; i < 4; i++)
-        //{
-        //    addSlot(InventoryType.Monster, monsterSlot);
-        //    addSlot(InventoryType.Item, itemSlot);
-        //}
+        for (int i = 0; i < 2; i++)
+        {
+            addSlot(InventoryType.Monster, monsterSlot);
+            addSlot(InventoryType.Item, equipmentSlot);
+            addSlot(InventoryType.Item, itemSlot);
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            addSlot(InventoryType.Monster, monsterSlot);
+            addSlot(InventoryType.Item, itemSlot);
+        }
     }
 
     private void trackCamera()
@@ -158,21 +157,36 @@ public class InventoryManager : MonoBehaviour
 
     void addMonster(MonsterVO monsterVO)
     {
-        Transform newSlot = Instantiate(slotPrefab);
-        newSlot.SetParent(monsterSlot);
-        newSlot.localPosition = Vector3.one;
-        newSlot.localScale = Vector3.one;
-        newSlot.GetComponent<SlotController>().initSlot(monsterVO);
-        monsterList.Add(newSlot.GetComponent<SlotController>());
+        foreach(SlotController slot in LocalStorage.inventory["monsters"])
+        {
+            if (!slot.isOccupied())
+            {
+                slot.initStat(monsterVO);
+                break;
+            }
+        }
     }
 
-    void addItem(Object itemVO)
+    void addItem(ItemVO itemVO)
+    {
+        foreach (SlotController slot in LocalStorage.inventory["items"])
+        {
+            if (!slot.isOccupied())
+            {
+                slot.initStat(itemVO);
+                break;
+            }
+        }
+    }
+
+    void addSlot(InventoryType type, Transform targetParent)
     {
         Transform newSlot = Instantiate(slotPrefab);
-        newSlot.SetParent(itemSlot);
+        newSlot.SetParent(targetParent);
         newSlot.localPosition = Vector3.one;
         newSlot.localScale = Vector3.one;
-        newSlot.GetComponent<SlotController>().initSlot(itemVO);
+        newSlot.GetComponent<SlotController>().initSlot(type);
+        LocalStorage.inventory[targetParent.name].Add(newSlot.GetComponent<SlotController>());
     }
 
     void equipItemToMonster()
@@ -182,10 +196,16 @@ public class InventoryManager : MonoBehaviour
 
     void loadInventory()
     {
-        Debug.Log(LocalStorage.monsters.Count);
+        Debug.Log("Monster:: " + LocalStorage.monsters.Count);
         foreach (MonsterVO monsterVO in LocalStorage.monsters)
         {
             addMonster(monsterVO);
+        }
+
+        Debug.Log("Item:: " + LocalStorage.items.Count);
+        foreach (ItemVO itemVO in LocalStorage.items)
+        {
+            addItem(itemVO);
         }
     }
 }

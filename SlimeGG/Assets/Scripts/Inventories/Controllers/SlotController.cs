@@ -8,8 +8,8 @@ public class SlotController : MonoBehaviour
     [SerializeField]
     InventoryType type = InventoryType.Item;
     private bool isMouseIn = false;
-    private Transform bg { get; set; }
-    private InventoryStat stat;
+    private Image bg { get; set; }
+    private InventoryStat stat = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,25 +19,47 @@ public class SlotController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        adjustSize();
         if (isMouseIn && Input.GetMouseButton(0) && type == InventoryType.Item)
         {
             Debug.Log("Dragging...");
         }
     }
 
-    public void initSlot(MonsterVO monsterVO)
+    public bool isOccupied()
+    {
+        return stat != null;
+    }
+
+    public void initStat(MonsterVO monsterVO)
     {
         this.type = InventoryType.Monster;
         stat = MonsterCommonFunction.generateMonsterInventoryStat(monsterVO);
-        bg = transform.Find("Image");
-        bg.GetComponent<Image>().sprite = Resources.Load<Sprite>(
+        bg = transform.Find("Image").GetComponent<Image>();
+        bg.sprite = Resources.Load<Sprite>(
             PathInfo.SPRITE + stat.src
             );
     }
 
-    public void initSlot(Object itemVO)
+    public void initStat(ItemVO itemVO)
     {
         this.type = InventoryType.Item;
+        stat = ItemCommonFunction.generateItemInventoryStat(itemVO);
+        bg = transform.Find("Image").GetComponent<Image>();
+        bg.sprite = Resources.Load<Sprite>(
+            PathInfo.SPRITE + stat.src
+            );
+    }
+
+    public void truncateStat()
+    {
+        stat = null;
+        bg.sprite = null;
+    }
+
+    public void initSlot(InventoryType type)
+    {
+        this.type = type;
     }
 
     private void OnMouseEnter()
@@ -60,5 +82,10 @@ public class SlotController : MonoBehaviour
     private void OnMouseUp()
     {
         Debug.Log("UP!");
+    }
+
+    private void adjustSize()
+    {
+        GetComponent<BoxCollider2D>().size = GetComponent<RectTransform>().sizeDelta;
     }
 }

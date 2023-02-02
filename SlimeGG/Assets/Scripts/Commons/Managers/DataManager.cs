@@ -25,6 +25,21 @@ public class DataManager : MonoBehaviour
             }
         }
 
+        foreach (string folderName in CommonFunctions.loadFileNamesFromFolder(
+            "Assets/Resources/Jsons/Items"
+            ))
+        {
+            foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
+            $"Assets/Resources/Jsons/Items/{folderName}"
+            ))
+            {
+                LocalDictionary.items[fileName] =
+                    CommonFunctions.loadObjectFromJson<ItemStat>(
+                        $"Assets/Resources/Jsons/Items/{folderName}/{fileName}"
+                        );
+            }
+        }
+
         foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
             "Assets/Resources/Jsons/Monsters/Skills"
             ))
@@ -50,6 +65,11 @@ public class DataManager : MonoBehaviour
             "Assets/Resources/Jsons/Save/Monsters"
             );
         LocalStorage.DataCall.MONSTER = true;
+
+        LocalStorage.items = CommonFunctions.loadObjectFromJson<List<ItemVO>>(
+            "Assets/Resources/Jsons/Save/Items"
+            );
+        LocalStorage.DataCall.ITEM = true;
 
         LocalStorage.journeyInfo = CommonFunctions.loadObjectFromJson<List<int>>(
             "Assets/Resources/Jsons/Save/Journey"
