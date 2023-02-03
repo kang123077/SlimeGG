@@ -22,9 +22,6 @@
     }
   ],
   "element": [
-    {
-      "name": "Animal",
-      "amount": 4
-    }
+    "Animal"
   ]
 }

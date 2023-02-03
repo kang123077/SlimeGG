@@ -32,17 +32,7 @@ public class MonsterCommonFunction
         {
             res.basic[basicStat.name].amount *= basicStat.amount;
         }
-        foreach (ElementStatVO elementStat in monsterVO.element)
-        {
-            res.element[elementStat.name] = new PlainStatVO(elementStat.amount);
-        }
-        foreach (ElementStatVO elementStat in speciesVO.element)
-        {
-            if (res.element.Keys.Contains(elementStat.name))
-                res.element[elementStat.name].amount += elementStat.amount;
-            else
-                res.element[elementStat.name] = new PlainStatVO(elementStat.amount);
-        }
+        res.element = speciesVO.element;
         foreach (string skillName in speciesVO.skills)
         {
             res.skills[skillName] = LocalDictionary.skills[skillName];

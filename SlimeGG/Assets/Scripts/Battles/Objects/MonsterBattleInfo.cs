@@ -4,7 +4,8 @@ public class MonsterBattleInfo
 {
     public string nickName { get; set; }
     public Dictionary<BasicStatEnum, PlainStatVO> basic { get; set; }
-    public Dictionary<ElementEnum, PlainStatVO> element { get; set; }
+
+    public List<ElementEnum> element { get; set; }
     public Dictionary<string, SkillStat> skills { get; set; }
     public int[] entryPos { get; set; }
     public string src { get; set; }
@@ -13,7 +14,7 @@ public class MonsterBattleInfo
     {
         nickName = string.Empty;
         basic = new Dictionary<BasicStatEnum, PlainStatVO>();
-        element = new Dictionary<ElementEnum, PlainStatVO>();
+        element = new List<ElementEnum>();
         skills = new Dictionary<string, SkillStat>();
         src = string.Empty;
     }

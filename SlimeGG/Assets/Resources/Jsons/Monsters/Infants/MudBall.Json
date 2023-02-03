@@ -23,9 +23,6 @@
     }
   ],
   "element": [
-    {
-      "name": "Earth",
-      "amount": 4
-    }
+    "Earth"
   ]
 }

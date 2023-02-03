@@ -23,13 +23,7 @@
     }
   ],
   "element": [
-    {
-      "name": "Animal",
-      "amount": 3
-    },
-    {
-      "name": "Earth",
-      "amount": 4
-    }
+    "Animal",
+    "Earth"
   ]
 }

@@ -23,13 +23,7 @@
     }
   ],
   "element": [
-    {
-      "name": "Spirit",
-      "amount": 3
-    },
-    {
-      "name": "Grass",
-      "amount": 3
-    }
+    "Spirit",
+    "Grass"
   ]
 }

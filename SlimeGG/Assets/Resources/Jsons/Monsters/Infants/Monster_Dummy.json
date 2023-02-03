@@ -23,13 +23,7 @@
     }
   ],
   "element": [
-    {
-      "name": "Wind",
-      "amount": 2
-    },
-    {
-      "name": "Spirit",
-      "amount": 1
-    }
+    "Wind",
+    "Spirit"
   ]
 }
