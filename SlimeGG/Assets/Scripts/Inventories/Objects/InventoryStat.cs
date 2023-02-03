@@ -4,6 +4,5 @@ using UnityEngine;
 
 public class InventoryStat
 {
-    public string nickName;
     public string src;
 }

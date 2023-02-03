@@ -1,3 +1,10 @@
 {
-  "src": "Items/Common/Dagger"
+  "src": "Items/Common/Dagger",
+  "effect": [
+    {
+      "name": "timeCastingCycle",
+      "amount": -0.1,
+      "isMultiple": false
+    }
+  ]
 }

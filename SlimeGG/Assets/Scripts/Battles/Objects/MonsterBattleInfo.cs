@@ -2,7 +2,6 @@ using System.Collections.Generic;
 
 public class MonsterBattleInfo
 {
-    public string nickName { get; set; }
     public Dictionary<BasicStatEnum, PlainStatVO> basic { get; set; }
 
     public List<ElementEnum> element { get; set; }
@@ -12,7 +11,6 @@ public class MonsterBattleInfo
 
     public MonsterBattleInfo()
     {
-        nickName = string.Empty;
         basic = new Dictionary<BasicStatEnum, PlainStatVO>();
         element = new List<ElementEnum>();
         skills = new Dictionary<string, SkillStat>();
@@ -21,7 +19,6 @@ public class MonsterBattleInfo
 
     public MonsterBattleInfo(MonsterBattleInfo monsterBattleInfo)
     {
-        nickName = monsterBattleInfo.nickName;
         element = monsterBattleInfo.element;
         skills = monsterBattleInfo.skills;
         basic = monsterBattleInfo.basic;

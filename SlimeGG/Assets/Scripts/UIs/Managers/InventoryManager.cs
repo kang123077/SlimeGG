@@ -159,7 +159,7 @@ public class InventoryManager : MonoBehaviour
 
     void addMonster(MonsterVO monsterVO)
     {
-        foreach(SlotController slot in LocalStorage.inventory["monsters"])
+        foreach (SlotController slot in LocalStorage.inventory["monsters"])
         {
             if (!slot.isOccupied())
             {
@@ -169,7 +169,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    void addItem(ItemVO itemVO)
+    void addItem(ItemSaveVO itemVO)
     {
         foreach (SlotController slot in LocalStorage.inventory["items"])
         {
@@ -204,7 +204,7 @@ public class InventoryManager : MonoBehaviour
             addMonster(monsterVO);
         }
 
-        foreach (ItemVO itemVO in LocalStorage.items)
+        foreach (ItemSaveVO itemVO in LocalStorage.items)
         {
             addItem(itemVO);
         }

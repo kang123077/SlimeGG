@@ -10,6 +10,6 @@ public static class LocalDictionary
     public static Dictionary<string, FieldInfo> fields =
         new Dictionary<string, FieldInfo>();
 
-    public static Dictionary<string, ItemStat> items = 
-        new Dictionary<string, ItemStat>();
+    public static Dictionary<string, ItemDictionaryVO> items = 
+        new Dictionary<string, ItemDictionaryVO>();
 }

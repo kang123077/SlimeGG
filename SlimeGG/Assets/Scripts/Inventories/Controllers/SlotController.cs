@@ -6,13 +6,14 @@ using UnityEngine.UI;
 public class SlotController : MonoBehaviour
 {
     [SerializeField]
-    InventoryType type = InventoryType.Item;
+    InventoryType type = InventoryType.None;
     private bool isMouseOn = false;
     float cntMouseOn = 0f;
     bool isWindowOpen = false;
     private bool isClicked = false;
     private Image bg { get; set; }
-    private InventoryStat stat = null;
+    private ItemSaveVO itemStat = null;
+    private MonsterStat monsterStat = null;
 
     InfoWindowController infoWindowController;
     // Start is called before the first frame update
@@ -25,7 +26,7 @@ public class SlotController : MonoBehaviour
     void Update()
     {
         adjustSize();
-        if (stat != null && type == InventoryType.Item)
+        if (type == InventoryType.Item)
         {
             checkMouseForWindow();
         }
@@ -37,32 +38,40 @@ public class SlotController : MonoBehaviour
 
     public bool isOccupied()
     {
-        return stat != null;
+        switch (type)
+        {
+            case InventoryType.None: return false;
+            case InventoryType.Item: return itemStat != null;
+            case InventoryType.Monster: return monsterStat != null;
+        }
+        return true;
     }
 
     public void initStat(MonsterVO monsterVO)
     {
         this.type = InventoryType.Monster;
-        stat = MonsterCommonFunction.generateMonsterInventoryStat(monsterVO);
+        monsterStat = MonsterCommonFunction.generateMonsterInventoryStat(monsterVO);
         bg = transform.Find("Image").GetComponent<Image>();
         bg.sprite = Resources.Load<Sprite>(
-            PathInfo.SPRITE + stat.src
+            PathInfo.SPRITE + monsterStat.src
             );
     }
 
-    public void initStat(ItemVO itemVO)
+    public void initStat(ItemSaveVO itemVO)
     {
         this.type = InventoryType.Item;
-        stat = ItemCommonFunction.generateItemInventoryStat(itemVO);
+        itemStat = itemVO;
         bg = transform.Find("Image").GetComponent<Image>();
         bg.sprite = Resources.Load<Sprite>(
-            PathInfo.SPRITE + stat.src
+            PathInfo.SPRITE + itemStat.src
             );
     }
 
     public void truncateStat()
     {
-        stat = null;
+        type = InventoryType.None;
+        itemStat = null;
+        monsterStat = null;
         bg.sprite = null;
     }
 

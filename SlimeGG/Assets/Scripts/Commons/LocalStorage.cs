@@ -12,7 +12,7 @@ public static class LocalStorage
     }
 
     public static List<MonsterVO> monsters = new List<MonsterVO>();
-    public static List<ItemVO> items = new List<ItemVO>();
+    public static List<ItemSaveVO> items = new List<ItemSaveVO>();
 
     public static List<Transform> tileSetTransforms = new List<Transform>();
 

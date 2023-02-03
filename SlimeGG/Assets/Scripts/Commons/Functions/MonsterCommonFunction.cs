@@ -9,8 +9,7 @@ public class MonsterCommonFunction
     public static MonsterStat generateMonsterInventoryStat(MonsterVO monsterVO)
     {
         MonsterStat res = new MonsterStat();
-        MonsterSpeciesVO speciesVO = LocalDictionary.speices[monsterVO.accuSpecies.Last()];
-        res.nickName = monsterVO.nickName;
+        MonsterSpeciesVO speciesVO = LocalDictionary.speices[monsterVO.specie];
         res.src = speciesVO.src;
         return res;
     }
@@ -19,8 +18,7 @@ public class MonsterCommonFunction
     public static MonsterBattleInfo generateMonsterBattleInfo(MonsterVO monsterVO)
     {
         MonsterBattleInfo res = new MonsterBattleInfo();
-        MonsterSpeciesVO speciesVO = LocalDictionary.speices[monsterVO.accuSpecies.Last()];
-        res.nickName = monsterVO.nickName;
+        MonsterSpeciesVO speciesVO = LocalDictionary.speices[monsterVO.specie];
         res.src = speciesVO.src;
         // 기본 정보는 곱연산을 통한 설정
         // 속성 정보는 합연산을 통한 설정

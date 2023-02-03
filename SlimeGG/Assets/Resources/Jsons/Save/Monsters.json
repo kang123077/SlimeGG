@@ -1,10 +1,6 @@
 [
   {
-    "nickName": "식곤충",
-    "accuSpecies": [
-      "Egg",
-      "Monster_Dummy"
-    ],
+    "specie": "Monster_Dummy",
     "basic": [
       {
         "name": "hp",
@@ -26,11 +22,7 @@
     "installedPosition": 0
   }, 
   {
-    "nickName": "숲들숲들",
-    "accuSpecies": [
-      "Egg",
-      "Monster_Dummy"
-    ],
+    "specie": "Monster_Dummy",
     "basic": [
       {
         "name": "hp",
@@ -52,11 +44,7 @@
     "installedPosition": 0
   }, 
   {
-    "nickName": "털뭉치",
-    "accuSpecies": [
-      "Egg",
-      "Monster_Dummy"
-    ],
+    "specie": "Monster_Dummy",
     "basic": [
       {
         "name": "hp",

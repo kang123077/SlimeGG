@@ -5,8 +5,6 @@ using Newtonsoft.Json.Converters;
 [System.Serializable]
 public class MonsterVO : MonsterSpeciesVO
 {
-    public string nickName { get; set; }
-    public int installedPosition { get; set; }
-    public List<string> accuSpecies { get; set; }
+    public string specie { get; set; }
     public int[] entryPos { get; set; }
 }

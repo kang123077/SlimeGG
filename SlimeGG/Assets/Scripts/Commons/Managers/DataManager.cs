@@ -34,7 +34,7 @@ public class DataManager : MonoBehaviour
             ))
             {
                 LocalDictionary.items[fileName] =
-                    CommonFunctions.loadObjectFromJson<ItemStat>(
+                    CommonFunctions.loadObjectFromJson<ItemDictionaryVO>(
                         $"Assets/Resources/Jsons/Items/{folderName}/{fileName}"
                         );
             }
@@ -66,9 +66,14 @@ public class DataManager : MonoBehaviour
             );
         LocalStorage.DataCall.MONSTER = true;
 
-        LocalStorage.items = CommonFunctions.loadObjectFromJson<List<ItemVO>>(
+        LocalStorage.items = CommonFunctions.loadObjectFromJson<List<ItemSaveVO>>(
             "Assets/Resources/Jsons/Save/Items"
             );
+
+        foreach (ItemSaveVO itemSave in LocalStorage.items)
+        {
+            itemSave.setDetailedInfo(LocalDictionary.items[itemSave.itemName]);
+        }
         LocalStorage.DataCall.ITEM = true;
 
         LocalStorage.journeyInfo = CommonFunctions.loadObjectFromJson<List<int>>(
