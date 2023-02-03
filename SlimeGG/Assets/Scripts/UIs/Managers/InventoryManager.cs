@@ -159,26 +159,26 @@ public class InventoryManager : MonoBehaviour
 
     void addMonster(MonsterVO monsterVO)
     {
-        foreach (SlotController slot in LocalStorage.inventory["monsters"])
-        {
-            if (!slot.isOccupied())
-            {
-                slot.initStat(monsterVO);
-                break;
-            }
-        }
+        //foreach (SlotController slot in LocalStorage.inventory["monsters"])
+        //{
+        //    if (!slot.isOccupied())
+        //    {
+        //        slot.initStat(monsterVO);
+        //        break;
+        //    }
+        //}
     }
 
     void addItem(ItemSaveVO itemVO)
     {
-        foreach (SlotController slot in LocalStorage.inventory["items"])
-        {
-            if (!slot.isOccupied())
-            {
-                slot.initStat(itemVO);
-                break;
-            }
-        }
+        //foreach (SlotController slot in LocalStorage.inventory["items"])
+        //{
+        //    if (!slot.isOccupied())
+        //    {
+        //        slot.initStat(itemVO);
+        //        break;
+        //    }
+        //}
     }
 
     void addSlot(InventoryType type, Transform targetParent)
@@ -188,7 +188,6 @@ public class InventoryManager : MonoBehaviour
         newSlot.localPosition = Vector3.one;
         newSlot.localScale = Vector3.one;
         newSlot.GetComponent<SlotController>().initSlot(type);
-        newSlot.GetComponent<SlotController>().setInfoWindowController(infoWindowController);
         LocalStorage.inventory[targetParent.name].Add(newSlot.GetComponent<SlotController>());
     }
 
