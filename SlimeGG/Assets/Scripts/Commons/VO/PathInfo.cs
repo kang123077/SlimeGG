@@ -32,5 +32,11 @@ public static class PathInfo
             public static string Animation = $"{animation}{Effect.root}{root}";
         }
     }
+
+    public static class Item
+    {
+        private static string root = "Items/";
+        public static string Sprite = $"{sprite}{root}";
+    }
     public static string TEXTURE = "Textures/";
 }

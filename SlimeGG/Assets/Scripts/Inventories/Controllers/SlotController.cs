@@ -7,7 +7,7 @@ public class SlotController : MonoBehaviour
 {
     [SerializeField]
     InventoryType type = InventoryType.None;
-    Transform content;
+    ContentController contentController;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,8 +25,9 @@ public class SlotController : MonoBehaviour
         switch (type)
         {
             case InventoryType.None: return false;
+            default:
+                return contentController != null;
         }
-        return true;
     }
 
     public void initSlot(InventoryType type)
@@ -37,5 +38,21 @@ public class SlotController : MonoBehaviour
     private void adjustSize()
     {
         GetComponent<BoxCollider2D>().size = GetComponent<RectTransform>().sizeDelta;
+    }
+
+    public void installContent(Transform newContent)
+    {
+        GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Outlines;
+        newContent.SetParent(transform);
+        newContent.localPosition = Vector3.zero;
+        newContent.localScale = Vector3.one;
+        contentController = newContent.GetComponent<ContentController>();
+    }
+
+    public void truncateContent()
+    {
+        contentController = null;
+
+        GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Polygons;
     }
 }

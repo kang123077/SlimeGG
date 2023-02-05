@@ -11,6 +11,8 @@ public class InventoryManager : MonoBehaviour
     [SerializeField]
     Transform slotPrefab;
     [SerializeField]
+    Transform contentPrefab;
+    [SerializeField]
     InfoWindowController infoWindowController;
     bool isActive = false;
     bool isAnimating = false;
@@ -176,9 +178,29 @@ public class InventoryManager : MonoBehaviour
     {
         foreach (KeyValuePair<string, MonsterLiveStat> monsterLive in LocalStorage.Live.monsters)
         {
+            Transform newMonster = Instantiate(contentPrefab);
+            newMonster.GetComponent<ContentController>().initContent(monsterLive.Value);
+            foreach (SlotController slotController in LocalStorage.inventory["monsters"])
+            {
+                if (!slotController.isOccupied())
+                {
+                    slotController.installContent(newMonster);
+                    break;
+                }
+            }
         }
         foreach (KeyValuePair<string, ItemLiveStat> itemLive in LocalStorage.Live.items)
         {
+            Transform newItem = Instantiate(contentPrefab);
+            newItem.GetComponent<ContentController>().initContent(itemLive.Value);
+            foreach (SlotController slotController in LocalStorage.inventory["items"])
+            {
+                if (!slotController.isOccupied())
+                {
+                    slotController.installContent(newItem);
+                    break;
+                }
+            }
         }
     }
 }

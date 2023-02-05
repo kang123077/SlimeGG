@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class DataManager : MonoBehaviour
 {
@@ -27,19 +26,14 @@ public class DataManager : MonoBehaviour
                     );
         }
 
-        foreach (string folderName in CommonFunctions.loadFileNamesFromFolder(
-            "Assets/Resources/Jsons/Items"
-            ))
+        foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
+        $"Assets/Resources/Jsons/Items"
+        ))
         {
-            foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
-            $"Assets/Resources/Jsons/Items/{folderName}"
-            ))
-            {
-                LocalDictionary.items[fileName] =
-                    CommonFunctions.loadObjectFromJson<ItemDictionaryStat>(
-                        $"Assets/Resources/Jsons/Items/{folderName}/{fileName}"
-                        );
-            }
+            LocalDictionary.items[fileName] =
+                CommonFunctions.loadObjectFromJson<ItemDictionaryStat>(
+                    $"Assets/Resources/Jsons/Items/{fileName}"
+                    );
         }
 
         foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
