@@ -55,7 +55,7 @@ public class AreaController : MonoBehaviour
         if (areaStat.src != null)
         {
             GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
-                PathInfo.ANIMATION + resourcePath + areaStat.src + "/Controller"
+                PathInfo.Effect.Area.Animation + areaStat.src + "/Controller"
                 );
         }
 

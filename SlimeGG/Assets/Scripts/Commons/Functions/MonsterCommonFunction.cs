@@ -5,49 +5,33 @@ using UnityEngine;
 
 public class MonsterCommonFunction
 {
+
     // 몬스터 정보 + 몬스터 종족 정보 -> 전투에 필요한 몬스터 객체 생성
-    public static MonsterBattleInfo generateMonsterBattleInfo(MonsterVO monsterVO)
+    public static MonsterBattleInfo generateMonsterBattleInfo(MonsterLiveStat monsterLiveStat)
     {
         MonsterBattleInfo res = new MonsterBattleInfo();
-        MonsterSpeciesVO speciesVO = LocalDictionary.speices[monsterVO.accuSpecies.Last()];
-        res.nickName = monsterVO.nickName;
-        res.src = speciesVO.src;
+        res.speicie = monsterLiveStat.saveStat.speicie;
         // 기본 정보는 곱연산을 통한 설정
         // 속성 정보는 합연산을 통한 설정
-        foreach (BasicStatVO basicStat in monsterVO.basic)
+        foreach (BasicStat basicStat in monsterLiveStat.dictionaryStat.basic)
         {
-            res.basic[basicStat.name] = new PlainStatVO(basicStat.amount);
+            res.basic[basicStat.name] = new BasicStat(basicStat.amount);
         }
-        foreach (BasicStatVO basicStat in speciesVO.basic)
+        foreach (ItemLiveStat itemStat in monsterLiveStat.itemStatList.Values)
         {
-            res.basic[basicStat.name].amount *= basicStat.amount;
+            //res.basic[basicStat.name].amount *= basicStat.amount;
+            // 착용한 아이템들 효과 적용
         }
-        foreach (ElementStatVO elementStat in monsterVO.element)
-        {
-            res.element[elementStat.name] = new PlainStatVO(elementStat.amount);
-        }
-        foreach (ElementStatVO elementStat in speciesVO.element)
-        {
-            if (res.element.Keys.Contains(elementStat.name))
-                res.element[elementStat.name].amount += elementStat.amount;
-            else
-                res.element[elementStat.name] = new PlainStatVO(elementStat.amount);
-        }
-        foreach (string skillName in speciesVO.skills)
+        res.element = monsterLiveStat.dictionaryStat.element;
+        foreach (string skillName in monsterLiveStat.dictionaryStat.skills)
         {
             res.skills[skillName] = LocalDictionary.skills[skillName];
         }
         // 전투 시에 필요한 추가 설정치
-        res.basic[BasicStatEnum.position] = new PlainStatVO(0f);
-        res.basic[BasicStatEnum.invincible] = new PlainStatVO(0f);
-        res.basic[BasicStatEnum.timeCoolCycle] = new PlainStatVO(0f);
-        res.entryPos = monsterVO.entryPos != null ? monsterVO.entryPos : new int[2];
-        return res;
-    }
-
-    public static MonsterFarmInfo generateMonsterFarmInfo(MonsterVO monsterVO, MonsterSpeciesVO speciesVO)
-    {
-        MonsterFarmInfo res = new MonsterFarmInfo();
+        res.basic[BasicStatEnum.position] = new BasicStat(0f);
+        res.basic[BasicStatEnum.invincible] = new BasicStat(0f);
+        res.basic[BasicStatEnum.timeCoolCycle] = new BasicStat(0f);
+        res.entryPos = monsterLiveStat.saveStat.entryPos != null ? monsterLiveStat.saveStat.entryPos : new float[2];
         return res;
     }
 

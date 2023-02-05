@@ -19,12 +19,10 @@ public static class AttributesFunction
     private static float weightInInferior = -0.25f;
 
     public static float calculateAttributeAgainstWeight(
-        Dictionary<ElementEnum, PlainStatVO> atkStats,
-        Dictionary<ElementEnum, PlainStatVO> defStats)
+        List<ElementEnum> atkElList,
+        List<ElementEnum> defElList)
     {
         // 서로 같은 가위바위보 안에 있는 속성끼리 매칭
-        List<ElementEnum> atkElList = atkStats.Keys.ToList();
-        List<ElementEnum> defElList = defStats.Keys.ToList();
         float res = 1f;
 
         List<ElementEnum> tempElList;
@@ -33,14 +31,16 @@ public static class AttributesFunction
         {
             temp = 1f;
             tempElList = defElList.ToList();
-            while (tempElList.Count > 0) {
+            while (tempElList.Count > 0)
+            {
                 if ((temp = getAttributeWeight(atkElList[0], tempElList[0])) != 1f)
                 {
                     // 현재 두 원소간 상성이 존재할 경우
                     res += temp;
                     atkElList.RemoveAt(0);
                     break;
-                } else
+                }
+                else
                 {
                     // 현재 두 원소간 상성이 존재하지 않을 경우
                     tempElList.RemoveAt(0);

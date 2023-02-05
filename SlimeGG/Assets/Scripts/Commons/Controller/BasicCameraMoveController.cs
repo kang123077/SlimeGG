@@ -10,13 +10,12 @@ public class BasicCameraMoveController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (LocalStorage.IS_CAMERA_FREE && Input.GetMouseButton(0))
+        if (LocalStorage.IS_CAMERA_FREE && !LocalStorage.IS_CAMERA_FIX && Input.GetMouseButton(0))
         {
             if (correctionCoor != -1000f)
             {
