@@ -46,13 +46,17 @@ public class SlotController : MonoBehaviour
         newContent.SetParent(transform);
         newContent.localPosition = Vector3.zero;
         newContent.localScale = Vector3.one;
+        newContent.GetComponent<RectTransform>().sizeDelta = Vector2.zero;
         contentController = newContent.GetComponent<ContentController>();
     }
 
     public void truncateContent()
     {
-        contentController = null;
-
+        if (contentController != null)
+        {
+            contentController.destroySelf();
+            contentController = null;
+        }
         GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Polygons;
     }
 }

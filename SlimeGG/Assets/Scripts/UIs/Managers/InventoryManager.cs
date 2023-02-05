@@ -23,6 +23,8 @@ public class InventoryManager : MonoBehaviour
     Transform equipmentSlot;
     Transform itemSlot;
 
+    private ContentController curSelectedMonster;
+
     void Start()
     {
         getScreenSize();
@@ -58,11 +60,13 @@ public class InventoryManager : MonoBehaviour
             addSlot(InventoryType.Item, equipmentSlot);
             addSlot(InventoryType.Item, itemSlot);
         }
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 6; i++)
         {
             addSlot(InventoryType.Monster, monsterSlot);
             addSlot(InventoryType.Item, itemSlot);
         }
+
+        ContentController.inventoryManager = this;
     }
 
     private void trackCamera()
@@ -103,8 +107,8 @@ public class InventoryManager : MonoBehaviour
     void adjustSize()
     {
         GetComponent<RectTransform>().sizeDelta = screenSize;
-        slots.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(screenSize.x * 4f / 16f, 0f);
-        slots.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(screenSize.x * 12f / 16f, 0f);
+        slots.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(screenSize.x * 6f / 16f, 0f);
+        slots.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(screenSize.x * 10f / 16f, 0f);
         slots.GetChild(1).GetComponent<RectTransform>().anchoredPosition = new Vector2(-screenSize.x * 12f / 16f, 0f);
         if (!isAnimating)
         {
@@ -194,6 +198,38 @@ public class InventoryManager : MonoBehaviour
             Transform newItem = Instantiate(contentPrefab);
             newItem.GetComponent<ContentController>().initContent(itemLive.Value);
             foreach (SlotController slotController in LocalStorage.inventory["items"])
+            {
+                if (!slotController.isOccupied())
+                {
+                    slotController.installContent(newItem);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void selectMonster(ContentController selectedMonster)
+    {
+        curSelectedMonster = selectedMonster;
+        truncateEquipment();
+        generateEquipmentItems(selectedMonster.getItemLiveStat());
+    }
+
+    private void truncateEquipment()
+    {
+        foreach (SlotController equipSlot in LocalStorage.inventory["equipments"])
+        {
+            equipSlot.truncateContent();
+        }
+    }
+
+    private void generateEquipmentItems(List<ItemLiveStat> itemLiveStats)
+    {
+        foreach (ItemLiveStat itemLiveStat in itemLiveStats)
+        {
+            Transform newItem = Instantiate(contentPrefab);
+            newItem.GetComponent<ContentController>().initContent(itemLiveStat);
+            foreach (SlotController slotController in LocalStorage.inventory["equipments"])
             {
                 if (!slotController.isOccupied())
                 {

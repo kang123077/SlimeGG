@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ContentController : MonoBehaviour
 {
+    public static InventoryManager inventoryManager;
     InventoryType type = InventoryType.None;
     MonsterLiveStat monsterLiveStat;
     ItemLiveStat itemLiveStat;
@@ -60,8 +62,15 @@ public class ContentController : MonoBehaviour
     private void OnMouseDown()
     {
         if (!isMoving) isMoving = true;
+        if (type == InventoryType.Monster)
+        {
+            inventoryManager.selectMonster(this);
+        }
         LocalStorage.IS_CAMERA_FIX = true;
-        Debug.Log("Down!");
+        if (type == InventoryType.Monster)
+        {
+            Debug.Log(monsterLiveStat.itemStatList.Count);
+        }
     }
 
     private void OnMouseUp()
@@ -83,5 +92,15 @@ public class ContentController : MonoBehaviour
             transform.localPosition = new Vector3(
                 transform.localPosition.x, transform.localPosition.y, -10f);
         }
+    }
+
+    public List<ItemLiveStat> getItemLiveStat()
+    {
+        return monsterLiveStat.itemStatList.Values.ToList();
+    }
+
+    public void destroySelf()
+    {
+        Destroy(gameObject);
     }
 }
