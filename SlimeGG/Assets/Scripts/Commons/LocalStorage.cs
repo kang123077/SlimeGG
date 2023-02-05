@@ -11,8 +11,11 @@ public static class LocalStorage
         public static bool ITEM = false;
     }
 
-    public static List<MonsterVO> monsters = new List<MonsterVO>();
-    public static List<ItemSaveVO> items = new List<ItemSaveVO>();
+    public static class Live
+    {
+        public static Dictionary<string, MonsterLiveStat> monsters = new Dictionary<string, MonsterLiveStat>();
+        public static Dictionary<string, ItemLiveStat> items = new Dictionary<string, ItemLiveStat>();
+    }
 
     public static List<Transform> tileSetTransforms = new List<Transform>();
 
@@ -25,7 +28,7 @@ public static class LocalStorage
 
 
     public static List<int> journeyInfo = new List<int>();
-    
+
     public static Dictionary<string, List<SlotController>> inventory = new Dictionary<string, List<SlotController>>()
     {
         { "monsters", new List<SlotController>() },

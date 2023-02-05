@@ -5,14 +5,6 @@ using UnityEngine;
 
 public class MonsterCommonFunction
 {
-    // 인벤토리에 필요한 몬스터 정보 객체 생성
-    public static MonsterStat generateMonsterInventoryStat(MonsterVO monsterVO)
-    {
-        MonsterStat res = new MonsterStat();
-        MonsterSpeciesVO speciesVO = LocalDictionary.speices[monsterVO.specie];
-        res.src = speciesVO.src;
-        return res;
-    }
 
     // 몬스터 정보 + 몬스터 종족 정보 -> 전투에 필요한 몬스터 객체 생성
     public static MonsterBattleInfo generateMonsterBattleInfo(MonsterVO monsterVO)
@@ -22,11 +14,11 @@ public class MonsterCommonFunction
         res.src = speciesVO.src;
         // 기본 정보는 곱연산을 통한 설정
         // 속성 정보는 합연산을 통한 설정
-        foreach (BasicStatVO basicStat in monsterVO.basic)
+        foreach (BasicStat basicStat in monsterVO.basic)
         {
-            res.basic[basicStat.name] = new PlainStatVO(basicStat.amount);
+            res.basic[basicStat.name] = new PlainStat(basicStat.amount);
         }
-        foreach (BasicStatVO basicStat in speciesVO.basic)
+        foreach (BasicStat basicStat in speciesVO.basic)
         {
             res.basic[basicStat.name].amount *= basicStat.amount;
         }
@@ -36,9 +28,9 @@ public class MonsterCommonFunction
             res.skills[skillName] = LocalDictionary.skills[skillName];
         }
         // 전투 시에 필요한 추가 설정치
-        res.basic[BasicStatEnum.position] = new PlainStatVO(0f);
-        res.basic[BasicStatEnum.invincible] = new PlainStatVO(0f);
-        res.basic[BasicStatEnum.timeCoolCycle] = new PlainStatVO(0f);
+        res.basic[BasicStatEnum.position] = new PlainStat(0f);
+        res.basic[BasicStatEnum.invincible] = new PlainStat(0f);
+        res.basic[BasicStatEnum.timeCoolCycle] = new PlainStat(0f);
         res.entryPos = monsterVO.entryPos != null ? monsterVO.entryPos : new int[2];
         return res;
     }

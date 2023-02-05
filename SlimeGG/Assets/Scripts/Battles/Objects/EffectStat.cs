@@ -1,6 +1,6 @@
 
 [System.Serializable]
-public class EffectStat : BasicStatVO
+public class EffectStat : BasicStat
 {
     public float duration { get; set; }
     public float tickTime { get; set; }

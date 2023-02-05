@@ -1,68 +1,36 @@
 [
   {
-    "specie": "Monster_Dummy",
-    "basic": [
+    "specie": "BabySpirit",
+    "id": "00000001",
+    "exp": [
       {
-        "name": "hp",
-        "amount": 1.2
-      },
-      {
-        "name": "atk",
-        "amount": 1
-      },
-      {
-        "name": "def",
-        "amount": 1.3
-      },
-      {
-        "name": "spd",
-        "amount": 1
+        "name": "Wind",
+        "amount": 3
       }
-    ],
-    "installedPosition": 0
-  }, 
+    ]
+  },
   {
-    "specie": "Monster_Dummy",
-    "basic": [
+    "specie": "BabySpirit",
+    "id": "00000002",
+    "exp": [
       {
-        "name": "hp",
-        "amount": 1
+        "name": "Fire",
+        "amount": 4
       },
       {
-        "name": "atk",
+        "name": "Spirit",
         "amount": 1
-      },
-      {
-        "name": "def",
-        "amount": 1
-      },
-      {
-        "name": "spd",
-        "amount": 1.3
       }
-    ],
-    "installedPosition": 0
-  }, 
+    ]
+  },
   {
-    "specie": "Monster_Dummy",
-    "basic": [
+    "specie": "BabySpirit",
+    "id": "00000003",
+    "exp": [
       {
-        "name": "hp",
-        "amount": 1
-      },
-      {
-        "name": "atk",
-        "amount": 1
-      },
-      {
-        "name": "def",
-        "amount": 1.3
-      },
-      {
-        "name": "spd",
-        "amount": 1
+        "name": "Water",
+        "amount": 5
       }
-    ],
-    "installedPosition": 0
+    ]
   }
 ]
