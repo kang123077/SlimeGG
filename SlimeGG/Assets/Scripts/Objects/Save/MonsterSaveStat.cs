@@ -6,6 +6,6 @@ public class MonsterSaveStat
 {
     public List<ElementStat> exp;
     public string id;
-    public string speice;
+    public string speicie;
     public float[] entryPos;
 }

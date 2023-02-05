@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d3ca37b910953c646928bdabe37f860d
+guid: c70ea833d12f81345abb93aa3ac1369e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -113,11 +113,23 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Sneaklower_0
+      name: Eartipede_0
       rect:
         serializedVersion: 2
         x: 0
@@ -131,14 +143,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55f612ef6c4d8644c98aff7531dea349
-      internalID: -1322271912
+      spriteID: 1d4bc45446a2afb45ae7531f66e7df27
+      internalID: 122720614
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sneaklower_1
+      name: Eartipede_1
       rect:
         serializedVersion: 2
         x: 128
@@ -152,14 +164,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3f1e488e76389ec4ab83e81a427f352f
-      internalID: 1419884518
+      spriteID: b621fde3aaf1ad44fbca55022df671b6
+      internalID: -567099788
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sneaklower_2
+      name: Eartipede_2
       rect:
         serializedVersion: 2
         x: 256
@@ -173,14 +185,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a990e67bfa67a674baafeed739a485cd
-      internalID: 1015935577
+      spriteID: b89f2362a57ac0141b1454c560836d34
+      internalID: 1222138726
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sneaklower_3
+      name: Eartipede_3
       rect:
         serializedVersion: 2
         x: 384
@@ -194,14 +206,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2614256d8ea337043aa3eb8d6a57f58f
-      internalID: 553936275
+      spriteID: cbe71064bc123b8499fbec16b8b27dca
+      internalID: 1672926481
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sneaklower_4
+      name: Eartipede_4
       rect:
         serializedVersion: 2
         x: 0
@@ -215,14 +227,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 246eac9e21ef8a34cab0a0576fae82de
-      internalID: 1727492802
+      spriteID: c823f56d777f2f5419b4dc953be0797a
+      internalID: 1866445781
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sneaklower_5
+      name: Eartipede_5
       rect:
         serializedVersion: 2
         x: 128
@@ -236,14 +248,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dd49ee9e1a2101d4f93a8c2b90112822
-      internalID: 1134954994
+      spriteID: 037bf240fa7efb9419f2868375a70016
+      internalID: -764807155
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sneaklower_6
+      name: Eartipede_6
       rect:
         serializedVersion: 2
         x: 256
@@ -257,14 +269,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bad6910486a87ed488770b7cb3b46550
-      internalID: 549768140
+      spriteID: c3eafc483db6ea548b3be8ee3020de02
+      internalID: -875586068
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sneaklower_7
+      name: Eartipede_7
       rect:
         serializedVersion: 2
         x: 384
@@ -278,14 +290,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 49e86e7e9f781a9418ba7b08dde23bf4
-      internalID: -396101467
+      spriteID: 2f67892c25f63db4b89e8a50d4f64287
+      internalID: -147491622
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sneaklower_8
+      name: Eartipede_8
       rect:
         serializedVersion: 2
         x: 0
@@ -299,14 +311,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6025463cb756f084db00bfe069bc8669
-      internalID: -545586550
+      spriteID: d92a27bbcdb2d3846a2c5b93a2603a1b
+      internalID: -368494799
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sneaklower_9
+      name: Eartipede_9
       rect:
         serializedVersion: 2
         x: 128
@@ -320,14 +332,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 122ec913871a2de4db8f480208ecbfd5
-      internalID: -1525535492
+      spriteID: 5142d3375316da54b88250ef39b34228
+      internalID: 1310060352
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sneaklower_10
+      name: Eartipede_10
       rect:
         serializedVersion: 2
         x: 256
@@ -341,14 +353,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f707aa7889a021d44b1ecf7ddb9b99c8
-      internalID: 1300027042
+      spriteID: 9573ddd8e9ef77a46a818e37377363b9
+      internalID: 769976918
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sneaklower_11
+      name: Eartipede_11
       rect:
         serializedVersion: 2
         x: 384
@@ -362,14 +374,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 08c718a97a45cb342a591d38ccad3bf4
-      internalID: 1484552521
+      spriteID: 803570c165414d94a9bb9a842bd55c57
+      internalID: -44659138
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sneaklower_12
+      name: Eartipede_12
       rect:
         serializedVersion: 2
         x: 0
@@ -383,14 +395,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a33cf1f6277b9b843af9790faa1d8799
-      internalID: -1271562771
+      spriteID: 923e7152009c9ec4e812c73e44d706b0
+      internalID: -1714620201
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sneaklower_13
+      name: Eartipede_13
       rect:
         serializedVersion: 2
         x: 256
@@ -404,8 +416,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 95bf34000d41e9c4784550b6a14a1d1d
-      internalID: -598568252
+      spriteID: 725e3b6166bba574789b2c0534617ca2
+      internalID: 1206869029
       vertices: []
       indices: 
       edges: []
@@ -421,20 +433,20 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Sneaklower_2: 1015935577
-      Sneaklower_11: 1484552521
-      Sneaklower_3: 553936275
-      Sneaklower_9: -1525535492
-      Sneaklower_8: -545586550
-      Sneaklower_13: -598568252
-      Sneaklower_5: 1134954994
-      Sneaklower_0: -1322271912
-      Sneaklower_10: 1300027042
-      Sneaklower_7: -396101467
-      Sneaklower_4: 1727492802
-      Sneaklower_6: 549768140
-      Sneaklower_1: 1419884518
-      Sneaklower_12: -1271562771
+      Eartipede_10: 769976918
+      Eartipede_0: 122720614
+      Eartipede_7: -147491622
+      Eartipede_9: 1310060352
+      Eartipede_5: -764807155
+      Eartipede_12: -1714620201
+      Eartipede_2: 1222138726
+      Eartipede_1: -567099788
+      Eartipede_8: -368494799
+      Eartipede_3: 1672926481
+      Eartipede_4: 1866445781
+      Eartipede_13: 1206869029
+      Eartipede_11: -44659138
+      Eartipede_6: -875586068
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

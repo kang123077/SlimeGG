@@ -10,7 +10,7 @@ public class MonsterCommonFunction
     public static MonsterBattleInfo generateMonsterBattleInfo(MonsterLiveStat monsterLiveStat)
     {
         MonsterBattleInfo res = new MonsterBattleInfo();
-        res.speice = monsterLiveStat.saveStat.speice;
+        res.speicie = monsterLiveStat.saveStat.speicie;
         // 기본 정보는 곱연산을 통한 설정
         // 속성 정보는 합연산을 통한 설정
         foreach (BasicStat basicStat in monsterLiveStat.dictionaryStat.basic)

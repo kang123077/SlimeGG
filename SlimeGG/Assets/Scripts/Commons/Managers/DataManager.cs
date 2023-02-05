@@ -11,7 +11,7 @@ public class DataManager : MonoBehaviour
         $"Assets/Resources/Jsons/Monsters"
         ))
         {
-            LocalDictionary.speices[fileName] =
+            LocalDictionary.speicies[fileName] =
                 CommonFunctions.loadObjectFromJson<MonsterDictionaryStat>(
                     $"Assets/Resources/Jsons/Monsters/{fileName}"
                     );

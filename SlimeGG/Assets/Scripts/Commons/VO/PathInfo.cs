@@ -5,7 +5,7 @@ public static class PathInfo
     private static string animation = "Animations/";
     public static class Monster
     {
-        private static string root = "Monster/";
+        private static string root = "Monsters/";
         public static string Sprite = $"{sprite}{root}";
         public static string Animation = $"{animation}{root}";
     }

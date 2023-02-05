@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class GeneratorFunction
 {
@@ -7,7 +8,7 @@ public static class GeneratorFunction
     {
         MonsterLiveStat res = new MonsterLiveStat();
         res.saveStat = saveStat;
-        res.dictionaryStat = LocalDictionary.speices[saveStat.speice];
+        res.dictionaryStat = LocalDictionary.speicies[saveStat.speicie];
         res.itemStatList = new Dictionary<string, ItemLiveStat>();
         LocalStorage.Live.monsters[saveStat.id] = res;
     }
@@ -16,7 +17,7 @@ public static class GeneratorFunction
     {
         MonsterLiveStat res = new MonsterLiveStat();
         res.saveStat = saveStat;
-        res.dictionaryStat = LocalDictionary.speices[saveStat.speice];
+        res.dictionaryStat = LocalDictionary.speicies[saveStat.speicie];
         res.itemStatList = new Dictionary<string, ItemLiveStat>();
         return res;
     }
@@ -26,7 +27,7 @@ public static class GeneratorFunction
         ItemLiveStat res = new ItemLiveStat();
         res.saveStat = saveStat;
         res.dictionaryStat = LocalDictionary.items[saveStat.itemName];
-        if (LocalStorage.Live.monsters.ContainsKey(saveStat.equipMonsterId))
+        if (saveStat.equipMonsterId != null && LocalStorage.Live.monsters.ContainsKey(saveStat.equipMonsterId))
         {
             LocalStorage.Live.monsters[saveStat.equipMonsterId].itemStatList[saveStat.id] = res;
         }

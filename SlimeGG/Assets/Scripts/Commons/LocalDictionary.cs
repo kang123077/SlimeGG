@@ -3,7 +3,7 @@ using System.Numerics;
 
 public static class LocalDictionary
 {
-    public static Dictionary<string, MonsterDictionaryStat> speices =
+    public static Dictionary<string, MonsterDictionaryStat> speicies =
         new Dictionary<string, MonsterDictionaryStat>();
     public static Dictionary<string, SkillStat> skills =
         new Dictionary<string, SkillStat>();

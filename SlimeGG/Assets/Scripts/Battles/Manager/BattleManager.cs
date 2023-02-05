@@ -32,8 +32,8 @@ public class BattleManager : MonoBehaviour
     public static float[][][] distanceEnemies = new float[2][][];
     public static bool isBattleReady = false;
     public static Vector2 fieldSize;
-    private static List<MonsterLiveStat> enemyEntry;
-    private static List<MonsterLiveStat> allyCandidateList;
+    private static List<MonsterLiveStat> enemyEntry = new List<MonsterLiveStat>();
+    private static List<MonsterLiveStat> allyCandidateList = new List<MonsterLiveStat>();
     public static int entryLimit { get; set; }
     private int sideWin { get; set; }
 

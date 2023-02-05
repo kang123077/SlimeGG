@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c70ea833d12f81345abb93aa3ac1369e
+guid: 29876e2776f17eb42ba6945b97847a1c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -113,11 +113,23 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Eartipede_0
+      name: BundleFur_0
       rect:
         serializedVersion: 2
         x: 0
@@ -131,14 +143,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1d4bc45446a2afb45ae7531f66e7df27
-      internalID: 122720614
+      spriteID: 4bf6b3a09e772dd42b73bddb5e58e353
+      internalID: -300093446
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Eartipede_1
+      name: BundleFur_1
       rect:
         serializedVersion: 2
         x: 128
@@ -152,14 +164,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b621fde3aaf1ad44fbca55022df671b6
-      internalID: -567099788
+      spriteID: 69e916c857b06744bb8b0ed0aa412780
+      internalID: -917934738
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Eartipede_2
+      name: BundleFur_2
       rect:
         serializedVersion: 2
         x: 256
@@ -173,14 +185,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b89f2362a57ac0141b1454c560836d34
-      internalID: 1222138726
+      spriteID: dc6f1ba32b13eec41a34f19c9267a98a
+      internalID: -422579057
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Eartipede_3
+      name: BundleFur_3
       rect:
         serializedVersion: 2
         x: 384
@@ -194,14 +206,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cbe71064bc123b8499fbec16b8b27dca
-      internalID: 1672926481
+      spriteID: b0cf5be73b3869545b20ef1e0cf60ffd
+      internalID: 558475429
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Eartipede_4
+      name: BundleFur_4
       rect:
         serializedVersion: 2
         x: 0
@@ -215,14 +227,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c823f56d777f2f5419b4dc953be0797a
-      internalID: 1866445781
+      spriteID: aa8a7407e8c75a24eac9fd1381769da4
+      internalID: 1219123826
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Eartipede_5
+      name: BundleFur_5
       rect:
         serializedVersion: 2
         x: 128
@@ -236,14 +248,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 037bf240fa7efb9419f2868375a70016
-      internalID: -764807155
+      spriteID: aa802a9c45ed6c74eb864cd7be132b5b
+      internalID: -1027235285
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Eartipede_6
+      name: BundleFur_6
       rect:
         serializedVersion: 2
         x: 256
@@ -257,14 +269,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c3eafc483db6ea548b3be8ee3020de02
-      internalID: -875586068
+      spriteID: 6a0789e33c7e1c24b95932bcf47928e3
+      internalID: -901500955
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Eartipede_7
+      name: BundleFur_7
       rect:
         serializedVersion: 2
         x: 384
@@ -278,14 +290,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2f67892c25f63db4b89e8a50d4f64287
-      internalID: -147491622
+      spriteID: 782e53be195831541b77ceedfe83b435
+      internalID: -1366013896
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Eartipede_8
+      name: BundleFur_8
       rect:
         serializedVersion: 2
         x: 0
@@ -299,14 +311,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d92a27bbcdb2d3846a2c5b93a2603a1b
-      internalID: -368494799
+      spriteID: f69d46af152f9b440a72c096f2e0c9d0
+      internalID: 162142797
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Eartipede_9
+      name: BundleFur_9
       rect:
         serializedVersion: 2
         x: 128
@@ -320,14 +332,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5142d3375316da54b88250ef39b34228
-      internalID: 1310060352
+      spriteID: c5289c33c49eeeb4da09f91e25617cfa
+      internalID: 1546716091
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Eartipede_10
+      name: BundleFur_10
       rect:
         serializedVersion: 2
         x: 256
@@ -341,14 +353,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9573ddd8e9ef77a46a818e37377363b9
-      internalID: 769976918
+      spriteID: ec5dd350d979cdb4589b658b8806affd
+      internalID: -1318113174
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Eartipede_11
+      name: BundleFur_11
       rect:
         serializedVersion: 2
         x: 384
@@ -362,14 +374,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 803570c165414d94a9bb9a842bd55c57
-      internalID: -44659138
+      spriteID: b4d7b95de6c368247af8a7a4aa495625
+      internalID: 729406888
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Eartipede_12
+      name: BundleFur_12
       rect:
         serializedVersion: 2
         x: 0
@@ -383,14 +395,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 923e7152009c9ec4e812c73e44d706b0
-      internalID: -1714620201
+      spriteID: 7630dbf339dced746bebff52184b724e
+      internalID: -1109604057
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Eartipede_13
+      name: BundleFur_13
       rect:
         serializedVersion: 2
         x: 256
@@ -404,8 +416,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 725e3b6166bba574789b2c0534617ca2
-      internalID: 1206869029
+      spriteID: 5d433a8138f73874fb47d24ed4c1ca83
+      internalID: -1012047140
       vertices: []
       indices: 
       edges: []
@@ -421,20 +433,20 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Eartipede_10: 769976918
-      Eartipede_0: 122720614
-      Eartipede_7: -147491622
-      Eartipede_9: 1310060352
-      Eartipede_5: -764807155
-      Eartipede_12: -1714620201
-      Eartipede_2: 1222138726
-      Eartipede_1: -567099788
-      Eartipede_8: -368494799
-      Eartipede_3: 1672926481
-      Eartipede_4: 1866445781
-      Eartipede_13: 1206869029
-      Eartipede_11: -44659138
-      Eartipede_6: -875586068
+      BundleFur_9: 1546716091
+      BundleFur_8: 162142797
+      BundleFur_10: -1318113174
+      BundleFur_11: 729406888
+      BundleFur_5: -1027235285
+      BundleFur_2: -422579057
+      BundleFur_13: -1012047140
+      BundleFur_4: 1219123826
+      BundleFur_6: -901500955
+      BundleFur_3: 558475429
+      BundleFur_12: -1109604057
+      BundleFur_1: -917934738
+      BundleFur_0: -300093446
+      BundleFur_7: -1366013896
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

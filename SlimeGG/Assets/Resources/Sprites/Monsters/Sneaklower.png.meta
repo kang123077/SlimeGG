@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7f31d8e33360ebf4380d396516917245
+guid: d3ca37b910953c646928bdabe37f860d
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -113,11 +113,23 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Sleepion_0
+      name: Sneaklower_0
       rect:
         serializedVersion: 2
         x: 0
@@ -131,14 +143,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7364aa0e18f4ea94ea62151954825bf5
-      internalID: -691041095
+      spriteID: 55f612ef6c4d8644c98aff7531dea349
+      internalID: -1322271912
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sleepion_1
+      name: Sneaklower_1
       rect:
         serializedVersion: 2
         x: 128
@@ -152,14 +164,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1290ee2aec22a2b4e9234de819a6160a
-      internalID: -62122028
+      spriteID: 3f1e488e76389ec4ab83e81a427f352f
+      internalID: 1419884518
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sleepion_2
+      name: Sneaklower_2
       rect:
         serializedVersion: 2
         x: 256
@@ -173,14 +185,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e000a0071330aeb4f9e94286738d9f45
-      internalID: -698370877
+      spriteID: a990e67bfa67a674baafeed739a485cd
+      internalID: 1015935577
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sleepion_3
+      name: Sneaklower_3
       rect:
         serializedVersion: 2
         x: 384
@@ -194,14 +206,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7a1a516f180932f4b883ee0a4287da71
-      internalID: -1123434815
+      spriteID: 2614256d8ea337043aa3eb8d6a57f58f
+      internalID: 553936275
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sleepion_4
+      name: Sneaklower_4
       rect:
         serializedVersion: 2
         x: 0
@@ -215,14 +227,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3d20715314fbbc44aa6dbea97bf99a54
-      internalID: 171260915
+      spriteID: 246eac9e21ef8a34cab0a0576fae82de
+      internalID: 1727492802
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sleepion_5
+      name: Sneaklower_5
       rect:
         serializedVersion: 2
         x: 128
@@ -236,14 +248,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fb42b73436e6b0d41b4ff76870a4c79b
-      internalID: 1078307242
+      spriteID: dd49ee9e1a2101d4f93a8c2b90112822
+      internalID: 1134954994
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sleepion_6
+      name: Sneaklower_6
       rect:
         serializedVersion: 2
         x: 256
@@ -257,14 +269,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1a8fc560b49672a4faaf2f560f8a2d6a
-      internalID: 51701629
+      spriteID: bad6910486a87ed488770b7cb3b46550
+      internalID: 549768140
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sleepion_7
+      name: Sneaklower_7
       rect:
         serializedVersion: 2
         x: 384
@@ -278,14 +290,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ae057662102a15748a68f1e1ee492c6f
-      internalID: -2138455667
+      spriteID: 49e86e7e9f781a9418ba7b08dde23bf4
+      internalID: -396101467
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sleepion_8
+      name: Sneaklower_8
       rect:
         serializedVersion: 2
         x: 0
@@ -299,14 +311,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: de723f3ad5f64b740b697543c4a08870
-      internalID: 1593887912
+      spriteID: 6025463cb756f084db00bfe069bc8669
+      internalID: -545586550
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sleepion_9
+      name: Sneaklower_9
       rect:
         serializedVersion: 2
         x: 128
@@ -320,14 +332,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 38866326e2b687d4991ff4bfe2947908
-      internalID: -235593134
+      spriteID: 122ec913871a2de4db8f480208ecbfd5
+      internalID: -1525535492
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sleepion_10
+      name: Sneaklower_10
       rect:
         serializedVersion: 2
         x: 256
@@ -341,14 +353,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f52d4a78576efed4c85f35e656c608af
-      internalID: -672153697
+      spriteID: f707aa7889a021d44b1ecf7ddb9b99c8
+      internalID: 1300027042
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sleepion_11
+      name: Sneaklower_11
       rect:
         serializedVersion: 2
         x: 384
@@ -362,14 +374,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c652409baed325341a788548c842b723
-      internalID: 1252737855
+      spriteID: 08c718a97a45cb342a591d38ccad3bf4
+      internalID: 1484552521
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sleepion_12
+      name: Sneaklower_12
       rect:
         serializedVersion: 2
         x: 0
@@ -383,14 +395,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d6b4c5a0111f8b94fbb08258365d5cd8
-      internalID: -1829438664
+      spriteID: a33cf1f6277b9b843af9790faa1d8799
+      internalID: -1271562771
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sleepion_13
+      name: Sneaklower_13
       rect:
         serializedVersion: 2
         x: 256
@@ -404,8 +416,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0180c30b9285b11459916d4a2db75500
-      internalID: -191697886
+      spriteID: 95bf34000d41e9c4784550b6a14a1d1d
+      internalID: -598568252
       vertices: []
       indices: 
       edges: []
@@ -421,20 +433,20 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Sleepion_2: -698370877
-      Sleepion_6: 51701629
-      Sleepion_11: 1252737855
-      Sleepion_5: 1078307242
-      Sleepion_8: 1593887912
-      Sleepion_1: -62122028
-      Sleepion_9: -235593134
-      Sleepion_10: -672153697
-      Sleepion_0: -691041095
-      Sleepion_7: -2138455667
-      Sleepion_3: -1123434815
-      Sleepion_12: -1829438664
-      Sleepion_13: -191697886
-      Sleepion_4: 171260915
+      Sneaklower_2: 1015935577
+      Sneaklower_11: 1484552521
+      Sneaklower_3: 553936275
+      Sneaklower_9: -1525535492
+      Sneaklower_8: -545586550
+      Sneaklower_13: -598568252
+      Sneaklower_5: 1134954994
+      Sneaklower_0: -1322271912
+      Sneaklower_10: 1300027042
+      Sneaklower_7: -396101467
+      Sneaklower_4: 1727492802
+      Sneaklower_6: 549768140
+      Sneaklower_1: 1419884518
+      Sneaklower_12: -1271562771
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

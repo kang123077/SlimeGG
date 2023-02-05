@@ -7,14 +7,14 @@ public class MonsterBattleInfo
     public List<ElementEnum> element { get; set; }
     public Dictionary<string, SkillStat> skills { get; set; }
     public float[] entryPos { get; set; }
-    public string speice { get; set; }
+    public string speicie { get; set; }
 
     public MonsterBattleInfo()
     {
         basic = new Dictionary<BasicStatEnum, BasicStat>();
         element = new List<ElementEnum>();
         skills = new Dictionary<string, SkillStat>();
-        speice = string.Empty;
+        speicie = string.Empty;
     }
 
     public MonsterBattleInfo(MonsterBattleInfo monsterBattleInfo)
@@ -23,7 +23,7 @@ public class MonsterBattleInfo
         skills = monsterBattleInfo.skills;
         basic = monsterBattleInfo.basic;
         element = monsterBattleInfo.element;
-        speice = monsterBattleInfo.speice;
+        speicie = monsterBattleInfo.speicie;
         basic[BasicStatEnum.timeCastingCycle] = new BasicStat();
         basic[BasicStatEnum.timeCoolCycle] = new BasicStat();
         basic[BasicStatEnum.invincible] = new BasicStat();
