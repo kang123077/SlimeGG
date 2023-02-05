@@ -44,7 +44,7 @@ public class FieldController : MonoBehaviour
         monster.SetParent(monsterContainer);
     }
 
-    public void setMonsterInPosition(Transform monster, int side, int[] setPos)
+    public void setMonsterInPosition(Transform monster, int side, float[] setPos)
     {
         setMonsterInPosition(monster);
         monster.localPosition = new Vector3((side == 1 ? 1 : -1) * (1 + (setPos[0])), setPos[1], 0f);

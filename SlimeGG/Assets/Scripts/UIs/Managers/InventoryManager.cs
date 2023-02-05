@@ -157,30 +157,6 @@ public class InventoryManager : MonoBehaviour
         screenSize = new Vector2(Screen.width, Screen.height);
     }
 
-    void addMonster(MonsterVO monsterVO)
-    {
-        //foreach (SlotController slot in LocalStorage.inventory["monsters"])
-        //{
-        //    if (!slot.isOccupied())
-        //    {
-        //        slot.initStat(monsterVO);
-        //        break;
-        //    }
-        //}
-    }
-
-    void addItem(ItemSaveVO itemVO)
-    {
-        //foreach (SlotController slot in LocalStorage.inventory["items"])
-        //{
-        //    if (!slot.isOccupied())
-        //    {
-        //        slot.initStat(itemVO);
-        //        break;
-        //    }
-        //}
-    }
-
     void addSlot(InventoryType type, Transform targetParent)
     {
         Transform newSlot = Instantiate(slotPrefab);
@@ -198,14 +174,11 @@ public class InventoryManager : MonoBehaviour
 
     void loadInventory()
     {
-        foreach (MonsterVO monsterVO in LocalStorage.monsters)
+        foreach (KeyValuePair<string, MonsterLiveStat> monsterLive in LocalStorage.Live.monsters)
         {
-            addMonster(monsterVO);
         }
-
-        foreach (ItemSaveVO itemVO in LocalStorage.items)
+        foreach (KeyValuePair<string, ItemLiveStat> itemLive in LocalStorage.Live.items)
         {
-            addItem(itemVO);
         }
     }
 }

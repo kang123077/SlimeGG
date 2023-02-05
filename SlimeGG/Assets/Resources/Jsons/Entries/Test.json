@@ -1,115 +1,27 @@
 [
   {
-    "nickName": "숲들숲들",
-    "specie": [
-      "Egg",
-      "Monster_Dummy"
-    ],
-    "basic": [
-      {
-        "name": "hp",
-        "amount": 1
-      },
-      {
-        "name": "atk",
-        "amount": 1
-      },
-      {
-        "name": "def",
-        "amount": 1
-      },
-      {
-        "name": "spd",
-        "amount": 1.3
-      }
-    ],
+    "speicie": "BabySpirit",
     "entryPos": [
       2,
       0
     ]
   },
   {
-    "nickName": "숲들숲들",
-    "specie": [
-      "Egg",
-      "Monster_Dummy"
-    ],
-    "basic": [
-      {
-        "name": "hp",
-        "amount": 1
-      },
-      {
-        "name": "atk",
-        "amount": 1
-      },
-      {
-        "name": "def",
-        "amount": 1
-      },
-      {
-        "name": "spd",
-        "amount": 1.3
-      }
-    ],
+    "speicie": "BabySpirit",
     "entryPos": [
       2,
       1
     ]
   },
   {
-    "nickName": "진흙",
-    "specie": [
-      "Egg",
-      "Monster_Dummy"
-    ],
-    "basic": [
-      {
-        "name": "hp",
-        "amount": 1.4
-      },
-      {
-        "name": "atk",
-        "amount": 1
-      },
-      {
-        "name": "def",
-        "amount": 1.1
-      },
-      {
-        "name": "spd",
-        "amount": 1
-      }
-    ],
+    "speicie": "BabySpirit",
     "entryPos": [
       1,
       -1
     ]
   },
   {
-    "nickName": "진흙",
-    "specie": [
-      "Egg",
-      "Monster_Dummy"
-    ],
-    "basic": [
-      {
-        "name": "hp",
-        "amount": 1.4
-      },
-      {
-        "name": "atk",
-        "amount": 1
-      },
-      {
-        "name": "def",
-        "amount": 1.1
-      },
-      {
-        "name": "spd",
-        "amount": 1
-      }
-    ],
+    "speicie": "BabySpirit",
     "entryPos": [
       0,
       1
