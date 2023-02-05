@@ -44,12 +44,12 @@ public class MonsterBattleController : MonoBehaviour
         liveBattleInfo = new MonsterBattleInfo(monsterBattleInfo);
         bg = transform.Find("Image");
         bg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(
-            PathInfo.SPRITE + monsterBattleInfo.src
+            PathInfo.Monster.Sprite + monsterBattleInfo.speice
             );
 
         anim = bg.GetComponent<Animator>();
         anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
-            PathInfo.ANIMATION + monsterBattleInfo.src + "/Controller"
+            PathInfo.Monster.Animation + monsterBattleInfo.speice + "/Controller"
             );
         distanceToKeep = 100f;
         foreach (SkillStat skillStat in monsterBattleInfo.skills.Values)
@@ -287,7 +287,7 @@ public class MonsterBattleController : MonoBehaviour
         {
             Destroy(anim);
             bg.GetComponent<SpriteRenderer>().sprite = Resources.LoadAll<Sprite>(
-                PathInfo.SPRITE + monsterBattleInfo.src
+                PathInfo.Monster.Sprite + monsterBattleInfo.speice
                 )[7];
             bg.GetComponent<SpriteRenderer>().flipX = directionToTarget.x >= 0f;
             isDead = true;

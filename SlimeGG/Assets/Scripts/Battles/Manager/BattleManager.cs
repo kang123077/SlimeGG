@@ -32,8 +32,8 @@ public class BattleManager : MonoBehaviour
     public static float[][][] distanceEnemies = new float[2][][];
     public static bool isBattleReady = false;
     public static Vector2 fieldSize;
-    private static MonsterVO[] enemyEntry;
-    private static MonsterVO[] sllyCandidateList;
+    private static List<MonsterLiveStat> enemyEntry;
+    private static List<MonsterLiveStat> allyCandidateList;
     public static int entryLimit { get; set; }
     private int sideWin { get; set; }
 
@@ -117,24 +117,27 @@ public class BattleManager : MonoBehaviour
 
     private void callEnemyEntry(string entryPath)
     {
-        enemyEntry =
-                        CommonFunctions.loadObjectFromJson<MonsterVO[]>(
+        foreach (MonsterSaveStat saveStat in
+                        CommonFunctions.loadObjectFromJson<MonsterSaveStat[]>(
                             $"Assets/Resources/Jsons/Entries/{entryPath}"
-                            );
+                            ))
+        {
+            enemyEntry.Add(GeneratorFunction.returnMonsterLiveStat(saveStat));
+        }
     }
 
     private void callAllyEntry()
     {
-        sllyCandidateList = LocalStorage.monsters.ToArray();
+        allyCandidateList = LocalStorage.Live.monsters.Values.ToList();
     }
 
     private void generateEnemies()
     {
         MonsterBattleInfo temp;
         int cnt = 0;
-        foreach (MonsterVO enemyVO in enemyEntry)
+        foreach (MonsterLiveStat enemyStat in enemyEntry)
         {
-            temp = MonsterCommonFunction.generateMonsterBattleInfo(enemyVO);
+            temp = MonsterCommonFunction.generateMonsterBattleInfo(enemyStat);
             generateMonster(temp, 1, cnt, temp.entryPos);
             cnt++;
         }
@@ -144,9 +147,9 @@ public class BattleManager : MonoBehaviour
     {
         MonsterBattleInfo temp;
         int cnt = 0;
-        foreach (MonsterVO enemyVO in sllyCandidateList)
+        foreach (MonsterLiveStat allyStat in allyCandidateList)
         {
-            temp = MonsterCommonFunction.generateMonsterBattleInfo(enemyVO);
+            temp = MonsterCommonFunction.generateMonsterBattleInfo(allyStat);
             GameObject newMonster = Instantiate(monsterBase);
             newMonster.GetComponent<MonsterBattleController>().initInfo(temp, fieldGenerated.transform.Find("Monster Container"), entryListUI.transform);
             entryListUI.GetComponent<EntryController>().addEntry(newMonster);
@@ -154,7 +157,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void generateMonster(MonsterBattleInfo monsterInfo, int side, int numPos, int[] setPos)
+    private void generateMonster(MonsterBattleInfo monsterInfo, int side, int numPos, float[] setPos)
     {
         GameObject newMonster = Instantiate(monsterBase);
         newMonster.GetComponent<MonsterBattleController>().initInfo(monsterInfo, fieldGenerated.transform.Find("Monster Container"));

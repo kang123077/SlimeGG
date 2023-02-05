@@ -7,4 +7,5 @@ public class MonsterSaveStat
     public List<ElementStat> exp;
     public string id;
     public string speice;
+    public float[] entryPos;
 }

@@ -7,31 +7,31 @@ public class MonsterCommonFunction
 {
 
     // 몬스터 정보 + 몬스터 종족 정보 -> 전투에 필요한 몬스터 객체 생성
-    public static MonsterBattleInfo generateMonsterBattleInfo(MonsterVO monsterVO)
+    public static MonsterBattleInfo generateMonsterBattleInfo(MonsterLiveStat monsterLiveStat)
     {
         MonsterBattleInfo res = new MonsterBattleInfo();
-        MonsterSpeciesVO speciesVO = LocalDictionary.speices[monsterVO.specie];
-        res.src = speciesVO.src;
+        res.speice = monsterLiveStat.saveStat.speice;
         // 기본 정보는 곱연산을 통한 설정
         // 속성 정보는 합연산을 통한 설정
-        foreach (BasicStat basicStat in monsterVO.basic)
+        foreach (BasicStat basicStat in monsterLiveStat.dictionaryStat.basic)
         {
-            res.basic[basicStat.name] = new PlainStat(basicStat.amount);
+            res.basic[basicStat.name] = new BasicStat(basicStat.amount);
         }
-        foreach (BasicStat basicStat in speciesVO.basic)
+        foreach (ItemLiveStat itemStat in monsterLiveStat.itemStatList.Values)
         {
-            res.basic[basicStat.name].amount *= basicStat.amount;
+            //res.basic[basicStat.name].amount *= basicStat.amount;
+            // 착용한 아이템들 효과 적용
         }
-        res.element = speciesVO.element;
-        foreach (string skillName in speciesVO.skills)
+        res.element = monsterLiveStat.dictionaryStat.element;
+        foreach (string skillName in monsterLiveStat.dictionaryStat.skills)
         {
             res.skills[skillName] = LocalDictionary.skills[skillName];
         }
         // 전투 시에 필요한 추가 설정치
-        res.basic[BasicStatEnum.position] = new PlainStat(0f);
-        res.basic[BasicStatEnum.invincible] = new PlainStat(0f);
-        res.basic[BasicStatEnum.timeCoolCycle] = new PlainStat(0f);
-        res.entryPos = monsterVO.entryPos != null ? monsterVO.entryPos : new int[2];
+        res.basic[BasicStatEnum.position] = new BasicStat(0f);
+        res.basic[BasicStatEnum.invincible] = new BasicStat(0f);
+        res.basic[BasicStatEnum.timeCoolCycle] = new BasicStat(0f);
+        res.entryPos = monsterLiveStat.saveStat.entryPos != null ? monsterLiveStat.saveStat.entryPos : new float[2];
         return res;
     }
 

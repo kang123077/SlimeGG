@@ -12,6 +12,15 @@ public static class GeneratorFunction
         LocalStorage.Live.monsters[saveStat.id] = res;
     }
 
+    public static MonsterLiveStat returnMonsterLiveStat(MonsterSaveStat saveStat)
+    {
+        MonsterLiveStat res = new MonsterLiveStat();
+        res.saveStat = saveStat;
+        res.dictionaryStat = LocalDictionary.speices[saveStat.speice];
+        res.itemStatList = new Dictionary<string, ItemLiveStat>();
+        return res;
+    }
+
     public static void generateItemLiveStat(ItemSaveStat saveStat)
     {
         ItemLiveStat res = new ItemLiveStat();

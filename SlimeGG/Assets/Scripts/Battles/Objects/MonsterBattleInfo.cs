@@ -2,19 +2,19 @@ using System.Collections.Generic;
 
 public class MonsterBattleInfo
 {
-    public Dictionary<BasicStatEnum, PlainStat> basic { get; set; }
+    public Dictionary<BasicStatEnum, BasicStat> basic { get; set; }
 
     public List<ElementEnum> element { get; set; }
     public Dictionary<string, SkillStat> skills { get; set; }
-    public int[] entryPos { get; set; }
-    public string src { get; set; }
+    public float[] entryPos { get; set; }
+    public string speice { get; set; }
 
     public MonsterBattleInfo()
     {
-        basic = new Dictionary<BasicStatEnum, PlainStat>();
+        basic = new Dictionary<BasicStatEnum, BasicStat>();
         element = new List<ElementEnum>();
         skills = new Dictionary<string, SkillStat>();
-        src = string.Empty;
+        speice = string.Empty;
     }
 
     public MonsterBattleInfo(MonsterBattleInfo monsterBattleInfo)
@@ -23,9 +23,10 @@ public class MonsterBattleInfo
         skills = monsterBattleInfo.skills;
         basic = monsterBattleInfo.basic;
         element = monsterBattleInfo.element;
-        basic[BasicStatEnum.timeCastingCycle] = new PlainStat();
-        basic[BasicStatEnum.timeCoolCycle] = new PlainStat();
-        basic[BasicStatEnum.invincible] = new PlainStat();
-        basic[BasicStatEnum.position] = new PlainStat();
+        speice = monsterBattleInfo.speice;
+        basic[BasicStatEnum.timeCastingCycle] = new BasicStat();
+        basic[BasicStatEnum.timeCoolCycle] = new BasicStat();
+        basic[BasicStatEnum.invincible] = new BasicStat();
+        basic[BasicStatEnum.position] = new BasicStat();
     }
 }
