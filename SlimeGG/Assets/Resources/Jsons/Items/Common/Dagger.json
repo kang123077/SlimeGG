@@ -1,0 +1,10 @@
+{
+  "displayName": "단검",
+  "effect": [
+    {
+      "name": "timeCastingCycle",
+      "amount": -0.1,
+      "isMultiple": false
+    }
+  ]
+}

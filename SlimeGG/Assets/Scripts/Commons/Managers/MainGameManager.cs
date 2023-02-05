@@ -51,7 +51,7 @@ public class MainGameManager : MonoBehaviour
         float cnt = 0f;
         while (cnt < 1f)
         {
-            cnt += 0.01f;
+            cnt += 0.03f;
             yield return new WaitForSeconds(0.01f);
             loadingGO.GetComponent<Image>().color = new Color(0f, 0f, 0f, isFadeIn ? cnt : (1f - cnt));
         }

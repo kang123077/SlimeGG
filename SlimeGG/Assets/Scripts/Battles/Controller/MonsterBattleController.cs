@@ -44,12 +44,12 @@ public class MonsterBattleController : MonoBehaviour
         liveBattleInfo = new MonsterBattleInfo(monsterBattleInfo);
         bg = transform.Find("Image");
         bg.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(
-            PathInfo.SPRITE + monsterBattleInfo.src
+            PathInfo.Monster.Sprite + monsterBattleInfo.speicie
             );
 
         anim = bg.GetComponent<Animator>();
         anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(
-            PathInfo.ANIMATION + monsterBattleInfo.src + "/Controller"
+            PathInfo.Monster.Animation + monsterBattleInfo.speicie + "/Controller"
             );
         distanceToKeep = 100f;
         foreach (SkillStat skillStat in monsterBattleInfo.skills.Values)
@@ -94,7 +94,7 @@ public class MonsterBattleController : MonoBehaviour
         {
             if (BattleManager.isBattleReady)
             {
-                if (!hpController.gameObject.active)
+                if (!hpController.gameObject.activeSelf)
                 {
                     transform.Find("Tracking Camera").gameObject.SetActive(true);
                     hpController.gameObject.SetActive(true);
@@ -152,7 +152,8 @@ public class MonsterBattleController : MonoBehaviour
         if (anim.GetFloat("BattleState") != 0f && animTime <= 1f)
         {
             animTime += Time.deltaTime;
-        } else
+        }
+        else
         {
             anim.SetFloat("BattleState", 0f);
         }
@@ -287,7 +288,7 @@ public class MonsterBattleController : MonoBehaviour
         {
             Destroy(anim);
             bg.GetComponent<SpriteRenderer>().sprite = Resources.LoadAll<Sprite>(
-                PathInfo.SPRITE + monsterBattleInfo.src
+                PathInfo.Monster.Sprite + monsterBattleInfo.speicie
                 )[7];
             bg.GetComponent<SpriteRenderer>().flipX = directionToTarget.x >= 0f;
             isDead = true;
@@ -451,7 +452,10 @@ public class MonsterBattleController : MonoBehaviour
     */
     public void setAnimation(int statusToApply)
     {
-        anim.SetFloat("BattleState", statusToApply);
+        if (anim != null)
+        {
+            anim.SetFloat("BattleState", statusToApply);
+        }
         animTime = 0f;
     }
 }
