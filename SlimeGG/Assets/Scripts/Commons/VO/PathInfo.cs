@@ -38,5 +38,18 @@ public static class PathInfo
         private static string root = "Items/";
         public static string Sprite = $"{sprite}{root}";
     }
+
+    public static class Json
+    {
+        private static string root = $"Jsons/";
+        public static class Save
+        {
+            private static string root = $"Save/";
+            public static string monster = $"{Json.root}{root}Monsters";
+            public static string journey = $"{Json.root}{root}Journey";
+            public static string item = $"{Json.root}{root}Items";
+        }
+    }
+
     public static string TEXTURE = "Textures/";
 }

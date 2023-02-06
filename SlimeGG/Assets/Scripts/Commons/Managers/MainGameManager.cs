@@ -66,4 +66,9 @@ public class MainGameManager : MonoBehaviour
             LocalStorage.IS_SCENE_FADE_IN = false;
         }
     }
+
+    public void saveGame()
+    {
+        SaveFunction.saveData();
+    }
 }
