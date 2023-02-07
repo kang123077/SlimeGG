@@ -53,9 +53,10 @@ public class ContentController : MonoBehaviour
 
     private void adjustSize()
     {
-        if (image != null)
+        if (image != null && transform.parent != null)
         {
-            image.GetComponent<BoxCollider2D>().size = transform.parent.GetComponent<RectTransform>().sizeDelta;
+            Vector2 temp = transform.parent.GetComponent<RectTransform>().sizeDelta;
+            image.GetComponent<BoxCollider>().size = new Vector3(temp.x, temp.y, 0.2f);
         }
     }
 
@@ -67,21 +68,17 @@ public class ContentController : MonoBehaviour
             inventoryManager.selectMonster(this);
         }
         LocalStorage.IS_CAMERA_FIX = true;
-        if (type == InventoryType.Monster)
-        {
-            Debug.Log(monsterLiveStat.itemStatList.Count);
-        }
     }
 
     private void OnMouseUp()
     {
+        if (isMoving)
+        {
+            checkInstallable();
+        }
         isMoving = false;
         LocalStorage.IS_CAMERA_FIX = false;
-        transform.localPosition = Vector3.zero;
-        if (type == InventoryType.Monster)
-        {
-            Debug.Log(monsterLiveStat.saveStat.id);
-        }
+        transform.localPosition = new Vector3(0f, 0f, -2f);
     }
 
     private void onDrag()
@@ -90,7 +87,58 @@ public class ContentController : MonoBehaviour
         {
             transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.localPosition = new Vector3(
-                transform.localPosition.x, transform.localPosition.y, -10f);
+                transform.localPosition.x, transform.localPosition.y, -13f);
+        }
+    }
+
+    private void checkInstallable()
+    {
+        RaycastHit res;
+        if (Physics.Raycast(transform.position, Vector3.fwd, out res, 1.2f))
+        {
+            if (res.transform.tag == "Slot")
+            {
+                SlotController slot = res.transform.GetComponent<SlotController>();
+                switch (type)
+                {
+                    case InventoryType.Monster:
+                        break;
+                    case InventoryType.Item:
+                        if (slot.type == InventoryType.Equipment)
+                        {
+                            if (itemLiveStat.saveStat.equipMonsterId == null)
+                            {
+                                Debug.Log("아이템 >> 장착칸");
+                            }
+                        }
+                        else if (slot.type == InventoryType.Item)
+                        {
+                            if (itemLiveStat.saveStat.equipMonsterId != null)
+                            {
+                                Debug.Log("장착칸 >> 아이템");
+                            }
+                        }
+                        break;
+                    case InventoryType.Equipment:
+                        break;
+                    case InventoryType.None:
+                        break;
+                }
+            }
+            else if (res.transform.tag == "Content")
+            {
+                ContentController content = res.transform.GetComponent<ContentController>();
+                switch (type)
+                {
+                    case InventoryType.Monster:
+                        if (content.type == InventoryType.Monster)
+                        {
+                            Debug.Log("몬스터 >> 몬스터");
+                        }
+                        break;
+                    default: break;
+                }
+            }
         }
     }
 

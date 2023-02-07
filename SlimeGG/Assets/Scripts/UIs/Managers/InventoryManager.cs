@@ -57,7 +57,7 @@ public class InventoryManager : MonoBehaviour
         for (int i = 0; i < 2; i++)
         {
             addSlot(InventoryType.Monster, monsterSlot);
-            addSlot(InventoryType.Item, equipmentSlot);
+            addSlot(InventoryType.Equipment, equipmentSlot);
             addSlot(InventoryType.Item, itemSlot);
         }
         for (int i = 0; i < 6; i++)
@@ -74,6 +74,10 @@ public class InventoryManager : MonoBehaviour
         transform.position = new Vector3(
             Camera.main.transform.position.x,
             transform.position.y,
+            1f);
+        transform.localPosition = new Vector3(
+            transform.localPosition.x,
+            transform.localPosition.y,
             1f);
     }
 

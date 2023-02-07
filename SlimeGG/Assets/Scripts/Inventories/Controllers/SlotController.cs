@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SlotController : MonoBehaviour
 {
     [SerializeField]
-    InventoryType type = InventoryType.None;
+    public InventoryType type = InventoryType.None;
     ContentController contentController;
     // Start is called before the first frame update
     void Start()
@@ -37,14 +37,14 @@ public class SlotController : MonoBehaviour
 
     private void adjustSize()
     {
-        GetComponent<BoxCollider2D>().size = GetComponent<RectTransform>().sizeDelta;
+        Vector2 temp = GetComponent<RectTransform>().sizeDelta;
+        GetComponent<BoxCollider>().size = new Vector3(temp.x, temp.y, 0.2f);
     }
 
     public void installContent(Transform newContent)
     {
-        GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Outlines;
         newContent.SetParent(transform);
-        newContent.localPosition = Vector3.zero;
+        newContent.localPosition = new Vector3(0f, 0f, -2f);
         newContent.localScale = Vector3.one;
         newContent.GetComponent<RectTransform>().sizeDelta = Vector2.zero;
         contentController = newContent.GetComponent<ContentController>();
@@ -57,6 +57,5 @@ public class SlotController : MonoBehaviour
             contentController.destroySelf();
             contentController = null;
         }
-        GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Polygons;
     }
 }
