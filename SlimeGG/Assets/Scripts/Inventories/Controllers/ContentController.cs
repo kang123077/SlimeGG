@@ -12,6 +12,11 @@ public class ContentController : MonoBehaviour
     public ItemLiveStat itemLiveStat;
     Transform image;
     bool isMoving = false;
+
+    float cntMouseOn = 0f;
+    bool isMouseOn = false;
+    bool isWindowOpen = false;
+    InfoWindowController infoWindowController;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +28,10 @@ public class ContentController : MonoBehaviour
     {
         adjustSize();
         onDrag();
+        if (type == InventoryType.Item && infoWindowController != null)
+        {
+            checkMouseForWindow();
+        }
     }
 
     public void initContent(MonsterLiveStat monsterLiveStat)
@@ -165,5 +174,43 @@ public class ContentController : MonoBehaviour
     {
         item.saveStat.equipMonsterId = monsterLiveStat.saveStat.id;
         monsterLiveStat.itemStatList[item.saveStat.id] = item;
+    }
+    private void checkMouseForWindow()
+    {
+        if (isMouseOn)
+        {
+            if (cntMouseOn < 0.25f)
+            {
+                cntMouseOn += Time.deltaTime;
+            }
+            else
+            {
+                if (!isWindowOpen)
+                {
+                    // open info window
+                    isWindowOpen = true;
+                    infoWindowController.openWindow();
+                }
+            }
+        }
+    }
+
+    private void OnMouseEnter()
+    {
+        isMouseOn = true;
+    }
+
+    private void OnMouseExit()
+    {
+        isMouseOn = false;
+        cntMouseOn = 0f;
+        isWindowOpen = false;
+        if (infoWindowController != null)
+            infoWindowController.closeWindow();
+    }
+
+    public void setInfoWindowController(InfoWindowController infoWindowController)
+    {
+        this.infoWindowController = infoWindowController;
     }
 }

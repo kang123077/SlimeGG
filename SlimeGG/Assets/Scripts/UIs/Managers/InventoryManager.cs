@@ -208,6 +208,7 @@ public class InventoryManager : MonoBehaviour
         {
             Transform newItem = Instantiate(contentPrefab);
             newItem.GetComponent<ContentController>().initContent(itemLive.Value);
+            newItem.GetComponent<ContentController>().setInfoWindowController(infoWindowController);
             foreach (SlotController slotController in LocalStorage.inventory["items"])
             {
                 if (!slotController.isOccupied())
@@ -240,6 +241,7 @@ public class InventoryManager : MonoBehaviour
         {
             Transform newItem = Instantiate(contentPrefab);
             newItem.GetComponent<ContentController>().initContent(itemLiveStat);
+            newItem.GetComponent<ContentController>().setInfoWindowController(infoWindowController);
             foreach (SlotController slotController in LocalStorage.inventory["equipments"])
             {
                 if (!slotController.isOccupied())
