@@ -10,7 +10,7 @@
     ]
   },
   {
-    "speicie": "BabySpirit",
+    "speicie": "BundleFur",
     "id": "00000002",
     "exp": [
       {
@@ -24,8 +24,18 @@
     ]
   },
   {
-    "speicie": "BabySpirit",
+    "speicie": "Sneaklower",
     "id": "00000003",
+    "exp": [
+      {
+        "name": "Water",
+        "amount": 5
+      }
+    ]
+  },
+  {
+    "speicie": "MudBall",
+    "id": "00000004",
     "exp": [
       {
         "name": "Water",
