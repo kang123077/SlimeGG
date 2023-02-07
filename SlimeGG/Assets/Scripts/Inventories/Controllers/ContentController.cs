@@ -8,8 +8,8 @@ public class ContentController : MonoBehaviour
 {
     public static InventoryManager inventoryManager;
     InventoryType type = InventoryType.None;
-    MonsterLiveStat monsterLiveStat;
-    ItemLiveStat itemLiveStat;
+    public MonsterLiveStat monsterLiveStat;
+    public ItemLiveStat itemLiveStat;
     Transform image;
     bool isMoving = false;
     // Start is called before the first frame update
@@ -108,14 +108,17 @@ public class ContentController : MonoBehaviour
                         {
                             if (itemLiveStat.saveStat.equipMonsterId == null)
                             {
-                                Debug.Log("아이템 >> 장착칸");
+                                //Debug.Log("아이템 >> 장착칸");
+                                inventoryManager.mountItemToMonster(slot, this);
                             }
                         }
                         else if (slot.type == InventoryType.Item)
                         {
                             if (itemLiveStat.saveStat.equipMonsterId != null)
                             {
-                                Debug.Log("장착칸 >> 아이템");
+                                //Debug.Log("장착칸 >> 아이템");
+                                transform.parent.GetComponent<SlotController>().removeContent();
+                                inventoryManager.unMountItemFromMonster(slot, this);
                             }
                         }
                         break;
@@ -150,5 +153,17 @@ public class ContentController : MonoBehaviour
     public void destroySelf()
     {
         Destroy(gameObject);
+    }
+
+    public void removeItem(ItemLiveStat item)
+    {
+        item.saveStat.equipMonsterId = null;
+        monsterLiveStat.itemStatList.Remove(item.saveStat.id);
+    }
+
+    public void addItem(ItemLiveStat item)
+    {
+        item.saveStat.equipMonsterId = monsterLiveStat.saveStat.id;
+        monsterLiveStat.itemStatList[item.saveStat.id] = item;
     }
 }

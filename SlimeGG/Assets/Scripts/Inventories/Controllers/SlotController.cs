@@ -58,4 +58,9 @@ public class SlotController : MonoBehaviour
             contentController = null;
         }
     }
+
+    public void removeContent()
+    {
+        contentController = null;
+    }
 }

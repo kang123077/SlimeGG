@@ -177,9 +177,16 @@ public class InventoryManager : MonoBehaviour
         LocalStorage.inventory[targetParent.name].Add(newSlot.GetComponent<SlotController>());
     }
 
-    void equipItemToMonster()
+    public void mountItemToMonster(SlotController targetSlot, ContentController targetItem)
     {
+        curSelectedMonster.addItem(targetItem.itemLiveStat);
+        targetSlot.installContent(targetItem.transform);
+    }
 
+    public void unMountItemFromMonster(SlotController targetSlot, ContentController targetItem)
+    {
+        curSelectedMonster.removeItem(targetItem.itemLiveStat);
+        targetSlot.installContent(targetItem.transform);
     }
 
     void loadInventory()
