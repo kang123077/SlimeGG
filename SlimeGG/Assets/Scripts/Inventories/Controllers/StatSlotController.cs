@@ -27,7 +27,7 @@ public class StatSlotController : MonoBehaviour
         }
     }
 
-    public void initInfo(BasicStat basicStat)
+    public void initBaseInfo(BasicStat basicStat)
     {
         switch (basicStat.name)
         {
@@ -48,6 +48,21 @@ public class StatSlotController : MonoBehaviour
             default: break;
         }
         amountText.text = $"{basicStat.amount}";
+        initCorrectionInfo(null);
+    }
+
+    public void initCorrectionInfo(BasicStat basicStat)
+    {
+        if (basicStat != null)
+        {
+            plusText.text = basicStat.amount < 0 ? $"-" : "+";
+            correctionText.text = basicStat.amount >= 0 ? $"{basicStat.amount}" : $"{-basicStat.amount}";
+        }
+        else
+        {
+            plusText.text = $"";
+            correctionText.text = $"";
+        }
     }
 
     private void initSetting()

@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class MonsterInfoController : MonoBehaviour
 {
@@ -55,7 +57,26 @@ public class MonsterInfoController : MonoBehaviour
             );
         foreach (BasicStat basicStat in monsterLiveStat.dictionaryStat.basic)
         {
-            basicStatControllers[basicStat.name].initInfo(basicStat);
+            basicStatControllers[basicStat.name].initBaseInfo(basicStat);
+        }
+        Dictionary<BasicStatEnum, BasicStat> temp = new Dictionary<BasicStatEnum, BasicStat>();
+        foreach (ItemLiveStat itemStat in monsterLiveStat.itemStatList.Values)
+        {
+            foreach (BasicStat basicStat in itemStat.dictionaryStat.effect)
+            {
+                if (temp.ContainsKey(basicStat.name))
+                {
+                    temp[basicStat.name].amount += basicStat.amount;
+                }
+                else
+                {
+                    temp[basicStat.name] = new BasicStat(basicStat);
+                }
+            }
+        }
+        foreach (BasicStat basicStat in temp.Values)
+        {
+            basicStatControllers[basicStat.name].initCorrectionInfo(basicStat);
         }
     }
 
