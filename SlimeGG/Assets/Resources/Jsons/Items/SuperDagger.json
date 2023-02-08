@@ -3,7 +3,7 @@
   "effect": [
     {
       "name": "timeCoolCycle",
-      "amount": -0.1,
+      "amount": -0.8,
       "isMultiple": false
     }
   ]

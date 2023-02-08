@@ -145,7 +145,7 @@ public class MonsterBattleController : MonoBehaviour
         // 쿨타임 관리
         foreach (SkillStat skill in liveBattleInfo.skills.Values)
         {
-            skill.timeCharging += Time.deltaTime * (1 + liveBattleInfo.basic[BasicStatEnum.timeCoolCycle].amount);
+            skill.timeCharging += Time.deltaTime * (1 / liveBattleInfo.basic[BasicStatEnum.timeCoolCycle].amount);
         }
 
         // 애니메이션 관리

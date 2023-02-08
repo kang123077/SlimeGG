@@ -11,5 +11,10 @@
   {
     "itemName": "Dagger",
     "id": "00000004"
+  },
+  {
+    "itemName": "SuperDagger",
+    "id": "00000003",
+    "equipMonsterId": "00000001"
   }
 ]

@@ -24,8 +24,8 @@ public class MonsterBattleInfo
         basic = monsterBattleInfo.basic;
         element = monsterBattleInfo.element;
         speicie = monsterBattleInfo.speicie;
-        basic[BasicStatEnum.timeCastingCycle] = new BasicStat();
-        basic[BasicStatEnum.timeCoolCycle] = new BasicStat();
+        // basic[BasicStatEnum.timeCastingCycle] = new BasicStat();
+        // basic[BasicStatEnum.timeCoolCycle] = new BasicStat();
         basic[BasicStatEnum.invincible] = new BasicStat();
         basic[BasicStatEnum.position] = new BasicStat();
     }
