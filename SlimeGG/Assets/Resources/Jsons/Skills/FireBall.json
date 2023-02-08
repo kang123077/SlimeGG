@@ -1,4 +1,6 @@
 {
+  "name": "파이어볼",
+  "desc": "바이어볼을 발사한다.",
   "range": 6,
   "targetType": "ENEMY_FAR",
   "coolTime": 5.0,

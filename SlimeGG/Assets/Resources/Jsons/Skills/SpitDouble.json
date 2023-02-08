@@ -1,4 +1,6 @@
 {
+  "name": "두번 뱉기",
+  "desc": "침을 두번 뱉는다",
   "range": 7.2,
   "targetType": "ENEMY_FAR",
   "coolTime": 2.6,
