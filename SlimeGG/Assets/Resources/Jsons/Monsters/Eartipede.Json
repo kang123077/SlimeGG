@@ -1,7 +1,7 @@
 {
-  "displayName": "아기영혼",
-  "tier": 1,
-  "desc": "졸귀탱 아기영혼이다.\n많이 귀엽다.",
+  "displayName": "대지네",
+  "tier": 2,
+  "desc": "존나게 큰 지네이다.\n좀 징그러울지도?...",
   "basic": [
     {
       "name": "hp",
@@ -30,37 +30,31 @@
   ],
   "element": [
     "Wind",
-    "Spirit"
+    "Earth"
   ],
   "exp": [
-    {
-      "name": "Wind",
-      "amount": 10
-    },
-    {
-      "name": "Spirit",
-      "amount": 5
-    },
-    {
-      "name": "Earth",
-      "amount": 1
-    }
-  ],
-  "elementEvol": [
     {
       "name": "Wind",
       "amount": 7
     },
     {
-      "name": "Spirit",
-      "amount": 4
+      "name": "Earth",
+      "amount": 12
     }
   ],
-  "nextMonster": [
-    "Eartipede",
-    "Sneaklower"
+  "elementEvol": [
+    {
+      "name": "Wind",
+      "amount": 10
+    },
+    {
+      "name": "Earth",
+      "amount": 10
+    }
   ],
+  "nextMonster": [],
   "skills": [
-    "Spit"
+    "Scratch",
+    "Charge"
   ]
 }

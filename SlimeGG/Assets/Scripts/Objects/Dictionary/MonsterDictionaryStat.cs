@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 public class MonsterDictionaryStat
 {
     public string displayName;
+    public int tier;
+    public string desc;
     public List<BasicStat> basic;
     [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
     public List<ElementEnum> element;
