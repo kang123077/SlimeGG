@@ -6,7 +6,7 @@
   "basic": [
     {
       "name": "hp",
-      "amount": 200
+      "amount": 400
     },
     {
       "name": "atk",
@@ -14,11 +14,11 @@
     },
     {
       "name": "def",
-      "amount": 15
+      "amount": 10
     },
     {
       "name": "spd",
-      "amount": 1.4
+      "amount": 1.1
     }
   ],
   "element": [
