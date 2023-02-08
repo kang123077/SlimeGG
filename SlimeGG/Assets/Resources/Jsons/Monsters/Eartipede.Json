@@ -5,7 +5,7 @@
   "basic": [
     {
       "name": "hp",
-      "amount": 200
+      "amount": 2000
     },
     {
       "name": "atk",
@@ -17,7 +17,7 @@
     },
     {
       "name": "spd",
-      "amount": 1.4
+      "amount": 2.0
     },
     {
       "name": "timeCoolCycle",
@@ -55,6 +55,6 @@
   "nextMonster": [],
   "skills": [
     "Scratch",
-    "Charge"
+    "PlanetSmash"
   ]
 }

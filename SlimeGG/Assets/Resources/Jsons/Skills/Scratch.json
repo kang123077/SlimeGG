@@ -1,7 +1,7 @@
 {
   "range": 1,
   "targetType": "ENEMY_CLOSE",
-  "coolTime": 2.0,
+  "coolTime": 1.0,
   "castingTime": 0.05,
   "toCaster": [
     {
@@ -19,13 +19,6 @@
       "isTarget": true,
       "effects": {
         "instant": [
-          {
-            "name": "position",
-            "amount": 0.2,
-            "isMultiple": false,
-            "duration": 0,
-            "tickTime": 0
-          },
           {
             "name": "hp",
             "amount": -20,

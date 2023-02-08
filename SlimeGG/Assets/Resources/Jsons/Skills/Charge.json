@@ -1,14 +1,21 @@
 {
   "range": 3,
   "targetType": "ENEMY_CLOSE",
-  "coolTime": 3.0,
-  "castingTime": 0.55,
+  "coolTime": 10.0,
+  "castingTime": 0.3,
   "toCaster": [
     {
       "name": "position",
       "amount": 3,
       "isMultiple": false,
       "duration": 0,
+      "tickTime": 0
+    },
+    {
+      "name": "def",
+      "amount": 0.15,
+      "isMultiple": false,
+      "duration": 5,
       "tickTime": 0
     }
   ],
@@ -20,15 +27,8 @@
       "effects": {
         "instant": [
           {
-            "name": "position",
-            "amount": 1.5,
-            "isMultiple": false,
-            "duration": 0,
-            "tickTime": 0
-          },
-          {
             "name": "hp",
-            "amount": -13,
+            "amount": -50,
             "isMultiple": false,
             "duration": 0,
             "tickTime": 0

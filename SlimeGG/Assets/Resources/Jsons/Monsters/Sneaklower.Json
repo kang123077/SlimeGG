@@ -5,7 +5,7 @@
   "basic": [
     {
       "name": "hp",
-      "amount": 200
+      "amount": 2000
     },
     {
       "name": "atk",
@@ -55,6 +55,6 @@
   "nextMonster": [],
   "skills": [
     "Spit",
-    "SpitDouble"
+    "FireBall"
   ]
 }

@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class MonsterCommonFunction
 {
-
     // 몬스터 종족 정보 + 아이템 정보 -> 전투에 필요한 몬스터 객체 생성
     public static MonsterBattleInfo generateMonsterBattleInfo(MonsterLiveStat monsterLiveStat)
     {
