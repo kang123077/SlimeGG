@@ -9,6 +9,8 @@ TagManager:
   - Tile Set
   - Monster
   - Field
+  - Slot
+  - Content
   layers:
   - Default
   - TransparentFX
