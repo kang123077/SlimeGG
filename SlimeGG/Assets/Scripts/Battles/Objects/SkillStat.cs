@@ -14,4 +14,33 @@ public class SkillStat
     public float timeCharging { get; set; }
 
     public int numTarget = 1;
+    public SkillStat()
+    {
+    }
+    public SkillStat(SkillStat skillStat)
+    {
+        this.range = skillStat.range;
+        coolTime = skillStat.coolTime;
+        castingTime = skillStat.castingTime;
+        targetType = skillStat.targetType;
+        delayProjectile = skillStat.delayProjectile;
+        timeCharging = skillStat.timeCharging;
+        numTarget = skillStat.numTarget;
+        toCaster = new List<EffectStat>();
+        projectiles = new List<ProjectileStat>();
+        if (skillStat.toCaster != null)
+        {
+            foreach(EffectStat effectStat in skillStat.toCaster)
+            {
+                toCaster.Add(new EffectStat(effectStat));
+            }
+        }
+        if (skillStat.projectiles != null)
+        {
+            foreach (ProjectileStat projectileStat in skillStat.projectiles)
+            {
+                projectiles.Add(new ProjectileStat(projectileStat));
+            }
+        }
+    }
 }
