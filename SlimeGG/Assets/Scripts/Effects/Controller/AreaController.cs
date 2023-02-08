@@ -73,9 +73,12 @@ public class AreaController : MonoBehaviour
         duration = areaStat.duration;
         this.targetSide = targetSide;
         effectOnSustain = areaStat.effects.sustain;
-        foreach (EffectStat effect in effectOnSustain)
+        if (effectOnSustain != null)
         {
-            effect.tickTimer = effect.tickTime;
+            foreach (EffectStat effect in effectOnSustain)
+            {
+                effect.tickTimer = effect.tickTime;
+            }
         }
         transform.localScale = Vector3.one * range;
     }
@@ -84,9 +87,12 @@ public class AreaController : MonoBehaviour
     {
         duration -= Time.deltaTime;
 
-        foreach (EffectStat effect in effectOnSustain)
+        if (effectOnSustain != null)
         {
-            effect.tickTimer -= Time.deltaTime;
+            foreach (EffectStat effect in effectOnSustain)
+            {
+                effect.tickTimer -= Time.deltaTime;
+            }
         }
     }
 
@@ -98,12 +104,15 @@ public class AreaController : MonoBehaviour
         {
             targetList.Add(temp[idx]);
         }
-        foreach (EffectStat effect in effectOnSustain)
+        if (effectOnSustain != null)
         {
-            if (effect.tickTimer <= 0f)
+            foreach (EffectStat effect in effectOnSustain)
             {
-                effect.tickTimer = effect.tickTime;
-                applyEffectToTargetList(effect, targetList);
+                if (effect.tickTimer <= 0f)
+                {
+                    effect.tickTimer = effect.tickTime;
+                    applyEffectToTargetList(effect, targetList);
+                }
             }
         }
     }
