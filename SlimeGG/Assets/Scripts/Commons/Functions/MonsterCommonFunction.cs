@@ -6,7 +6,7 @@ using UnityEngine;
 public class MonsterCommonFunction
 {
 
-    // 몬스터 정보 + 몬스터 종족 정보 + 아이템 정보 -> 전투에 필요한 몬스터 객체 생성
+    // 몬스터 종족 정보 + 아이템 정보 -> 전투에 필요한 몬스터 객체 생성
     public static MonsterBattleInfo generateMonsterBattleInfo(MonsterLiveStat monsterLiveStat)
     {
         MonsterBattleInfo res = new MonsterBattleInfo();
@@ -21,14 +21,18 @@ public class MonsterCommonFunction
         }
 
         // 아이템 효과들 적용
-        // @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 
-        // @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 
-        // @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 
-        // @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 
-        // @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 @강민준 
         foreach (ItemLiveStat itemStat in monsterLiveStat.itemStatList.Values)
         {
-            // 착용한 아이템들 효과 적용
+            // item의 effect 갯수만큼
+            for (int i = 0; i < itemStat.dictionaryStat.effect.Count; i++)
+            {
+                // isMultiple이 false(더하기)면
+                if (itemStat.dictionaryStat.effect[i].isMultiple == false)
+                    res.basic[itemStat.dictionaryStat.effect[i].name].amount += itemStat.dictionaryStat.effect[i].amount;
+                // isMultiple이 true(곱하기)면
+                else
+                    res.basic[itemStat.dictionaryStat.effect[i].name].amount *= itemStat.dictionaryStat.effect[i].amount;
+            }
         }
 
         // 전투시 속성 불러오기
@@ -37,7 +41,7 @@ public class MonsterCommonFunction
         // 스킬 정보 불러오기
         foreach (string skillName in monsterLiveStat.dictionaryStat.skills)
         {
-            res.skills[skillName] = LocalDictionary.skills[skillName];
+            res.skills[skillName] = new SkillStat(LocalDictionary.skills[skillName]);
         }
 
         // 전투 시에 필요한 추가 설정치
