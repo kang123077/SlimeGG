@@ -8,10 +8,13 @@ public class MainGameManager : MonoBehaviour
 {
     [SerializeField]
     GameObject loadingGO;
+    public static Vector2 screenSize = Vector2.zero;
+    public static float screenUnitSize = 0f;
 
     // Start is called before the first frame update
     void Start()
     {
+        getScreenSize();
         if (LocalStorage.IS_SCENE_FADE_IN)
         {
             controllLoading(false, null);
@@ -21,7 +24,7 @@ public class MainGameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        getScreenSize();
     }
 
     public void exitGame()
@@ -70,5 +73,11 @@ public class MainGameManager : MonoBehaviour
     public void saveGame()
     {
         SaveFunction.saveData();
+    }
+
+    void getScreenSize()
+    {
+        screenSize = new Vector2(Screen.width, Screen.height);
+        screenUnitSize = screenSize.y / 9f;
     }
 }

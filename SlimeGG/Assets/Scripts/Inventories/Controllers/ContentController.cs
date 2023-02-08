@@ -17,6 +17,8 @@ public class ContentController : MonoBehaviour
     bool isMouseOn = false;
     bool isWindowOpen = false;
     InfoWindowController infoWindowController;
+
+    private Vector3 mousePos;
     // Start is called before the first frame update
     void Start()
     {
@@ -71,6 +73,7 @@ public class ContentController : MonoBehaviour
 
     private void OnMouseDown()
     {
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (!isMoving) isMoving = true;
         if (type == InventoryType.Monster)
         {
@@ -81,10 +84,20 @@ public class ContentController : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (isMoving)
+        if (Vector3.Distance(mousePos, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.15f)
         {
-            checkInstallable();
+            // 정보창 열기
+            Debug.Log("정보창 오픈");
+
         }
+        else
+        {
+            if (isMoving)
+            {
+                checkInstallable();
+            }
+        }
+        mousePos = Vector3.zero;
         isMoving = false;
         LocalStorage.IS_CAMERA_FIX = false;
         transform.localPosition = new Vector3(0f, 0f, -2f);

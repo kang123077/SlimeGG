@@ -5,40 +5,52 @@
     "exp": [
       {
         "name": "Wind",
-        "amount": 3
-      }
-    ]
-  },
-  {
-    "speicie": "BundleFur",
-    "id": "00000002",
-    "exp": [
-      {
-        "name": "Fire",
-        "amount": 4
+        "amount": 10
       },
       {
         "name": "Spirit",
-        "amount": 1
-      }
-    ]
-  },
-  {
-    "speicie": "Sneaklower",
-    "id": "00000003",
-    "exp": [
-      {
-        "name": "Water",
         "amount": 5
       }
     ]
   },
   {
-    "speicie": "MudBall",
+    "speicie": "BabySpirit",
+    "id": "00000002",
+    "exp": [
+      {
+        "name": "Wind",
+        "amount": 10
+      },
+      {
+        "name": "Spirit",
+        "amount": 5
+      }
+    ]
+  },
+  {
+    "speicie": "BabySpirit",
+    "id": "00000003",
+    "exp": [
+      {
+        "name": "Wind",
+        "amount": 10
+      },
+      {
+        "name": "Spirit",
+        "amount": 5
+      }
+    ]
+  },
+  {
+    "speicie": "BabySpirit",
     "id": "00000004",
     "exp": [
       {
-        "name": "Water",
+        "name": "Wind",
+        "amount": 10
+      },
+      {
+        "name": "Spirit",
         "amount": 5
       }
     ]

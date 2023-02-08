@@ -1,8 +1,7 @@
 {
-  "skills": [
-    "Spit",
-    "FireBall"
-  ],
+  "displayName": "숨박꽃질",
+  "tier": 2,
+  "desc": "눈에 딱 보이는 꽃의 정령.\n본인은 잘 숨었다고 생각하는게 귀여워!",
   "basic": [
     {
       "name": "hp",
@@ -19,6 +18,14 @@
     {
       "name": "spd",
       "amount": 1.4
+    },
+    {
+      "name": "timeCoolCycle",
+      "amount": 1
+    },
+    {
+      "name": "timeCastingCycle",
+      "amount": 1
     }
   ],
   "element": [
@@ -28,26 +35,26 @@
   "exp": [
     {
       "name": "Wind",
-      "amount": 10
+      "amount": 23
     },
     {
       "name": "Spirit",
-      "amount": 5
+      "amount": 23
     }
   ],
   "elementEvol": [
     {
       "name": "Wind",
-      "amount": 7
+      "amount": 20
     },
     {
       "name": "Spirit",
-      "amount": 4
+      "amount": 20
     }
   ],
-  "nextMonster": [
-    "FireSpirit",
-    "WaterSpirit"
-  ],
-  "displayName": "아기영혼"
+  "nextMonster": [],
+  "skills": [
+    "Spit",
+    "SpitDouble"
+  ]
 }

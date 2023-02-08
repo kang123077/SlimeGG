@@ -6,11 +6,7 @@ public static class GeneratorFunction
 {
     public static void generateMonsterLiveStat(MonsterSaveStat saveStat)
     {
-        MonsterLiveStat res = new MonsterLiveStat();
-        res.saveStat = saveStat;
-        res.dictionaryStat = LocalDictionary.speicies[saveStat.speicie];
-        res.itemStatList = new Dictionary<string, ItemLiveStat>();
-        LocalStorage.Live.monsters[saveStat.id] = res;
+        LocalStorage.Live.monsters[saveStat.id] = returnMonsterLiveStat(saveStat);
     }
 
     public static MonsterLiveStat returnMonsterLiveStat(MonsterSaveStat saveStat)

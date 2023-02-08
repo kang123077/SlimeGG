@@ -1,8 +1,7 @@
 {
-  "skills": [
-    "Spit",
-    "FireBall"
-  ],
+  "displayName": "대지네",
+  "tier": 2,
+  "desc": "존나게 큰 지네이다.\n좀 징그러울지도?...",
   "basic": [
     {
       "name": "hp",
@@ -19,35 +18,43 @@
     {
       "name": "spd",
       "amount": 1.4
+    },
+    {
+      "name": "timeCoolCycle",
+      "amount": 1
+    },
+    {
+      "name": "timeCastingCycle",
+      "amount": 1
     }
   ],
   "element": [
     "Wind",
-    "Spirit"
+    "Earth"
   ],
   "exp": [
-    {
-      "name": "Wind",
-      "amount": 10
-    },
-    {
-      "name": "Spirit",
-      "amount": 5
-    }
-  ],
-  "elementEvol": [
     {
       "name": "Wind",
       "amount": 7
     },
     {
-      "name": "Spirit",
-      "amount": 4
+      "name": "Earth",
+      "amount": 12
     }
   ],
-  "nextMonster": [
-    "FireSpirit",
-    "WaterSpirit"
+  "elementEvol": [
+    {
+      "name": "Wind",
+      "amount": 10
+    },
+    {
+      "name": "Earth",
+      "amount": 10
+    }
   ],
-  "displayName": "아기영혼"
+  "nextMonster": [],
+  "skills": [
+    "Scratch",
+    "Charge"
+  ]
 }
