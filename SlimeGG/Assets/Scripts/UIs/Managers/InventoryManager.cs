@@ -53,15 +53,18 @@ public class InventoryManager : MonoBehaviour
         monsterSlot = slots.GetChild(0).GetChild(1);
         equipmentSlot = slots.GetChild(0).GetChild(3);
         itemSlot = slots.GetChild(0).GetChild(5);
-        for (int i = 0; i < 2; i++)
+        monsterSlot.GetComponent<GridLayoutGroup>().constraintCount = 6;
+        for (int i = 0; i < 18; i++)
         {
             addSlot(InventoryType.Monster, monsterSlot);
+        }
+        for (int i = 0; i < 2; i++)
+        {
             addSlot(InventoryType.Equipment, equipmentSlot);
             addSlot(InventoryType.Item, itemSlot);
         }
         for (int i = 0; i < 6; i++)
         {
-            addSlot(InventoryType.Monster, monsterSlot);
             addSlot(InventoryType.Item, itemSlot);
         }
 
@@ -129,7 +132,7 @@ public class InventoryManager : MonoBehaviour
            monsterSlot.GetComponent<RectTransform>().sizeDelta.x,
             MainGameManager.screenSize.y * 0.3f);
         monsterSlot.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenSize.y * 0.1f);
-        monsterSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenSize.y * 0.1f * 1.2f;
+        monsterSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenSize.y * 0.1f * 0.8f;
         monsterSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.one * MainGameManager.screenSize.y * 0.1f * 0.2f;
 
         temp2 = temp.GetChild(2);
@@ -217,6 +220,7 @@ public class InventoryManager : MonoBehaviour
         curSelectedMonster = selectedMonster;
         truncateEquipment();
         generateEquipmentItems(selectedMonster.getItemLiveStat());
+        monsterInfoController.initInfo(selectedMonster.monsterLiveStat);
     }
 
     private void truncateEquipment()
