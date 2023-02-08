@@ -176,12 +176,14 @@ public class InventoryManager : MonoBehaviour
     {
         curSelectedMonster.addItem(targetItem.itemLiveStat);
         targetSlot.installContent(targetItem.transform);
+        monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
     }
 
     public void unMountItemFromMonster(SlotController targetSlot, ContentController targetItem)
     {
         curSelectedMonster.removeItem(targetItem.itemLiveStat);
         targetSlot.installContent(targetItem.transform);
+        monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
     }
 
     void loadInventory()
