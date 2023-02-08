@@ -13,13 +13,14 @@
       "area": {
         "rgb": "#FF7070",
         "src": "Smog",
+        "duration": 2,
         "range": 1.5,
         "isTarget": false,
         "effects": {
           "instant":[
             {
               "name": "hp",
-              "amount": -40,
+              "amount": -80,
               "isMultiple": false,
               "duration": 0,
               "tickTime": 0
