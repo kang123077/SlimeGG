@@ -5,6 +5,11 @@
       "name": "timeCastingCycle",
       "amount": -0.1,
       "isMultiple": false
+    },
+    {
+      "name": "atk",
+      "amount": 0.05,
+      "isMultiple": false
     }
   ]
 }

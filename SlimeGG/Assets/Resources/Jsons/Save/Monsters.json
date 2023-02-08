@@ -5,7 +5,11 @@
     "exp": [
       {
         "name": "Wind",
-        "amount": 3
+        "amount": 10
+      },
+      {
+        "name": "Spirit",
+        "amount": 5
       }
     ]
   },
@@ -14,21 +18,39 @@
     "id": "00000002",
     "exp": [
       {
-        "name": "Fire",
-        "amount": 4
+        "name": "Wind",
+        "amount": 10
       },
       {
         "name": "Spirit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
   {
-    "speicie": "BabySpirit",
+    "speicie": "Eartipede",
     "id": "00000003",
     "exp": [
       {
-        "name": "Water",
+        "name": "Wind",
+        "amount": 10
+      },
+      {
+        "name": "Spirit",
+        "amount": 5
+      }
+    ]
+  },
+  {
+    "speicie": "Sneaklower",
+    "id": "00000004",
+    "exp": [
+      {
+        "name": "Wind",
+        "amount": 10
+      },
+      {
+        "name": "Spirit",
         "amount": 5
       }
     ]

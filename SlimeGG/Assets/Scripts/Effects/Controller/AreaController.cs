@@ -13,7 +13,6 @@ public class AreaController : MonoBehaviour
     private float range { get; set; }
     private float duration { get; set; }
 
-    private static string resourcePath = "Effects/Areas/";
     // Start is called before the first frame update
     void Start()
     {
