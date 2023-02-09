@@ -73,6 +73,10 @@ public class StatSlotController : MonoBehaviour
         amountText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         plusText = transform.GetChild(2).GetComponent<TextMeshProUGUI>();
         correctionText = transform.GetChild(3).GetComponent<TextMeshProUGUI>();
+        nameText.text = "";
+        amountText.text = "";
+        plusText.text = "";
+        correctionText.text = "";
         isInit = true;
     }
 
