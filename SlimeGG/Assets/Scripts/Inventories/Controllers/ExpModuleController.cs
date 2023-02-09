@@ -13,6 +13,7 @@ public class ExpModuleController : MonoBehaviour
     private Dictionary<ElementEnum, ExpSingleController> curExpController = new Dictionary<ElementEnum, ExpSingleController>();
 
     private bool isInit = false;
+    private float sizeRatio = 1f;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,22 +39,22 @@ public class ExpModuleController : MonoBehaviour
 
     private void adjustSize()
     {
-        expText.fontSize = MainGameManager.adjustFontSize;
+        expText.fontSize = MainGameManager.adjustFontSize * sizeRatio;
         expText.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            expText.GetComponent<RectTransform>().sizeDelta.x,
-            MainGameManager.screenUnitSize * 0.2f
+            expText.GetComponent<RectTransform>().sizeDelta.x * sizeRatio,
+            MainGameManager.screenUnitSize * 0.2f * sizeRatio
             );
         expContainer.GetComponent<RectTransform>().sizeDelta = Vector2.right *
-            MainGameManager.screenUnitSize;
+            MainGameManager.screenUnitSize * sizeRatio;
         expContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(
             0f,
-            -MainGameManager.screenUnitSize * 0.4f
+            -MainGameManager.screenUnitSize * 0.3f * sizeRatio
             );
         expContainer.cellSize = new Vector2(
-            MainGameManager.screenUnitSize,
-            MainGameManager.screenUnitSize * 0.4f
+            MainGameManager.screenUnitSize * sizeRatio,
+            MainGameManager.screenUnitSize * 0.3f * sizeRatio
             );
-        expContainer.spacing = Vector2.up * MainGameManager.screenUnitSize * 0.1f;
+        expContainer.spacing = Vector2.up * MainGameManager.screenUnitSize * 0.1f * sizeRatio;
     }
 
     public void initInfo(List<ElementEnum> elements, List<ElementStat> expStats)
@@ -72,6 +73,12 @@ public class ExpModuleController : MonoBehaviour
             temp.SetParent(expContainer.transform);
             temp.localScale = Vector3.one;
             temp.GetComponent<ExpSingleController>().initInfo(expStat);
+            temp.GetComponent<ExpSingleController>().setSizeRatio(sizeRatio);
         }
+    }
+
+    public void setSizeRatio(float ratio)
+    {
+        this.sizeRatio = ratio;
     }
 }

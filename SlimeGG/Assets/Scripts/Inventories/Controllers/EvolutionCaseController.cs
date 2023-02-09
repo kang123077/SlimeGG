@@ -43,7 +43,7 @@ public class EvolutionCaseController : MonoBehaviour
 
         expModuleController.GetComponent<RectTransform>().sizeDelta = new Vector2(
             MainGameManager.screenUnitSize * 0.9f,
-            MainGameManager.screenUnitSize * 0.9f * 2.5f
+            MainGameManager.screenUnitSize * 0.9f * 2f
             );
         expModuleController.GetComponent<RectTransform>().anchoredPosition = Vector2.right * MainGameManager.screenUnitSize * 1.2f;
     }
@@ -61,5 +61,6 @@ public class EvolutionCaseController : MonoBehaviour
             $"{PathInfo.Monster.Sprite}{specieName}"
             );
         expModuleController.initInfo(nextSpecie.element, nextSpecie.elementEvol);
+        expModuleController.setSizeRatio(0.8f);
     }
 }
