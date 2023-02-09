@@ -40,6 +40,14 @@
     {
       "name": "Spirit",
       "amount": 23
+    },
+    {
+      "name": "Fire",
+      "amount": 23
+    },
+    {
+      "name": "Grass",
+      "amount": 23
     }
   ],
   "elementEvol": [

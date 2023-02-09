@@ -18,12 +18,21 @@ public class MonsterInfoController : MonoBehaviour
     private TextMeshProUGUI descText;
     private Transform basicStatSlot;
 
+    private Transform evolSlotTf;
+
     private bool isInit = false;
     private MonsterLiveStat monsterLiveStat;
     private Dictionary<BasicStatEnum, StatSlotController> basicStatControllers = new Dictionary<BasicStatEnum, StatSlotController>();
 
+    private ExpModuleController expModuleController;
+    private List<EvolutionCaseController> evolutionCaseControllers = new List<EvolutionCaseController>();
+
     [SerializeField]
     private Transform StatSlotPrefab;
+    [SerializeField]
+    private Transform ExpModulePrefab;
+    [SerializeField]
+    private EvolutionCaseController evolutionCaseControllerPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +54,7 @@ public class MonsterInfoController : MonoBehaviour
     {
         this.monsterLiveStat = monsterLiveStat;
         initUpInfo();
+        initMidInfo();
     }
 
     private void initUpInfo()
@@ -77,6 +87,24 @@ public class MonsterInfoController : MonoBehaviour
         foreach (BasicStat basicStat in temp.Values)
         {
             basicStatControllers[basicStat.name].initCorrectionInfo(basicStat);
+        }
+    }
+
+    private void initMidInfo()
+    {
+        expModuleController.initInfo(monsterLiveStat.dictionaryStat.element, monsterLiveStat.saveStat.exp);
+        foreach (EvolutionCaseController evolutionCaseController in evolutionCaseControllers)
+        {
+            evolutionCaseController.destorySelf();
+        }
+        evolutionCaseControllers = new List<EvolutionCaseController>();
+        foreach (string nextMonster in monsterLiveStat.dictionaryStat.nextMonster)
+        {
+            EvolutionCaseController temp = Instantiate(evolutionCaseControllerPrefab);
+            temp.transform.SetParent(evolSlotTf);
+            temp.transform.localScale = Vector3.one;
+            evolutionCaseControllers.Add(temp);
+            temp.initInfo(nextMonster);
         }
     }
 
@@ -116,6 +144,15 @@ public class MonsterInfoController : MonoBehaviour
         basicStatTf.SetParent(basicStatSlot);
         basicStatControllers[BasicStatEnum.timeCastingCycle] = basicStatTf.GetComponent<StatSlotController>();
 
+        temp = transform.GetChild(1);
+
+        evolSlotTf = temp.GetChild(0);
+        Transform expContainer = Instantiate(ExpModulePrefab);
+        expModuleController = expContainer.GetComponent<ExpModuleController>();
+        expContainer.SetParent(temp);
+        expContainer.localScale = Vector3.one;
+        expContainer.localPosition = Vector3.zero;
+
         isInit = true;
     }
 
@@ -149,18 +186,18 @@ public class MonsterInfoController : MonoBehaviour
             temp2.GetComponent<RectTransform>().sizeDelta.x,
             MainGameManager.screenUnitSize * 3f);
         temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * 3f);
-        temp3 = temp2.GetChild(0);
-        temp3.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            MainGameManager.screenUnitSize * 1.5f,
-            temp3.GetComponent<RectTransform>().sizeDelta.y);
-        temp3 = temp2.GetChild(1);
-        temp3.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            MainGameManager.screenUnitSize * 8.5f,
-            temp3.GetComponent<RectTransform>().sizeDelta.y);
-        temp3.GetComponent<RectTransform>().anchoredPosition = new Vector2(
-            -MainGameManager.screenUnitSize * 8.5f,
-            0f
-            );
+        //temp3 = temp2.GetChild(0);
+        //temp3.GetComponent<RectTransform>().sizeDelta = new Vector2(
+        //    MainGameManager.screenUnitSize * 1.5f,
+        //    temp3.GetComponent<RectTransform>().sizeDelta.y);
+        //temp3 = temp2.GetChild(1);
+        //temp3.GetComponent<RectTransform>().sizeDelta = new Vector2(
+        //    MainGameManager.screenUnitSize * 8.5f,
+        //    temp3.GetComponent<RectTransform>().sizeDelta.y);
+        //temp3.GetComponent<RectTransform>().anchoredPosition = new Vector2(
+        //    -MainGameManager.screenUnitSize * 8.5f,
+        //    0f
+        //    );
         adjustUpside();
         adjustMidSide();
     }
@@ -189,10 +226,7 @@ public class MonsterInfoController : MonoBehaviour
             MainGameManager.screenUnitSize / 3f
             );
         specieText.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 2.5f;
-    }
 
-    private void adjustMidSide()
-    {
         descText.GetComponent<RectTransform>().sizeDelta = new Vector2(
             MainGameManager.screenUnitSize * 7f,
             MainGameManager.screenUnitSize * 1f
@@ -209,5 +243,21 @@ public class MonsterInfoController : MonoBehaviour
             MainGameManager.screenUnitSize * 2f,
             MainGameManager.screenUnitSize * 0.6f
             );
+    }
+
+    private void adjustMidSide()
+    {
+        expModuleController.GetComponent<RectTransform>().sizeDelta = new Vector2(
+            MainGameManager.screenUnitSize,
+            MainGameManager.screenUnitSize * 2.5f
+            );
+        expModuleController.GetComponent<RectTransform>().anchoredPosition = Vector2.right * MainGameManager.screenUnitSize * 0.5f;
+        evolSlotTf.GetComponent<RectTransform>().sizeDelta = new Vector2(
+            MainGameManager.screenUnitSize * 7f,
+            MainGameManager.screenUnitSize * 2.5f
+            );
+        evolSlotTf.GetComponent<RectTransform>().anchoredPosition = Vector2.right * MainGameManager.screenUnitSize * 2.5f;
+        evolSlotTf.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenUnitSize * 2.2f;
+        evolSlotTf.GetComponent<GridLayoutGroup>().spacing = Vector2.one * MainGameManager.screenUnitSize * 0.2f;
     }
 }
