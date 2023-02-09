@@ -51,12 +51,12 @@ public class SkillInfoController : MonoBehaviour
             );
 
         descText.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            MainGameManager.screenUnitSize * 3f,
-            MainGameManager.screenUnitSize * 1.3f
+            MainGameManager.screenUnitSize * 3.5f,
+            MainGameManager.screenUnitSize * 1.1f
             );
         descText.GetComponent<RectTransform>().anchoredPosition = new Vector2(
-            MainGameManager.screenUnitSize * 0.5f,
-            -MainGameManager.screenUnitSize * 0.9f
+            MainGameManager.screenUnitSize * 0.25f,
+            -MainGameManager.screenUnitSize * 0.8f
             );
     }
 

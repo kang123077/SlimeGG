@@ -9,6 +9,7 @@ public class ExpSingleController : MonoBehaviour
     private TextMeshProUGUI amountText;
 
     private bool isInit = false;
+    private float sizeRatio = 1f;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,17 +34,17 @@ public class ExpSingleController : MonoBehaviour
 
     private void adjustSize()
     {
-        elementText.fontSize = MainGameManager.adjustFontSize;
-        amountText.fontSize = MainGameManager.adjustFontSize;
+        elementText.fontSize = MainGameManager.adjustFontSize * sizeRatio;
+        amountText.fontSize = MainGameManager.adjustFontSize * sizeRatio;
         elementText.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            MainGameManager.screenUnitSize * 0.4f,
-            elementText.GetComponent<RectTransform>().sizeDelta.y
+            MainGameManager.screenUnitSize * 0.4f * sizeRatio,
+            elementText.GetComponent<RectTransform>().sizeDelta.y * sizeRatio
             );
         amountText.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            MainGameManager.screenUnitSize * 0.4f,
-            elementText.GetComponent<RectTransform>().sizeDelta.y
+            MainGameManager.screenUnitSize * 0.4f * sizeRatio,
+            elementText.GetComponent<RectTransform>().sizeDelta.y * sizeRatio
             );
-        amountText.GetComponent<RectTransform>().anchoredPosition = Vector2.left * MainGameManager.screenUnitSize * 0.4f;
+        amountText.GetComponent<RectTransform>().anchoredPosition = Vector2.left * MainGameManager.screenUnitSize * 0.4f * sizeRatio;
     }
 
     public void destoySelf()
@@ -54,5 +55,10 @@ public class ExpSingleController : MonoBehaviour
     public void initInfo(ElementStat expStat)
     {
         // 값 연결
+    }
+
+    public void setSizeRatio(float ratio)
+    {
+        this.sizeRatio = ratio;
     }
 }

@@ -35,6 +35,10 @@ public class MonsterInfoController : MonoBehaviour
     private EvolutionCaseController evolutionCaseControllerPrefab;
     [SerializeField]
     private SkillInfoController skillInfoControllerPrefab;
+    [SerializeField]
+    private Transform starPrefab;
+
+    private Vector2 infoSize = new Vector2(10f, 7f);
 
     // Start is called before the first frame update
     void Start()
@@ -64,6 +68,7 @@ public class MonsterInfoController : MonoBehaviour
         nameText.text = $"{monsterLiveStat.dictionaryStat.displayName}";
         specieText.text = $"{monsterLiveStat.dictionaryStat.displayName}";
         descText.text = $"{monsterLiveStat.dictionaryStat.desc}";
+        thumbImg.gameObject.SetActive(true);
         thumbImg.sprite = Resources.Load<Sprite>(
             $"{PathInfo.Monster.Sprite}{monsterLiveStat.saveStat.speicie}"
             );
@@ -89,6 +94,17 @@ public class MonsterInfoController : MonoBehaviour
         foreach (BasicStat basicStat in temp.Values)
         {
             basicStatControllers[basicStat.name].initCorrectionInfo(basicStat);
+        }
+        for (int i = 0; i < starSlot.childCount; i++)
+        {
+            Destroy(starSlot.GetChild(i).gameObject);
+        }
+        for (int i = 0; i < monsterLiveStat.dictionaryStat.tier; i++)
+        {
+            Transform newStar = Instantiate(starPrefab);
+            newStar.transform.SetParent(starSlot);
+            newStar.GetComponent<RectTransform>().localScale = Vector3.one;
+            newStar.GetComponent<RectTransform>().sizeDelta = Vector2.one * MainGameManager.screenUnitSize * 0.4f;
         }
     }
 
@@ -132,6 +148,7 @@ public class MonsterInfoController : MonoBehaviour
         Transform temp = transform.GetChild(0).GetChild(0);
         starSlot = temp.GetChild(0);
         thumbImg = temp.GetChild(1).GetComponent<Image>();
+        thumbImg.gameObject.SetActive(false);
         nameText = temp.GetChild(2).GetComponent<TextMeshProUGUI>();
         specieText = temp.GetChild(3).GetComponent<TextMeshProUGUI>();
 
@@ -174,7 +191,6 @@ public class MonsterInfoController : MonoBehaviour
 
         skillSlotTf = transform.GetChild(2);
 
-
         isInit = true;
     }
 
@@ -187,18 +203,18 @@ public class MonsterInfoController : MonoBehaviour
         Transform temp2 = transform.GetChild(0);
         temp2.GetComponent<RectTransform>().sizeDelta = new Vector2(
             temp2.GetComponent<RectTransform>().sizeDelta.x,
-            MainGameManager.screenUnitSize * 3f);
+            MainGameManager.screenUnitSize * infoSize.y / 3f);
         temp2.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         Transform temp3 = temp2.GetChild(0);
         temp3.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            MainGameManager.screenUnitSize * 2f,
+            MainGameManager.screenUnitSize * infoSize.x / 5f,
             temp3.GetComponent<RectTransform>().sizeDelta.y);
         temp3 = temp2.GetChild(1);
         temp3.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            MainGameManager.screenUnitSize * 8f,
+            MainGameManager.screenUnitSize * infoSize.x / 5f * 4f,
             temp3.GetComponent<RectTransform>().sizeDelta.y);
         temp3.GetComponent<RectTransform>().anchoredPosition = new Vector2(
-            -MainGameManager.screenUnitSize * 8f,
+            -MainGameManager.screenUnitSize * infoSize.x / 5f * 4f,
             0f
             );
 
@@ -206,15 +222,15 @@ public class MonsterInfoController : MonoBehaviour
         temp2 = transform.GetChild(1);
         temp2.GetComponent<RectTransform>().sizeDelta = new Vector2(
             temp2.GetComponent<RectTransform>().sizeDelta.x,
-            MainGameManager.screenUnitSize * 3f);
-        temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * 3f);
+            MainGameManager.screenUnitSize * infoSize.y / 3f);
+        temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * infoSize.y / 3f);
 
         // 중간
         temp2 = transform.GetChild(2);
         temp2.GetComponent<RectTransform>().sizeDelta = new Vector2(
             temp2.GetComponent<RectTransform>().sizeDelta.x,
-            MainGameManager.screenUnitSize * 3f);
-        temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * 3f * 2f);
+            MainGameManager.screenUnitSize * infoSize.y / 3f);
+        temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * infoSize.y / 3f * 2f);
 
         adjustUpside();
         adjustMidSide();
@@ -224,43 +240,43 @@ public class MonsterInfoController : MonoBehaviour
     private void adjustUpside()
     {
         starSlot.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            MainGameManager.screenUnitSize / 3f * 5f,
-            MainGameManager.screenUnitSize / 3f
+            MainGameManager.screenUnitSize / 4f * 5f,
+            MainGameManager.screenUnitSize / 4f
             );
-        starSlot.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 0.2f;
-        starSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenUnitSize / 3f;
-        starSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.right * MainGameManager.screenUnitSize / 3f * 0.5f;
+        starSlot.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 0.25f;
+        starSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenUnitSize / 4f;
+        starSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.right * MainGameManager.screenUnitSize / 4f * 0.5f;
 
-        thumbImg.GetComponent<RectTransform>().sizeDelta = Vector2.one * MainGameManager.screenUnitSize * 1.08f;
-        thumbImg.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 0.7f;
+        thumbImg.GetComponent<RectTransform>().sizeDelta = Vector2.one * MainGameManager.screenUnitSize * 0.9f;
+        thumbImg.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 0.5f;
 
         nameText.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            MainGameManager.screenUnitSize / 3f * 5f,
-            MainGameManager.screenUnitSize / 3f
+            MainGameManager.screenUnitSize / 4f * 5f,
+            MainGameManager.screenUnitSize / 4f
             );
-        nameText.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 2.2f;
+        nameText.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 1.6f;
 
         specieText.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            MainGameManager.screenUnitSize / 3f * 5f,
-            MainGameManager.screenUnitSize / 3f
+            MainGameManager.screenUnitSize / 4f * 5f,
+            MainGameManager.screenUnitSize / 4f
             );
-        specieText.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 2.5f;
+        specieText.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 1.9f;
 
         descText.GetComponent<RectTransform>().sizeDelta = new Vector2(
             MainGameManager.screenUnitSize * 7f,
-            MainGameManager.screenUnitSize * 1f
+            MainGameManager.screenUnitSize * 0.8f
             );
-        descText.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 0.2f;
+        descText.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 0.1f;
 
         basicStatSlot.GetComponent<RectTransform>().sizeDelta = new Vector2(
             MainGameManager.screenUnitSize * 7f,
-            MainGameManager.screenUnitSize * 1.4f
+            MainGameManager.screenUnitSize * 1.2f
             );
-        basicStatSlot.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 1.4f;
+        basicStatSlot.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 1f;
         basicStatSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.right * MainGameManager.screenUnitSize * 0.2f;
         basicStatSlot.GetComponent<GridLayoutGroup>().cellSize = new Vector2(
             MainGameManager.screenUnitSize * 2f,
-            MainGameManager.screenUnitSize * 0.6f
+            MainGameManager.screenUnitSize * 0.5f
             );
     }
 
@@ -268,15 +284,15 @@ public class MonsterInfoController : MonoBehaviour
     {
         expModuleController.GetComponent<RectTransform>().sizeDelta = new Vector2(
             MainGameManager.screenUnitSize,
-            MainGameManager.screenUnitSize * 2.5f
+            MainGameManager.screenUnitSize * 2f
             );
         expModuleController.GetComponent<RectTransform>().anchoredPosition = Vector2.right * MainGameManager.screenUnitSize * 0.5f;
         evolSlotTf.GetComponent<RectTransform>().sizeDelta = new Vector2(
             MainGameManager.screenUnitSize * 7f,
-            MainGameManager.screenUnitSize * 2.5f
+            MainGameManager.screenUnitSize * 2f
             );
         evolSlotTf.GetComponent<RectTransform>().anchoredPosition = Vector2.right * MainGameManager.screenUnitSize * 2.5f;
-        evolSlotTf.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenUnitSize * 2.2f;
+        evolSlotTf.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenUnitSize * 2f;
         evolSlotTf.GetComponent<GridLayoutGroup>().spacing = Vector2.one * MainGameManager.screenUnitSize * 0.2f;
     }
 
@@ -284,10 +300,9 @@ public class MonsterInfoController : MonoBehaviour
     {
         skillSlotTf.GetComponent<GridLayoutGroup>().cellSize = new Vector2(
             MainGameManager.screenUnitSize * 4f,
-            MainGameManager.screenUnitSize * 2.5f
+            MainGameManager.screenUnitSize * 2f
             );
         skillSlotTf.GetComponent<GridLayoutGroup>().spacing = Vector2.right * MainGameManager.screenUnitSize * 2f / 3f;
-        //skillSlotTf.GetComponent<RectTransform>().anchoredPosition = Vector2.right * MainGameManager.screenUnitSize * 2f / 3f;
         skillSlotTf.GetComponent<GridLayoutGroup>().padding = new RectOffset((int)((int)MainGameManager.screenUnitSize * 2f / 3f), 0, 0, 0);
     }
 }
