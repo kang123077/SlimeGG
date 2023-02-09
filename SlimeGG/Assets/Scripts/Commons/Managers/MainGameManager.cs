@@ -10,6 +10,7 @@ public class MainGameManager : MonoBehaviour
     GameObject loadingGO;
     public static Vector2 screenSize = Vector2.zero;
     public static float screenUnitSize = 0f;
+    public static float adjustFontSize = 8f;
 
     // Start is called before the first frame update
     void Start()
@@ -79,5 +80,7 @@ public class MainGameManager : MonoBehaviour
     {
         screenSize = new Vector2(Screen.width, Screen.height);
         screenUnitSize = screenSize.y / 9f;
+        adjustFontSize =
+            screenUnitSize < 40f ? 8f : (screenUnitSize / 40f * 8f);
     }
 }

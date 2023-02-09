@@ -5,5 +5,7 @@ using Newtonsoft.Json;
 public enum BasicStatEnum
 {
     hp, def, atk, spd,
-    position, timeCoolCycle, invincible, timeCastingCycle
+    hp_multiple, def_multiple, atk_multiple, spd_multiple,
+    position, timeCoolCycle, invincible, timeCastingCycle,
+
 }

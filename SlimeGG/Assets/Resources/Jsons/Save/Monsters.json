@@ -18,11 +18,11 @@
     "id": "00000002",
     "exp": [
       {
-        "name": "Wind",
+        "name": "Spirit",
         "amount": 10
       },
       {
-        "name": "Spirit",
+        "name": "Earth",
         "amount": 5
       }
     ]
@@ -33,11 +33,19 @@
     "exp": [
       {
         "name": "Wind",
-        "amount": 10
+        "amount": 23
       },
       {
         "name": "Spirit",
-        "amount": 5
+        "amount": 23
+      },
+      {
+        "name": "Fire",
+        "amount": 23
+      },
+      {
+        "name": "Grass",
+        "amount": 23
       }
     ]
   },
@@ -52,6 +60,10 @@
       {
         "name": "Spirit",
         "amount": 5
+      },
+      {
+        "name": "Earth",
+        "amount": 1
       }
     ]
   }
