@@ -1,4 +1,6 @@
 {
+  "name": "할퀴기",
+  "desc": "할퀸다! \n따가워!",
   "range": 1,
   "targetType": "ENEMY_CLOSE",
   "coolTime": 2.0,

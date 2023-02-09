@@ -1,4 +1,6 @@
 {
+  "name": "침 뱉기",
+  "desc": "침을 뱉는다.\n더러울지도..?",
   "range": 3.4,
   "targetType": "ENEMY_CLOSE",
   "coolTime": 3.0,

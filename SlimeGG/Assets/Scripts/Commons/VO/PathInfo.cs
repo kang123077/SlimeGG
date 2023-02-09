@@ -9,6 +9,12 @@ public static class PathInfo
         public static string Sprite = $"{sprite}{root}";
         public static string Animation = $"{animation}{root}";
     }
+    public static class Skill
+    {
+        private static string root = "Skills/";
+        public static string Sprite = $"{sprite}{root}";
+        public static string Animation = $"{animation}{root}";
+    }
 
     public static class Effect
     {

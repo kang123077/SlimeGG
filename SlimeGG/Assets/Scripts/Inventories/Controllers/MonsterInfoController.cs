@@ -8,8 +8,6 @@ using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class MonsterInfoController : MonoBehaviour
 {
-    private MonsterSkillInfoController skillInfoController;
-
     private Transform starSlot;
     private Image thumbImg;
     private TextMeshProUGUI nameText;
@@ -19,6 +17,7 @@ public class MonsterInfoController : MonoBehaviour
     private Transform basicStatSlot;
 
     private Transform evolSlotTf;
+    private Transform skillSlotTf;
 
     private bool isInit = false;
     private MonsterLiveStat monsterLiveStat;
@@ -26,6 +25,7 @@ public class MonsterInfoController : MonoBehaviour
 
     private ExpModuleController expModuleController;
     private List<EvolutionCaseController> evolutionCaseControllers = new List<EvolutionCaseController>();
+    private List<SkillInfoController> skillInfoControllers = new List<SkillInfoController>();
 
     [SerializeField]
     private Transform StatSlotPrefab;
@@ -33,11 +33,12 @@ public class MonsterInfoController : MonoBehaviour
     private Transform ExpModulePrefab;
     [SerializeField]
     private EvolutionCaseController evolutionCaseControllerPrefab;
+    [SerializeField]
+    private SkillInfoController skillInfoControllerPrefab;
 
     // Start is called before the first frame update
     void Start()
     {
-        skillInfoController = transform.GetChild(2).GetComponent<MonsterSkillInfoController>();
         initSetting();
     }
 
@@ -55,6 +56,7 @@ public class MonsterInfoController : MonoBehaviour
         this.monsterLiveStat = monsterLiveStat;
         initUpInfo();
         initMidInfo();
+        initBotInfo();
     }
 
     private void initUpInfo()
@@ -108,6 +110,23 @@ public class MonsterInfoController : MonoBehaviour
         }
     }
 
+    private void initBotInfo()
+    {
+        foreach (SkillInfoController skillInfoController in skillInfoControllers)
+        {
+            skillInfoController.destorySelf();
+        }
+        skillInfoControllers = new List<SkillInfoController>();
+        foreach (string skillName in monsterLiveStat.dictionaryStat.skills)
+        {
+            SkillInfoController temp = Instantiate(skillInfoControllerPrefab);
+            temp.transform.SetParent(skillSlotTf);
+            temp.transform.localScale = Vector3.one;
+            skillInfoControllers.Add(temp);
+            temp.initInfo(skillName);
+        }
+    }
+
     private void initSetting()
     {
         Transform temp = transform.GetChild(0).GetChild(0);
@@ -153,6 +172,9 @@ public class MonsterInfoController : MonoBehaviour
         expContainer.localScale = Vector3.one;
         expContainer.localPosition = Vector3.zero;
 
+        skillSlotTf = transform.GetChild(2);
+
+
         isInit = true;
     }
 
@@ -186,20 +208,17 @@ public class MonsterInfoController : MonoBehaviour
             temp2.GetComponent<RectTransform>().sizeDelta.x,
             MainGameManager.screenUnitSize * 3f);
         temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * 3f);
-        //temp3 = temp2.GetChild(0);
-        //temp3.GetComponent<RectTransform>().sizeDelta = new Vector2(
-        //    MainGameManager.screenUnitSize * 1.5f,
-        //    temp3.GetComponent<RectTransform>().sizeDelta.y);
-        //temp3 = temp2.GetChild(1);
-        //temp3.GetComponent<RectTransform>().sizeDelta = new Vector2(
-        //    MainGameManager.screenUnitSize * 8.5f,
-        //    temp3.GetComponent<RectTransform>().sizeDelta.y);
-        //temp3.GetComponent<RectTransform>().anchoredPosition = new Vector2(
-        //    -MainGameManager.screenUnitSize * 8.5f,
-        //    0f
-        //    );
+
+        // 중간
+        temp2 = transform.GetChild(2);
+        temp2.GetComponent<RectTransform>().sizeDelta = new Vector2(
+            temp2.GetComponent<RectTransform>().sizeDelta.x,
+            MainGameManager.screenUnitSize * 3f);
+        temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * 3f * 2f);
+
         adjustUpside();
         adjustMidSide();
+        adjustBotSide();
     }
 
     private void adjustUpside()
@@ -259,5 +278,16 @@ public class MonsterInfoController : MonoBehaviour
         evolSlotTf.GetComponent<RectTransform>().anchoredPosition = Vector2.right * MainGameManager.screenUnitSize * 2.5f;
         evolSlotTf.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenUnitSize * 2.2f;
         evolSlotTf.GetComponent<GridLayoutGroup>().spacing = Vector2.one * MainGameManager.screenUnitSize * 0.2f;
+    }
+
+    private void adjustBotSide()
+    {
+        skillSlotTf.GetComponent<GridLayoutGroup>().cellSize = new Vector2(
+            MainGameManager.screenUnitSize * 4f,
+            MainGameManager.screenUnitSize * 2.5f
+            );
+        skillSlotTf.GetComponent<GridLayoutGroup>().spacing = Vector2.right * MainGameManager.screenUnitSize * 2f / 3f;
+        //skillSlotTf.GetComponent<RectTransform>().anchoredPosition = Vector2.right * MainGameManager.screenUnitSize * 2f / 3f;
+        skillSlotTf.GetComponent<GridLayoutGroup>().padding = new RectOffset((int)((int)MainGameManager.screenUnitSize * 2f / 3f), 0, 0, 0);
     }
 }
