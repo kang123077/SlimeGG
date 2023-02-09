@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Xml.Linq;
 
 public class ExpModuleController : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class ExpModuleController : MonoBehaviour
     {
         if (isInit) return;
         expText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        expText.text = "";
         expContainer = transform.GetChild(1).GetComponent<GridLayoutGroup>();
         isInit = true;
     }
@@ -60,6 +62,7 @@ public class ExpModuleController : MonoBehaviour
     public void initInfo(List<ElementEnum> elements, List<ElementStat> expStats)
     {
         if (!isInit) initSetting();
+        expText.text = "EXP";
         foreach (ExpSingleController expSingle in curExpController.Values)
         {
             expSingle.destoySelf();

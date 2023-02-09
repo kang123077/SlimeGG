@@ -35,6 +35,8 @@ public class MonsterInfoController : MonoBehaviour
     private EvolutionCaseController evolutionCaseControllerPrefab;
     [SerializeField]
     private SkillInfoController skillInfoControllerPrefab;
+    [SerializeField]
+    private Transform starPrefab;
 
     private Vector2 infoSize = new Vector2(10f, 7f);
 
@@ -66,6 +68,7 @@ public class MonsterInfoController : MonoBehaviour
         nameText.text = $"{monsterLiveStat.dictionaryStat.displayName}";
         specieText.text = $"{monsterLiveStat.dictionaryStat.displayName}";
         descText.text = $"{monsterLiveStat.dictionaryStat.desc}";
+        thumbImg.gameObject.SetActive(true);
         thumbImg.sprite = Resources.Load<Sprite>(
             $"{PathInfo.Monster.Sprite}{monsterLiveStat.saveStat.speicie}"
             );
@@ -91,6 +94,17 @@ public class MonsterInfoController : MonoBehaviour
         foreach (BasicStat basicStat in temp.Values)
         {
             basicStatControllers[basicStat.name].initCorrectionInfo(basicStat);
+        }
+        for (int i = 0; i < starSlot.childCount; i++)
+        {
+            Destroy(starSlot.GetChild(i).gameObject);
+        }
+        for (int i = 0; i < monsterLiveStat.dictionaryStat.tier; i++)
+        {
+            Transform newStar = Instantiate(starPrefab);
+            newStar.transform.SetParent(starSlot);
+            newStar.GetComponent<RectTransform>().localScale = Vector3.one;
+            newStar.GetComponent<RectTransform>().sizeDelta = Vector2.one * MainGameManager.screenUnitSize * 0.4f;
         }
     }
 
@@ -134,6 +148,7 @@ public class MonsterInfoController : MonoBehaviour
         Transform temp = transform.GetChild(0).GetChild(0);
         starSlot = temp.GetChild(0);
         thumbImg = temp.GetChild(1).GetComponent<Image>();
+        thumbImg.gameObject.SetActive(false);
         nameText = temp.GetChild(2).GetComponent<TextMeshProUGUI>();
         specieText = temp.GetChild(3).GetComponent<TextMeshProUGUI>();
 
@@ -175,7 +190,6 @@ public class MonsterInfoController : MonoBehaviour
         expContainer.localPosition = Vector3.zero;
 
         skillSlotTf = transform.GetChild(2);
-
 
         isInit = true;
     }
@@ -229,12 +243,12 @@ public class MonsterInfoController : MonoBehaviour
             MainGameManager.screenUnitSize / 4f * 5f,
             MainGameManager.screenUnitSize / 4f
             );
-        starSlot.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 0.1f;
+        starSlot.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 0.25f;
         starSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenUnitSize / 4f;
         starSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.right * MainGameManager.screenUnitSize / 4f * 0.5f;
 
-        thumbImg.GetComponent<RectTransform>().sizeDelta = Vector2.one * MainGameManager.screenUnitSize * 1.08f;
-        thumbImg.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 0.4f;
+        thumbImg.GetComponent<RectTransform>().sizeDelta = Vector2.one * MainGameManager.screenUnitSize * 0.9f;
+        thumbImg.GetComponent<RectTransform>().anchoredPosition = Vector2.down * MainGameManager.screenUnitSize * 0.5f;
 
         nameText.GetComponent<RectTransform>().sizeDelta = new Vector2(
             MainGameManager.screenUnitSize / 4f * 5f,
