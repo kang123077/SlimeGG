@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -17,7 +16,6 @@ public class InventoryManager : MonoBehaviour
     bool isActive = false;
     bool isAnimating = false;
     bool isInit = false;
-    Transform slots;
     Transform monsterSlot;
     Transform equipmentSlot;
     Transform itemSlot;
@@ -45,16 +43,15 @@ public class InventoryManager : MonoBehaviour
 
     private void initSetting()
     {
-        slots = transform.Find("Slots");
         transform.localScale = new Vector3(1f, 1f, 1f);
-        transform.localPosition = new Vector3(0, MainGameManager.screenSize.y, 1f);
+        transform.localPosition = new Vector3(0f, 0f, 1f);
         GetComponent<RectTransform>().sizeDelta = MainGameManager.screenSize;
-        monsterInfoController = slots.GetChild(1).GetComponent<MonsterInfoController>();
-        monsterSlot = slots.GetChild(0).GetChild(1);
-        equipmentSlot = slots.GetChild(0).GetChild(3);
-        itemSlot = slots.GetChild(0).GetChild(5);
-        monsterSlot.GetComponent<GridLayoutGroup>().constraintCount = 6;
-        for (int i = 0; i < 18; i++)
+        monsterInfoController = transform.GetChild(1).GetComponent<MonsterInfoController>();
+        monsterSlot = transform.GetChild(0).GetChild(1);
+        equipmentSlot = transform.GetChild(0).GetChild(3);
+        itemSlot = transform.GetChild(0).GetChild(5);
+        monsterSlot.GetComponent<GridLayoutGroup>().constraintCount = 4;
+        for (int i = 0; i < 8; i++)
         {
             addSlot(InventoryType.Monster, monsterSlot);
         }
@@ -96,16 +93,45 @@ public class InventoryManager : MonoBehaviour
         isActive = !isActive;
         LocalStorage.IS_CAMERA_FREE = false;
         isAnimating = true;
-        while (isActive ? (transform.position.y > 0.01) : (transform.position.y < 9.99))
+        while (isActive
+            ? (transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition.x < -0.2f)
+            : ((transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition.x + MainGameManager.screenUnitSize * 6f) > 0.2f)
+            )
         {
             yield return new WaitForSeconds(0.01f);
-            transform.Translate((isActive ? Vector3.down : Vector3.up) * (transform.position.y > 1 ? transform.position.y : 1f) * Time.deltaTime * 60);
+            transform.GetChild(0).Translate(
+                (isActive
+                ? Vector3.right
+                : Vector3.left
+                ) *
+                (isActive
+                ? (
+                -transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition.x
+                )
+                : (
+                transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition.x + MainGameManager.screenUnitSize * 6f
+                )
+                )
+                * 0.01f
+                * SettingVariables.slideToggleSpd
+                );
+            transform.GetChild(1).Translate(
+                (isActive
+                ? Vector3.left
+                : Vector3.right
+                ) *
+                (isActive
+                ? (
+                transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition.x + MainGameManager.screenUnitSize * 10f
+                )
+                : (
+                -transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition.x
+                )
+                )
+                * 0.01f
+                * SettingVariables.slideToggleSpd
+                );
         }
-        transform.position = new Vector3(
-            transform.position.x,
-            isActive ? 0f : 10f,
-            1f
-            );
         isAnimating = false;
         LocalStorage.IS_CAMERA_FREE = !isActive;
     }
@@ -113,14 +139,21 @@ public class InventoryManager : MonoBehaviour
     void adjustSize()
     {
         GetComponent<RectTransform>().sizeDelta = MainGameManager.screenSize;
-        slots.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(MainGameManager.screenSize.x * 6f / 16f, 0f);
-        slots.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(MainGameManager.screenSize.x * 10f / 16f, 0f);
-        slots.GetChild(1).GetComponent<RectTransform>().anchoredPosition = new Vector2(-MainGameManager.screenSize.x * 10f / 16f, 0f);
+        transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(MainGameManager.screenSize.x * 6f / 16f, 0f);
+        transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(MainGameManager.screenSize.x * 10f / 16f, 0f);
         if (!isAnimating)
         {
-            transform.localPosition = new Vector3(0, isActive ? 0f : MainGameManager.screenSize.y, 1f);
+            transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition =
+                isActive
+                ? Vector2.zero
+                : (Vector2.left * MainGameManager.screenUnitSize * 6f);
+
+            transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition =
+                isActive
+                ? (Vector2.left * MainGameManager.screenUnitSize * 10f)
+                : Vector2.zero;
         }
-        Transform temp = slots.GetChild(0);
+        Transform temp = transform.GetChild(0);
 
         Transform temp2 = temp.GetChild(0);
         temp2.GetComponent<RectTransform>().sizeDelta = new Vector2(
@@ -132,7 +165,7 @@ public class InventoryManager : MonoBehaviour
            monsterSlot.GetComponent<RectTransform>().sizeDelta.x,
             MainGameManager.screenSize.y * 0.3f);
         monsterSlot.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenSize.y * 0.1f);
-        monsterSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenSize.y * 0.1f * 0.8f;
+        monsterSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenSize.y * 0.1f;
         monsterSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.one * MainGameManager.screenSize.y * 0.1f * 0.2f;
 
         temp2 = temp.GetChild(2);
@@ -145,7 +178,7 @@ public class InventoryManager : MonoBehaviour
            equipmentSlot.GetComponent<RectTransform>().sizeDelta.x,
             MainGameManager.screenSize.y * 0.15f);
         equipmentSlot.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenSize.y * 0.45f);
-        equipmentSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenSize.y * 0.1f * 1.2f;
+        equipmentSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenSize.y * 0.1f;
         equipmentSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.one * MainGameManager.screenSize.y * 0.1f * 0.2f;
 
         temp2 = temp.GetChild(4);
@@ -158,7 +191,7 @@ public class InventoryManager : MonoBehaviour
             itemSlot.GetComponent<RectTransform>().sizeDelta.x,
             MainGameManager.screenSize.y * 0.3f);
         itemSlot.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenSize.y * 0.65f);
-        itemSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenSize.y * 0.1f * 1.2f;
+        itemSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenSize.y * 0.1f;
         itemSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.one * MainGameManager.screenSize.y * 0.1f * 0.2f;
     }
 
