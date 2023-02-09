@@ -3,6 +3,8 @@ using System.Collections.Generic;
 [System.Serializable]
 public class SkillStat
 {
+    public string name { get; set; }
+    public string desc { get; set; }
     public float range { get; set; }
     public float coolTime { get; set; }
     public float castingTime { get; set; }
@@ -30,7 +32,7 @@ public class SkillStat
         projectiles = new List<ProjectileStat>();
         if (skillStat.toCaster != null)
         {
-            foreach(EffectStat effectStat in skillStat.toCaster)
+            foreach (EffectStat effectStat in skillStat.toCaster)
             {
                 toCaster.Add(new EffectStat(effectStat));
             }

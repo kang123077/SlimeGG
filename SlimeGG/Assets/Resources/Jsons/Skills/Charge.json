@@ -1,4 +1,6 @@
 {
+  "name": "박치기",
+  "desc": "잇는 힘것 박치기!\n머리가 왜이리 단단한걸까?",
   "range": 3,
   "targetType": "ENEMY_CLOSE",
   "coolTime": 3.0,

@@ -75,10 +75,6 @@ public class ContentController : MonoBehaviour
     {
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (!isMoving) isMoving = true;
-        if (type == InventoryType.Monster)
-        {
-            inventoryManager.selectMonster(this);
-        }
         LocalStorage.IS_CAMERA_FIX = true;
     }
 
@@ -86,9 +82,10 @@ public class ContentController : MonoBehaviour
     {
         if (Vector3.Distance(mousePos, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.15f)
         {
-            // 정보창 열기
-            Debug.Log("정보창 오픈");
-
+            if (type == InventoryType.Monster)
+            {
+                inventoryManager.selectMonster(this);
+            }
         }
         else
         {

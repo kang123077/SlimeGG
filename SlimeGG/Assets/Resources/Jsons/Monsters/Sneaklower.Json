@@ -5,7 +5,7 @@
   "basic": [
     {
       "name": "hp",
-      "amount": 200
+      "amount": 1000
     },
     {
       "name": "atk",
@@ -39,6 +39,14 @@
     },
     {
       "name": "Spirit",
+      "amount": 23
+    },
+    {
+      "name": "Fire",
+      "amount": 23
+    },
+    {
+      "name": "Grass",
       "amount": 23
     }
   ],
