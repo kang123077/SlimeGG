@@ -23,6 +23,8 @@ public class InventoryManager : MonoBehaviour
     private ContentController curSelectedMonster;
     private MonsterInfoController monsterInfoController;
 
+    public bool isInfoNeeded;
+
     void Start()
     {
         initSetting();
@@ -46,7 +48,6 @@ public class InventoryManager : MonoBehaviour
         transform.localScale = new Vector3(1f, 1f, 1f);
         transform.localPosition = new Vector3(0f, 0f, 1f);
         GetComponent<RectTransform>().sizeDelta = MainGameManager.screenSize;
-        monsterInfoController = transform.GetChild(1).GetComponent<MonsterInfoController>();
         monsterSlot = transform.GetChild(0).GetChild(1);
         equipmentSlot = transform.GetChild(0).GetChild(3);
         itemSlot = transform.GetChild(0).GetChild(5);
@@ -64,6 +65,8 @@ public class InventoryManager : MonoBehaviour
         {
             addSlot(InventoryType.Item, itemSlot);
         }
+        if (isInfoNeeded)
+            monsterInfoController = transform.GetChild(1).GetComponent<MonsterInfoController>();
 
         ContentController.inventoryManager = this;
     }
@@ -94,8 +97,8 @@ public class InventoryManager : MonoBehaviour
         LocalStorage.IS_CAMERA_FREE = false;
         isAnimating = true;
         while (isActive
-            ? (transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition.x < -0.2f)
-            : ((transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition.x + MainGameManager.screenUnitSize * 6f) > 0.2f)
+            ? (transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition.x < -1f)
+            : ((transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition.x + MainGameManager.screenUnitSize * 6f) > 1f)
             )
         {
             yield return new WaitForSeconds(0.01f);
@@ -115,22 +118,25 @@ public class InventoryManager : MonoBehaviour
                 * 0.01f
                 * SettingVariables.slideToggleSpd
                 );
-            transform.GetChild(1).Translate(
-                (isActive
-                ? Vector3.left
-                : Vector3.right
-                ) *
-                (isActive
-                ? (
-                transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition.x + MainGameManager.screenUnitSize * 10f
-                )
-                : (
-                -transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition.x
-                )
-                )
-                * 0.01f
-                * SettingVariables.slideToggleSpd
-                );
+            if (isInfoNeeded)
+            {
+                transform.GetChild(1).Translate(
+                    (isActive
+                    ? Vector3.left
+                    : Vector3.right
+                    ) *
+                    (isActive
+                    ? (
+                    transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition.x + MainGameManager.screenUnitSize * 10f
+                    )
+                    : (
+                    -transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition.x
+                    )
+                    )
+                    * 0.01f
+                    * SettingVariables.slideToggleSpd
+                    );
+            }
         }
         isAnimating = false;
         LocalStorage.IS_CAMERA_FREE = !isActive;
@@ -140,18 +146,19 @@ public class InventoryManager : MonoBehaviour
     {
         GetComponent<RectTransform>().sizeDelta = MainGameManager.screenSize;
         transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(MainGameManager.screenSize.x * 6f / 16f, 0f);
-        transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(MainGameManager.screenSize.x * 10f / 16f, 0f);
+        if (isInfoNeeded)
+            transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(MainGameManager.screenSize.x * 10f / 16f, 0f);
         if (!isAnimating)
         {
             transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition =
                 isActive
                 ? Vector2.zero
                 : (Vector2.left * MainGameManager.screenUnitSize * 6f);
-
-            transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition =
-                isActive
-                ? (Vector2.left * MainGameManager.screenUnitSize * 10f)
-                : Vector2.zero;
+            if (isInfoNeeded)
+                transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition =
+                    isActive
+                    ? (Vector2.left * MainGameManager.screenUnitSize * 10f)
+                    : Vector2.zero;
         }
         Transform temp = transform.GetChild(0);
 
@@ -209,14 +216,16 @@ public class InventoryManager : MonoBehaviour
     {
         curSelectedMonster.addItem(targetItem.itemLiveStat);
         targetSlot.installContent(targetItem.transform);
-        monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
+        if (isInfoNeeded)
+            monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
     }
 
     public void unMountItemFromMonster(SlotController targetSlot, ContentController targetItem)
     {
         curSelectedMonster.removeItem(targetItem.itemLiveStat);
         targetSlot.installContent(targetItem.transform);
-        monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
+        if (isInfoNeeded)
+            monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
     }
 
     void loadInventory()
@@ -255,7 +264,8 @@ public class InventoryManager : MonoBehaviour
         curSelectedMonster = selectedMonster;
         truncateEquipment();
         generateEquipmentItems(selectedMonster.getItemLiveStat());
-        monsterInfoController.initInfo(selectedMonster.monsterLiveStat);
+        if (isInfoNeeded)
+            monsterInfoController.initInfo(selectedMonster.monsterLiveStat);
     }
 
     private void truncateEquipment()
@@ -282,5 +292,11 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void hideInfoWindow()
+    {
+        isInfoNeeded = false;
+        transform.GetChild(1).gameObject.SetActive(false);
     }
 }
