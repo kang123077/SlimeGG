@@ -21,7 +21,7 @@ public class InventoryManager : MonoBehaviour
     Transform equipmentSlot;
     Transform itemSlot;
 
-    private ContentController curSelectedMonster;
+    public ContentController curSelectedMonster;
     private MonsterInfoController monsterInfoController;
 
     public bool isInfoNeeded;
@@ -30,8 +30,6 @@ public class InventoryManager : MonoBehaviour
     void Start()
     {
         initSetting();
-        loadInventory();
-        isInit = true;
     }
 
     // Update is called once per frame
@@ -42,6 +40,10 @@ public class InventoryManager : MonoBehaviour
             adjustSize();
             trackCamera();
             checkKeyPress();
+        }
+        else
+        {
+            initSetting();
         }
     }
 
@@ -71,6 +73,9 @@ public class InventoryManager : MonoBehaviour
             monsterInfoController = transform.GetChild(1).GetComponent<MonsterInfoController>();
 
         ContentController.inventoryManager = this;
+        loadInventory();
+        isInit = true;
+        adjustSize();
     }
 
     private void trackCamera()

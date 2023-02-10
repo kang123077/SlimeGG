@@ -28,6 +28,10 @@ public class ExpModuleController : MonoBehaviour
         {
             adjustSize();
         }
+        else
+        {
+            initSetting();
+        }
     }
 
     private void initSetting()
@@ -37,6 +41,7 @@ public class ExpModuleController : MonoBehaviour
         expText.text = "";
         expContainer = transform.GetChild(1).GetComponent<GridLayoutGroup>();
         isInit = true;
+        adjustSize();
     }
 
     private void adjustSize()

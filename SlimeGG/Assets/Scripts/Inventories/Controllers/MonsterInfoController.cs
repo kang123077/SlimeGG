@@ -52,6 +52,9 @@ public class MonsterInfoController : MonoBehaviour
         if (isInit)
         {
             adjustSize();
+        } else
+        {
+            initSetting();
         }
     }
 
@@ -192,6 +195,7 @@ public class MonsterInfoController : MonoBehaviour
         skillSlotTf = transform.GetChild(2);
 
         isInit = true;
+        adjustSize();
     }
 
     void adjustSize()

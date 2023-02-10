@@ -107,13 +107,35 @@ public class ContentController : MonoBehaviour
             transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.localPosition = new Vector3(
                 transform.localPosition.x, transform.localPosition.y, -13f);
+
+            RaycastHit res;
+            if (Physics.Raycast(transform.position, Vector3.forward, out res, 1.2f))
+            {
+                if (res.transform.tag == "Content")
+                {
+                    ContentController content = res.transform.GetComponent<ContentController>();
+                    if (content.monsterLiveStat.saveStat.id == monsterLiveStat.saveStat.id) return;
+                    switch (type)
+                    {
+                        case InventoryType.Monster:
+                            if (content.type == InventoryType.Monster)
+                            {
+                                if (inventoryManager.curSelectedMonster.monsterLiveStat.saveStat.id
+                                    != content.monsterLiveStat.saveStat.id)
+                                    inventoryManager.selectMonster(content);
+                            }
+                            break;
+                        default: break;
+                    }
+                }
+            }
         }
     }
 
     private void checkInstallable()
     {
         RaycastHit res;
-        if (Physics.Raycast(transform.position, Vector3.fwd, out res, 1.2f))
+        if (Physics.Raycast(transform.position, Vector3.forward, out res, 1.2f))
         {
             if (res.transform.tag == "Slot")
             {

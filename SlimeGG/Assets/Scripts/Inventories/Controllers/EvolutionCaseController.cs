@@ -23,6 +23,10 @@ public class EvolutionCaseController : MonoBehaviour
         {
             adjustSize();
         }
+        else
+        {
+            initSetting();
+        }
     }
 
     private void initSetting()
@@ -34,6 +38,7 @@ public class EvolutionCaseController : MonoBehaviour
         expModuleController.transform.localScale = Vector3.one;
 
         isInit = true;
+        adjustSize();
     }
 
     private void adjustSize()

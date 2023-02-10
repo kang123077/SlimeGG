@@ -25,6 +25,10 @@ public class StatSlotController : MonoBehaviour
         {
             adjustSize();
         }
+        else
+        {
+            initSetting();
+        }
     }
 
     public void initBaseInfo(BasicStat basicStat)
@@ -86,6 +90,7 @@ public class StatSlotController : MonoBehaviour
         plusText.text = "";
         correctionText.text = "";
         isInit = true;
+        adjustSize();
     }
 
     private void adjustSize()

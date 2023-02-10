@@ -23,6 +23,10 @@ public class ExpSingleController : MonoBehaviour
         {
             adjustSize();
         }
+        else
+        {
+            initSetting();
+        }
     }
 
     private void initSetting()
@@ -30,6 +34,7 @@ public class ExpSingleController : MonoBehaviour
         elementText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         amountText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         isInit = true;
+        adjustSize();
     }
 
     private void adjustSize()
