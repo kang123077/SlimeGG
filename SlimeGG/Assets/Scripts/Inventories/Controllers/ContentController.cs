@@ -123,6 +123,7 @@ public class ContentController : MonoBehaviour
                                 if (inventoryManager.curSelectedMonster.monsterLiveStat.saveStat.id
                                     != content.monsterLiveStat.saveStat.id)
                                     inventoryManager.selectMonster(content);
+                                inventoryManager.viewExpectation(monsterLiveStat);
                             }
                             break;
                         default: break;

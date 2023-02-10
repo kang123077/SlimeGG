@@ -292,6 +292,11 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public void viewExpectation(MonsterLiveStat candidateMonsterLiveStat)
+    {
+        monsterInfoController.viewExpectation(candidateMonsterLiveStat);
+    }
+
     private void truncateEquipment()
     {
         foreach (SlotController equipSlot in LocalStorage.inventory["equipments"])

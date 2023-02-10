@@ -146,6 +146,11 @@ public class MonsterInfoController : MonoBehaviour
         }
     }
 
+    public void viewExpectation(MonsterLiveStat candidateMonsterLiveStat)
+    {
+        expModuleController.viewExpectation(candidateMonsterLiveStat.saveStat.exp);
+    }
+
     private void initSetting()
     {
         Transform temp = transform.GetChild(0).GetChild(0);
