@@ -79,6 +79,19 @@ public class MainGameManager : MonoBehaviour
     {
         SaveFunction.saveData();
     }
+
+    public void saveAndReturnToMainMenu()
+    {
+        saveGame();
+        loadScene("MainMenuScene");
+    }
+
+    public void saveAndExitGame()
+    {
+        saveGame();
+        exitGame();
+    }
+
     public void toggleSetting()
     {
         isSettingOpen = !isSettingOpen;

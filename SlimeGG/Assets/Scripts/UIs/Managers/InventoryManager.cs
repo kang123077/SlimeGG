@@ -237,6 +237,7 @@ public class InventoryManager : MonoBehaviour
         targetSlot.installContent(targetItem.transform);
         if (isInfoNeeded)
             monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
+        LocalStorage.Live.items[targetItem.itemLiveStat.saveStat.id] = targetItem.itemLiveStat;
     }
 
     void loadInventory()

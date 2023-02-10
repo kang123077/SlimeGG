@@ -26,7 +26,7 @@ public static class LocalStorage
 
     public static class UIOpenStatus
     {
-        public static bool fade = false;
+        public static bool fade = true;
         public static bool inventory = false;
         public static bool info = false;
         public static bool setting = false;
