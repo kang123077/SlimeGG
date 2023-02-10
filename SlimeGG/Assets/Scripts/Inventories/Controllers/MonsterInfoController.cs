@@ -38,7 +38,7 @@ public class MonsterInfoController : MonoBehaviour
     [SerializeField]
     private Transform starPrefab;
 
-    private Vector2 infoSize = new Vector2(10f, 7f);
+    public Vector2 size = new Vector2(10f, 7f);
 
     // Start is called before the first frame update
     void Start()
@@ -203,18 +203,18 @@ public class MonsterInfoController : MonoBehaviour
         Transform temp2 = transform.GetChild(0);
         temp2.GetComponent<RectTransform>().sizeDelta = new Vector2(
             temp2.GetComponent<RectTransform>().sizeDelta.x,
-            MainGameManager.screenUnitSize * infoSize.y / 3f);
+            MainGameManager.screenUnitSize * size.y / 3f);
         temp2.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         Transform temp3 = temp2.GetChild(0);
         temp3.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            MainGameManager.screenUnitSize * infoSize.x / 5f,
+            MainGameManager.screenUnitSize * size.x / 5f,
             temp3.GetComponent<RectTransform>().sizeDelta.y);
         temp3 = temp2.GetChild(1);
         temp3.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            MainGameManager.screenUnitSize * infoSize.x / 5f * 4f,
+            MainGameManager.screenUnitSize * size.x / 5f * 4f,
             temp3.GetComponent<RectTransform>().sizeDelta.y);
         temp3.GetComponent<RectTransform>().anchoredPosition = new Vector2(
-            -MainGameManager.screenUnitSize * infoSize.x / 5f * 4f,
+            -MainGameManager.screenUnitSize * size.x / 5f * 4f,
             0f
             );
 
@@ -222,15 +222,15 @@ public class MonsterInfoController : MonoBehaviour
         temp2 = transform.GetChild(1);
         temp2.GetComponent<RectTransform>().sizeDelta = new Vector2(
             temp2.GetComponent<RectTransform>().sizeDelta.x,
-            MainGameManager.screenUnitSize * infoSize.y / 3f);
-        temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * infoSize.y / 3f);
+            MainGameManager.screenUnitSize * size.y / 3f);
+        temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * size.y / 3f);
 
         // 중간
         temp2 = transform.GetChild(2);
         temp2.GetComponent<RectTransform>().sizeDelta = new Vector2(
             temp2.GetComponent<RectTransform>().sizeDelta.x,
-            MainGameManager.screenUnitSize * infoSize.y / 3f);
-        temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * infoSize.y / 3f * 2f);
+            MainGameManager.screenUnitSize * size.y / 3f);
+        temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * size.y / 3f * 2f);
 
         adjustUpside();
         adjustMidSide();
@@ -304,5 +304,33 @@ public class MonsterInfoController : MonoBehaviour
             );
         skillSlotTf.GetComponent<GridLayoutGroup>().spacing = Vector2.right * MainGameManager.screenUnitSize * 2f / 3f;
         skillSlotTf.GetComponent<GridLayoutGroup>().padding = new RectOffset((int)((int)MainGameManager.screenUnitSize * 2f / 3f), 0, 0, 0);
+    }
+
+    public void truncateData()
+    {
+        nameText.text = $"";
+        specieText.text = $"";
+        descText.text = $"";
+        thumbImg.gameObject.SetActive(false);
+        thumbImg.sprite = null;
+        for (int i = 0; i < starSlot.childCount; i++)
+        {
+            Destroy(starSlot.GetChild(i).gameObject);
+        }
+        foreach (StatSlotController statSlotController in basicStatControllers.Values)
+        {
+            statSlotController.initBaseInfo(null);
+        }
+        expModuleController.initInfo(null, null);
+        foreach (EvolutionCaseController evolutionCaseController in evolutionCaseControllers)
+        {
+            evolutionCaseController.destorySelf();
+        }
+        evolutionCaseControllers = new List<EvolutionCaseController>();
+        foreach (SkillInfoController skillInfoController in skillInfoControllers)
+        {
+            skillInfoController.destorySelf();
+        }
+        skillInfoControllers = new List<SkillInfoController>();
     }
 }

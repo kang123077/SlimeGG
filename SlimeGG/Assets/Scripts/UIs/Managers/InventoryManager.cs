@@ -25,7 +25,7 @@ public class InventoryManager : MonoBehaviour
     private MonsterInfoController monsterInfoController;
 
     public bool isInfoNeeded;
-    private Vector2 invenSize = new Vector2(4f, 8f), infoSize = new Vector2(10f, 8f);
+    private Vector2 invenSize = new Vector2(4f, 7f);
 
     void Start()
     {
@@ -129,7 +129,7 @@ public class InventoryManager : MonoBehaviour
                     ) *
                     (isActive
                     ? (
-                    transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition.x - MainGameManager.screenUnitSize + (MainGameManager.screenUnitSize * infoSize.x)
+                    transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition.x - MainGameManager.screenUnitSize + (MainGameManager.screenUnitSize * monsterInfoController.size.x)
                     )
                     : (
                     -transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition.x
@@ -141,6 +141,11 @@ public class InventoryManager : MonoBehaviour
             }
         }
         isAnimating = false;
+        if (!isActive)
+        {
+            // 정보 날리기
+            selectMonster(null);
+        }
         LocalStorage.IS_CAMERA_FREE = !isActive;
     }
 
@@ -149,7 +154,7 @@ public class InventoryManager : MonoBehaviour
         GetComponent<RectTransform>().sizeDelta = MainGameManager.screenSize;
         transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(MainGameManager.screenUnitSize * invenSize.x, MainGameManager.screenUnitSize * -2f);
         if (isInfoNeeded)
-            transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(MainGameManager.screenUnitSize * infoSize.x, MainGameManager.screenUnitSize * -2f);
+            transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(MainGameManager.screenUnitSize * monsterInfoController.size.x, MainGameManager.screenUnitSize * -2f);
         if (!isAnimating)
         {
             transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition =
@@ -159,7 +164,7 @@ public class InventoryManager : MonoBehaviour
             if (isInfoNeeded)
                 transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition =
                     isActive
-                    ? ((Vector2.left * MainGameManager.screenUnitSize * infoSize.x) - (Vector2.right * MainGameManager.screenUnitSize))
+                    ? ((Vector2.left * MainGameManager.screenUnitSize * monsterInfoController.size.x) - (Vector2.right * MainGameManager.screenUnitSize))
                     : Vector2.zero;
         }
         Transform temp = transform.GetChild(0);
@@ -269,9 +274,16 @@ public class InventoryManager : MonoBehaviour
     {
         curSelectedMonster = selectedMonster;
         truncateEquipment();
-        generateEquipmentItems(selectedMonster.getItemLiveStat());
-        if (isInfoNeeded)
-            monsterInfoController.initInfo(selectedMonster.monsterLiveStat);
+        if (selectedMonster != null)
+        {
+            generateEquipmentItems(selectedMonster.getItemLiveStat());
+            if (isInfoNeeded)
+                monsterInfoController.initInfo(selectedMonster.monsterLiveStat);
+        }
+        else
+        {
+            monsterInfoController.truncateData();
+        }
     }
 
     private void truncateEquipment()

@@ -62,6 +62,16 @@ public class ExpModuleController : MonoBehaviour
     public void initInfo(List<ElementEnum> elements, List<ElementStat> expStats)
     {
         if (!isInit) initSetting();
+        if (elements == null)
+        {
+            expText.text = "";
+            foreach (ExpSingleController expSingle in curExpController.Values)
+            {
+                expSingle.destoySelf();
+            }
+            curExpController = new Dictionary<ElementEnum, ExpSingleController>();
+            return;
+        }
         expText.text = "EXP";
         foreach (ExpSingleController expSingle in curExpController.Values)
         {
