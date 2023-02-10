@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class InfoWindowController : MonoBehaviour
 {
     bool isOpened = false;
-    Vector2 size = new Vector2(300f, 200f);
     bool flipX = false, flipY = false;
+    private bool isInit = false;
+    private TextMeshProUGUI titleText;
+    private TextMeshProUGUI descText;
+
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<RectTransform>().sizeDelta = size;
+        initSetting();
     }
 
     // Update is called once per frame
@@ -21,6 +25,13 @@ public class InfoWindowController : MonoBehaviour
         {
             trackMouse();
         }
+    }
+
+    private void initSetting()
+    {
+        titleText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        descText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        isInit = true;
     }
 
     public void openWindow()
@@ -39,8 +50,8 @@ public class InfoWindowController : MonoBehaviour
     private void trackMouse()
     {
         Vector3 point = Camera.main.ScreenToWorldPoint(new Vector3(
-            Input.mousePosition.x + ((flipX ? -1f : 1f) * ((size.x / 2f) + 20f)),
-            Input.mousePosition.y + ((flipY ? -1f : 1f) * ((size.y / 2f) + 20f)),
+            Input.mousePosition.x + ((flipX ? -1f : 1f) * ((GetComponent<RectTransform>().sizeDelta.x / 2f) + 20f)),
+            Input.mousePosition.y + ((flipY ? -1f : 1f) * ((GetComponent<RectTransform>().sizeDelta.y / 2f) + 20f)),
             Input.mousePosition.z
             ));
         transform.position = new Vector3(
@@ -56,7 +67,14 @@ public class InfoWindowController : MonoBehaviour
 
     private void adjustPosition()
     {
-        flipX = !((Screen.width - Input.mousePosition.x) > (size.x + 100f));
-        flipY = !((Screen.height - Input.mousePosition.y) > (size.y + 100f));
+        flipX = !((Screen.width - Input.mousePosition.x) > (GetComponent<RectTransform>().sizeDelta.x + 100f));
+        flipY = !((Screen.height - Input.mousePosition.y) > (GetComponent<RectTransform>().sizeDelta.y + 100f));
+    }
+
+    public void initInfo(string title, string desc)
+    {
+        if (!isInit) initSetting();
+        titleText.text = title != null ? title : "";
+        descText.text = desc != null ? desc : "";
     }
 }
