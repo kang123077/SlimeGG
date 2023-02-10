@@ -8,15 +8,19 @@ public class MainGameManager : MonoBehaviour
 {
     [SerializeField]
     GameObject loadingGO;
+    [SerializeField]
+    SettingManager settingManager;
     public static Vector2 screenSize = Vector2.zero;
     public static float screenUnitSize = 0f;
     public static float adjustFontSize = 8f;
+
+    private bool isSettingOpen = false;
 
     // Start is called before the first frame update
     void Start()
     {
         getScreenSize();
-        if (LocalStorage.IS_SCENE_FADE_IN)
+        if (LocalStorage.UIOpenStatus.fade)
         {
             controllLoading(false, null);
         }
@@ -62,18 +66,24 @@ public class MainGameManager : MonoBehaviour
         if (targetSceneName != null)
         {
             SceneManager.LoadScene(targetSceneName);
-            LocalStorage.IS_SCENE_FADE_IN = true;
+            LocalStorage.UIOpenStatus.fade = true;
         }
         if (!isFadeIn)
         {
             loadingGO.SetActive(isFadeIn);
-            LocalStorage.IS_SCENE_FADE_IN = false;
+            LocalStorage.UIOpenStatus.fade = false;
         }
     }
 
     public void saveGame()
     {
         SaveFunction.saveData();
+    }
+    public void toggleSetting()
+    {
+        isSettingOpen = !isSettingOpen;
+        controllLoading(isSettingOpen, null);
+        settingManager.toggle();
     }
 
     void getScreenSize()

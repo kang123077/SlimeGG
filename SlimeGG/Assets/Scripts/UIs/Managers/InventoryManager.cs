@@ -95,8 +95,9 @@ public class InventoryManager : MonoBehaviour
 
     private IEnumerator toggleCoroutine()
     {
+        LocalStorage.UIOpenStatus.inventory = !isActive;
+        LocalStorage.UIOpenStatus.info = !isActive;
         isActive = !isActive;
-        LocalStorage.IS_CAMERA_FREE = false;
         isAnimating = true;
         while (isActive
             ? (transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition.x + MainGameManager.screenUnitSize < -1f)
@@ -146,7 +147,6 @@ public class InventoryManager : MonoBehaviour
             // 정보 날리기
             selectMonster(null);
         }
-        LocalStorage.IS_CAMERA_FREE = !isActive;
     }
 
     void adjustSize()

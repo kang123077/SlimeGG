@@ -22,9 +22,15 @@ public static class LocalStorage
     public static bool IS_GAME_PAUSE = true;
     public static bool IS_BATTLE_FINISH = false;
 
-    public static bool IS_SCENE_FADE_IN = true;
-    public static bool IS_CAMERA_FREE = false;
-    public static bool IS_CAMERA_FIX = false;
+    public static bool isCameraPosessed = false;
+
+    public static class UIOpenStatus
+    {
+        public static bool fade = false;
+        public static bool inventory = false;
+        public static bool info = false;
+        public static bool setting = false;
+    }
 
 
     public static List<int> journeyInfo = new List<int>();
@@ -35,4 +41,14 @@ public static class LocalStorage
         { "equipments", new List<SlotController>() },
         { "items", new List<SlotController>() },
     };
+
+    public static bool isCameraMoveable()
+    {
+        return
+            !UIOpenStatus.fade
+            && !UIOpenStatus.inventory
+            && !UIOpenStatus.info
+            && !UIOpenStatus.setting
+            && !isCameraPosessed;
+    }
 }
