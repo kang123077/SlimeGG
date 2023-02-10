@@ -151,7 +151,7 @@ public class InventoryManager : MonoBehaviour
         isAnimating = false;
         if (!isActive)
         {
-            // 정보 날리기
+            reloadInventory();
             selectMonster(null);
         }
     }
@@ -232,6 +232,8 @@ public class InventoryManager : MonoBehaviour
 
     public void mountItemToMonster(SlotController targetSlot, ContentController targetItem)
     {
+        if (curSelectedMonster == null) return;
+        LocalStorage.Live.items.Remove(targetItem.itemLiveStat.saveStat.id);
         curSelectedMonster.addItem(targetItem.itemLiveStat);
         targetSlot.installContent(targetItem.transform);
         if (isInfoNeeded)
@@ -245,6 +247,18 @@ public class InventoryManager : MonoBehaviour
         if (isInfoNeeded)
             monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
         LocalStorage.Live.items[targetItem.itemLiveStat.saveStat.id] = targetItem.itemLiveStat;
+    }
+
+    public void reloadInventory()
+    {
+        foreach (List<SlotController> slotControllers in LocalStorage.inventory.Values)
+        {
+            foreach (SlotController slotController in slotControllers)
+            {
+                slotController.truncateContent();
+            }
+        }
+        loadInventory();
     }
 
     void loadInventory()
@@ -276,6 +290,7 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
+        curSelectedMonster = null;
     }
 
     public void selectMonster(ContentController selectedMonster)
@@ -308,6 +323,7 @@ public class InventoryManager : MonoBehaviour
         foreach (KeyValuePair<string, ItemLiveStat> itemLive in contentController.monsterLiveStat.itemStatList)
         {
             itemLive.Value.saveStat.equipMonsterId = null;
+            LocalStorage.Live.items[itemLive.Value.saveStat.id] = itemLive.Value;
             Transform newItem = Instantiate(contentPrefab);
             newItem.GetComponent<ContentController>().initContent(itemLive.Value);
             newItem.GetComponent<ContentController>().setInfoWindowController(infoWindowController);
@@ -322,6 +338,7 @@ public class InventoryManager : MonoBehaviour
         }
 
         // 멕인 몬스터 삭제
+        LocalStorage.Live.monsters.Remove(contentController.monsterLiveStat.saveStat.id);
         Destroy(contentController.gameObject);
 
         // 정보창 새로고침

@@ -107,28 +107,30 @@ public class ContentController : MonoBehaviour
             transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.localPosition = new Vector3(
                 transform.localPosition.x, transform.localPosition.y, -13f);
-
-            RaycastHit res;
-            if (Physics.Raycast(transform.position, Vector3.forward, out res, 1.2f))
+            if (type != InventoryType.Item)
             {
-                if (res.transform.tag == "Content")
+                RaycastHit res;
+                if (Physics.Raycast(transform.position, Vector3.forward, out res, 1.2f))
                 {
-                    ContentController content = res.transform.GetComponent<ContentController>();
-                    if (content == null) return;
-                    if (content.type == InventoryType.Item) return;
-                    if (content.monsterLiveStat.saveStat.id == monsterLiveStat.saveStat.id) return;
-                    switch (type)
+                    if (res.transform.tag == "Content")
                     {
-                        case InventoryType.Monster:
-                            if (content.type == InventoryType.Monster)
-                            {
-                                if (inventoryManager.curSelectedMonster.monsterLiveStat.saveStat.id
-                                    != content.monsterLiveStat.saveStat.id)
-                                    inventoryManager.selectMonster(content);
-                                inventoryManager.viewExpectation(monsterLiveStat);
-                            }
-                            break;
-                        default: break;
+                        ContentController content = res.transform.GetComponent<ContentController>();
+                        if (content == null) return;
+                        if (content.type == InventoryType.Item) return;
+                        if (content.monsterLiveStat.saveStat.id == monsterLiveStat.saveStat.id) return;
+                        switch (type)
+                        {
+                            case InventoryType.Monster:
+                                if (content.type == InventoryType.Monster)
+                                {
+                                    if (inventoryManager.curSelectedMonster.monsterLiveStat.saveStat.id
+                                        != content.monsterLiveStat.saveStat.id)
+                                        inventoryManager.selectMonster(content);
+                                    inventoryManager.viewExpectation(monsterLiveStat);
+                                }
+                                break;
+                            default: break;
+                        }
                     }
                 }
             }
@@ -180,6 +182,8 @@ public class ContentController : MonoBehaviour
                     case InventoryType.Monster:
                         if (content.type == InventoryType.Monster)
                         {
+                            // 경험치를 하나라도 줄 수 있어야 함
+                            if (!isFeedable(content.monsterLiveStat.saveStat.exp)) return;
                             inventoryManager.feedMonster(this);
                         }
                         break;
@@ -273,5 +277,26 @@ public class ContentController : MonoBehaviour
                 }
             }
         }
+    }
+
+    public bool isFeedable(List<ElementStat> feedStats)
+    {
+        foreach (ElementStat stat in monsterLiveStat.saveStat.exp)
+        {
+            int i = 0;
+            while (feedStats.Count > 0)
+            {
+                if (i >= feedStats.Count) break;
+                if (feedStats[i].name == stat.name)
+                {
+                    return true;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+        }
+        return false;
     }
 }
