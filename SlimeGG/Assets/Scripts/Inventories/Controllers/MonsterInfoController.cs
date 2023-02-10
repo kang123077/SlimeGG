@@ -52,6 +52,9 @@ public class MonsterInfoController : MonoBehaviour
         if (isInit)
         {
             adjustSize();
+        } else
+        {
+            initSetting();
         }
     }
 
@@ -143,6 +146,11 @@ public class MonsterInfoController : MonoBehaviour
         }
     }
 
+    public void viewExpectation(MonsterLiveStat candidateMonsterLiveStat)
+    {
+        expModuleController.viewExpectation(candidateMonsterLiveStat.saveStat.exp);
+    }
+
     private void initSetting()
     {
         Transform temp = transform.GetChild(0).GetChild(0);
@@ -192,6 +200,7 @@ public class MonsterInfoController : MonoBehaviour
         skillSlotTf = transform.GetChild(2);
 
         isInit = true;
+        adjustSize();
     }
 
     void adjustSize()

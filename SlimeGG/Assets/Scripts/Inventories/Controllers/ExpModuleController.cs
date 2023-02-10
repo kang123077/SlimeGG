@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Xml.Linq;
+using System.Linq;
 
 public class ExpModuleController : MonoBehaviour
 {
@@ -28,6 +28,10 @@ public class ExpModuleController : MonoBehaviour
         {
             adjustSize();
         }
+        else
+        {
+            initSetting();
+        }
     }
 
     private void initSetting()
@@ -37,6 +41,7 @@ public class ExpModuleController : MonoBehaviour
         expText.text = "";
         expContainer = transform.GetChild(1).GetComponent<GridLayoutGroup>();
         isInit = true;
+        adjustSize();
     }
 
     private void adjustSize()
@@ -87,6 +92,15 @@ public class ExpModuleController : MonoBehaviour
             temp.localScale = Vector3.one;
             temp.GetComponent<ExpSingleController>().initInfo(expStat);
             temp.GetComponent<ExpSingleController>().setSizeRatio(sizeRatio);
+        }
+    }
+
+    public void viewExpectation(List<ElementStat> elementStats)
+    {
+        foreach (ElementStat elementStat in elementStats)
+        {
+            if (curExpController.ContainsKey(elementStat.name))
+                curExpController[elementStat.name].initExpectAmount(elementStat.amount);
         }
     }
 
