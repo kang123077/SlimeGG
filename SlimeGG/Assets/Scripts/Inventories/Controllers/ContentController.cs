@@ -199,6 +199,7 @@ public class ContentController : MonoBehaviour
                 {
                     // open info window
                     isWindowOpen = true;
+                    infoWindowController.initInfo(itemLiveStat.dictionaryStat.displayName, itemLiveStat.dictionaryStat.desc);
                     infoWindowController.openWindow();
                 }
             }
@@ -216,7 +217,10 @@ public class ContentController : MonoBehaviour
         cntMouseOn = 0f;
         isWindowOpen = false;
         if (infoWindowController != null)
+        {
+            infoWindowController.initInfo(null, null);
             infoWindowController.closeWindow();
+        }
     }
 
     public void setInfoWindowController(InfoWindowController infoWindowController)
