@@ -11,9 +11,14 @@ public class FieldController : MonoBehaviour
     public void initField(FieldInfo fieldInfo)
     {
         this.fieldInfo = fieldInfo;
-        BattleManager.monsterBattleControllerList[0] = new MonsterBattleController[fieldInfo.numberRestrictPerSide[0]];
-        BattleManager.monsterBattleControllerList[1] = new MonsterBattleController[fieldInfo.numberRestrictPerSide[1]];
+        int alliesCount = 6;
+        int enemiesCount = 8;
+        // BattleManager.monsterBattleControllerList[0] = new MonsterBattleController[fieldInfo.numberRestrictPerSide[0]];
+        // BattleManager.monsterBattleControllerList[1] = new MonsterBattleController[fieldInfo.numberRestrictPerSide[1]];
+        BattleManager.monsterBattleControllerList[0] = new MonsterBattleController[alliesCount];
+        BattleManager.monsterBattleControllerList[1] = new MonsterBattleController[enemiesCount];
 
+        /*
         for (int k = 0; k < 2; k++)
         {
             BattleManager.distanceAllies[k] = new float[fieldInfo.numberRestrictPerSide[k]][];
@@ -32,6 +37,29 @@ public class FieldController : MonoBehaviour
         for (int i = 0; i < fieldInfo.numberRestrictPerSide[1]; i++)
         {
             BattleManager.distanceEnemies[1][i] = new float[fieldInfo.numberRestrictPerSide[0]];
+        }
+        */
+
+        BattleManager.distanceAllies[0] = new float[alliesCount][];
+        for (int i = 0; i < alliesCount; i++)
+        {
+            BattleManager.distanceAllies[0][i] = new float[alliesCount];
+        }
+        BattleManager.distanceAllies[1] = new float[enemiesCount][];
+        for (int i = 0; i < enemiesCount; i++)
+        {
+            BattleManager.distanceAllies[1][i] = new float[enemiesCount];
+        }
+
+        BattleManager.distanceEnemies[0] = new float[alliesCount][];
+        for (int i = 0; i < alliesCount; i++)
+        {
+            BattleManager.distanceEnemies[0][i] = new float[enemiesCount];
+        }
+        BattleManager.distanceEnemies[1] = new float[enemiesCount][];
+        for (int i = 0; i < enemiesCount; i++)
+        {
+            BattleManager.distanceEnemies[1][i] = new float[alliesCount];
         }
     }
 

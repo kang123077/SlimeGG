@@ -1589,7 +1589,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e79aa5819cf2ce45876a26dd9f95813, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PenalForPause: {fileID: 112185544}
+  penalForPause: {fileID: 112185544}
   monsterBase: {fileID: 1029297608838221857, guid: 97bb411ac1c60ae429cbcdeac91d8d5a, type: 3}
   fieldGenerated: {fileID: 1887458823}
   monsterUIBase: {fileID: 338069980456689821, guid: 9fa1b56941f0bd74695d94f275051192, type: 3}
@@ -1597,6 +1597,8 @@ MonoBehaviour:
   projectilePrefab: {fileID: 2817938927849035747, guid: ac7b6b614ca4e724586c56427b1d9456, type: 3}
   areaPrefab: {fileID: 1071857258302024132, guid: 66a424fa020a7fa43b2fd2961e16ea20, type: 3}
   entryListUI: {fileID: 1478161892}
+  entrySlot: {fileID: 193280636}
+  barrier: {fileID: 725388104}
 --- !u!4 &875136621
 Transform:
   m_ObjectHideFlags: 0

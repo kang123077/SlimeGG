@@ -42,8 +42,22 @@
     ]
   },
   {
-    "speicie": "Sneaklower",
+    "speicie": "Eartipede",
     "id": "00000004",
+    "exp": [
+      {
+        "name": "Wind",
+        "amount": 10
+      },
+      {
+        "name": "Spirit",
+        "amount": 5
+      }
+    ]
+  },
+  {
+    "speicie": "Sneaklower",
+    "id": "00000005",
     "exp": [
       {
         "name": "Wind",
