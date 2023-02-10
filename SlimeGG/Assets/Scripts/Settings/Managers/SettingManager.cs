@@ -23,12 +23,17 @@ public class SettingManager : MonoBehaviour
         {
             adjustSize();
         }
+        else
+        {
+            initSetting();
+        }
     }
 
     private void initSetting()
     {
         transform.GetComponent<RectTransform>().anchoredPosition = Vector2.up * MainGameManager.screenUnitSize * 9f;
         isInit = true;
+        adjustSize();
     }
 
     private void adjustSize()

@@ -76,16 +76,16 @@ public class ContentController : MonoBehaviour
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (!isMoving) isMoving = true;
         LocalStorage.isCameraPosessed = true;
+        if (type == InventoryType.Monster)
+        {
+            inventoryManager.selectMonster(this);
+        }
     }
 
     private void OnMouseUp()
     {
         if (Vector3.Distance(mousePos, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.15f)
         {
-            if (type == InventoryType.Monster)
-            {
-                inventoryManager.selectMonster(this);
-            }
         }
         else
         {
@@ -107,13 +107,40 @@ public class ContentController : MonoBehaviour
             transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.localPosition = new Vector3(
                 transform.localPosition.x, transform.localPosition.y, -13f);
+            if (type != InventoryType.Item)
+            {
+                RaycastHit res;
+                if (Physics.Raycast(transform.position, Vector3.forward, out res, 1.2f))
+                {
+                    if (res.transform.tag == "Content")
+                    {
+                        ContentController content = res.transform.GetComponent<ContentController>();
+                        if (content == null) return;
+                        if (content.type == InventoryType.Item) return;
+                        if (content.monsterLiveStat.saveStat.id == monsterLiveStat.saveStat.id) return;
+                        switch (type)
+                        {
+                            case InventoryType.Monster:
+                                if (content.type == InventoryType.Monster)
+                                {
+                                    if (inventoryManager.curSelectedMonster.monsterLiveStat.saveStat.id
+                                        != content.monsterLiveStat.saveStat.id)
+                                        inventoryManager.selectMonster(content);
+                                    inventoryManager.viewExpectation(monsterLiveStat);
+                                }
+                                break;
+                            default: break;
+                        }
+                    }
+                }
+            }
         }
     }
 
     private void checkInstallable()
     {
         RaycastHit res;
-        if (Physics.Raycast(transform.position, Vector3.fwd, out res, 1.2f))
+        if (Physics.Raycast(transform.position, Vector3.forward, out res, 1.2f))
         {
             if (res.transform.tag == "Slot")
             {
@@ -155,7 +182,9 @@ public class ContentController : MonoBehaviour
                     case InventoryType.Monster:
                         if (content.type == InventoryType.Monster)
                         {
-                            Debug.Log("몬스터 >> 몬스터");
+                            // 경험치를 하나라도 줄 수 있어야 함
+                            if (!isFeedable(content.monsterLiveStat.saveStat.exp)) return;
+                            inventoryManager.feedMonster(this);
                         }
                         break;
                     default: break;
@@ -226,5 +255,48 @@ public class ContentController : MonoBehaviour
     public void setInfoWindowController(InfoWindowController infoWindowController)
     {
         this.infoWindowController = infoWindowController;
+    }
+
+    public void feedMosnter(List<ElementStat> feedStats)
+    {
+        foreach (ElementStat stat in monsterLiveStat.saveStat.exp)
+        {
+            int i = 0;
+            while (feedStats.Count > 0)
+            {
+                if (i >= feedStats.Count) break;
+                if (feedStats[i].name == stat.name)
+                {
+                    stat.amount += feedStats[i].amount;
+                    feedStats.RemoveAt(i);
+                    break;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+        }
+    }
+
+    public bool isFeedable(List<ElementStat> feedStats)
+    {
+        foreach (ElementStat stat in monsterLiveStat.saveStat.exp)
+        {
+            int i = 0;
+            while (feedStats.Count > 0)
+            {
+                if (i >= feedStats.Count) break;
+                if (feedStats[i].name == stat.name)
+                {
+                    return true;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+        }
+        return false;
     }
 }

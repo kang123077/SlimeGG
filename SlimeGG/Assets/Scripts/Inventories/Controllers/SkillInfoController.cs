@@ -32,6 +32,7 @@ public class SkillInfoController : MonoBehaviour
         nameText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         descText = transform.GetChild(2).GetComponent<TextMeshProUGUI>();
         isInit = true;
+        adjustSize();
     }
 
     private void adjustSize()

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,7 +23,7 @@ public class InventoryManager : MonoBehaviour
     Transform equipmentSlot;
     Transform itemSlot;
 
-    private ContentController curSelectedMonster;
+    public ContentController curSelectedMonster;
     private MonsterInfoController monsterInfoController;
 
     public bool isInfoNeeded;
@@ -30,8 +32,6 @@ public class InventoryManager : MonoBehaviour
     void Start()
     {
         initSetting();
-        loadInventory();
-        isInit = true;
     }
 
     // Update is called once per frame
@@ -42,6 +42,10 @@ public class InventoryManager : MonoBehaviour
             adjustSize();
             trackCamera();
             checkKeyPress();
+        }
+        else
+        {
+            initSetting();
         }
     }
 
@@ -71,6 +75,9 @@ public class InventoryManager : MonoBehaviour
             monsterInfoController = transform.GetChild(1).GetComponent<MonsterInfoController>();
 
         ContentController.inventoryManager = this;
+        loadInventory();
+        isInit = true;
+        adjustSize();
     }
 
     private void trackCamera()
@@ -144,7 +151,7 @@ public class InventoryManager : MonoBehaviour
         isAnimating = false;
         if (!isActive)
         {
-            // 정보 날리기
+            reloadInventory();
             selectMonster(null);
         }
     }
@@ -225,6 +232,8 @@ public class InventoryManager : MonoBehaviour
 
     public void mountItemToMonster(SlotController targetSlot, ContentController targetItem)
     {
+        if (curSelectedMonster == null) return;
+        LocalStorage.Live.items.Remove(targetItem.itemLiveStat.saveStat.id);
         curSelectedMonster.addItem(targetItem.itemLiveStat);
         targetSlot.installContent(targetItem.transform);
         if (isInfoNeeded)
@@ -238,6 +247,18 @@ public class InventoryManager : MonoBehaviour
         if (isInfoNeeded)
             monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
         LocalStorage.Live.items[targetItem.itemLiveStat.saveStat.id] = targetItem.itemLiveStat;
+    }
+
+    public void reloadInventory()
+    {
+        foreach (List<SlotController> slotControllers in LocalStorage.inventory.Values)
+        {
+            foreach (SlotController slotController in slotControllers)
+            {
+                slotController.truncateContent();
+            }
+        }
+        loadInventory();
     }
 
     void loadInventory()
@@ -269,6 +290,7 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
+        curSelectedMonster = null;
     }
 
     public void selectMonster(ContentController selectedMonster)
@@ -285,6 +307,42 @@ public class InventoryManager : MonoBehaviour
         {
             monsterInfoController.truncateData();
         }
+    }
+
+    public void viewExpectation(MonsterLiveStat candidateMonsterLiveStat)
+    {
+        monsterInfoController.viewExpectation(candidateMonsterLiveStat);
+    }
+
+    public void feedMonster(ContentController contentController)
+    {
+        // 경험치 멕이기
+        curSelectedMonster.feedMosnter(contentController.monsterLiveStat.saveStat.exp);
+
+        // 아이템 인벤토리로 보내기
+        foreach (KeyValuePair<string, ItemLiveStat> itemLive in contentController.monsterLiveStat.itemStatList)
+        {
+            itemLive.Value.saveStat.equipMonsterId = null;
+            LocalStorage.Live.items[itemLive.Value.saveStat.id] = itemLive.Value;
+            Transform newItem = Instantiate(contentPrefab);
+            newItem.GetComponent<ContentController>().initContent(itemLive.Value);
+            newItem.GetComponent<ContentController>().setInfoWindowController(infoWindowController);
+            foreach (SlotController slotController in LocalStorage.inventory["items"])
+            {
+                if (!slotController.isOccupied())
+                {
+                    slotController.installContent(newItem);
+                    break;
+                }
+            }
+        }
+
+        // 멕인 몬스터 삭제
+        LocalStorage.Live.monsters.Remove(contentController.monsterLiveStat.saveStat.id);
+        Destroy(contentController.gameObject);
+
+        // 정보창 새로고침
+        selectMonster(curSelectedMonster);
     }
 
     private void truncateEquipment()
