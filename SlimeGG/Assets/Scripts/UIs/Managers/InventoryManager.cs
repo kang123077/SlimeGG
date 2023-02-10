@@ -51,6 +51,9 @@ public class InventoryManager : MonoBehaviour
 
     private void initSetting()
     {
+        LocalStorage.inventory["monsters"] = new List<SlotController>();
+        LocalStorage.inventory["equipments"] = new List<SlotController>();
+        LocalStorage.inventory["items"] = new List<SlotController>();
         transform.localScale = new Vector3(1f, 1f, 1f);
         transform.localPosition = new Vector3(0f, 0f, 1f);
         GetComponent<RectTransform>().sizeDelta = MainGameManager.screenSize;
