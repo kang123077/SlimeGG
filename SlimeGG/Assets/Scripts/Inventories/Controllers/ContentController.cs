@@ -75,7 +75,7 @@ public class ContentController : MonoBehaviour
     {
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (!isMoving) isMoving = true;
-        LocalStorage.IS_CAMERA_FIX = true;
+        LocalStorage.isCameraPosessed = true;
     }
 
     private void OnMouseUp()
@@ -96,7 +96,7 @@ public class ContentController : MonoBehaviour
         }
         mousePos = Vector3.zero;
         isMoving = false;
-        LocalStorage.IS_CAMERA_FIX = false;
+        LocalStorage.isCameraPosessed = false;
         transform.localPosition = new Vector3(0f, 0f, -2f);
     }
 

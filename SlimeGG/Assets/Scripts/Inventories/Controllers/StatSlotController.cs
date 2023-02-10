@@ -29,6 +29,14 @@ public class StatSlotController : MonoBehaviour
 
     public void initBaseInfo(BasicStat basicStat)
     {
+        if (basicStat == null)
+        {
+            nameText.text = $"";
+            amountText.text = $"";
+            plusText.text = $"";
+            correctionText.text = $"";
+            return;
+        }
         switch (basicStat.name)
         {
             case BasicStatEnum.hp:
