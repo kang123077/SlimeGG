@@ -1,70 +1,85 @@
 [
   {
-    "speicie": "BabySpirit",
-    "id": "00000001",
     "exp": [
       {
         "name": "Wind",
-        "amount": 10
+        "amount": 10.0,
+        "shouldOver": true
       },
       {
         "name": "Spirit",
-        "amount": 5
+        "amount": 5.0,
+        "shouldOver": true
       }
-    ]
+    ],
+    "id": "00000001",
+    "speicie": "BabySpirit",
+    "entryPos": null
   },
   {
-    "speicie": "BabySpirit",
-    "id": "00000002",
     "exp": [
       {
         "name": "Spirit",
-        "amount": 10
+        "amount": 10.0,
+        "shouldOver": true
       },
       {
         "name": "Earth",
-        "amount": 5
+        "amount": 5.0,
+        "shouldOver": true
       }
-    ]
+    ],
+    "id": "00000002",
+    "speicie": "BabySpirit",
+    "entryPos": null
   },
   {
-    "speicie": "Eartipede",
-    "id": "00000003",
     "exp": [
       {
         "name": "Wind",
-        "amount": 23
+        "amount": 23.0,
+        "shouldOver": true
       },
       {
         "name": "Spirit",
-        "amount": 23
+        "amount": 23.0,
+        "shouldOver": true
       },
       {
         "name": "Fire",
-        "amount": 23
+        "amount": 23.0,
+        "shouldOver": true
       },
       {
         "name": "Grass",
-        "amount": 23
+        "amount": 23.0,
+        "shouldOver": true
       }
-    ]
+    ],
+    "id": "00000003",
+    "speicie": "Eartipede",
+    "entryPos": null
   },
   {
-    "speicie": "Sneaklower",
-    "id": "00000004",
     "exp": [
       {
         "name": "Wind",
-        "amount": 10
+        "amount": 10.0,
+        "shouldOver": true
       },
       {
         "name": "Spirit",
-        "amount": 5
+        "amount": 5.0,
+        "shouldOver": true
       },
       {
         "name": "Earth",
-        "amount": 1
+        "amount": 1.0,
+        "shouldOver": true
       }
-    ]
+    ],
+    "id": "00000004",
+    "speicie": "Sneaklower",
+    "entryPos": null
   }
 ]

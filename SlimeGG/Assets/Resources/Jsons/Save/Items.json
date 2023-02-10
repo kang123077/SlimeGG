@@ -5,16 +5,18 @@
     "equipMonsterId": "00000001"
   },
   {
-    "itemName": "Dagger",
-    "id": "00000002"
-  },
-  {
-    "itemName": "Dagger",
-    "id": "00000004"
-  },
-  {
     "itemName": "SuperDagger",
     "id": "00000003",
-    "equipMonsterId": "00000001"
+    "equipMonsterId": "00000002"
+  },
+  {
+    "itemName": "Dagger",
+    "id": "00000004",
+    "equipMonsterId": "00000003"
+  },
+  {
+    "itemName": "Dagger",
+    "id": "00000002",
+    "equipMonsterId": "00000004"
   }
 ]
