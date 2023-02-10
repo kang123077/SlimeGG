@@ -201,10 +201,6 @@ public class InventoryManager : MonoBehaviour
             MainGameManager.screenUnitSize * 0.25f);
         temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * 2.75f);
 
-        equipmentSlot.GetComponent<RectTransform>().sizeDelta = new Vector2(
-           equipmentSlot.GetComponent<RectTransform>().sizeDelta.x,
-            MainGameManager.screenUnitSize * 1.25f);
-        equipmentSlot.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * 3f);
         equipmentSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenUnitSize * 0.8f;
         equipmentSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.one * MainGameManager.screenUnitSize * 0.1f;
 

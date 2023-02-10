@@ -91,7 +91,7 @@ public class ContentController : MonoBehaviour
         {
             if (isMoving)
             {
-                checkInstallable();
+                checkBelow();
             }
         }
         mousePos = Vector3.zero;
@@ -137,11 +137,16 @@ public class ContentController : MonoBehaviour
         }
     }
 
-    private void checkInstallable()
+    private void checkBelow()
     {
         RaycastHit res;
         if (Physics.Raycast(transform.position, Vector3.forward, out res, 1.2f))
         {
+            if (res.transform.name == "Sell")
+            {
+                Debug.Log("판매!!");
+                return;
+            }
             if (res.transform.tag == "Slot")
             {
                 SlotController slot = res.transform.GetComponent<SlotController>();

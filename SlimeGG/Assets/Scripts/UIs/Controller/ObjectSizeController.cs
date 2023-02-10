@@ -28,5 +28,13 @@ public class ObjectSizeController : MonoBehaviour
             MainGameManager.screenUnitSize * posRatioToUnit.x,
             MainGameManager.screenUnitSize * posRatioToUnit.y
             );
+
+        if (GetComponent<BoxCollider>() != null)
+        {
+            GetComponent<BoxCollider>().size = new Vector2(
+            MainGameManager.screenUnitSize * sizeRatioToUnit.x,
+            MainGameManager.screenUnitSize * sizeRatioToUnit.y
+            );
+        }
     }
 }
