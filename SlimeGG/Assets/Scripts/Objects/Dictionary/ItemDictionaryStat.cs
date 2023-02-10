@@ -5,5 +5,6 @@ using System.Collections.Generic;
 public class ItemDictionaryStat
 {
     public string displayName;
+    public string desc;
     public List<BasicStat> effect;
 }
