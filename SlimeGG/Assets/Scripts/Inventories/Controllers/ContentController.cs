@@ -76,16 +76,16 @@ public class ContentController : MonoBehaviour
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (!isMoving) isMoving = true;
         LocalStorage.isCameraPosessed = true;
+        if (type == InventoryType.Monster)
+        {
+            inventoryManager.selectMonster(this);
+        }
     }
 
     private void OnMouseUp()
     {
         if (Vector3.Distance(mousePos, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.15f)
         {
-            if (type == InventoryType.Monster)
-            {
-                inventoryManager.selectMonster(this);
-            }
         }
         else
         {
@@ -114,6 +114,8 @@ public class ContentController : MonoBehaviour
                 if (res.transform.tag == "Content")
                 {
                     ContentController content = res.transform.GetComponent<ContentController>();
+                    if (content == null) return;
+                    if (content.type == InventoryType.Item) return;
                     if (content.monsterLiveStat.saveStat.id == monsterLiveStat.saveStat.id) return;
                     switch (type)
                     {
@@ -178,7 +180,7 @@ public class ContentController : MonoBehaviour
                     case InventoryType.Monster:
                         if (content.type == InventoryType.Monster)
                         {
-                            Debug.Log("몬스터 >> 몬스터");
+                            inventoryManager.feedMonster(this);
                         }
                         break;
                     default: break;
@@ -249,5 +251,27 @@ public class ContentController : MonoBehaviour
     public void setInfoWindowController(InfoWindowController infoWindowController)
     {
         this.infoWindowController = infoWindowController;
+    }
+
+    public void feedMosnter(List<ElementStat> feedStats)
+    {
+        foreach (ElementStat stat in monsterLiveStat.saveStat.exp)
+        {
+            int i = 0;
+            while (feedStats.Count > 0)
+            {
+                if (i >= feedStats.Count) break;
+                if (feedStats[i].name == stat.name)
+                {
+                    stat.amount += feedStats[i].amount;
+                    feedStats.RemoveAt(i);
+                    break;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+        }
     }
 }

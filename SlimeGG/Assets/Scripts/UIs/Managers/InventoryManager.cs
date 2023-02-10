@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -295,6 +297,35 @@ public class InventoryManager : MonoBehaviour
     public void viewExpectation(MonsterLiveStat candidateMonsterLiveStat)
     {
         monsterInfoController.viewExpectation(candidateMonsterLiveStat);
+    }
+
+    public void feedMonster(ContentController contentController)
+    {
+        // 경험치 멕이기
+        curSelectedMonster.feedMosnter(contentController.monsterLiveStat.saveStat.exp);
+
+        // 아이템 인벤토리로 보내기
+        foreach (KeyValuePair<string, ItemLiveStat> itemLive in contentController.monsterLiveStat.itemStatList)
+        {
+            itemLive.Value.saveStat.equipMonsterId = null;
+            Transform newItem = Instantiate(contentPrefab);
+            newItem.GetComponent<ContentController>().initContent(itemLive.Value);
+            newItem.GetComponent<ContentController>().setInfoWindowController(infoWindowController);
+            foreach (SlotController slotController in LocalStorage.inventory["items"])
+            {
+                if (!slotController.isOccupied())
+                {
+                    slotController.installContent(newItem);
+                    break;
+                }
+            }
+        }
+
+        // 멕인 몬스터 삭제
+        Destroy(contentController.gameObject);
+
+        // 정보창 새로고침
+        selectMonster(curSelectedMonster);
     }
 
     private void truncateEquipment()
