@@ -27,7 +27,6 @@ public class InventoryManager : MonoBehaviour
     private MonsterInfoController monsterInfoController;
 
     public bool isInfoNeeded;
-    private Vector2 invenSize = new Vector2(4f, 7f);
 
     void Start()
     {
