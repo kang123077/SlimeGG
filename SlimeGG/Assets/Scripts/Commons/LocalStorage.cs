@@ -42,6 +42,8 @@ public static class LocalStorage
         { "items", new List<SlotController>() },
     };
 
+    public static int currency = 0;
+
     public static bool isCameraMoveable()
     {
         return

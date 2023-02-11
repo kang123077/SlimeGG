@@ -27,7 +27,7 @@ public class SellController : MonoBehaviour
         }
         else
         {
-            priceText.text = $"+ {50}G";
+            priceText.text = $"+ {CommerceFunction.weighPriceOfContent(content)}G";
         }
     }
 

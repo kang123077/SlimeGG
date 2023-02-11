@@ -4705,6 +4705,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1763881147}
   - component: {fileID: 1763881148}
+  - component: {fileID: 1763881149}
   m_Layer: 5
   m_Name: Commerce
   m_TagString: Untagged
@@ -4748,6 +4749,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeRatioToUnit: {x: 2, y: 0.8}
   posRatioToUnit: {x: -1.5, y: -0.15}
+--- !u!114 &1763881149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1763881146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 433ad8b64a7af8d44a63f9e98b1af04d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1771559178
 GameObject:
   m_ObjectHideFlags: 0

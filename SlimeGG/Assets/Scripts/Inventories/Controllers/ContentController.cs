@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ContentController : MonoBehaviour
 {
     public static InventoryManager inventoryManager;
-    InventoryType type = InventoryType.None;
+    public InventoryType type = InventoryType.None;
     public MonsterLiveStat monsterLiveStat;
     public ItemLiveStat itemLiveStat;
     Transform image;
@@ -144,7 +144,12 @@ public class ContentController : MonoBehaviour
         {
             if (res.transform.name == "Sell")
             {
-                Debug.Log("판매!!");
+                // 판매
+                if (infoWindowController != null)
+                {
+                    infoWindowController.closeWindow();
+                }
+                inventoryManager.sellContent(this);
                 return;
             }
             if (res.transform.tag == "Slot")
@@ -159,7 +164,7 @@ public class ContentController : MonoBehaviour
                         {
                             if (itemLiveStat.saveStat.equipMonsterId == null)
                             {
-                                //Debug.Log("아이템 >> 장착칸");
+                                // 아이템 칸 -> 장착 칸
                                 inventoryManager.mountItemToMonster(slot, this);
                             }
                         }
@@ -167,7 +172,7 @@ public class ContentController : MonoBehaviour
                         {
                             if (itemLiveStat.saveStat.equipMonsterId != null)
                             {
-                                //Debug.Log("장착칸 >> 아이템");
+                                // 장착 칸 -> 아이템 칸
                                 transform.parent.GetComponent<SlotController>().removeContent();
                                 inventoryManager.unMountItemFromMonster(slot, this);
                             }
@@ -187,7 +192,7 @@ public class ContentController : MonoBehaviour
                     case InventoryType.Monster:
                         if (content.type == InventoryType.Monster)
                         {
-                            // 경험치를 하나라도 줄 수 있어야 함
+                            // 경험치 멕이기
                             if (!isFeedable(content.monsterLiveStat.saveStat.exp)) return;
                             inventoryManager.feedMonster(this);
                         }
