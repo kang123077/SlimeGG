@@ -54,6 +54,7 @@ public static class PathInfo
             public static string monster = $"{Json.root}{root}Monsters";
             public static string journey = $"{Json.root}{root}Journey";
             public static string item = $"{Json.root}{root}Items";
+            public static string currency = $"{Json.root}{root}Currency";
         }
     }
 

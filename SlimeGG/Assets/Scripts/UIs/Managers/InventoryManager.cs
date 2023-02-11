@@ -51,6 +51,9 @@ public class InventoryManager : MonoBehaviour
 
     private void initSetting()
     {
+        LocalStorage.inventory["monsters"] = new List<SlotController>();
+        LocalStorage.inventory["equipments"] = new List<SlotController>();
+        LocalStorage.inventory["items"] = new List<SlotController>();
         transform.localScale = new Vector3(1f, 1f, 1f);
         transform.localPosition = new Vector3(0f, 0f, 1f);
         GetComponent<RectTransform>().sizeDelta = MainGameManager.screenSize;
@@ -198,10 +201,6 @@ public class InventoryManager : MonoBehaviour
             MainGameManager.screenUnitSize * 0.25f);
         temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * 2.75f);
 
-        equipmentSlot.GetComponent<RectTransform>().sizeDelta = new Vector2(
-           equipmentSlot.GetComponent<RectTransform>().sizeDelta.x,
-            MainGameManager.screenUnitSize * 1.25f);
-        equipmentSlot.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * 3f);
         equipmentSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenUnitSize * 0.8f;
         equipmentSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.one * MainGameManager.screenUnitSize * 0.1f;
 
@@ -320,6 +319,49 @@ public class InventoryManager : MonoBehaviour
         curSelectedMonster.feedMosnter(contentController.monsterLiveStat.saveStat.exp);
 
         // 아이템 인벤토리로 보내기
+        returnItemsToInventoryFromMonster(contentController);
+
+        // 멕인 몬스터 삭제
+        LocalStorage.Live.monsters.Remove(contentController.monsterLiveStat.saveStat.id);
+        Destroy(contentController.gameObject);
+
+        // 정보창 새로고침
+        selectMonster(curSelectedMonster);
+    }
+
+    public void sellContent(ContentController targetContentController)
+    {
+        // 재화 증가
+        CommerceFunction.sellContent(targetContentController);
+        // 몬스터?
+        //      아이템 인벤토리로 보내기
+        //  아이템?
+        //      장착 된거? 안된거?
+        //          걍 얘만 팔고 끝
+        switch (targetContentController.type)
+        {
+            case InventoryType.Monster:
+                returnItemsToInventoryFromMonster(targetContentController);
+                LocalStorage.Live.monsters.Remove(targetContentController.monsterLiveStat.saveStat.id);
+                break;
+            case InventoryType.Item:
+                if (targetContentController.itemLiveStat.saveStat.equipMonsterId != null)
+                {
+                    LocalStorage.Live.monsters[targetContentController.itemLiveStat.saveStat.equipMonsterId].itemStatList.Remove(targetContentController.itemLiveStat.saveStat.id);
+                } else
+                {
+                    LocalStorage.Live.items.Remove(targetContentController.itemLiveStat.saveStat.id);
+                }
+                break;
+        }
+        Destroy(targetContentController.gameObject);
+
+        // 정보창 새로고침
+        selectMonster(null);
+    }
+
+    private void returnItemsToInventoryFromMonster(ContentController contentController)
+    {
         foreach (KeyValuePair<string, ItemLiveStat> itemLive in contentController.monsterLiveStat.itemStatList)
         {
             itemLive.Value.saveStat.equipMonsterId = null;
@@ -336,13 +378,6 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
-
-        // 멕인 몬스터 삭제
-        LocalStorage.Live.monsters.Remove(contentController.monsterLiveStat.saveStat.id);
-        Destroy(contentController.gameObject);
-
-        // 정보창 새로고침
-        selectMonster(curSelectedMonster);
     }
 
     private void truncateEquipment()
