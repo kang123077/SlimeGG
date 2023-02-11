@@ -1,5 +1,6 @@
 {
-  "displayName": "단검",
+  "displayName": "존나 큰 단검",
+  "desc": "존나게 큰 단검.\n단검이 아닌거같은데 ?..\n\n스킬 쿨타임을 80%만큼 감소시킨다.",
   "effect": [
     {
       "name": "timeCoolCycle",

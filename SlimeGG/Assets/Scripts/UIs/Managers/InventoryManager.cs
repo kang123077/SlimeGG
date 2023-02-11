@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -17,19 +19,19 @@ public class InventoryManager : MonoBehaviour
     bool isActive = false;
     bool isAnimating = false;
     bool isInit = false;
-    Transform slots;
     Transform monsterSlot;
     Transform equipmentSlot;
     Transform itemSlot;
 
-    private ContentController curSelectedMonster;
+    public ContentController curSelectedMonster;
     private MonsterInfoController monsterInfoController;
+
+    public bool isInfoNeeded;
+    private Vector2 invenSize = new Vector2(4f, 7f);
 
     void Start()
     {
         initSetting();
-        loadInventory();
-        isInit = true;
     }
 
     // Update is called once per frame
@@ -39,33 +41,45 @@ public class InventoryManager : MonoBehaviour
         {
             adjustSize();
             trackCamera();
-            checkKeyPress();
+        }
+        else
+        {
+            initSetting();
         }
     }
 
     private void initSetting()
     {
-        slots = transform.Find("Slots");
+        LocalStorage.inventory["monsters"] = new List<SlotController>();
+        LocalStorage.inventory["equipments"] = new List<SlotController>();
+        LocalStorage.inventory["items"] = new List<SlotController>();
         transform.localScale = new Vector3(1f, 1f, 1f);
-        transform.localPosition = new Vector3(0, MainGameManager.screenSize.y, 1f);
+        transform.localPosition = new Vector3(0f, 0f, 1f);
         GetComponent<RectTransform>().sizeDelta = MainGameManager.screenSize;
-        monsterInfoController = slots.GetChild(1).GetComponent<MonsterInfoController>();
-        monsterSlot = slots.GetChild(0).GetChild(1);
-        equipmentSlot = slots.GetChild(0).GetChild(3);
-        itemSlot = slots.GetChild(0).GetChild(5);
-        for (int i = 0; i < 2; i++)
+        monsterSlot = transform.GetChild(0).GetChild(1);
+        equipmentSlot = transform.GetChild(0).GetChild(3);
+        itemSlot = transform.GetChild(0).GetChild(5);
+        monsterSlot.GetComponent<GridLayoutGroup>().constraintCount = 4;
+        for (int i = 0; i < 8; i++)
         {
             addSlot(InventoryType.Monster, monsterSlot);
+        }
+        for (int i = 0; i < 2; i++)
+        {
             addSlot(InventoryType.Equipment, equipmentSlot);
             addSlot(InventoryType.Item, itemSlot);
         }
         for (int i = 0; i < 6; i++)
         {
-            addSlot(InventoryType.Monster, monsterSlot);
             addSlot(InventoryType.Item, itemSlot);
         }
+        if (isInfoNeeded)
+            monsterInfoController = transform.GetChild(1).GetComponent<MonsterInfoController>();
 
         ContentController.inventoryManager = this;
+        loadInventory();
+        isInit = true;
+        adjustSize();
     }
 
     private void trackCamera()
@@ -80,83 +94,49 @@ public class InventoryManager : MonoBehaviour
             1f);
     }
 
-    private void checkKeyPress()
-    {
-        if (Input.GetKeyDown(keyToToggle) && !isAnimating)
-        {
-            StartCoroutine(toggleCoroutine());
-        }
-    }
-
-    private IEnumerator toggleCoroutine()
-    {
-        isActive = !isActive;
-        LocalStorage.IS_CAMERA_FREE = false;
-        isAnimating = true;
-        while (isActive ? (transform.position.y > 0.01) : (transform.position.y < 9.99))
-        {
-            yield return new WaitForSeconds(0.01f);
-            transform.Translate((isActive ? Vector3.down : Vector3.up) * (transform.position.y > 1 ? transform.position.y : 1f) * Time.deltaTime * 60);
-        }
-        transform.position = new Vector3(
-            transform.position.x,
-            isActive ? 0f : 10f,
-            1f
-            );
-        isAnimating = false;
-        LocalStorage.IS_CAMERA_FREE = !isActive;
-    }
-
     void adjustSize()
     {
         GetComponent<RectTransform>().sizeDelta = MainGameManager.screenSize;
-        slots.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(MainGameManager.screenSize.x * 6f / 16f, 0f);
-        slots.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(MainGameManager.screenSize.x * 10f / 16f, 0f);
-        slots.GetChild(1).GetComponent<RectTransform>().anchoredPosition = new Vector2(-MainGameManager.screenSize.x * 10f / 16f, 0f);
-        if (!isAnimating)
-        {
-            transform.localPosition = new Vector3(0, isActive ? 0f : MainGameManager.screenSize.y, 1f);
-        }
-        Transform temp = slots.GetChild(0);
+        Transform temp = transform.GetChild(0);
 
         Transform temp2 = temp.GetChild(0);
+        temp2.GetComponent<TextMeshProUGUI>().fontSize = MainGameManager.adjustFontSize;
         temp2.GetComponent<RectTransform>().sizeDelta = new Vector2(
            temp2.GetComponent<RectTransform>().sizeDelta.x,
-            MainGameManager.screenSize.y * 0.05f);
-        temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenSize.y * 0.05f);
+           MainGameManager.screenUnitSize * 0.25f
+           );
+        temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * 0.25f);
 
         monsterSlot.GetComponent<RectTransform>().sizeDelta = new Vector2(
            monsterSlot.GetComponent<RectTransform>().sizeDelta.x,
-            MainGameManager.screenSize.y * 0.3f);
-        monsterSlot.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenSize.y * 0.1f);
-        monsterSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenSize.y * 0.1f * 1.2f;
-        monsterSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.one * MainGameManager.screenSize.y * 0.1f * 0.2f;
+            MainGameManager.screenUnitSize * 2.25f);
+        monsterSlot.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * 0.5f);
+        monsterSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenUnitSize * 0.8f;
+        monsterSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.one * MainGameManager.screenUnitSize * 0.1f;
 
         temp2 = temp.GetChild(2);
+        temp2.GetComponent<TextMeshProUGUI>().fontSize = MainGameManager.adjustFontSize;
         temp2.GetComponent<RectTransform>().sizeDelta = new Vector2(
             temp2.GetComponent<RectTransform>().sizeDelta.x,
-            MainGameManager.screenSize.y * 0.05f);
-        temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenSize.y * 0.4f);
+            MainGameManager.screenUnitSize * 0.25f);
+        temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * 2.75f);
 
-        equipmentSlot.GetComponent<RectTransform>().sizeDelta = new Vector2(
-           equipmentSlot.GetComponent<RectTransform>().sizeDelta.x,
-            MainGameManager.screenSize.y * 0.15f);
-        equipmentSlot.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenSize.y * 0.45f);
-        equipmentSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenSize.y * 0.1f * 1.2f;
-        equipmentSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.one * MainGameManager.screenSize.y * 0.1f * 0.2f;
+        equipmentSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenUnitSize * 0.8f;
+        equipmentSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.one * MainGameManager.screenUnitSize * 0.1f;
 
         temp2 = temp.GetChild(4);
+        temp2.GetComponent<TextMeshProUGUI>().fontSize = MainGameManager.adjustFontSize;
         temp2.GetComponent<RectTransform>().sizeDelta = new Vector2(
             temp2.GetComponent<RectTransform>().sizeDelta.x,
-            MainGameManager.screenSize.y * 0.05f);
-        temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenSize.y * 0.6f);
+            MainGameManager.screenUnitSize * 0.25f);
+        temp2.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * 4.25f);
 
         itemSlot.GetComponent<RectTransform>().sizeDelta = new Vector2(
             itemSlot.GetComponent<RectTransform>().sizeDelta.x,
-            MainGameManager.screenSize.y * 0.3f);
-        itemSlot.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenSize.y * 0.65f);
-        itemSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenSize.y * 0.1f * 1.2f;
-        itemSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.one * MainGameManager.screenSize.y * 0.1f * 0.2f;
+            MainGameManager.screenUnitSize * 2.25f);
+        itemSlot.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -MainGameManager.screenUnitSize * 4.5f);
+        itemSlot.GetComponent<GridLayoutGroup>().cellSize = Vector2.one * MainGameManager.screenUnitSize * 0.8f;
+        itemSlot.GetComponent<GridLayoutGroup>().spacing = Vector2.one * MainGameManager.screenUnitSize * 0.1f;
     }
 
     void addSlot(InventoryType type, Transform targetParent)
@@ -171,14 +151,33 @@ public class InventoryManager : MonoBehaviour
 
     public void mountItemToMonster(SlotController targetSlot, ContentController targetItem)
     {
+        if (curSelectedMonster == null) return;
+        LocalStorage.Live.items.Remove(targetItem.itemLiveStat.saveStat.id);
         curSelectedMonster.addItem(targetItem.itemLiveStat);
         targetSlot.installContent(targetItem.transform);
+        if (isInfoNeeded)
+            monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
     }
 
     public void unMountItemFromMonster(SlotController targetSlot, ContentController targetItem)
     {
         curSelectedMonster.removeItem(targetItem.itemLiveStat);
         targetSlot.installContent(targetItem.transform);
+        if (isInfoNeeded)
+            monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
+        LocalStorage.Live.items[targetItem.itemLiveStat.saveStat.id] = targetItem.itemLiveStat;
+    }
+
+    public void reloadInventory()
+    {
+        foreach (List<SlotController> slotControllers in LocalStorage.inventory.Values)
+        {
+            foreach (SlotController slotController in slotControllers)
+            {
+                slotController.truncateContent();
+            }
+        }
+        loadInventory();
     }
 
     void loadInventory()
@@ -210,13 +209,95 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
+        curSelectedMonster = null;
     }
 
     public void selectMonster(ContentController selectedMonster)
     {
         curSelectedMonster = selectedMonster;
         truncateEquipment();
-        generateEquipmentItems(selectedMonster.getItemLiveStat());
+        if (selectedMonster != null)
+        {
+            generateEquipmentItems(selectedMonster.getItemLiveStat());
+            if (isInfoNeeded)
+                monsterInfoController.initInfo(selectedMonster.monsterLiveStat);
+        }
+        else
+        {
+            monsterInfoController.truncateData();
+        }
+    }
+
+    public void viewExpectation(MonsterLiveStat candidateMonsterLiveStat)
+    {
+        monsterInfoController.viewExpectation(candidateMonsterLiveStat);
+    }
+
+    public void feedMonster(ContentController contentController)
+    {
+        // 경험치 멕이기
+        curSelectedMonster.feedMosnter(contentController.monsterLiveStat.saveStat.exp);
+
+        // 아이템 인벤토리로 보내기
+        returnItemsToInventoryFromMonster(contentController);
+
+        // 멕인 몬스터 삭제
+        LocalStorage.Live.monsters.Remove(contentController.monsterLiveStat.saveStat.id);
+        Destroy(contentController.gameObject);
+
+        // 정보창 새로고침
+        selectMonster(curSelectedMonster);
+    }
+
+    public void sellContent(ContentController targetContentController)
+    {
+        // 재화 증가
+        CommerceFunction.sellContent(targetContentController);
+        // 몬스터?
+        //      아이템 인벤토리로 보내기
+        //  아이템?
+        //      장착 된거? 안된거?
+        //          걍 얘만 팔고 끝
+        switch (targetContentController.type)
+        {
+            case InventoryType.Monster:
+                returnItemsToInventoryFromMonster(targetContentController);
+                LocalStorage.Live.monsters.Remove(targetContentController.monsterLiveStat.saveStat.id);
+                break;
+            case InventoryType.Item:
+                if (targetContentController.itemLiveStat.saveStat.equipMonsterId != null)
+                {
+                    LocalStorage.Live.monsters[targetContentController.itemLiveStat.saveStat.equipMonsterId].itemStatList.Remove(targetContentController.itemLiveStat.saveStat.id);
+                } else
+                {
+                    LocalStorage.Live.items.Remove(targetContentController.itemLiveStat.saveStat.id);
+                }
+                break;
+        }
+        Destroy(targetContentController.gameObject);
+
+        // 정보창 새로고침
+        selectMonster(null);
+    }
+
+    private void returnItemsToInventoryFromMonster(ContentController contentController)
+    {
+        foreach (KeyValuePair<string, ItemLiveStat> itemLive in contentController.monsterLiveStat.itemStatList)
+        {
+            itemLive.Value.saveStat.equipMonsterId = null;
+            LocalStorage.Live.items[itemLive.Value.saveStat.id] = itemLive.Value;
+            Transform newItem = Instantiate(contentPrefab);
+            newItem.GetComponent<ContentController>().initContent(itemLive.Value);
+            newItem.GetComponent<ContentController>().setInfoWindowController(infoWindowController);
+            foreach (SlotController slotController in LocalStorage.inventory["items"])
+            {
+                if (!slotController.isOccupied())
+                {
+                    slotController.installContent(newItem);
+                    break;
+                }
+            }
+        }
     }
 
     private void truncateEquipment()
@@ -243,5 +324,11 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void hideInfoWindow()
+    {
+        isInfoNeeded = false;
+        transform.GetChild(1).gameObject.SetActive(false);
     }
 }

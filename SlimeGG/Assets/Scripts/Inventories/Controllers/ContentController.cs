@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ContentController : MonoBehaviour
 {
     public static InventoryManager inventoryManager;
-    InventoryType type = InventoryType.None;
+    public InventoryType type = InventoryType.None;
     public MonsterLiveStat monsterLiveStat;
     public ItemLiveStat itemLiveStat;
     Transform image;
@@ -75,31 +75,28 @@ public class ContentController : MonoBehaviour
     {
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (!isMoving) isMoving = true;
+        LocalStorage.isCameraPosessed = true;
         if (type == InventoryType.Monster)
         {
             inventoryManager.selectMonster(this);
         }
-        LocalStorage.IS_CAMERA_FIX = true;
     }
 
     private void OnMouseUp()
     {
         if (Vector3.Distance(mousePos, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.15f)
         {
-            // 정보창 열기
-            Debug.Log("정보창 오픈");
-
         }
         else
         {
             if (isMoving)
             {
-                checkInstallable();
+                checkBelow();
             }
         }
         mousePos = Vector3.zero;
         isMoving = false;
-        LocalStorage.IS_CAMERA_FIX = false;
+        LocalStorage.isCameraPosessed = false;
         transform.localPosition = new Vector3(0f, 0f, -2f);
     }
 
@@ -110,14 +107,51 @@ public class ContentController : MonoBehaviour
             transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.localPosition = new Vector3(
                 transform.localPosition.x, transform.localPosition.y, -13f);
+            if (type != InventoryType.Item)
+            {
+                RaycastHit res;
+                if (Physics.Raycast(transform.position, Vector3.forward, out res, 1.2f))
+                {
+                    if (res.transform.tag == "Content")
+                    {
+                        ContentController content = res.transform.GetComponent<ContentController>();
+                        if (content == null) return;
+                        if (content.type == InventoryType.Item) return;
+                        if (content.monsterLiveStat.saveStat.id == monsterLiveStat.saveStat.id) return;
+                        switch (type)
+                        {
+                            case InventoryType.Monster:
+                                if (content.type == InventoryType.Monster)
+                                {
+                                    if (inventoryManager.curSelectedMonster.monsterLiveStat.saveStat.id
+                                        != content.monsterLiveStat.saveStat.id)
+                                        inventoryManager.selectMonster(content);
+                                    inventoryManager.viewExpectation(monsterLiveStat);
+                                }
+                                break;
+                            default: break;
+                        }
+                    }
+                }
+            }
         }
     }
 
-    private void checkInstallable()
+    private void checkBelow()
     {
         RaycastHit res;
-        if (Physics.Raycast(transform.position, Vector3.fwd, out res, 1.2f))
+        if (Physics.Raycast(transform.position, Vector3.forward, out res, 1.2f))
         {
+            if (res.transform.name == "Sell")
+            {
+                // 판매
+                if (infoWindowController != null)
+                {
+                    infoWindowController.closeWindow();
+                }
+                inventoryManager.sellContent(this);
+                return;
+            }
             if (res.transform.tag == "Slot")
             {
                 SlotController slot = res.transform.GetComponent<SlotController>();
@@ -130,7 +164,7 @@ public class ContentController : MonoBehaviour
                         {
                             if (itemLiveStat.saveStat.equipMonsterId == null)
                             {
-                                //Debug.Log("아이템 >> 장착칸");
+                                // 아이템 칸 -> 장착 칸
                                 inventoryManager.mountItemToMonster(slot, this);
                             }
                         }
@@ -138,7 +172,7 @@ public class ContentController : MonoBehaviour
                         {
                             if (itemLiveStat.saveStat.equipMonsterId != null)
                             {
-                                //Debug.Log("장착칸 >> 아이템");
+                                // 장착 칸 -> 아이템 칸
                                 transform.parent.GetComponent<SlotController>().removeContent();
                                 inventoryManager.unMountItemFromMonster(slot, this);
                             }
@@ -158,7 +192,9 @@ public class ContentController : MonoBehaviour
                     case InventoryType.Monster:
                         if (content.type == InventoryType.Monster)
                         {
-                            Debug.Log("몬스터 >> 몬스터");
+                            // 경험치 멕이기
+                            if (!isFeedable(content.monsterLiveStat.saveStat.exp)) return;
+                            inventoryManager.feedMonster(this);
                         }
                         break;
                     default: break;
@@ -202,6 +238,7 @@ public class ContentController : MonoBehaviour
                 {
                     // open info window
                     isWindowOpen = true;
+                    infoWindowController.initInfo(itemLiveStat.dictionaryStat.displayName, itemLiveStat.dictionaryStat.desc);
                     infoWindowController.openWindow();
                 }
             }
@@ -219,11 +256,57 @@ public class ContentController : MonoBehaviour
         cntMouseOn = 0f;
         isWindowOpen = false;
         if (infoWindowController != null)
+        {
+            infoWindowController.initInfo(null, null);
             infoWindowController.closeWindow();
+        }
     }
 
     public void setInfoWindowController(InfoWindowController infoWindowController)
     {
         this.infoWindowController = infoWindowController;
+    }
+
+    public void feedMosnter(List<ElementStat> feedStats)
+    {
+        foreach (ElementStat stat in monsterLiveStat.saveStat.exp)
+        {
+            int i = 0;
+            while (feedStats.Count > 0)
+            {
+                if (i >= feedStats.Count) break;
+                if (feedStats[i].name == stat.name)
+                {
+                    stat.amount += feedStats[i].amount;
+                    feedStats.RemoveAt(i);
+                    break;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+        }
+    }
+
+    public bool isFeedable(List<ElementStat> feedStats)
+    {
+        foreach (ElementStat stat in monsterLiveStat.saveStat.exp)
+        {
+            int i = 0;
+            while (feedStats.Count > 0)
+            {
+                if (i >= feedStats.Count) break;
+                if (feedStats[i].name == stat.name)
+                {
+                    return true;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -11,9 +11,9 @@ public class DungeonManager : MonoBehaviour
     Transform mainCamera;
     [SerializeField]
     Transform userTf;
-    [SerializeField]
-    RewardManager rewardManager;
     MainGameManager mainGameManager;
+
+    private bool isInit = false;
 
     private bool isFocusDone = false;
     private bool isNewStage = false;
@@ -21,36 +21,39 @@ public class DungeonManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        setSetting();
-        setClear();
-        applyJourney();
-        setUser(curStage);
+        initSetting();
         //activateNewEvent(RewardType.Choice_Monster);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!LocalStorage.IS_SCENE_FADE_IN && !isFocusDone)
+        if (isInit && !isFocusDone)
         {
             StartCoroutine(focusCamera(true, curStage));
         }
     }
 
+    private void initSetting()
+    {
+        setSetting();
+        setClear();
+        applyJourney();
+        setUser(curStage);
+        isInit = true;
+    }
+
     private IEnumerator focusCamera(bool isInit, StageController targetStage)
     {
         isFocusDone = true;
-        LocalStorage.IS_CAMERA_FREE = false;
+        LocalStorage.isCameraPosessed = true;
         while (Mathf.Abs(mainCamera.position.x - targetStage.transform.position.x) > 0.1f)
         {
             mainCamera.Translate(Vector3.left * (mainCamera.position.x - targetStage.transform.position.x) * Time.deltaTime * 2.5f);
             yield return new WaitForSeconds(0f);
         }
-        if (isInit)
-        {
-            LocalStorage.IS_CAMERA_FREE = true;
-        }
-        else
+        LocalStorage.isCameraPosessed = false;
+        if (!isInit)
         {
             mainGameManager.controllLoading(true, "BattleScene");
         }
@@ -87,7 +90,7 @@ public class DungeonManager : MonoBehaviour
 
     public void moveCamera(StageController targetStage)
     {
-        if (LocalStorage.IS_CAMERA_FREE)
+        if (LocalStorage.isCameraMoveable())
         {
             StartCoroutine(focusCamera(false, targetStage));
         }
@@ -101,24 +104,5 @@ public class DungeonManager : MonoBehaviour
         curStage = targetStage;
         setUser(curStage);
         curStage.openAccessNext();
-    }
-
-    public void openRewardModule(RewardType rewardType)
-    {
-        StartCoroutine(toggleRewardModuleWithDelay(true, rewardType, 1f));
-    }
-
-    public IEnumerator toggleRewardModuleWithDelay(bool isOpen, RewardType rewardType, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        rewardManager.toggle(isOpen, rewardType);
-    }
-
-    private void activateNewEvent(RewardType rewardType)
-    {
-        if (isNewStage)
-        {
-            openRewardModule(rewardType);
-        }
     }
 }

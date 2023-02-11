@@ -9,6 +9,12 @@ public static class PathInfo
         public static string Sprite = $"{sprite}{root}";
         public static string Animation = $"{animation}{root}";
     }
+    public static class Skill
+    {
+        private static string root = "Skills/";
+        public static string Sprite = $"{sprite}{root}";
+        public static string Animation = $"{animation}{root}";
+    }
 
     public static class Effect
     {
@@ -48,6 +54,7 @@ public static class PathInfo
             public static string monster = $"{Json.root}{root}Monsters";
             public static string journey = $"{Json.root}{root}Journey";
             public static string item = $"{Json.root}{root}Items";
+            public static string currency = $"{Json.root}{root}Currency";
         }
     }
 

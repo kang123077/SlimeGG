@@ -22,4 +22,11 @@ public class BasicStat
         this.amount = amount;
         isMultiple = false;
     }
+
+    public BasicStat(BasicStat basicStat)
+    {
+        name = basicStat.name;
+        amount = basicStat.amount;
+        isMultiple = basicStat.isMultiple;
+    }
 }
