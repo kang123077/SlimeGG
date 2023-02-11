@@ -36,6 +36,7 @@ public class EvolutionCaseController : MonoBehaviour
         expModuleController = Instantiate(expModuleController);
         expModuleController.transform.SetParent(transform);
         expModuleController.transform.localScale = Vector3.one;
+        expModuleController.transform.localPosition = Vector3.zero;
 
         isInit = true;
         adjustSize();

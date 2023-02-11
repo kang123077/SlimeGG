@@ -52,7 +52,8 @@ public class MonsterInfoController : MonoBehaviour
         if (isInit)
         {
             adjustSize();
-        } else
+        }
+        else
         {
             initSetting();
         }
@@ -107,6 +108,7 @@ public class MonsterInfoController : MonoBehaviour
             Transform newStar = Instantiate(starPrefab);
             newStar.transform.SetParent(starSlot);
             newStar.GetComponent<RectTransform>().localScale = Vector3.one;
+            newStar.GetComponent<RectTransform>().localPosition = Vector3.zero;
             newStar.GetComponent<RectTransform>().sizeDelta = Vector2.one * MainGameManager.screenUnitSize * 0.4f;
         }
     }
@@ -124,6 +126,7 @@ public class MonsterInfoController : MonoBehaviour
             EvolutionCaseController temp = Instantiate(evolutionCaseControllerPrefab);
             temp.transform.SetParent(evolSlotTf);
             temp.transform.localScale = Vector3.one;
+            temp.transform.localPosition = Vector3.zero;
             evolutionCaseControllers.Add(temp);
             temp.initInfo(nextMonster);
         }
@@ -140,6 +143,7 @@ public class MonsterInfoController : MonoBehaviour
         {
             SkillInfoController temp = Instantiate(skillInfoControllerPrefab);
             temp.transform.SetParent(skillSlotTf);
+            temp.transform.localPosition = Vector3.zero;
             temp.transform.localScale = Vector3.one;
             skillInfoControllers.Add(temp);
             temp.initInfo(skillName);

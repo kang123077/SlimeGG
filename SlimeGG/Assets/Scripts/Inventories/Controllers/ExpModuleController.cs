@@ -90,6 +90,7 @@ public class ExpModuleController : MonoBehaviour
             curExpController[expStat.name] = temp.GetComponent<ExpSingleController>();
             temp.SetParent(expContainer.transform);
             temp.localScale = Vector3.one;
+            temp.localPosition = Vector3.zero;
             temp.GetComponent<ExpSingleController>().initInfo(expStat);
             temp.GetComponent<ExpSingleController>().setSizeRatio(sizeRatio);
         }
