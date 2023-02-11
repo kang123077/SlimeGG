@@ -41,7 +41,6 @@ public class InventoryManager : MonoBehaviour
         {
             adjustSize();
             trackCamera();
-            checkKeyPress();
         }
         else
         {
@@ -95,88 +94,9 @@ public class InventoryManager : MonoBehaviour
             1f);
     }
 
-    private void checkKeyPress()
-    {
-        if (Input.GetKeyDown(keyToToggle) && !isAnimating)
-        {
-            StartCoroutine(toggleCoroutine());
-        }
-    }
-
-    private IEnumerator toggleCoroutine()
-    {
-        LocalStorage.UIOpenStatus.inventory = !isActive;
-        LocalStorage.UIOpenStatus.info = !isActive;
-        isActive = !isActive;
-        isAnimating = true;
-        while (isActive
-            ? (transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition.x + MainGameManager.screenUnitSize < -1f)
-            : ((transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition.x + MainGameManager.screenUnitSize * invenSize.x) > 1f)
-            )
-        {
-            yield return new WaitForSeconds(0.01f);
-            transform.GetChild(0).Translate(
-                (isActive
-                ? Vector3.right
-                : Vector3.left
-                ) *
-                (isActive
-                ? (
-                -transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition.x + MainGameManager.screenUnitSize
-                )
-                : (
-                transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition.x + MainGameManager.screenUnitSize * invenSize.x
-                )
-                )
-                * 0.01f
-                * SettingVariables.slideToggleSpd
-                );
-            if (isInfoNeeded)
-            {
-                transform.GetChild(1).Translate(
-                    (isActive
-                    ? Vector3.left
-                    : Vector3.right
-                    ) *
-                    (isActive
-                    ? (
-                    transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition.x - MainGameManager.screenUnitSize + (MainGameManager.screenUnitSize * monsterInfoController.size.x)
-                    )
-                    : (
-                    -transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition.x
-                    )
-                    )
-                    * 0.01f
-                    * SettingVariables.slideToggleSpd
-                    );
-            }
-        }
-        isAnimating = false;
-        if (!isActive)
-        {
-            reloadInventory();
-            selectMonster(null);
-        }
-    }
-
     void adjustSize()
     {
         GetComponent<RectTransform>().sizeDelta = MainGameManager.screenSize;
-        transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(MainGameManager.screenUnitSize * invenSize.x, MainGameManager.screenUnitSize * -2f);
-        if (isInfoNeeded)
-            transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(MainGameManager.screenUnitSize * monsterInfoController.size.x, MainGameManager.screenUnitSize * -2f);
-        if (!isAnimating)
-        {
-            transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition =
-                isActive
-                ? Vector2.right * MainGameManager.screenUnitSize
-                : (Vector2.left * MainGameManager.screenUnitSize * invenSize.x);
-            if (isInfoNeeded)
-                transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition =
-                    isActive
-                    ? ((Vector2.left * MainGameManager.screenUnitSize * monsterInfoController.size.x) - (Vector2.right * MainGameManager.screenUnitSize))
-                    : Vector2.zero;
-        }
         Transform temp = transform.GetChild(0);
 
         Transform temp2 = temp.GetChild(0);

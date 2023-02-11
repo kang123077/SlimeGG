@@ -31,6 +31,7 @@ public static class LocalStorage
         public static bool inventory = false;
         public static bool info = false;
         public static bool setting = false;
+        public static bool reward = false;
     }
 
 
