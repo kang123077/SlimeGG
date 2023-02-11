@@ -23,7 +23,7 @@ public class ObjectMoveController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(keyToToggle) && !isAnimating)
+        if (keyToToggle != null && keyToToggle.Length != 0 && Input.GetKeyDown(keyToToggle) && !isAnimating)
         {
             if (distanceToMoveRatioToUnit == 0f || directionToMove == DirectionEnum.None)
             {
