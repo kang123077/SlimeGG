@@ -8,7 +8,7 @@ using UnityEngine;
 public class BattleManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject PenalForPause;
+    private GameObject penalForPause;
     [SerializeField]
     private GameObject monsterBase;
     [SerializeField]
@@ -24,6 +24,9 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     public GameObject entryListUI;
     [SerializeField]
+    public GameObject entrySlot;
+    [SerializeField]
+    public GameObject barrier;
     private RewardController rewardController;
 
     public static GameObject staticProjectilePrefab;
@@ -37,7 +40,6 @@ public class BattleManager : MonoBehaviour
     public static Vector2 fieldSize;
     private static List<MonsterLiveStat> enemyEntry = new List<MonsterLiveStat>();
     private static List<MonsterLiveStat> allyCandidateList = new List<MonsterLiveStat>();
-    public static int entryLimit { get; set; }
     private int sideWin { get; set; }
 
     private bool isBaseReady = false;
@@ -48,10 +50,8 @@ public class BattleManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!isBattleReady && LocalStorage.isDataCallDone())
@@ -203,14 +203,6 @@ public class BattleManager : MonoBehaviour
         monsterBattleControllerList[side][numPos] = newMonster.GetComponent<MonsterBattleController>();
 
         fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, side, setPos);
-
-        GameObject newMonsterInfoUI = Instantiate(monsterUIBase);
-        newMonsterInfoUI.transform.SetParent(monsterInfoUIGenerated.transform.Find($"{side}"));
-        newMonsterInfoUI
-            .GetComponent<MonsterBattleUIController>().initInfo(newMonster.GetComponent<MonsterBattleController>()
-            , side
-            , numPos);
-
     }
 
     private void generateAllies()
@@ -220,34 +212,29 @@ public class BattleManager : MonoBehaviour
             if (monsterBattleControllerList[0][i] != null)
             {
                 monsterBattleControllerList[0][i].setPlaceInfo(new Vector2(0, i));
-                GameObject newMonsterInfoUI = Instantiate(monsterUIBase);
-                newMonsterInfoUI.transform.SetParent(monsterInfoUIGenerated.transform.Find($"0"));
-                newMonsterInfoUI
-                    .GetComponent<MonsterBattleUIController>().initInfo(monsterBattleControllerList[0][i].GetComponent<MonsterBattleController>()
-                    , 0
-                    , i);
             }
         }
     }
 
     private void clearField()
     {
-        fieldGenerated.transform.Find("Barrier").AddComponent<PolygonCollider2D>();
-        Destroy(fieldGenerated.transform.Find("Entry Slot").gameObject);
+        // fieldGenerated.transform.Find("Barrier").AddComponent<PolygonCollider2D>();
+        // Destroy(fieldGenerated.transform.Find("Entry Slot").gameObject);
+        barrier.AddComponent<PolygonCollider2D>();
+        Destroy(entrySlot);
         Destroy(entryListUI.transform.parent.parent.gameObject);
     }
     private void initField(string fieldName)
     {
         float[] size = LocalDictionary.fields[fieldName].size.ToArray();
         fieldSize = new Vector2(size[0], size[1]);
-        entryLimit = LocalDictionary.fields[fieldName].numberRestrictPerSide[0];
         fieldGenerated.GetComponent<FieldController>().initField(LocalDictionary.fields[fieldName]);
     }
 
     public void pauseOrResumeBattle()
     {
         LocalStorage.IS_GAME_PAUSE = !LocalStorage.IS_GAME_PAUSE;
-        PenalForPause.SetActive(LocalStorage.IS_GAME_PAUSE);
+        penalForPause.SetActive(LocalStorage.IS_GAME_PAUSE);
     }
 
     public void finishBattle()
@@ -462,14 +449,16 @@ public class BattleManager : MonoBehaviour
     {
         if (monsterBattleControllerList[0][0] == null)
         {
-            print("몬스터 최소 1기 배치 필요!!");
+            Debug.Log("몬스터를 한 마리 이상 설치해야 함");
             return;
         }
+        /*
         if (monsterBattleControllerList[0].Length > entryLimit)
         {
-            print("몬스터 배치 최대수 초과!");
+            Debug.Log("몬스터 배치 한도를 초과함");
             return;
         }
+        */
         btn.SetActive(false);
         isAssignReady = true;
     }
