@@ -29,14 +29,20 @@ public class ObjectMoveController : MonoBehaviour
             {
                 return;
             }
-            StartCoroutine(toggleObject());
+            toggle();
         }
+    }
+
+    public void toggle()
+    {
+        StartCoroutine(toggleObject());
     }
 
     private IEnumerator toggleObject()
     {
-        LocalStorage.UIOpenStatus.reward = !isActive;
         isActive = !isActive;
+        if (isActive)
+            LocalStorage.UIOpenStatus.reward = true;
         isAnimating = true;
         float distanceUnitLeft = distanceToMoveRatioToUnit; ;
         while (
@@ -96,5 +102,12 @@ public class ObjectMoveController : MonoBehaviour
             }
         }
         isAnimating = false;
+        if (!isActive)
+            LocalStorage.UIOpenStatus.reward = false;
+    }
+
+    public bool getIsActive()
+    {
+        return isActive;
     }
 }

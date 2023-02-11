@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -22,6 +23,8 @@ public class BattleManager : MonoBehaviour
     public GameObject areaPrefab;
     [SerializeField]
     public GameObject entryListUI;
+    [SerializeField]
+    private RewardController rewardController;
 
     public static GameObject staticProjectilePrefab;
     public static GameObject staticAreaPrefab;
@@ -41,6 +44,7 @@ public class BattleManager : MonoBehaviour
     private bool isEnemyReady = false;
     private bool isEntryReady = false;
     private bool isAssignReady = false;
+    private bool isRewardSession = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -105,14 +109,47 @@ public class BattleManager : MonoBehaviour
                 }
             }
         }
-        if (LocalStorage.IS_BATTLE_FINISH)
+        if (LocalStorage.IS_BATTLE_FINISH && !isRewardSession)
         {
             Debug.Log($"Battle Finished:: Win => {sideWin} <=");
-            PenalForPause.SetActive(LocalStorage.IS_BATTLE_FINISH);
-            PenalForPause.transform.Find("Text Title").GetComponent<TMP_Text>().text = "BATTLE FINISHED!";
-            PenalForPause.transform.Find("Text Desc").GetComponent<TMP_Text>().text = $"Team {sideWin} Win!";
-            Destroy(gameObject);
+            openRewards();
         }
+    }
+
+    private void openRewards()
+    {
+        PenalForPause.SetActive(LocalStorage.IS_BATTLE_FINISH);
+        PenalForPause.transform.Find("Text Title").GetComponent<TMP_Text>().text = "BATTLE FINISHED!";
+        PenalForPause.transform.Find("Text Desc").GetComponent<TMP_Text>().text = $"Team {sideWin} Win!";
+        isRewardSession = true;
+        openRewardMonster();
+    }
+    private void openRewardMonster()
+    {
+        StartCoroutine(controlMonsterReward());
+    }
+
+    private IEnumerator controlMonsterReward()
+    {
+        rewardController.openMonsterReward();
+        yield return new WaitForSeconds(1f);
+        while (LocalStorage.UIOpenStatus.reward)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        StartCoroutine(controlItemReward());
+    }
+
+    private IEnumerator controlItemReward()
+    {
+        rewardController.openInventoryReward();
+        yield return new WaitForSeconds(1f);
+        while (LocalStorage.UIOpenStatus.reward)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        // 배틀씬 나가기
+        Destroy(gameObject);
     }
 
     private void callEnemyEntry(string entryPath)
