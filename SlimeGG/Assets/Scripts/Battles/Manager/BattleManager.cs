@@ -50,7 +50,7 @@ public class BattleManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isBattleReady && LocalStorage.DataCall.DICTIONARY && LocalStorage.DataCall.MONSTER)
+        if (!isBattleReady && LocalStorage.isDataCallDone())
         {
             if (!isBaseReady)
             {

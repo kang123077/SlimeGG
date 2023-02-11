@@ -70,6 +70,11 @@ public class DataManager : MonoBehaviour
             );
         LocalStorage.DataCall.JOURNEY = true;
 
+        LocalStorage.currency = CommonFunctions.loadObjectFromJson<int>(
+            "Assets/Resources/Jsons/Save/Currency"
+            );
+        LocalStorage.DataCall.CURRENCY = true;
+
     }
 
     // Update is called once per frame
