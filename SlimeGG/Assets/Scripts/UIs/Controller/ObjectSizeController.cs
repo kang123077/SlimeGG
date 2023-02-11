@@ -9,7 +9,6 @@ public class ObjectSizeController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -24,11 +23,6 @@ public class ObjectSizeController : MonoBehaviour
             MainGameManager.screenUnitSize * sizeRatioToUnit.x,
             MainGameManager.screenUnitSize * sizeRatioToUnit.y
             );
-        GetComponent<RectTransform>().anchoredPosition = new Vector2(
-            MainGameManager.screenUnitSize * posRatioToUnit.x,
-            MainGameManager.screenUnitSize * posRatioToUnit.y
-            );
-
         if (GetComponent<BoxCollider>() != null)
         {
             GetComponent<BoxCollider>().size = new Vector2(
@@ -36,5 +30,9 @@ public class ObjectSizeController : MonoBehaviour
             MainGameManager.screenUnitSize * sizeRatioToUnit.y
             );
         }
+        GetComponent<RectTransform>().anchoredPosition = new Vector2(
+            MainGameManager.screenUnitSize * posRatioToUnit.x,
+            MainGameManager.screenUnitSize * posRatioToUnit.y
+            );
     }
 }
