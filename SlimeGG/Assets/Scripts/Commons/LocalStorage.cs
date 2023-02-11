@@ -9,6 +9,7 @@ public static class LocalStorage
         public static bool MONSTER = false;
         public static bool JOURNEY = false;
         public static bool ITEM = false;
+        public static bool CURRENCY = false;
     }
 
     public static class Live
@@ -42,6 +43,8 @@ public static class LocalStorage
         { "items", new List<SlotController>() },
     };
 
+    public static int currency = 0;
+
     public static bool isCameraMoveable()
     {
         return
@@ -50,5 +53,15 @@ public static class LocalStorage
             && !UIOpenStatus.info
             && !UIOpenStatus.setting
             && !isCameraPosessed;
+    }
+
+    public static bool isDataCallDone()
+    {
+        return DataCall.CURRENCY
+            && DataCall.DICTIONARY
+            && DataCall.ITEM
+            && DataCall.JOURNEY
+            && DataCall.MONSTER
+            ;
     }
 }
