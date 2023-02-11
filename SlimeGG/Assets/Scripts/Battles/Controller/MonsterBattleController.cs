@@ -66,7 +66,6 @@ public class MonsterBattleController : MonoBehaviour
 
         animCasting = transform.Find("Casting Effect").GetComponent<Animator>();
 
-        transform.Find("Tracking Camera").gameObject.SetActive(false);
         hpController.gameObject.SetActive(false);
         transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
 
@@ -84,8 +83,6 @@ public class MonsterBattleController : MonoBehaviour
         this.entryNum = entryNum;
         hpController.setSide(entryNum.x);
         bg.GetComponent<SpriteRenderer>().flipX = entryNum.x == 0f;
-
-        setTexturetoCamera((int)entryNum.x, (int)entryNum.y);
     }
 
     void Update()
@@ -96,7 +93,6 @@ public class MonsterBattleController : MonoBehaviour
             {
                 if (!hpController.gameObject.activeSelf)
                 {
-                    transform.Find("Tracking Camera").gameObject.SetActive(true);
                     hpController.gameObject.SetActive(true);
                     transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
                 }
@@ -293,13 +289,6 @@ public class MonsterBattleController : MonoBehaviour
             bg.GetComponent<SpriteRenderer>().flipX = directionToTarget.x >= 0f;
             isDead = true;
         }
-    }
-
-    private void setTexturetoCamera(int side, int numPos)
-    {
-        transform.Find("Tracking Camera").GetComponent<Camera>().targetTexture = Resources.Load<RenderTexture>(
-            PathInfo.TEXTURE + "MonsterTracking/" + $"{side}_{numPos}"
-            );
     }
 
     private void chooseSkillToExecute()

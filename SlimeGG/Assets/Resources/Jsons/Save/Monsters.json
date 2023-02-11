@@ -61,6 +61,8 @@
     "entryPos": null
   },
   {
+    "speicie": "Eartipede",
+    "id": "00000004",
     "exp": [
       {
         "name": "Wind",
@@ -77,9 +79,20 @@
         "amount": 1.0,
         "shouldOver": true
       }
-    ],
-    "id": "00000004",
+    ]
+  },
+  {
     "speicie": "Sneaklower",
-    "entryPos": null
+    "id": "00000005",
+    "exp": [
+      {
+        "name": "Wind",
+        "amount": 10
+      },
+      {
+        "name": "Spirit",
+        "amount": 5
+      }
+    ]
   }
 ]
