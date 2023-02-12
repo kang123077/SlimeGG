@@ -12,15 +12,13 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private GameObject monsterBase;
     [SerializeField]
-    private GameObject fieldGenerated;
+    private FieldController fieldController;
     [SerializeField]
     public GameObject projectilePrefab;
     [SerializeField]
     public GameObject areaPrefab;
     [SerializeField]
     public InventoryManager inventoryManager;
-    [SerializeField]
-    public GameObject entrySlot;
     [SerializeField]
     public GameObject barrier;
     private RewardController rewardController;
@@ -41,6 +39,7 @@ public class BattleManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        LocalStorage.CURRENT_SCENE = "Battle";
     }
 
     void Update()
@@ -162,13 +161,13 @@ public class BattleManager : MonoBehaviour
 
     private void generateMonster(MonsterBattleInfo monsterInfo, int side, int numPos, float[] setPos)
     {
-        GameObject newMonster = Instantiate(monsterBase);
-        newMonster.GetComponent<MonsterBattleController>().initInfo(monsterInfo, fieldGenerated.transform.Find("Monster Container"));
-        newMonster.GetComponent<MonsterBattleController>().setPlaceInfo(new Vector2(side, numPos));
+        //GameObject newMonster = Instantiate(monsterBase);
+        //newMonster.GetComponent<MonsterBattleController>().initInfo(monsterInfo, fieldGenerated.transform.Find("Monster Container"));
+        //newMonster.GetComponent<MonsterBattleController>().setPlaceInfo(new Vector2(side, numPos));
 
-        monsterBattleControllerList[side][numPos] = newMonster.GetComponent<MonsterBattleController>();
+        //monsterBattleControllerList[side][numPos] = newMonster.GetComponent<MonsterBattleController>();
 
-        fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, side, setPos);
+        //fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, side, setPos);
     }
 
     private void generateAllies()
@@ -185,7 +184,7 @@ public class BattleManager : MonoBehaviour
     private void clearField()
     {
         barrier.AddComponent<PolygonCollider2D>();
-        Destroy(entrySlot);
+        //Destroy(enemyEntrySlot);
     }
 
     public void pauseOrResumeBattle()
@@ -428,7 +427,7 @@ public class BattleManager : MonoBehaviour
                             ))
         {
             ContentController newEnemy = inventoryManager.generateMonsterContentController();
-            newEnemy.initContent(GeneratorFunction.returnMonsterLiveStat(saveStat));
+            newEnemy.initContent(GeneratorFunction.returnMonsterLiveStat(saveStat), false);
             enemyEntry.Add(newEnemy);
         }
     }
@@ -436,6 +435,11 @@ public class BattleManager : MonoBehaviour
     private void placeEnemyEntry()
     {
         inventoryManager.setEntriable(true);
+        foreach (ContentController enemy in enemyEntry)
+        {
+            float[] pos = enemy.monsterLiveStat.saveStat.entryPos;
+            fieldController.enemyEntryGenerator.transform.GetChild((int)pos[0] + ((int)pos[1] * SettingVariables.Battle.entrySizeMax[0])).GetComponent<EntrySlotController>().installMonster(enemy);
+        }
         curStage = 2;
     }
 

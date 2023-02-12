@@ -412,8 +412,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c99f8c55a715b7d48b5d9dbf522c4f10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 4
-  y: 7
+  x: 0
+  y: 0
   cellTf: {fileID: 5545274058862907483, guid: c2ee959679342dc4c9cde36e3a332e42, type: 3}
 --- !u!1 &169043578
 GameObject:
@@ -884,11 +884,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   penalForPause: {fileID: 112185544}
   monsterBase: {fileID: 1029297608838221857, guid: 97bb411ac1c60ae429cbcdeac91d8d5a, type: 3}
-  fieldGenerated: {fileID: 1887458823}
+  fieldController: {fileID: 1887458825}
   projectilePrefab: {fileID: 2817938927849035747, guid: ac7b6b614ca4e724586c56427b1d9456, type: 3}
   areaPrefab: {fileID: 1071857258302024132, guid: 66a424fa020a7fa43b2fd2961e16ea20, type: 3}
   inventoryManager: {fileID: 562491998}
-  entrySlot: {fileID: 0}
   barrier: {fileID: 725388104}
 --- !u!114 &537605047
 MonoBehaviour:
@@ -1713,6 +1712,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d37f577789c8a3d4e999704a750387a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allyEntryGenerator: {fileID: 1901534077}
+  enemyEntryGenerator: {fileID: 141106209}
 --- !u!1 &1901534072
 GameObject:
   m_ObjectHideFlags: 0
@@ -1822,8 +1823,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c99f8c55a715b7d48b5d9dbf522c4f10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 4
-  y: 7
+  x: 0
+  y: 0
   cellTf: {fileID: 5545274058862907483, guid: c2ee959679342dc4c9cde36e3a332e42, type: 3}
 --- !u!1 &1970811212
 GameObject:

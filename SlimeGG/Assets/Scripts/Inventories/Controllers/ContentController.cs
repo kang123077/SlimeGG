@@ -24,6 +24,7 @@ public class ContentController : MonoBehaviour
     private Vector2 prevSize;
 
     private bool isInstalledOnField = false;
+    private bool canMove = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -42,8 +43,9 @@ public class ContentController : MonoBehaviour
         }
     }
 
-    public void initContent(MonsterLiveStat monsterLiveStat)
+    public void initContent(MonsterLiveStat monsterLiveStat, bool canMove = true)
     {
+        this.canMove = canMove;
         type = InventoryType.Monster;
         this.monsterLiveStat = monsterLiveStat;
         if (image == null)
@@ -87,6 +89,15 @@ public class ContentController : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (LocalStorage.CURRENT_SCENE == "Battle")
+        {
+            if (type == InventoryType.Monster)
+            {
+                // 전투 정보창 띄우기
+                Debug.Log("전투 정보창 띄우기!");
+            }
+        }
+        if (!canMove) return;
         prevPerant = transform.parent;
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (!isMoving) isMoving = true;
@@ -100,6 +111,7 @@ public class ContentController : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (!canMove) return;
         if (Vector3.Distance(mousePos, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.15f)
         {
         }
