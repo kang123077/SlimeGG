@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -78,9 +77,14 @@ public class InventoryManager : MonoBehaviour
         adjustSize();
         if (isInitWithToggle)
         {
-            transform.GetChild(0).GetComponent<ObjectMoveController>().toggle();
-            transform.GetChild(1).GetComponent<ObjectMoveController>().toggle();
+            toggleAll();
         }
+    }
+
+    public void toggleAll()
+    {
+        transform.GetChild(0).GetComponent<ObjectMoveController>().toggle();
+        transform.GetChild(1).GetComponent<ObjectMoveController>().toggle();
     }
 
     private void trackCamera()
@@ -345,5 +349,10 @@ public class InventoryManager : MonoBehaviour
     {
         Transform res = Instantiate(contentPrefab);
         return res.GetComponent<ContentController>();
+    }
+
+    public MonsterInfoController getMonsterInfoController()
+    {
+        return monsterInfoController;
     }
 }

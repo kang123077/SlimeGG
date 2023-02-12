@@ -7,7 +7,7 @@ public class ObjectMoveController : MonoBehaviour
     [SerializeField]
     private DirectionEnum directionToMove = DirectionEnum.None;
     [SerializeField]
-    private float distanceToMoveRatioToUnit = 0f;
+    public float distanceToMoveRatioToUnit = 0f;
     [SerializeField]
     private string keyToToggle;
 

@@ -278,17 +278,17 @@ public class ContentController : MonoBehaviour
         if (objectBelow.parent != null && objectBelow.parent.tag == "Tile" && !objectBelow.parent.GetComponent<EntrySlotController>().isPosessed)
         {
             isInstalledOnField = true;
+            if (prevPerant != null && prevPerant.GetComponent<EntrySlotController>() != null)
+            {
+                prevPerant.GetComponent<EntrySlotController>().truncateMonster(this, false);
+            }
             prevPerant = objectBelow;
-            objectBelow.parent.GetComponent<EntrySlotController>().installMonster(this);
+            objectBelow.parent.GetComponent<EntrySlotController>().installMonster(this, false);
             return;
         }
         if (objectBelow.tag == "Slot")
         {
             isInstalledOnField = false;
-            if (prevPerant.GetComponent<EntrySlotController>() != null)
-            {
-                prevPerant.GetComponent<EntrySlotController>().truncateMonster();
-            }
             prevPerant = objectBelow;
             prevSize = Vector2.one;
             objectBelow.GetComponent<SlotController>().installContent(transform);

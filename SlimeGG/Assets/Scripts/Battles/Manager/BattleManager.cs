@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class BattleManager : MonoBehaviour
     public InventoryManager inventoryManager;
     [SerializeField]
     public GameObject barrier;
+    [SerializeField]
     private RewardController rewardController;
 
     public static GameObject staticProjectilePrefab;
@@ -32,7 +34,7 @@ public class BattleManager : MonoBehaviour
     public static float[][][] distanceEnemies = new float[2][][];
     public static Vector2 fieldSize;
     private static List<ContentController> enemyEntry = new List<ContentController>();
-    private static List<ContentController> allyEntry = new List<ContentController>();
+    public static List<ContentController> allyEntry = new List<ContentController>();
     private int sideWin { get; set; }
     private static int curStage = 0;
 
@@ -63,8 +65,10 @@ public class BattleManager : MonoBehaviour
                 break;
             case 3:
                 // 배치 완료 버튼 누름 = 전투용 객체들 생성
+                // 배치 타일 제거
                 // 전투 시작 버튼 활성화
                 generateBattleInfos();
+                truncateFieldTiles();
                 break;
             case 4:
                 // 대기 <== 전투 시작 누를때까지
@@ -121,13 +125,15 @@ public class BattleManager : MonoBehaviour
     }
     private void openRewardMonster()
     {
-        GetComponent<MainGameManager>().controllLoading(true, null);
+        GetComponent<MainGameManager>().controllLoading(true, null, false);
         StartCoroutine(controlMonsterReward());
     }
 
     private IEnumerator controlMonsterReward()
     {
         rewardController.openMonsterReward();
+        inventoryManager.getMonsterInfoController().GetComponent<ObjectMoveController>().distanceToMoveRatioToUnit = 11f;
+        inventoryManager.toggleAll();
         yield return new WaitForSeconds(1f);
         while (LocalStorage.UIOpenStatus.reward)
         {
@@ -158,17 +164,6 @@ public class BattleManager : MonoBehaviour
     //        cnt++;
     //    }
     //}
-
-    private void generateMonster(MonsterBattleInfo monsterInfo, int side, int numPos, float[] setPos)
-    {
-        //GameObject newMonster = Instantiate(monsterBase);
-        //newMonster.GetComponent<MonsterBattleController>().initInfo(monsterInfo, fieldGenerated.transform.Find("Monster Container"));
-        //newMonster.GetComponent<MonsterBattleController>().setPlaceInfo(new Vector2(side, numPos));
-
-        //monsterBattleControllerList[side][numPos] = newMonster.GetComponent<MonsterBattleController>();
-
-        //fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, side, setPos);
-    }
 
     private void generateAllies()
     {
@@ -443,20 +438,102 @@ public class BattleManager : MonoBehaviour
         curStage = 2;
     }
 
-    private void finishPlacement()
+    public void controllFunctionOfButton(Transform btnTf)
+    {
+        Debug.Log(curStage);
+        switch (curStage)
+        {
+            case 2:
+                finishPlacement(btnTf);
+                break;
+            case 4:
+                startBattle(btnTf);
+                break;
+        }
+    }
+
+    private void finishPlacement(Transform btnTf)
     {
         inventoryManager.setEntriable(false);
+        inventoryManager.toggleAll();
+        btnTf.GetChild(0).GetComponent<TextMeshProUGUI>().text = "전투 시작";
         curStage = 3;
     }
 
     private void generateBattleInfos()
     {
+        generateMatrix();
+        int cnt = 0;
+        foreach (ContentController enemy in enemyEntry)
+        {
+            generateMonster(enemy, 1, cnt);
+            cnt++;
+        }
+        cnt = 0;
+        foreach (ContentController ally in allyEntry)
+        {
+            generateMonster(ally, 0, cnt);
+        }
         curStage = 4;
     }
 
-    private void startBattle()
+    private void generateMatrix()
     {
+        int alliesCount = allyEntry.Count;
+        int enemiesCount = enemyEntry.Count;
+        monsterBattleControllerList[0] = new MonsterBattleController[alliesCount];
+        monsterBattleControllerList[1] = new MonsterBattleController[enemiesCount];
+        distanceAllies[0] = new float[alliesCount][];
+        for (int i = 0; i < alliesCount; i++)
+        {
+            distanceAllies[0][i] = new float[alliesCount];
+        }
+        distanceAllies[1] = new float[enemiesCount][];
+        for (int i = 0; i < enemiesCount; i++)
+        {
+            distanceAllies[1][i] = new float[enemiesCount];
+        }
+
+        distanceEnemies[0] = new float[alliesCount][];
+        for (int i = 0; i < alliesCount; i++)
+        {
+            distanceEnemies[0][i] = new float[enemiesCount];
+        }
+        distanceEnemies[1] = new float[enemiesCount][];
+        for (int i = 0; i < enemiesCount; i++)
+        {
+            distanceEnemies[1][i] = new float[alliesCount];
+        }
+    }
+
+    private void generateMonster(ContentController controller, int side, int numPos)
+    {
+        GameObject newMonster = Instantiate(monsterBase);
+        newMonster.GetComponent<MonsterBattleController>().initInfo(MonsterCommonFunction.generateMonsterBattleInfo(controller.monsterLiveStat), fieldController.transform.Find("Monster Container"));
+        newMonster.GetComponent<MonsterBattleController>().setPlaceInfo(new Vector2(side, numPos));
+        newMonster.transform.position = controller.transform.position;
+        newMonster.transform.localScale = Vector3.one;
+        newMonster.transform.localPosition = new Vector3(
+            newMonster.transform.localPosition.x,
+            newMonster.transform.localPosition.y,
+            0f);
+
+        monsterBattleControllerList[side][numPos] = newMonster.GetComponent<MonsterBattleController>();
+    }
+
+    private void truncateFieldTiles()
+    {
+        Destroy(fieldController.enemyEntryGenerator.gameObject);
+        Destroy(fieldController.allyEntryGenerator.gameObject);
+        enemyEntry.Clear();
+        allyEntry.Clear();
+    }
+
+    private void startBattle(Transform btnTf)
+    {
+        Destroy(btnTf.gameObject);
         curStage = 5;
+        LocalStorage.IS_GAME_PAUSE = false;
     }
 
     public void finishBattle()

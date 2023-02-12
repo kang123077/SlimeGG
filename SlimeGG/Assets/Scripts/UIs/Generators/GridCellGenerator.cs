@@ -31,7 +31,8 @@ public class GridCellGenerator : MonoBehaviour
                 newCell.SetParent(transform);
                 newCell.localPosition = Vector3.zero;
             }
-        } else
+        }
+        else
         {
             x = SettingVariables.Battle.entrySizeMax[0];
             y = SettingVariables.Battle.entrySizeMax[1];
@@ -39,6 +40,10 @@ public class GridCellGenerator : MonoBehaviour
             for (int i = 0; i < x * y; i++)
             {
                 Transform newCell = Instantiate(cellTf);
+                if (newCell.GetComponent<EntrySlotController>())
+                {
+                    newCell.GetComponent<EntrySlotController>().setCoordinate(x, y);
+                }
                 newCell.SetParent(transform);
                 newCell.localPosition = Vector3.zero;
             }

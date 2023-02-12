@@ -70,6 +70,7 @@ public class MonsterBattleController : MonoBehaviour
         transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
 
         bg.GetComponent<SpriteRenderer>().flipX = true;
+        transform.SetParent(monsterContainer);
     }
 
     public void initInfo(MonsterBattleInfo monsterBattleInfo, Transform monsterContainer, Transform entryContainer)

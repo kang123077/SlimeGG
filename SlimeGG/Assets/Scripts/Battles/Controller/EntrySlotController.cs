@@ -9,8 +9,13 @@ public class EntrySlotController : MonoBehaviour
 
     public bool isPosessed = false;
 
-    public void installMonster(ContentController originMonster)
+    public void installMonster(ContentController originMonster, bool isEnemy = true)
     {
+        if (!isEnemy)
+        {
+            BattleManager.allyEntry.Add(originMonster);
+        }
+        originMonster.monsterLiveStat.saveStat.entryPos = new float[] { x, y };
         isPosessed = true;
         originMonster.transform.SetParent(transform);
         originMonster.transform.localScale = Vector3.one;
@@ -18,8 +23,19 @@ public class EntrySlotController : MonoBehaviour
         originMonster.transform.GetChild(0).GetComponent<BoxCollider>().size = Vector3.one;
     }
 
-    public void truncateMonster()
+    public void truncateMonster(ContentController originMonster, bool isEnemy = true)
     {
+        if (!isEnemy)
+        {
+            BattleManager.allyEntry.Remove(originMonster);
+        }
+        originMonster.monsterLiveStat.saveStat.entryPos = new float[] { };
         isPosessed = false;
+    }
+
+    public void setCoordinate(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
     }
 }
