@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
@@ -12,21 +13,16 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private GameObject monsterBase;
     [SerializeField]
-    private GameObject fieldGenerated;
-    [SerializeField]
-    private GameObject monsterUIBase;
-    [SerializeField]
-    private GameObject monsterInfoUIGenerated;
+    private FieldController fieldController;
     [SerializeField]
     public GameObject projectilePrefab;
     [SerializeField]
     public GameObject areaPrefab;
     [SerializeField]
-    public GameObject entryListUI;
-    [SerializeField]
-    public GameObject entrySlot;
+    public InventoryManager inventoryManager;
     [SerializeField]
     public GameObject barrier;
+    [SerializeField]
     private RewardController rewardController;
 
     public static GameObject staticProjectilePrefab;
@@ -36,102 +32,108 @@ public class BattleManager : MonoBehaviour
         new MonsterBattleController[2][];
     public static float[][][] distanceAllies = new float[2][][];
     public static float[][][] distanceEnemies = new float[2][][];
-    public static bool isBattleReady = false;
     public static Vector2 fieldSize;
-    private static List<MonsterLiveStat> enemyEntry = new List<MonsterLiveStat>();
-    private static List<MonsterLiveStat> allyCandidateList = new List<MonsterLiveStat>();
+    private static List<ContentController> enemyEntry = new List<ContentController>();
+    public static List<ContentController> allyEntry = new List<ContentController>();
     private int sideWin { get; set; }
+    private static int curStage = 0;
 
-    private bool isBaseReady = false;
-    private bool isEnemyReady = false;
-    private bool isEntryReady = false;
-    private bool isAssignReady = false;
-    private bool isRewardSession = false;
     // Start is called before the first frame update
     void Start()
     {
+        LocalStorage.CURRENT_SCENE = "Battle";
     }
 
     void Update()
     {
-        if (!isBattleReady && LocalStorage.isDataCallDone())
+        switch (curStage)
         {
-            if (!isBaseReady)
-            {
+            case 0:
+                // 내 필드 정보 불러오기
+                // 적 필드 정보 + 몬스터 정보 불러오기
                 staticProjectilePrefab = projectilePrefab;
                 staticAreaPrefab = areaPrefab;
-                initField("Normal");
-                isBaseReady = true;
-            }
-            if (!isEnemyReady)
-            {
-                callEnemyEntry("Test");
-                callAllyEntry();
-                generateEnemies();
-                isEnemyReady = true;
-            }
-            if (!isEntryReady)
-            {
-                setEntryMonsters();
-                isEntryReady = true;
-            }
-            if (isAssignReady)
-            {
-                clearField();
-                generateAllies();
+                loadBattleZoneInfo(0, "swamp");
+                break;
+            case 1:
+                // 적 배치
+                placeEnemyEntry();
+                break;
+            case 2:
+                // 대기 <== 배치 완료 버튼 누를때까지
+                // 아군 배치 <- 이건 유저가
+                break;
+            case 3:
+                // 배치 완료 버튼 누름 = 전투용 객체들 생성
+                // 배치 타일 제거
+                // 전투 시작 버튼 활성화
+                generateBattleInfos();
+                truncateFieldTiles();
+                break;
+            case 4:
+                // 대기 <== 전투 시작 누를때까지
                 calculateDistance();
-                isBattleReady = true;
-            }
-        }
-        if (isBattleReady && !LocalStorage.IS_GAME_PAUSE)
-        {
-            calculateDistance();
-            bool isOneSideAllDead;
-            int side = 1;
-            foreach (MonsterBattleController[] sideList in monsterBattleControllerList)
-            {
-                isOneSideAllDead = true;
-                foreach (MonsterBattleController battleController in sideList)
+                break;
+            case 5:
+                // 대기 <== 전투 끝날 때까지
+                // 전투 실시간 로직은 여기
+                calculateDistance();
+                bool isOneSideAllDead;
+                int side = 1;
+                foreach (MonsterBattleController[] sideList in monsterBattleControllerList)
                 {
-                    if (battleController != null)
+                    isOneSideAllDead = true;
+                    foreach (MonsterBattleController battleController in sideList)
                     {
-                        isOneSideAllDead = isOneSideAllDead && battleController.isDead;
+                        if (battleController != null)
+                        {
+                            isOneSideAllDead = isOneSideAllDead && battleController.isDead;
+                        }
+                    }
+                    if (isOneSideAllDead)
+                    {
+                        sideWin = side;
+                        finishBattle();
+                    }
+                    else
+                    {
+                        side--;
                     }
                 }
-                if (isOneSideAllDead)
-                {
-                    sideWin = side;
-                    finishBattle();
-                }
-                else
-                {
-                    side--;
-                }
-            }
-        }
-        if (LocalStorage.IS_BATTLE_FINISH && !isRewardSession)
-        {
-            Debug.Log($"Battle Finished:: Win => {sideWin} <=");
-            openRewards();
+                break;
+            case 6:
+                // 전투 종료
+                // 리워드 보여주기
+                Debug.Log($"Battle Finished:: Win => {sideWin} <=");
+                openRewards();
+                break;
+            case 7:
+                // 대기 <== 리워드 종료까지
+                break;
+            case 8:
+                // 리워드 종료
+                // 배틀씬 나가기
+                Destroy(gameObject);
+                break;
         }
     }
 
     private void openRewards()
     {
-        PenalForPause.SetActive(LocalStorage.IS_BATTLE_FINISH);
-        PenalForPause.transform.Find("Text Title").GetComponent<TMP_Text>().text = "BATTLE FINISHED!";
-        PenalForPause.transform.Find("Text Desc").GetComponent<TMP_Text>().text = $"Team {sideWin} Win!";
-        isRewardSession = true;
         openRewardMonster();
+        curStage = 7;
     }
     private void openRewardMonster()
     {
+        GetComponent<MainGameManager>().controllLoading(true, null, false);
         StartCoroutine(controlMonsterReward());
     }
 
     private IEnumerator controlMonsterReward()
     {
         rewardController.openMonsterReward();
+        inventoryManager.getMonsterInfoController().GetComponent<ObjectMoveController>().distanceToMoveRatioToUnit = 11f;
+        inventoryManager.toggleAll();
         yield return new WaitForSeconds(1f);
         while (LocalStorage.UIOpenStatus.reward)
         {
@@ -148,62 +150,20 @@ public class BattleManager : MonoBehaviour
         {
             yield return new WaitForSeconds(0.1f);
         }
-        // 배틀씬 나가기
-        Destroy(gameObject);
+        curStage = 8;
     }
 
-    private void callEnemyEntry(string entryPath)
-    {
-        foreach (MonsterSaveStat saveStat in
-                        CommonFunctions.loadObjectFromJson<MonsterSaveStat[]>(
-                            $"Assets/Resources/Jsons/Entries/{entryPath}"
-                            ))
-        {
-            enemyEntry.Add(GeneratorFunction.returnMonsterLiveStat(saveStat));
-        }
-    }
-
-    private void callAllyEntry()
-    {
-        allyCandidateList = LocalStorage.Live.monsters.Values.ToList();
-    }
-
-    private void generateEnemies()
-    {
-        MonsterBattleInfo temp;
-        int cnt = 0;
-        foreach (MonsterLiveStat enemyStat in enemyEntry)
-        {
-            temp = MonsterCommonFunction.generateMonsterBattleInfo(enemyStat);
-            generateMonster(temp, 1, cnt, temp.entryPos);
-            cnt++;
-        }
-    }
-
-    private void setEntryMonsters()
-    {
-        MonsterBattleInfo temp;
-        int cnt = 0;
-        foreach (MonsterLiveStat allyStat in allyCandidateList)
-        {
-            temp = MonsterCommonFunction.generateMonsterBattleInfo(allyStat);
-            GameObject newMonster = Instantiate(monsterBase);
-            newMonster.GetComponent<MonsterBattleController>().initInfo(temp, fieldGenerated.transform.Find("Monster Container"), entryListUI.transform);
-            entryListUI.GetComponent<EntryController>().addEntry(newMonster);
-            cnt++;
-        }
-    }
-
-    private void generateMonster(MonsterBattleInfo monsterInfo, int side, int numPos, float[] setPos)
-    {
-        GameObject newMonster = Instantiate(monsterBase);
-        newMonster.GetComponent<MonsterBattleController>().initInfo(monsterInfo, fieldGenerated.transform.Find("Monster Container"));
-        newMonster.GetComponent<MonsterBattleController>().setPlaceInfo(new Vector2(side, numPos));
-
-        monsterBattleControllerList[side][numPos] = newMonster.GetComponent<MonsterBattleController>();
-
-        fieldGenerated.GetComponent<FieldController>().setMonsterInPosition(newMonster.transform, side, setPos);
-    }
+    //private void generateEnemies()
+    //{
+    //    MonsterBattleInfo temp;
+    //    int cnt = 0;
+    //    foreach (ContentController enemyStat in enemyEntry)
+    //    {
+    //        temp = MonsterCommonFunction.generateMonsterBattleInfo(enemyStat);
+    //        generateMonster(temp, 1, cnt, temp.entryPos);
+    //        cnt++;
+    //    }
+    //}
 
     private void generateAllies()
     {
@@ -218,28 +178,14 @@ public class BattleManager : MonoBehaviour
 
     private void clearField()
     {
-        // fieldGenerated.transform.Find("Barrier").AddComponent<PolygonCollider2D>();
-        // Destroy(fieldGenerated.transform.Find("Entry Slot").gameObject);
         barrier.AddComponent<PolygonCollider2D>();
-        Destroy(entrySlot);
-        Destroy(entryListUI.transform.parent.parent.gameObject);
-    }
-    private void initField(string fieldName)
-    {
-        float[] size = LocalDictionary.fields[fieldName].size.ToArray();
-        fieldSize = new Vector2(size[0], size[1]);
-        fieldGenerated.GetComponent<FieldController>().initField(LocalDictionary.fields[fieldName]);
+        //Destroy(enemyEntrySlot);
     }
 
     public void pauseOrResumeBattle()
     {
         LocalStorage.IS_GAME_PAUSE = !LocalStorage.IS_GAME_PAUSE;
         penalForPause.SetActive(LocalStorage.IS_GAME_PAUSE);
-    }
-
-    public void finishBattle()
-    {
-        LocalStorage.IS_BATTLE_FINISH = true;
     }
     private void calculateDistance()
     {
@@ -460,6 +406,148 @@ public class BattleManager : MonoBehaviour
         }
         */
         btn.SetActive(false);
-        isAssignReady = true;
+    }
+
+    private void loadBattleZoneInfo(int level, string dungeonTheme)
+    {
+        callEnemyEntry("Test");
+        curStage = 1;
+    }
+
+    private void callEnemyEntry(string entryPath)
+    {
+        foreach (MonsterSaveStat saveStat in
+                        CommonFunctions.loadObjectFromJson<MonsterSaveStat[]>(
+                            $"Assets/Resources/Jsons/Entries/{entryPath}"
+                            ))
+        {
+            ContentController newEnemy = inventoryManager.generateMonsterContentController();
+            newEnemy.initContent(GeneratorFunction.returnMonsterLiveStat(saveStat), false);
+            enemyEntry.Add(newEnemy);
+        }
+    }
+
+    private void placeEnemyEntry()
+    {
+        inventoryManager.setEntriable(true);
+        foreach (ContentController enemy in enemyEntry)
+        {
+            float[] pos = enemy.monsterLiveStat.saveStat.entryPos;
+            fieldController.enemyEntryGenerator.transform.GetChild((int)pos[0] + ((int)pos[1] * SettingVariables.Battle.entrySizeMax[0])).GetComponent<EntrySlotController>().installMonster(enemy);
+        }
+        curStage = 2;
+    }
+
+    public void controllFunctionOfButton(Transform btnTf)
+    {
+        switch (curStage)
+        {
+            case 2:
+                finishPlacement(btnTf);
+                break;
+            case 4:
+                startBattle(btnTf);
+                break;
+        }
+    }
+
+    private void finishPlacement(Transform btnTf)
+    {
+        inventoryManager.setEntriable(false);
+        inventoryManager.toggleAll();
+        btnTf.GetChild(0).GetComponent<TextMeshProUGUI>().text = "전투 시작";
+        curStage = 3;
+    }
+
+    private void generateBattleInfos()
+    {
+        generateMatrix();
+        int cnt = 0;
+        foreach (ContentController enemy in enemyEntry)
+        {
+            generateMonster(enemy, 1, cnt);
+            cnt++;
+        }
+        cnt = 0;
+        foreach (ContentController ally in allyEntry)
+        {
+            generateMonster(ally, 0, cnt);
+        }
+        curStage = 4;
+    }
+
+    private void generateMatrix()
+    {
+        int alliesCount = allyEntry.Count;
+        int enemiesCount = enemyEntry.Count;
+        monsterBattleControllerList[0] = new MonsterBattleController[alliesCount];
+        monsterBattleControllerList[1] = new MonsterBattleController[enemiesCount];
+        distanceAllies[0] = new float[alliesCount][];
+        for (int i = 0; i < alliesCount; i++)
+        {
+            distanceAllies[0][i] = new float[alliesCount];
+        }
+        distanceAllies[1] = new float[enemiesCount][];
+        for (int i = 0; i < enemiesCount; i++)
+        {
+            distanceAllies[1][i] = new float[enemiesCount];
+        }
+
+        distanceEnemies[0] = new float[alliesCount][];
+        for (int i = 0; i < alliesCount; i++)
+        {
+            distanceEnemies[0][i] = new float[enemiesCount];
+        }
+        distanceEnemies[1] = new float[enemiesCount][];
+        for (int i = 0; i < enemiesCount; i++)
+        {
+            distanceEnemies[1][i] = new float[alliesCount];
+        }
+    }
+
+    private void generateMonster(ContentController controller, int side, int numPos)
+    {
+        GameObject newMonster = Instantiate(monsterBase);
+        newMonster.GetComponent<MonsterBattleController>().initInfo(MonsterCommonFunction.generateMonsterBattleInfo(controller.monsterLiveStat), fieldController.transform.Find("Monster Container"));
+        newMonster.GetComponent<MonsterBattleController>().setPlaceInfo(new Vector2(side, numPos));
+        newMonster.transform.position = controller.transform.position;
+        newMonster.transform.localScale = Vector3.one;
+        newMonster.transform.localPosition = new Vector3(
+            newMonster.transform.localPosition.x,
+            newMonster.transform.localPosition.y,
+            0f);
+
+        monsterBattleControllerList[side][numPos] = newMonster.GetComponent<MonsterBattleController>();
+    }
+
+    private void truncateFieldTiles()
+    {
+        Destroy(fieldController.enemyEntryGenerator.gameObject);
+        Destroy(fieldController.allyEntryGenerator.gameObject);
+        foreach(ContentController ally in allyEntry)
+        {
+            MonsterLiveStat temp = ally.monsterLiveStat;
+            LocalStorage.Live.monsters[temp.saveStat.id] = temp;
+        }
+        enemyEntry.Clear();
+        allyEntry.Clear();
+    }
+
+    private void startBattle(Transform btnTf)
+    {
+        Destroy(btnTf.gameObject);
+        curStage = 5;
+        LocalStorage.IS_GAME_PAUSE = false;
+    }
+
+    public void finishBattle()
+    {
+        LocalStorage.IS_BATTLE_FINISH = true;
+        curStage = 6;
+    }
+
+    public static int getCurStage()
+    {
+        return curStage;
     }
 }

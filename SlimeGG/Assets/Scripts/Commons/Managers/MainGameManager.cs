@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class MainGameManager : MonoBehaviour
 {
     [SerializeField]
-    GameObject loadingGO;
+    GameObject loadingGO, curtainGO;
     [SerializeField]
     SettingManager settingManager;
     public static Vector2 screenSize = Vector2.zero;
@@ -45,23 +45,24 @@ public class MainGameManager : MonoBehaviour
         controllLoading(true, sceneToLoad);
     }
 
-    public void controllLoading(bool isFadeIn, string targetSceneName)
+    public void controllLoading(bool isFadeIn, string targetSceneName, bool isMainLoading = true)
     {
-        StartCoroutine(fadeScreen(isFadeIn, targetSceneName));
+        StartCoroutine(fadeScreen(isFadeIn, targetSceneName, isMainLoading));
     }
 
-    private IEnumerator fadeScreen(bool isFadeIn, string targetSceneName)
+    private IEnumerator fadeScreen(bool isFadeIn, string targetSceneName, bool isMainLoading = true)
     {
+        GameObject targetCurtain = isMainLoading ? loadingGO : curtainGO;
         if (isFadeIn)
         {
-            loadingGO.SetActive(isFadeIn);
+            targetCurtain.SetActive(isFadeIn);
         }
         float cnt = 0f;
-        while (cnt < 1f)
+        while (cnt < 0.5f)
         {
             cnt += 0.03f;
             yield return new WaitForSeconds(0.01f);
-            loadingGO.GetComponent<Image>().color = new Color(0f, 0f, 0f, isFadeIn ? cnt : (1f - cnt));
+            targetCurtain.GetComponent<Image>().color = new Color(0f, 0f, 0f, isFadeIn ? cnt : (0.5f - cnt));
         }
         if (targetSceneName != null)
         {
@@ -70,7 +71,7 @@ public class MainGameManager : MonoBehaviour
         }
         if (!isFadeIn)
         {
-            loadingGO.SetActive(isFadeIn);
+            targetCurtain.SetActive(isFadeIn);
             LocalStorage.UIOpenStatus.fade = false;
         }
     }

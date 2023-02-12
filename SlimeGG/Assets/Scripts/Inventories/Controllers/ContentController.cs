@@ -10,7 +10,8 @@ public class ContentController : MonoBehaviour
     public InventoryType type = InventoryType.None;
     public MonsterLiveStat monsterLiveStat;
     public ItemLiveStat itemLiveStat;
-    Transform image;
+    private Transform image;
+    private SpriteRenderer spriteRenderer;
     bool isMoving = false;
 
     float cntMouseOn = 0f;
@@ -19,10 +20,16 @@ public class ContentController : MonoBehaviour
     InfoWindowController infoWindowController;
 
     private Vector3 mousePos;
+    private Transform prevPerant;
+    private Vector2 prevSize;
+
+    private bool isInstalledOnField = false;
+    private bool canMove = true;
     // Start is called before the first frame update
     void Start()
     {
         image = transform.GetChild(0);
+        spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -36,17 +43,22 @@ public class ContentController : MonoBehaviour
         }
     }
 
-    public void initContent(MonsterLiveStat monsterLiveStat)
+    public void initContent(MonsterLiveStat monsterLiveStat, bool canMove = true)
     {
+        this.canMove = canMove;
         type = InventoryType.Monster;
         this.monsterLiveStat = monsterLiveStat;
         if (image == null)
         {
             image = transform.GetChild(0);
+            spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         }
         image.GetComponent<Image>().sprite = Resources.Load<Sprite>(
             $"{PathInfo.Monster.Sprite}{monsterLiveStat.saveStat.speicie}"
             );
+        spriteRenderer.sprite = Resources.Load<Sprite>(
+        $"{PathInfo.Monster.Sprite}{monsterLiveStat.saveStat.speicie}"
+        );
     }
 
     public void initContent(ItemLiveStat itemLiveStat)
@@ -56,15 +68,19 @@ public class ContentController : MonoBehaviour
         if (image == null)
         {
             image = transform.GetChild(0);
+            spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         }
         image.GetComponent<Image>().sprite = Resources.Load<Sprite>(
             $"{PathInfo.Item.Sprite}{itemLiveStat.saveStat.itemName}"
             );
+        spriteRenderer.sprite = Resources.Load<Sprite>(
+        $"{PathInfo.Item.Sprite}{itemLiveStat.saveStat.itemName}"
+        );
     }
 
     private void adjustSize()
     {
-        if (image != null && transform.parent != null)
+        if (image != null && transform.parent != null && !isInstalledOnField)
         {
             Vector2 temp = transform.parent.GetComponent<RectTransform>().sizeDelta;
             image.GetComponent<BoxCollider>().size = new Vector3(temp.x, temp.y, 0.2f);
@@ -73,6 +89,16 @@ public class ContentController : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (LocalStorage.CURRENT_SCENE == "Battle")
+        {
+            if (type == InventoryType.Monster)
+            {
+                // 전투 정보창 띄우기
+                Debug.Log("전투 정보창 띄우기!");
+            }
+        }
+        if (!canMove) return;
+        prevPerant = transform.parent;
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (!isMoving) isMoving = true;
         LocalStorage.isCameraPosessed = true;
@@ -80,10 +106,12 @@ public class ContentController : MonoBehaviour
         {
             inventoryManager.selectMonster(this);
         }
+        isInstalledOnField = false;
     }
 
     private void OnMouseUp()
     {
+        if (!canMove) return;
         if (Vector3.Distance(mousePos, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.15f)
         {
         }
@@ -97,7 +125,22 @@ public class ContentController : MonoBehaviour
         mousePos = Vector3.zero;
         isMoving = false;
         LocalStorage.isCameraPosessed = false;
-        transform.localPosition = new Vector3(0f, 0f, -2f);
+        if (inventoryManager.getIsForEntry())
+        {
+            if (!isInstalledOnField)
+            {
+                transform.SetParent(prevPerant);
+                prevPerant = null;
+                transform.localScale = Vector3.one;
+                transform.GetComponent<RectTransform>().sizeDelta = prevSize;
+                image.transform.GetComponent<BoxCollider>().size = prevSize;
+                prevSize = Vector2.zero;
+            }
+        }
+        if (!isInstalledOnField)
+        {
+            transform.localPosition = new Vector3(0f, 0f, -2f);
+        }
     }
 
     private void onDrag()
@@ -105,31 +148,48 @@ public class ContentController : MonoBehaviour
         if (isMoving)
         {
             transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            transform.localPosition = new Vector3(
-                transform.localPosition.x, transform.localPosition.y, -13f);
-            if (type != InventoryType.Item)
+            if (inventoryManager.getIsForEntry())
             {
-                RaycastHit res;
-                if (Physics.Raycast(transform.position, Vector3.forward, out res, 1.2f))
+                transform.localPosition = new Vector3(
+                    transform.localPosition.x, transform.localPosition.y, 8f);
+                if (transform.parent != null)
                 {
-                    if (res.transform.tag == "Content")
+                    prevPerant = transform.parent;
+                    prevSize = transform.GetComponent<RectTransform>().sizeDelta;
+                    transform.SetParent(null);
+                    transform.localScale = Vector3.one;
+                    transform.GetComponent<RectTransform>().sizeDelta = Vector2.one;
+                    image.transform.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, 0.2f);
+                }
+            }
+            else
+            {
+                transform.localPosition = new Vector3(
+                    transform.localPosition.x, transform.localPosition.y, -13f);
+                if (type != InventoryType.Item)
+                {
+                    RaycastHit res;
+                    if (Physics.Raycast(transform.position, Vector3.forward, out res, 1.2f))
                     {
-                        ContentController content = res.transform.GetComponent<ContentController>();
-                        if (content == null) return;
-                        if (content.type == InventoryType.Item) return;
-                        if (content.monsterLiveStat.saveStat.id == monsterLiveStat.saveStat.id) return;
-                        switch (type)
+                        if (res.transform.tag == "Content")
                         {
-                            case InventoryType.Monster:
-                                if (content.type == InventoryType.Monster)
-                                {
-                                    if (inventoryManager.curSelectedMonster.monsterLiveStat.saveStat.id
-                                        != content.monsterLiveStat.saveStat.id)
-                                        inventoryManager.selectMonster(content);
-                                    inventoryManager.viewExpectation(monsterLiveStat);
-                                }
-                                break;
-                            default: break;
+                            ContentController content = res.transform.GetComponent<ContentController>();
+                            if (content == null) return;
+                            if (content.type == InventoryType.Item) return;
+                            if (content.monsterLiveStat.saveStat.id == monsterLiveStat.saveStat.id) return;
+                            switch (type)
+                            {
+                                case InventoryType.Monster:
+                                    if (content.type == InventoryType.Monster)
+                                    {
+                                        if (inventoryManager.curSelectedMonster.monsterLiveStat.saveStat.id
+                                            != content.monsterLiveStat.saveStat.id)
+                                            inventoryManager.selectMonster(content);
+                                        inventoryManager.viewExpectation(monsterLiveStat);
+                                    }
+                                    break;
+                                default: break;
+                            }
                         }
                     }
                 }
@@ -140,8 +200,16 @@ public class ContentController : MonoBehaviour
     private void checkBelow()
     {
         RaycastHit res;
-        if (Physics.Raycast(transform.position, Vector3.forward, out res, 1.2f))
+        if (Physics.Raycast(transform.position, Vector3.forward, out res, 20f))
         {
+            if (inventoryManager.getIsForEntry())
+            {
+                if (type == InventoryType.Monster)
+                {
+                    checkIsOnFieldTile(res.transform);
+                    return;
+                }
+            }
             if (res.transform.name == "Sell")
             {
                 // 판매
@@ -166,6 +234,7 @@ public class ContentController : MonoBehaviour
                             {
                                 // 아이템 칸 -> 장착 칸
                                 inventoryManager.mountItemToMonster(slot, this);
+                                prevPerant = slot.transform;
                             }
                         }
                         else if (slot.type == InventoryType.Item)
@@ -173,8 +242,9 @@ public class ContentController : MonoBehaviour
                             if (itemLiveStat.saveStat.equipMonsterId != null)
                             {
                                 // 장착 칸 -> 아이템 칸
-                                transform.parent.GetComponent<SlotController>().removeContent();
+                                prevPerant.GetComponent<SlotController>().removeContent();
                                 inventoryManager.unMountItemFromMonster(slot, this);
+                                prevPerant = slot.transform;
                             }
                         }
                         break;
@@ -200,6 +270,29 @@ public class ContentController : MonoBehaviour
                     default: break;
                 }
             }
+        }
+    }
+
+    private void checkIsOnFieldTile(Transform objectBelow)
+    {
+        if (objectBelow.parent != null && objectBelow.parent.tag == "Tile" && !objectBelow.parent.GetComponent<EntrySlotController>().isPosessed)
+        {
+            isInstalledOnField = true;
+            if (prevPerant != null && prevPerant.GetComponent<EntrySlotController>() != null)
+            {
+                prevPerant.GetComponent<EntrySlotController>().truncateMonster(this, false);
+            }
+            prevPerant = objectBelow;
+            objectBelow.parent.GetComponent<EntrySlotController>().installMonster(this, false);
+            return;
+        }
+        if (objectBelow.tag == "Slot")
+        {
+            isInstalledOnField = false;
+            prevPerant = objectBelow;
+            prevSize = Vector2.one;
+            objectBelow.GetComponent<SlotController>().installContent(transform);
+            return;
         }
     }
 
@@ -254,12 +347,12 @@ public class ContentController : MonoBehaviour
     {
         isMouseOn = false;
         cntMouseOn = 0f;
-        isWindowOpen = false;
-        if (infoWindowController != null)
+        if (isWindowOpen && infoWindowController != null)
         {
             infoWindowController.initInfo(null, null);
             infoWindowController.closeWindow();
         }
+        isWindowOpen = false;
     }
 
     public void setInfoWindowController(InfoWindowController infoWindowController)
