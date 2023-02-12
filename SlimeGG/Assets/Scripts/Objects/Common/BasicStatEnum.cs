@@ -14,5 +14,11 @@ public enum BasicStatEnum
     // 방어력 관련
     def_sum, def_multiple, invincible,
 
+    // 사거리 관련
+    range,
+
+    // 쿨타임 관련
+    stop_cooltime, stop_position,
+
     position, timeCoolCycle, timeCastingCycle,
 }

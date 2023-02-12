@@ -7,6 +7,4 @@ public class FieldController : MonoBehaviour
 {
     [SerializeField]
     public GridCellGenerator allyEntryGenerator, enemyEntryGenerator;
-    public FieldInfo fieldInfo = null;
-    private Transform monsterContainer = null;
 }

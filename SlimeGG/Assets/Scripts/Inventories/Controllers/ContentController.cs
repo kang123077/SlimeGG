@@ -23,7 +23,7 @@ public class ContentController : MonoBehaviour
     private Transform prevPerant;
     private Vector2 prevSize;
 
-    private bool isInstalledOnField = false;
+    public bool isInstalledOnField = false;
     private bool canMove = true;
     // Start is called before the first frame update
     void Start()
@@ -202,6 +202,7 @@ public class ContentController : MonoBehaviour
         RaycastHit res;
         if (Physics.Raycast(transform.position, Vector3.forward, out res, 20f))
         {
+            // 전투 필드 배치 판별
             if (inventoryManager.getIsForEntry())
             {
                 if (type == InventoryType.Monster)
@@ -210,9 +211,10 @@ public class ContentController : MonoBehaviour
                     return;
                 }
             }
+
+            // 판매인지 판별
             if (res.transform.name == "Sell")
             {
-                // 판매
                 if (infoWindowController != null)
                 {
                     infoWindowController.closeWindow();
@@ -220,14 +222,30 @@ public class ContentController : MonoBehaviour
                 inventoryManager.sellContent(this);
                 return;
             }
+
+            // 슬롯 있는지?
             if (res.transform.tag == "Slot")
             {
                 SlotController slot = res.transform.GetComponent<SlotController>();
+                // 이 컨텐츠가 무엇인가?
                 switch (type)
                 {
                     case InventoryType.Monster:
+                        // 몬스터
+                        if (slot.type == InventoryType.Monster)
+                        {
+                            // 빈 슬롯인가?
+                            if (!slot.isOccupied())
+                            {
+                                // 몬스터 칸 -> 몬스터 칸
+                                prevPerant.GetComponent<SlotController>().removeContent();
+                                slot.installContent(transform);
+                                return;
+                            }
+                        }
                         break;
                     case InventoryType.Item:
+                        // 아이템
                         if (slot.type == InventoryType.Equipment)
                         {
                             if (itemLiveStat.saveStat.equipMonsterId == null)
@@ -235,6 +253,7 @@ public class ContentController : MonoBehaviour
                                 // 아이템 칸 -> 장착 칸
                                 inventoryManager.mountItemToMonster(slot, this);
                                 prevPerant = slot.transform;
+                                return;
                             }
                         }
                         else if (slot.type == InventoryType.Item)
@@ -245,6 +264,13 @@ public class ContentController : MonoBehaviour
                                 prevPerant.GetComponent<SlotController>().removeContent();
                                 inventoryManager.unMountItemFromMonster(slot, this);
                                 prevPerant = slot.transform;
+                                return;
+                            }
+                            else
+                            {
+                                // 아이템 칸 -> 아이템 칸
+                                prevPerant.GetComponent<SlotController>().removeContent();
+                                slot.installContent(transform);
                             }
                         }
                         break;
@@ -275,8 +301,9 @@ public class ContentController : MonoBehaviour
 
     private void checkIsOnFieldTile(Transform objectBelow)
     {
-        if (objectBelow.parent != null && objectBelow.parent.tag == "Tile" && !objectBelow.parent.GetComponent<EntrySlotController>().isPosessed)
+        if (objectBelow.parent != null && objectBelow.parent.tag == "Tile" && objectBelow.parent.GetComponent<EntrySlotController>().isAlly && !objectBelow.parent.GetComponent<EntrySlotController>().isPosessed)
         {
+            // 전투 필드에 배치
             isInstalledOnField = true;
             if (prevPerant != null && prevPerant.GetComponent<EntrySlotController>() != null)
             {
@@ -288,7 +315,12 @@ public class ContentController : MonoBehaviour
         }
         if (objectBelow.tag == "Slot")
         {
+            // 전투 필드에서 제거:: 전투 필드 -> 인벤토리
             isInstalledOnField = false;
+            if (prevPerant && prevPerant.GetComponent<EntrySlotController>())
+            {
+                prevPerant.GetComponent<EntrySlotController>().truncateMonster(this);
+            }
             prevPerant = objectBelow;
             prevSize = Vector2.one;
             objectBelow.GetComponent<SlotController>().installContent(transform);

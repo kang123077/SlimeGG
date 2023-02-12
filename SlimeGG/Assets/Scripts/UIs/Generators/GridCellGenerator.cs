@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class GridCellGenerator : MonoBehaviour
     int x = 0, y = 0;
     [SerializeField]
     private Transform cellTf;
+
+    private List<Transform> cells = new List<Transform>();
     // Start is called before the first frame update
     void Start()
     {
@@ -46,7 +49,16 @@ public class GridCellGenerator : MonoBehaviour
                 }
                 newCell.SetParent(transform);
                 newCell.localPosition = Vector3.zero;
+                cells.Add(newCell);
             }
+        }
+    }
+
+    internal void sendCellsFunction(Func<Transform, object> functionToSend)
+    {
+        foreach (Transform cell in cells)
+        {
+            functionToSend(cell);
         }
     }
 }

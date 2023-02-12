@@ -1,4 +1,6 @@
 {
+  "name": "Sleepion",
+  "tier": 1,
   "skills": [
     "Spit",
     "FireBall"
@@ -46,8 +48,8 @@
     }
   ],
   "nextMonster": [
-    "FireSpirit",
-    "WaterSpirit"
+    "Sneaklower",
+    "Eartipede"
   ],
   "displayName": "아기영혼"
 }
