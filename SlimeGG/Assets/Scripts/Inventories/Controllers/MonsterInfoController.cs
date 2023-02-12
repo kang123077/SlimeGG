@@ -97,7 +97,10 @@ public class MonsterInfoController : MonoBehaviour
         }
         foreach (BasicStat basicStat in temp.Values)
         {
-            basicStatControllers[basicStat.name].initCorrectionInfo(basicStat);
+            if (basicStatControllers.ContainsKey(basicStat.name))
+            {
+                basicStatControllers[basicStat.name].initCorrectionInfo(basicStat);
+            }
         }
         for (int i = 0; i < starSlot.childCount; i++)
         {

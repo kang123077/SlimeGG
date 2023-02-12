@@ -1,4 +1,6 @@
 {
+  "name": "MudBall",
+  "tier": 1,
   "skills": [
     "Spit",
     "FireBall"
@@ -46,8 +48,7 @@
     }
   ],
   "nextMonster": [
-    "FireSpirit",
-    "WaterSpirit"
+    "Sneaklower"
   ],
   "displayName": "아기영혼"
 }

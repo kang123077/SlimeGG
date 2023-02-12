@@ -22,6 +22,7 @@ public static class SaveFunction
         }
         CommonFunctions.saveObjectToJson<List<MonsterSaveStat>>($"Assets/Resources/{PathInfo.Json.Save.monster}", temp);
         CommonFunctions.saveObjectToJson<List<ItemSaveStat>>($"Assets/Resources/{PathInfo.Json.Save.item}", tempItem);
-        CommonFunctions.saveObjectToJson<int>($"Assets/Resources/{PathInfo.Json.Save.currency}", LocalStorage.currency);
+        CommonFunctions.saveObjectToJson<int>($"Assets/Resources/{PathInfo.Json.Save.currency}", LocalStorage.Live.currency);
+        CommonFunctions.saveObjectToJson<List<int>>($"Assets/Resources/{PathInfo.Json.Save.journey}", LocalStorage.Live.journeyInfo);
     }
 }

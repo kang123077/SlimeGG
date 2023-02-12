@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 [System.Serializable]
 public class MonsterDictionaryStat
 {
+    public string name;
     public string displayName;
     public int tier;
     public string desc;

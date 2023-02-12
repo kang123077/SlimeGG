@@ -41,8 +41,6 @@ public class ObjectMoveController : MonoBehaviour
     private IEnumerator toggleObject()
     {
         isActive = !isActive;
-        if (isActive)
-            LocalStorage.UIOpenStatus.reward = true;
         isAnimating = true;
         float distanceUnitLeft = distanceToMoveRatioToUnit; ;
         while (
@@ -102,8 +100,6 @@ public class ObjectMoveController : MonoBehaviour
             }
         }
         isAnimating = false;
-        if (!isActive)
-            LocalStorage.UIOpenStatus.reward = false;
     }
 
     public bool getIsActive()

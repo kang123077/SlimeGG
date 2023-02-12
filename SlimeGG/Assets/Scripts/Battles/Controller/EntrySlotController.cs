@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EntrySlotController : MonoBehaviour
 {
+    public bool isAlly =false;
     public int x;
     public int y;
 

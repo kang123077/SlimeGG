@@ -6,11 +6,12 @@ public class StageController : MonoBehaviour
 {
     [SerializeField]
     StageController[] nextStageList;
+    [SerializeField]
+    Transform linePrefab;
+
     SpriteRenderer bgSprite;
     Transform xMarkTf;
     Transform lineListTf;
-    [SerializeField]
-    Transform linePrefab;
     Transform[] lineList;
 
     DungeonManager dungeonManager;
@@ -85,7 +86,20 @@ public class StageController : MonoBehaviour
         {
             if (isAccessible)
             {
-                dungeonManager.enterStage(this);
+                int cnt = 0;
+                foreach (StageController candidateStage in LocalStorage.CurrentLocation.curLocation.nextStageList)
+                {
+                    if (candidateStage.Equals(this))
+                    {
+                        LocalStorage.CurrentLocation.nodeNum = cnt;
+                        LocalStorage.CurrentLocation.stageLevel = stageType == StageType.Normal ? 0 : stageType == StageType.Hard ? 1 : stageType == StageType.Boss ? 2 : 0;
+                        dungeonManager.enterStage(this);
+                    }
+                    else
+                    {
+                        cnt++;
+                    }
+                }
             }
             else
             {

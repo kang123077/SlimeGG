@@ -1,11 +1,12 @@
 {
+  "name": "Sneaklower",
   "displayName": "숨박꽃질",
   "tier": 2,
   "desc": "눈에 딱 보이는 꽃의 정령.\n본인은 잘 숨었다고 생각하는게 귀여워!",
   "basic": [
     {
       "name": "hp",
-      "amount": 1000
+      "amount": 100
     },
     {
       "name": "atk",

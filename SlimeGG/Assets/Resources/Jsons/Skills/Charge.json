@@ -43,9 +43,8 @@
             "tickTime": 0
           },
           {
-            "name": "timeCoolCycle",
-            "amount": -1,
-            "isMultiple": false,
+            "name": "stop_cooltime",
+            "amount": 1,
             "duration": 0.5,
             "tickTime": 0
           }

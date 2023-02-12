@@ -140,9 +140,15 @@ public class MonsterBattleController : MonoBehaviour
         timeDistortion += Time.deltaTime;
 
         // 쿨타임 관리
-        foreach (SkillStat skill in liveBattleInfo.skills.Values)
+        if (liveBattleInfo.basic.ContainsKey(BasicStatEnum.stop_cooltime) && liveBattleInfo.basic[BasicStatEnum.stop_cooltime].amount == 1f)
         {
-            skill.timeCharging += Time.deltaTime * (1 / liveBattleInfo.basic[BasicStatEnum.timeCoolCycle].amount);
+        }
+        else
+        {
+            foreach (SkillStat skill in liveBattleInfo.skills.Values)
+            {
+                skill.timeCharging += Time.deltaTime * (1 / liveBattleInfo.basic[BasicStatEnum.timeCoolCycle].amount);
+            }
         }
 
         // 애니메이션 관리
@@ -183,7 +189,14 @@ public class MonsterBattleController : MonoBehaviour
                         }
                         else
                         {
-                            liveBattleInfo.basic[effect.name].amount += effect.amount;
+                            if (!liveBattleInfo.basic.ContainsKey(effect.name))
+                            {
+                                liveBattleInfo.basic[effect.name] = new BasicStat(effect.amount);
+                            }
+                            else
+                            {
+                                liveBattleInfo.basic[effect.name].amount += effect.amount;
+                            }
                         }
                     }
                     else
@@ -214,7 +227,14 @@ public class MonsterBattleController : MonoBehaviour
                             }
                             else
                             {
-                                liveBattleInfo.basic[effect.name].amount += effect.amount;
+                                if (!liveBattleInfo.basic.ContainsKey(effect.name))
+                                {
+                                    liveBattleInfo.basic[effect.name] = new BasicStat(effect.amount);
+                                }
+                                else
+                                {
+                                    liveBattleInfo.basic[effect.name].amount += effect.amount;
+                                }
                             }
                         }
                         else

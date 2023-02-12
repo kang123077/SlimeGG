@@ -18,6 +18,17 @@ public static class LocalStorage
     {
         public static Dictionary<string, MonsterLiveStat> monsters = new Dictionary<string, MonsterLiveStat>();
         public static Dictionary<string, ItemLiveStat> items = new Dictionary<string, ItemLiveStat>();
+        public static List<int> journeyInfo = new List<int>();
+        public static int currency = 0;
+        public static int numClearDungeon = 0;
+    }
+
+    public static class CurrentLocation
+    {
+        public static StageType stageType = StageType.Event;
+        public static int stageLevel = 0;
+        public static int nodeNum = 0;
+        public static StageController curLocation;
     }
 
     public static List<Transform> tileSetTransforms = new List<Transform>();
@@ -36,17 +47,12 @@ public static class LocalStorage
         public static bool reward = false;
     }
 
-
-    public static List<int> journeyInfo = new List<int>();
-
     public static Dictionary<string, List<SlotController>> inventory = new Dictionary<string, List<SlotController>>()
     {
         { "monsters", new List<SlotController>() },
         { "equipments", new List<SlotController>() },
         { "items", new List<SlotController>() },
     };
-
-    public static int currency = 0;
 
     public static bool isCameraMoveable()
     {
