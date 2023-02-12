@@ -89,7 +89,7 @@ public class MonsterBattleController : MonoBehaviour
     {
         if (!LocalStorage.IS_GAME_PAUSE)
         {
-            if (BattleManager.isBattleReady)
+            if (BattleManager.getCurStage() == 5)
             {
                 if (!hpController.gameObject.activeSelf)
                 {

@@ -14,15 +14,11 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private GameObject fieldGenerated;
     [SerializeField]
-    private GameObject monsterUIBase;
-    [SerializeField]
-    private GameObject monsterInfoUIGenerated;
-    [SerializeField]
     public GameObject projectilePrefab;
     [SerializeField]
     public GameObject areaPrefab;
     [SerializeField]
-    public GameObject entryListUI;
+    public InventoryManager inventoryManager;
     [SerializeField]
     public GameObject entrySlot;
     [SerializeField]
@@ -36,17 +32,12 @@ public class BattleManager : MonoBehaviour
         new MonsterBattleController[2][];
     public static float[][][] distanceAllies = new float[2][][];
     public static float[][][] distanceEnemies = new float[2][][];
-    public static bool isBattleReady = false;
     public static Vector2 fieldSize;
     private static List<MonsterLiveStat> enemyEntry = new List<MonsterLiveStat>();
-    private static List<MonsterLiveStat> allyCandidateList = new List<MonsterLiveStat>();
+    private static List<MonsterLiveStat> allyEntry = new List<MonsterLiveStat>();
     private int sideWin { get; set; }
+    private static int curStage = 0;
 
-    private bool isBaseReady = false;
-    private bool isEnemyReady = false;
-    private bool isEntryReady = false;
-    private bool isAssignReady = false;
-    private bool isRewardSession = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -54,78 +45,84 @@ public class BattleManager : MonoBehaviour
 
     void Update()
     {
-        if (!isBattleReady && LocalStorage.isDataCallDone())
+        switch (curStage)
         {
-            if (!isBaseReady)
-            {
+            case 0:
+                // 내 필드 정보 불러오기
+                // 적 필드 정보 + 몬스터 정보 불러오기
                 staticProjectilePrefab = projectilePrefab;
                 staticAreaPrefab = areaPrefab;
-                initField("Normal");
-                isBaseReady = true;
-            }
-            if (!isEnemyReady)
-            {
-                callEnemyEntry("Test");
-                callAllyEntry();
-                generateEnemies();
-                isEnemyReady = true;
-            }
-            if (!isEntryReady)
-            {
-                setEntryMonsters();
-                isEntryReady = true;
-            }
-            if (isAssignReady)
-            {
-                clearField();
-                generateAllies();
+                loadBattleZoneInfo(0, "swamp");
+                break;
+            case 1:
+                // 적 배치
+                placeEnemyEntry();
+                break;
+            case 2:
+                // 대기 <== 배치 완료 버튼 누를때까지
+                // 아군 배치 <- 이건 유저가
+                break;
+            case 3:
+                // 배치 완료 버튼 누름 = 전투용 객체들 생성
+                // 전투 시작 버튼 활성화
+                generateBattleInfos();
+                break;
+            case 4:
+                // 대기 <== 전투 시작 누를때까지
                 calculateDistance();
-                isBattleReady = true;
-            }
-        }
-        if (isBattleReady && !LocalStorage.IS_GAME_PAUSE)
-        {
-            calculateDistance();
-            bool isOneSideAllDead;
-            int side = 1;
-            foreach (MonsterBattleController[] sideList in monsterBattleControllerList)
-            {
-                isOneSideAllDead = true;
-                foreach (MonsterBattleController battleController in sideList)
+                break;
+            case 5:
+                // 대기 <== 전투 끝날 때까지
+                // 전투 실시간 로직은 여기
+                calculateDistance();
+                bool isOneSideAllDead;
+                int side = 1;
+                foreach (MonsterBattleController[] sideList in monsterBattleControllerList)
                 {
-                    if (battleController != null)
+                    isOneSideAllDead = true;
+                    foreach (MonsterBattleController battleController in sideList)
                     {
-                        isOneSideAllDead = isOneSideAllDead && battleController.isDead;
+                        if (battleController != null)
+                        {
+                            isOneSideAllDead = isOneSideAllDead && battleController.isDead;
+                        }
+                    }
+                    if (isOneSideAllDead)
+                    {
+                        sideWin = side;
+                        finishBattle();
+                    }
+                    else
+                    {
+                        side--;
                     }
                 }
-                if (isOneSideAllDead)
-                {
-                    sideWin = side;
-                    finishBattle();
-                }
-                else
-                {
-                    side--;
-                }
-            }
-        }
-        if (LocalStorage.IS_BATTLE_FINISH && !isRewardSession)
-        {
-            Debug.Log($"Battle Finished:: Win => {sideWin} <=");
-            openRewards();
+                break;
+            case 6:
+                // 전투 종료
+                // 리워드 보여주기
+                Debug.Log($"Battle Finished:: Win => {sideWin} <=");
+                openRewards();
+                break;
+            case 7:
+                // 대기 <== 리워드 종료까지
+                break;
+            case 8:
+                // 리워드 종료
+                // 배틀씬 나가기
+                Destroy(gameObject);
+                break;
         }
     }
 
     private void openRewards()
     {
-        PenalForPause.SetActive(LocalStorage.IS_BATTLE_FINISH);
-        PenalForPause.transform.Find("Text Title").GetComponent<TMP_Text>().text = "BATTLE FINISHED!";
-        PenalForPause.transform.Find("Text Desc").GetComponent<TMP_Text>().text = $"Team {sideWin} Win!";
-        isRewardSession = true;
         openRewardMonster();
+        curStage = 7;
     }
     private void openRewardMonster()
     {
+        GetComponent<MainGameManager>().controllLoading(true, null);
         StartCoroutine(controlMonsterReward());
     }
 
@@ -148,24 +145,7 @@ public class BattleManager : MonoBehaviour
         {
             yield return new WaitForSeconds(0.1f);
         }
-        // 배틀씬 나가기
-        Destroy(gameObject);
-    }
-
-    private void callEnemyEntry(string entryPath)
-    {
-        foreach (MonsterSaveStat saveStat in
-                        CommonFunctions.loadObjectFromJson<MonsterSaveStat[]>(
-                            $"Assets/Resources/Jsons/Entries/{entryPath}"
-                            ))
-        {
-            enemyEntry.Add(GeneratorFunction.returnMonsterLiveStat(saveStat));
-        }
-    }
-
-    private void callAllyEntry()
-    {
-        allyCandidateList = LocalStorage.Live.monsters.Values.ToList();
+        curStage = 8;
     }
 
     private void generateEnemies()
@@ -176,20 +156,6 @@ public class BattleManager : MonoBehaviour
         {
             temp = MonsterCommonFunction.generateMonsterBattleInfo(enemyStat);
             generateMonster(temp, 1, cnt, temp.entryPos);
-            cnt++;
-        }
-    }
-
-    private void setEntryMonsters()
-    {
-        MonsterBattleInfo temp;
-        int cnt = 0;
-        foreach (MonsterLiveStat allyStat in allyCandidateList)
-        {
-            temp = MonsterCommonFunction.generateMonsterBattleInfo(allyStat);
-            GameObject newMonster = Instantiate(monsterBase);
-            newMonster.GetComponent<MonsterBattleController>().initInfo(temp, fieldGenerated.transform.Find("Monster Container"), entryListUI.transform);
-            entryListUI.GetComponent<EntryController>().addEntry(newMonster);
             cnt++;
         }
     }
@@ -218,28 +184,14 @@ public class BattleManager : MonoBehaviour
 
     private void clearField()
     {
-        // fieldGenerated.transform.Find("Barrier").AddComponent<PolygonCollider2D>();
-        // Destroy(fieldGenerated.transform.Find("Entry Slot").gameObject);
         barrier.AddComponent<PolygonCollider2D>();
         Destroy(entrySlot);
-        Destroy(entryListUI.transform.parent.parent.gameObject);
-    }
-    private void initField(string fieldName)
-    {
-        float[] size = LocalDictionary.fields[fieldName].size.ToArray();
-        fieldSize = new Vector2(size[0], size[1]);
-        fieldGenerated.GetComponent<FieldController>().initField(LocalDictionary.fields[fieldName]);
     }
 
     public void pauseOrResumeBattle()
     {
         LocalStorage.IS_GAME_PAUSE = !LocalStorage.IS_GAME_PAUSE;
         penalForPause.SetActive(LocalStorage.IS_GAME_PAUSE);
-    }
-
-    public void finishBattle()
-    {
-        LocalStorage.IS_BATTLE_FINISH = true;
     }
     private void calculateDistance()
     {
@@ -460,6 +412,55 @@ public class BattleManager : MonoBehaviour
         }
         */
         btn.SetActive(false);
-        isAssignReady = true;
+    }
+
+    private void loadBattleZoneInfo(int level, string dungeonTheme)
+    {
+        callEnemyEntry("Test");
+        curStage = 1;
+    }
+
+    private void callEnemyEntry(string entryPath)
+    {
+        foreach (MonsterSaveStat saveStat in
+                        CommonFunctions.loadObjectFromJson<MonsterSaveStat[]>(
+                            $"Assets/Resources/Jsons/Entries/{entryPath}"
+                            ))
+        {
+            enemyEntry.Add(GeneratorFunction.returnMonsterLiveStat(saveStat));
+        }
+    }
+
+    private void placeEnemyEntry()
+    {
+        inventoryManager.setEntriable(true);
+        curStage = 2;
+    }
+
+    private void finishPlacement()
+    {
+        inventoryManager.setEntriable(false);
+        curStage = 3;
+    }
+
+    private void generateBattleInfos()
+    {
+        curStage = 4;
+    }
+
+    private void startBattle()
+    {
+        curStage = 5;
+    }
+
+    public void finishBattle()
+    {
+        LocalStorage.IS_BATTLE_FINISH = true;
+        curStage = 6;
+    }
+
+    public static int getCurStage()
+    {
+        return curStage;
     }
 }

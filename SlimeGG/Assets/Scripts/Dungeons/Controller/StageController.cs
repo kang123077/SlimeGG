@@ -85,12 +85,10 @@ public class StageController : MonoBehaviour
         {
             if (isAccessible)
             {
-                Debug.Log("Accessible!");
                 dungeonManager.enterStage(this);
             }
             else
             {
-                Debug.Log("InAccessible!");
             }
         }
         isClick = false;
