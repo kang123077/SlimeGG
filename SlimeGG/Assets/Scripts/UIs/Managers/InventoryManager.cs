@@ -85,6 +85,10 @@ public class InventoryManager : MonoBehaviour
     {
         transform.GetChild(0).GetComponent<ObjectMoveController>().toggle();
         transform.GetChild(1).GetComponent<ObjectMoveController>().toggle();
+        if (!transform.GetChild(0).GetComponent<ObjectMoveController>().isActive)
+        {
+            reloadInventory();
+        }
     }
 
     private void trackCamera()

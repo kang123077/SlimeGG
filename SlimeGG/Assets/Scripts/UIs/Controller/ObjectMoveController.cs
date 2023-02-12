@@ -11,7 +11,7 @@ public class ObjectMoveController : MonoBehaviour
     [SerializeField]
     private string keyToToggle;
 
-    private bool isActive = false;
+    public bool isActive = false;
     private bool isAnimating = false;
     private ObjectSizeController objectSizeController;
     // Start is called before the first frame update

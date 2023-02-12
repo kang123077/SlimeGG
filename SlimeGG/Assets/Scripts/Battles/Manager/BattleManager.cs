@@ -440,7 +440,6 @@ public class BattleManager : MonoBehaviour
 
     public void controllFunctionOfButton(Transform btnTf)
     {
-        Debug.Log(curStage);
         switch (curStage)
         {
             case 2:
@@ -525,6 +524,11 @@ public class BattleManager : MonoBehaviour
     {
         Destroy(fieldController.enemyEntryGenerator.gameObject);
         Destroy(fieldController.allyEntryGenerator.gameObject);
+        foreach(ContentController ally in allyEntry)
+        {
+            MonsterLiveStat temp = ally.monsterLiveStat;
+            LocalStorage.Live.monsters[temp.saveStat.id] = temp;
+        }
         enemyEntry.Clear();
         allyEntry.Clear();
     }
