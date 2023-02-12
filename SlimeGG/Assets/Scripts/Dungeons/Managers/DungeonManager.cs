@@ -62,7 +62,7 @@ public class DungeonManager : MonoBehaviour
     private void applyJourney()
     {
         bool isEntryEmpty = true;
-        foreach (int stagePos in LocalStorage.journeyInfo)
+        foreach (int stagePos in LocalStorage.Live.journeyInfo)
         {
             isEntryEmpty = false;
             curStage.clearStage();
@@ -98,6 +98,7 @@ public class DungeonManager : MonoBehaviour
 
     public void enterStage(StageController targetStage)
     {
+        LocalStorage.CurrentLocation.curLocation = targetStage;
         curStage.closeAccessNext();
         moveCamera(targetStage);
         //curStage.clearStage();

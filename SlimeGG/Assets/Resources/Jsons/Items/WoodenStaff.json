@@ -1,0 +1,13 @@
+{
+  "name": "WoodenStaff",
+  "displayName": "조잡한 나무완드",
+  "desc": "맨질맨질한 나무완드드.\n그거 완드 맞아 말포이!\n\n스킬 사정거리를 0.1만큼 증가시킨다.",
+  "effect": [
+    {
+      "name": "range",
+      "amount": 0.1,
+      "isMultiple": false
+    }
+  ],
+  "tier": 1
+}

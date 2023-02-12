@@ -10,10 +10,12 @@ public class DataManager : MonoBehaviour
         $"Assets/Resources/Jsons/Monsters"
         ))
         {
-            LocalDictionary.speicies[fileName] =
+            MonsterDictionaryStat stat =
                 CommonFunctions.loadObjectFromJson<MonsterDictionaryStat>(
                     $"Assets/Resources/Jsons/Monsters/{fileName}"
                     );
+            LocalDictionary.speicies[fileName] = stat;
+            LocalDictionary.speicesByTier[stat.tier].Add(stat);
         }
 
         foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
@@ -30,10 +32,12 @@ public class DataManager : MonoBehaviour
         $"Assets/Resources/Jsons/Items"
         ))
         {
-            LocalDictionary.items[fileName] =
+            ItemDictionaryStat stat =
                 CommonFunctions.loadObjectFromJson<ItemDictionaryStat>(
                     $"Assets/Resources/Jsons/Items/{fileName}"
                     );
+            LocalDictionary.items[fileName] = stat;
+            LocalDictionary.itemsByTier[stat.tier].Add(stat);
         }
 
         foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
@@ -65,12 +69,12 @@ public class DataManager : MonoBehaviour
         }
         LocalStorage.DataCall.ITEM = true;
 
-        LocalStorage.journeyInfo = CommonFunctions.loadObjectFromJson<List<int>>(
+        LocalStorage.Live.journeyInfo = CommonFunctions.loadObjectFromJson<List<int>>(
             "Assets/Resources/Jsons/Save/Journey"
             );
         LocalStorage.DataCall.JOURNEY = true;
 
-        LocalStorage.currency = CommonFunctions.loadObjectFromJson<int>(
+        LocalStorage.Live.currency = CommonFunctions.loadObjectFromJson<int>(
             "Assets/Resources/Jsons/Save/Currency"
             );
         LocalStorage.DataCall.CURRENCY = true;

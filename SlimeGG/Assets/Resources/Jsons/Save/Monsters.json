@@ -37,35 +37,6 @@
     "exp": [
       {
         "name": "Wind",
-        "amount": 23.0,
-        "shouldOver": true
-      },
-      {
-        "name": "Spirit",
-        "amount": 23.0,
-        "shouldOver": true
-      },
-      {
-        "name": "Fire",
-        "amount": 23.0,
-        "shouldOver": true
-      },
-      {
-        "name": "Grass",
-        "amount": 23.0,
-        "shouldOver": true
-      }
-    ],
-    "id": "00000003",
-    "speicie": "Eartipede",
-    "entryPos": null
-  },
-  {
-    "speicie": "Eartipede",
-    "id": "00000004",
-    "exp": [
-      {
-        "name": "Wind",
         "amount": 10.0,
         "shouldOver": true
       },
@@ -79,20 +50,49 @@
         "amount": 1.0,
         "shouldOver": true
       }
+    ],
+    "id": "00000004",
+    "speicie": "Eartipede",
+    "entryPos": [
+      4.0,
+      7.0
     ]
   },
   {
-    "speicie": "Sneaklower",
-    "id": "00000005",
     "exp": [
       {
         "name": "Wind",
-        "amount": 10
+        "amount": 10.0,
+        "shouldOver": true
       },
       {
         "name": "Spirit",
-        "amount": 5
+        "amount": 5.0,
+        "shouldOver": true
       }
+    ],
+    "id": "00000005",
+    "speicie": "Sneaklower",
+    "entryPos": [
+      4.0,
+      7.0
     ]
+  },
+  {
+    "exp": [
+      {
+        "name": "Wind",
+        "amount": 10.0,
+        "shouldOver": true
+      },
+      {
+        "name": "Spirit",
+        "amount": 5.0,
+        "shouldOver": true
+      }
+    ],
+    "id": "cbcdc4dc",
+    "speicie": "Sleepion",
+    "entryPos": null
   }
 ]

@@ -104,7 +104,6 @@ public class BattleManager : MonoBehaviour
             case 6:
                 // 전투 종료
                 // 리워드 보여주기
-                Debug.Log($"Battle Finished:: Win => {sideWin} <=");
                 openRewards();
                 break;
             case 7:
@@ -113,7 +112,11 @@ public class BattleManager : MonoBehaviour
             case 8:
                 // 리워드 종료
                 // 배틀씬 나가기
-                Destroy(gameObject);
+                returnToDungeon();
+                break;
+            case 9:
+                // 종료
+                // 아무것도 안함
                 break;
         }
     }
@@ -139,6 +142,13 @@ public class BattleManager : MonoBehaviour
         {
             yield return new WaitForSeconds(0.1f);
         }
+        inventoryManager.toggleAll();
+        yield return new WaitForSeconds(1f);
+        while (LocalStorage.UIOpenStatus.inventory)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        inventoryManager.toggleAll();
         StartCoroutine(controlItemReward());
     }
 
@@ -153,40 +163,6 @@ public class BattleManager : MonoBehaviour
         curStage = 8;
     }
 
-    //private void generateEnemies()
-    //{
-    //    MonsterBattleInfo temp;
-    //    int cnt = 0;
-    //    foreach (ContentController enemyStat in enemyEntry)
-    //    {
-    //        temp = MonsterCommonFunction.generateMonsterBattleInfo(enemyStat);
-    //        generateMonster(temp, 1, cnt, temp.entryPos);
-    //        cnt++;
-    //    }
-    //}
-
-    private void generateAllies()
-    {
-        for (int i = 0; i < monsterBattleControllerList[0].Length; i++)
-        {
-            if (monsterBattleControllerList[0][i] != null)
-            {
-                monsterBattleControllerList[0][i].setPlaceInfo(new Vector2(0, i));
-            }
-        }
-    }
-
-    private void clearField()
-    {
-        barrier.AddComponent<PolygonCollider2D>();
-        //Destroy(enemyEntrySlot);
-    }
-
-    public void pauseOrResumeBattle()
-    {
-        LocalStorage.IS_GAME_PAUSE = !LocalStorage.IS_GAME_PAUSE;
-        penalForPause.SetActive(LocalStorage.IS_GAME_PAUSE);
-    }
     private void calculateDistance()
     {
         for (int k = 0; k < 2; k++)
@@ -391,23 +367,6 @@ public class BattleManager : MonoBehaviour
         return (int)pureDmg;
     }
 
-    public void setReady(GameObject btn)
-    {
-        if (monsterBattleControllerList[0][0] == null)
-        {
-            Debug.Log("몬스터를 한 마리 이상 설치해야 함");
-            return;
-        }
-        /*
-        if (monsterBattleControllerList[0].Length > entryLimit)
-        {
-            Debug.Log("몬스터 배치 한도를 초과함");
-            return;
-        }
-        */
-        btn.SetActive(false);
-    }
-
     private void loadBattleZoneInfo(int level, string dungeonTheme)
     {
         callEnemyEntry("Test");
@@ -435,6 +394,7 @@ public class BattleManager : MonoBehaviour
             float[] pos = enemy.monsterLiveStat.saveStat.entryPos;
             fieldController.enemyEntryGenerator.transform.GetChild((int)pos[0] + ((int)pos[1] * SettingVariables.Battle.entrySizeMax[0])).GetComponent<EntrySlotController>().installMonster(enemy);
         }
+        fieldController.allyEntryGenerator.sendCellsFunction((Transform cell) => cell.GetComponent<EntrySlotController>().isAlly = true);
         curStage = 2;
     }
 
@@ -471,7 +431,11 @@ public class BattleManager : MonoBehaviour
         cnt = 0;
         foreach (ContentController ally in allyEntry)
         {
-            generateMonster(ally, 0, cnt);
+            if (ally.isInstalledOnField)
+            {
+                generateMonster(ally, 0, cnt);
+                cnt++;
+            }
         }
         curStage = 4;
     }
@@ -524,13 +488,14 @@ public class BattleManager : MonoBehaviour
     {
         Destroy(fieldController.enemyEntryGenerator.gameObject);
         Destroy(fieldController.allyEntryGenerator.gameObject);
-        foreach(ContentController ally in allyEntry)
+        foreach (ContentController ally in allyEntry)
         {
             MonsterLiveStat temp = ally.monsterLiveStat;
             LocalStorage.Live.monsters[temp.saveStat.id] = temp;
         }
         enemyEntry.Clear();
         allyEntry.Clear();
+        barrier.AddComponent<PolygonCollider2D>();
     }
 
     private void startBattle(Transform btnTf)
@@ -540,7 +505,7 @@ public class BattleManager : MonoBehaviour
         LocalStorage.IS_GAME_PAUSE = false;
     }
 
-    public void finishBattle()
+    private void finishBattle()
     {
         LocalStorage.IS_BATTLE_FINISH = true;
         curStage = 6;
@@ -549,5 +514,12 @@ public class BattleManager : MonoBehaviour
     public static int getCurStage()
     {
         return curStage;
+    }
+
+    private void returnToDungeon()
+    {
+        LocalStorage.Live.journeyInfo.Add(LocalStorage.CurrentLocation.nodeNum);
+        GetComponent<MainGameManager>().loadScene("DungeonMapScene");
+        curStage = 9;
     }
 }

@@ -6,7 +6,7 @@ public static class CommerceFunction
 {
     public static void sellContent(ContentController contentController)
     {
-        LocalStorage.currency += weighPriceOfContent(contentController);
+        LocalStorage.Live.currency += weighPriceOfContent(contentController);
     }
     public static int weighPriceOfContent(ContentController contentController)
     {

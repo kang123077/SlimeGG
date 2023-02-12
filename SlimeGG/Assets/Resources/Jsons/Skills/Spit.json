@@ -3,7 +3,7 @@
   "desc": "침을 뱉는다.\n더러울지도..?",
   "range": 3.4,
   "targetType": "ENEMY_CLOSE",
-  "coolTime": 3.0,
+  "coolTime": 1.0,
   "castingTime": 0.2,
   "projectiles": [
     {

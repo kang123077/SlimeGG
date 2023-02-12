@@ -17,6 +17,6 @@ public class CommerceController : MonoBehaviour
     void Update()
     {
         if (currencyText != null)
-            currencyText.text = $"{LocalStorage.currency}";
+            currencyText.text = $"{LocalStorage.Live.currency}";
     }
 }

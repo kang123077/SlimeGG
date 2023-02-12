@@ -44,8 +44,8 @@ public class SlotController : MonoBehaviour
     public void installContent(Transform newContent)
     {
         newContent.SetParent(transform);
-        newContent.localPosition = new Vector3(0f, 0f, -2f);
         newContent.localScale = Vector3.one;
+        newContent.localPosition = new Vector3(0f, 0f, -2f);
         newContent.GetComponent<RectTransform>().sizeDelta = Vector2.zero;
         contentController = newContent.GetComponent<ContentController>();
     }
@@ -55,8 +55,8 @@ public class SlotController : MonoBehaviour
         if (contentController != null)
         {
             contentController.destroySelf();
-            contentController = null;
         }
+        contentController = null;
     }
 
     public void removeContent()

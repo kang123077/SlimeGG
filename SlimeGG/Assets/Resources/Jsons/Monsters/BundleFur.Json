@@ -1,4 +1,6 @@
 {
+  "name": "BundleFur",
+  "tier": 1,
   "skills": [
     "Spit",
     "FireBall"
@@ -46,8 +48,7 @@
     }
   ],
   "nextMonster": [
-    "FireSpirit",
-    "WaterSpirit"
+    "Eartipede"
   ],
   "displayName": "아기영혼"
 }
