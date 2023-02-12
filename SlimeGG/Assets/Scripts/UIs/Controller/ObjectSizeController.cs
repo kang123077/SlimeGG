@@ -7,7 +7,7 @@ public class ObjectSizeController : MonoBehaviour
     [SerializeField]
     public Vector2 sizeRatioToUnit, posRatioToUnit;
     [SerializeField]
-    private bool isFixed = true;
+    private bool isFixed = true, isRatioToUnit = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,22 +21,23 @@ public class ObjectSizeController : MonoBehaviour
 
     private void adjustSize()
     {
+        float unitSize = isRatioToUnit ? MainGameManager.screenUnitSize : 1f;
         GetComponent<RectTransform>().sizeDelta = new Vector2(
-            MainGameManager.screenUnitSize * sizeRatioToUnit.x,
-            MainGameManager.screenUnitSize * sizeRatioToUnit.y
+            unitSize * sizeRatioToUnit.x,
+            unitSize * sizeRatioToUnit.y
             );
         if (GetComponent<BoxCollider>() != null)
         {
             GetComponent<BoxCollider>().size = new Vector2(
-            MainGameManager.screenUnitSize * sizeRatioToUnit.x,
-            MainGameManager.screenUnitSize * sizeRatioToUnit.y
+            unitSize * sizeRatioToUnit.x,
+            unitSize * sizeRatioToUnit.y
             );
         }
         if (isFixed)
         {
             GetComponent<RectTransform>().anchoredPosition = new Vector2(
-                MainGameManager.screenUnitSize * posRatioToUnit.x,
-                MainGameManager.screenUnitSize * posRatioToUnit.y
+                unitSize * posRatioToUnit.x,
+                unitSize * posRatioToUnit.y
                 );
         }
     }

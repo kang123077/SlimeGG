@@ -340,4 +340,10 @@ public class InventoryManager : MonoBehaviour
     {
         return isForEntry;
     }
+
+    public ContentController generateMonsterContentController()
+    {
+        Transform res = Instantiate(contentPrefab);
+        return res.GetComponent<ContentController>();
+    }
 }

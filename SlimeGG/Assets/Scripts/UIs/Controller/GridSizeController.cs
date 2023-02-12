@@ -9,23 +9,31 @@ public class GridSizeController : MonoBehaviour
     public Vector2 cellSizeRatioToUnit, spacingRatioToUnit;
     [SerializeField]
     TextAnchor childAlignmentAnchor;
+    [SerializeField]
+    private bool isRatioToUnit = true;
+    [SerializeField]
+    private int constraintCount = 0;
     // Start is called before the first frame update
     void Start()
     {
-
+        if (constraintCount != 0)
+        {
+            GetComponent<GridLayoutGroup>().constraintCount = constraintCount;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        float unitSize = isRatioToUnit ? MainGameManager.screenUnitSize : 1f;
         GetComponent<GridLayoutGroup>().childAlignment = childAlignmentAnchor;
         GetComponent<GridLayoutGroup>().cellSize = new Vector2(
-            MainGameManager.screenUnitSize * cellSizeRatioToUnit.x,
-            MainGameManager.screenUnitSize * cellSizeRatioToUnit.y
+            unitSize * cellSizeRatioToUnit.x,
+            unitSize * cellSizeRatioToUnit.y
         );
         GetComponent<GridLayoutGroup>().spacing = new Vector2(
-            MainGameManager.screenUnitSize * spacingRatioToUnit.x,
-            MainGameManager.screenUnitSize * spacingRatioToUnit.y
+            unitSize * spacingRatioToUnit.x,
+            unitSize * spacingRatioToUnit.y
         );
     }
 }

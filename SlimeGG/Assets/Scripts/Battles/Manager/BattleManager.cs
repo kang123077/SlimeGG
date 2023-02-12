@@ -33,8 +33,8 @@ public class BattleManager : MonoBehaviour
     public static float[][][] distanceAllies = new float[2][][];
     public static float[][][] distanceEnemies = new float[2][][];
     public static Vector2 fieldSize;
-    private static List<MonsterLiveStat> enemyEntry = new List<MonsterLiveStat>();
-    private static List<MonsterLiveStat> allyEntry = new List<MonsterLiveStat>();
+    private static List<ContentController> enemyEntry = new List<ContentController>();
+    private static List<ContentController> allyEntry = new List<ContentController>();
     private int sideWin { get; set; }
     private static int curStage = 0;
 
@@ -148,17 +148,17 @@ public class BattleManager : MonoBehaviour
         curStage = 8;
     }
 
-    private void generateEnemies()
-    {
-        MonsterBattleInfo temp;
-        int cnt = 0;
-        foreach (MonsterLiveStat enemyStat in enemyEntry)
-        {
-            temp = MonsterCommonFunction.generateMonsterBattleInfo(enemyStat);
-            generateMonster(temp, 1, cnt, temp.entryPos);
-            cnt++;
-        }
-    }
+    //private void generateEnemies()
+    //{
+    //    MonsterBattleInfo temp;
+    //    int cnt = 0;
+    //    foreach (ContentController enemyStat in enemyEntry)
+    //    {
+    //        temp = MonsterCommonFunction.generateMonsterBattleInfo(enemyStat);
+    //        generateMonster(temp, 1, cnt, temp.entryPos);
+    //        cnt++;
+    //    }
+    //}
 
     private void generateMonster(MonsterBattleInfo monsterInfo, int side, int numPos, float[] setPos)
     {
@@ -427,7 +427,9 @@ public class BattleManager : MonoBehaviour
                             $"Assets/Resources/Jsons/Entries/{entryPath}"
                             ))
         {
-            enemyEntry.Add(GeneratorFunction.returnMonsterLiveStat(saveStat));
+            ContentController newEnemy = inventoryManager.generateMonsterContentController();
+            newEnemy.initContent(GeneratorFunction.returnMonsterLiveStat(saveStat));
+            enemyEntry.Add(newEnemy);
         }
     }
 
