@@ -87,6 +87,7 @@ public class ContentController : MonoBehaviour
 
     private void OnMouseDown()
     {
+        prevPerant = transform.parent;
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (!isMoving) isMoving = true;
         LocalStorage.isCameraPosessed = true;
@@ -221,6 +222,7 @@ public class ContentController : MonoBehaviour
                             {
                                 // 아이템 칸 -> 장착 칸
                                 inventoryManager.mountItemToMonster(slot, this);
+                                prevPerant = slot.transform;
                             }
                         }
                         else if (slot.type == InventoryType.Item)
@@ -228,8 +230,9 @@ public class ContentController : MonoBehaviour
                             if (itemLiveStat.saveStat.equipMonsterId != null)
                             {
                                 // 장착 칸 -> 아이템 칸
-                                transform.parent.GetComponent<SlotController>().removeContent();
+                                prevPerant.GetComponent<SlotController>().removeContent();
                                 inventoryManager.unMountItemFromMonster(slot, this);
+                                prevPerant = slot.transform;
                             }
                         }
                         break;
@@ -332,12 +335,12 @@ public class ContentController : MonoBehaviour
     {
         isMouseOn = false;
         cntMouseOn = 0f;
-        isWindowOpen = false;
-        if (infoWindowController != null)
+        if (isWindowOpen && infoWindowController != null)
         {
             infoWindowController.initInfo(null, null);
             infoWindowController.closeWindow();
         }
+        isWindowOpen = false;
     }
 
     public void setInfoWindowController(InfoWindowController infoWindowController)

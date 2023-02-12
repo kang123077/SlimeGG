@@ -6,6 +6,8 @@ public class ObjectSizeController : MonoBehaviour
 {
     [SerializeField]
     public Vector2 sizeRatioToUnit, posRatioToUnit;
+    [SerializeField]
+    private bool isFixed = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,9 +32,12 @@ public class ObjectSizeController : MonoBehaviour
             MainGameManager.screenUnitSize * sizeRatioToUnit.y
             );
         }
-        GetComponent<RectTransform>().anchoredPosition = new Vector2(
-            MainGameManager.screenUnitSize * posRatioToUnit.x,
-            MainGameManager.screenUnitSize * posRatioToUnit.y
-            );
+        if (isFixed)
+        {
+            GetComponent<RectTransform>().anchoredPosition = new Vector2(
+                MainGameManager.screenUnitSize * posRatioToUnit.x,
+                MainGameManager.screenUnitSize * posRatioToUnit.y
+                );
+        }
     }
 }
