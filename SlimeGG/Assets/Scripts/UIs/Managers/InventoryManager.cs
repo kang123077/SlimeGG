@@ -2,22 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
     [SerializeField]
-    string keyToToggle;
-    [SerializeField]
     Transform slotPrefab;
     [SerializeField]
     Transform contentPrefab;
     [SerializeField]
     InfoWindowController infoWindowController;
-    bool isActive = false;
-    bool isAnimating = false;
+    [SerializeField]
+    private bool isInitWithToggle = false;
     bool isInit = false;
     Transform monsterSlot;
     Transform equipmentSlot;
@@ -26,7 +23,7 @@ public class InventoryManager : MonoBehaviour
     public ContentController curSelectedMonster;
     private MonsterInfoController monsterInfoController;
 
-    public bool isInfoNeeded;
+    private bool isForEntry = false;
 
     void Start()
     {
@@ -72,13 +69,26 @@ public class InventoryManager : MonoBehaviour
         {
             addSlot(InventoryType.Item, itemSlot);
         }
-        if (isInfoNeeded)
-            monsterInfoController = transform.GetChild(1).GetComponent<MonsterInfoController>();
+        monsterInfoController = transform.GetChild(1).GetComponent<MonsterInfoController>();
 
         ContentController.inventoryManager = this;
         loadInventory();
         isInit = true;
         adjustSize();
+        if (isInitWithToggle)
+        {
+            toggleAll();
+        }
+    }
+
+    public void toggleAll()
+    {
+        transform.GetChild(0).GetComponent<ObjectMoveController>().toggle();
+        transform.GetChild(1).GetComponent<ObjectMoveController>().toggle();
+        if (!transform.GetChild(0).GetComponent<ObjectMoveController>().isActive)
+        {
+            reloadInventory();
+        }
     }
 
     private void trackCamera()
@@ -154,16 +164,14 @@ public class InventoryManager : MonoBehaviour
         LocalStorage.Live.items.Remove(targetItem.itemLiveStat.saveStat.id);
         curSelectedMonster.addItem(targetItem.itemLiveStat);
         targetSlot.installContent(targetItem.transform);
-        if (isInfoNeeded)
-            monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
+        monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
     }
 
     public void unMountItemFromMonster(SlotController targetSlot, ContentController targetItem)
     {
         curSelectedMonster.removeItem(targetItem.itemLiveStat);
         targetSlot.installContent(targetItem.transform);
-        if (isInfoNeeded)
-            monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
+        monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
         LocalStorage.Live.items[targetItem.itemLiveStat.saveStat.id] = targetItem.itemLiveStat;
     }
 
@@ -218,8 +226,7 @@ public class InventoryManager : MonoBehaviour
         if (selectedMonster != null)
         {
             generateEquipmentItems(selectedMonster.getItemLiveStat());
-            if (isInfoNeeded)
-                monsterInfoController.initInfo(selectedMonster.monsterLiveStat);
+            monsterInfoController.initInfo(selectedMonster.monsterLiveStat);
         }
         else
         {
@@ -267,7 +274,8 @@ public class InventoryManager : MonoBehaviour
                 if (targetContentController.itemLiveStat.saveStat.equipMonsterId != null)
                 {
                     LocalStorage.Live.monsters[targetContentController.itemLiveStat.saveStat.equipMonsterId].itemStatList.Remove(targetContentController.itemLiveStat.saveStat.id);
-                } else
+                }
+                else
                 {
                     LocalStorage.Live.items.Remove(targetContentController.itemLiveStat.saveStat.id);
                 }
@@ -327,7 +335,28 @@ public class InventoryManager : MonoBehaviour
 
     public void hideInfoWindow()
     {
-        isInfoNeeded = false;
         transform.GetChild(1).gameObject.SetActive(false);
+    }
+
+    public void setEntriable(bool isForEntry)
+    {
+        this.isForEntry = isForEntry;
+        transform.GetChild(0).GetChild(6).gameObject.SetActive(!isForEntry);
+    }
+
+    public bool getIsForEntry()
+    {
+        return isForEntry;
+    }
+
+    public ContentController generateMonsterContentController()
+    {
+        Transform res = Instantiate(contentPrefab);
+        return res.GetComponent<ContentController>();
+    }
+
+    public MonsterInfoController getMonsterInfoController()
+    {
+        return monsterInfoController;
     }
 }

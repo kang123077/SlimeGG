@@ -70,6 +70,7 @@ public class MonsterBattleController : MonoBehaviour
         transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
 
         bg.GetComponent<SpriteRenderer>().flipX = true;
+        transform.SetParent(monsterContainer);
     }
 
     public void initInfo(MonsterBattleInfo monsterBattleInfo, Transform monsterContainer, Transform entryContainer)
@@ -89,7 +90,7 @@ public class MonsterBattleController : MonoBehaviour
     {
         if (!LocalStorage.IS_GAME_PAUSE)
         {
-            if (BattleManager.isBattleReady)
+            if (BattleManager.getCurStage() == 5)
             {
                 if (!hpController.gameObject.activeSelf)
                 {

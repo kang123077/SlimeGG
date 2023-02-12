@@ -7,11 +7,11 @@ public class ObjectMoveController : MonoBehaviour
     [SerializeField]
     private DirectionEnum directionToMove = DirectionEnum.None;
     [SerializeField]
-    private float distanceToMoveRatioToUnit = 0f;
+    public float distanceToMoveRatioToUnit = 0f;
     [SerializeField]
     private string keyToToggle;
 
-    private bool isActive = false;
+    public bool isActive = false;
     private bool isAnimating = false;
     private ObjectSizeController objectSizeController;
     // Start is called before the first frame update

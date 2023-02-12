@@ -3,6 +3,8 @@ using UnityEngine;
 
 public static class LocalStorage
 {
+    public static string CURRENT_SCENE = string.Empty;
+
     public static class DataCall
     {
         public static bool DICTIONARY = false;

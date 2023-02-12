@@ -4,5 +4,4 @@ using System.Collections.Generic;
 public class FieldInfo
 {
     public string name { get; set; }
-    public List<float> size { get; set; }
 }
