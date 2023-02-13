@@ -22,8 +22,11 @@ public class StageController : MonoBehaviour
     private bool isAccessible = false;
     private StageType stageType;
     private Vector3 locationPos;
+    private int idx = -1;
 
     private int curStatus = 0;
+
+    private List<int> nextIds = new List<int>();
 
     // Start is called before the first frame update
     void Start()
@@ -46,8 +49,9 @@ public class StageController : MonoBehaviour
         }
     }
 
-    public void initInfo(StageSaveStat saveStat, List<StageController> nextStages = null)
+    public void initInfo(StageSaveStat saveStat, List<StageController> nextStages = null, int idx = -1)
     {
+        this.idx = idx;
         if (curStatus == 0)
         {
             initSetting();
@@ -69,6 +73,27 @@ public class StageController : MonoBehaviour
             controller.addPrevStage(this);
         }
         drawLine();
+    }
+
+    public void initInfo(StageSaveStat saveStat, List<int> nextIds = null, int idx = -1)
+    {
+        this.idx = idx;
+        if (curStatus == 0)
+        {
+            initSetting();
+        }
+        stageType = saveStat.type;
+        locationPos = new Vector3(
+            saveStat.locationPos[0],
+            saveStat.locationPos[1],
+            0f);
+
+        transform.localScale = Vector3.one * 0.5f;
+        transform.localPosition = new Vector3(
+            saveStat.locationPos[0],
+            saveStat.locationPos[1],
+            0f);
+        this.nextIds = nextIds;
     }
 
     public void initSetting()
@@ -110,20 +135,9 @@ public class StageController : MonoBehaviour
         {
             if (isAccessible)
             {
-                int cnt = 0;
-                foreach (StageController candidateStage in LocalStorage.CurrentLocation.curLocation.nextStageList)
-                {
-                    if (candidateStage.Equals(this))
-                    {
-                        LocalStorage.CurrentLocation.nodeNum = cnt;
-                        LocalStorage.CurrentLocation.stageLevel = stageType == StageType.Normal ? 0 : stageType == StageType.Hard ? 1 : stageType == StageType.Boss ? 2 : 0;
-                        dungeonManager.enterStage(this);
-                    }
-                    else
-                    {
-                        cnt++;
-                    }
-                }
+                LocalStorage.CurrentLocation.nodeNum = idx.ToString();
+                LocalStorage.CurrentLocation.stageLevel = stageType == StageType.Normal ? 0 : stageType == StageType.Hard ? 1 : stageType == StageType.Boss ? 2 : 0;
+                dungeonManager.enterStage(this);
             }
             else
             {
@@ -145,10 +159,6 @@ public class StageController : MonoBehaviour
     public void setDungeonManager(DungeonManager dungeonManager)
     {
         this.dungeonManager = dungeonManager;
-        foreach (StageController nextStage in nextStageList)
-        {
-            nextStage.setDungeonManager(dungeonManager);
-        }
     }
 
     public void setIsAccessible(bool isAccessible)
@@ -292,8 +302,47 @@ public class StageController : MonoBehaviour
         bgSprite.color = colorPicker(stageType);
     }
 
+    public StageType getStageType()
+    {
+        return stageType;
+    }
+
     public List<StageController> getPrevStageControllers()
     {
         return prevStageList;
+    }
+
+    public int getIdx()
+    {
+        return idx;
+    }
+
+    public List<float> getLocationPos()
+    {
+        return new List<float>() { locationPos.x, locationPos.y };
+    }
+
+    public List<int> getNextStageIds()
+    {
+        if (nextStageList == null || nextStageList.Length == 0) return null;
+        List<int> ids = new List<int>();
+        foreach (StageController controller in nextStageList)
+        {
+            ids.Add(controller.idx);
+        }
+        return ids;
+    }
+
+    public void callNextStages()
+    {
+        if (nextIds == null || nextIds.Count == 0) return;
+        nextStageList = new StageController[nextIds.Count];
+        int cnt = 0;
+        foreach (int nextId in nextIds)
+        {
+            nextStageList[cnt++] = DungeonManager.stageControllers[nextId.ToString()];
+            DungeonManager.stageControllers[nextId.ToString()].addPrevStage(this);
+        }
+        drawLine();
     }
 }

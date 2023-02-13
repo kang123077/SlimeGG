@@ -15,11 +15,9 @@ public class DungeonManager : MonoBehaviour
     [SerializeField]
     Transform userTf;
     MainGameManager mainGameManager;
-
-    private bool isFocusDone = false;
     private bool isNewStage = false;
 
-    private StageController[] stageControllers;
+    public static Dictionary<string, StageController> stageControllers;
     private int curStatus = 0;
 
     // Start is called before the first frame update
@@ -51,7 +49,10 @@ public class DungeonManager : MonoBehaviour
                 break;
             case 4:
                 // 카메라 자동 이동
-                StartCoroutine(focusCamera(true, curStage));
+                if (!LocalStorage.isCameraPosessed)
+                {
+                    StartCoroutine(focusCamera(true, curStage));
+                }
                 break;
             case 5:
                 // 로딩 종료
@@ -67,12 +68,11 @@ public class DungeonManager : MonoBehaviour
 
     private IEnumerator focusCamera(bool isInit, StageController targetStage)
     {
-        isFocusDone = true;
         LocalStorage.isCameraPosessed = true;
         while (Mathf.Abs(mainCamera.position.x - targetStage.transform.position.x) > 0.1f)
         {
-            mainCamera.Translate(Vector3.left * (mainCamera.position.x - targetStage.transform.position.x) * Time.deltaTime * 2.5f);
-            yield return new WaitForSeconds(0f);
+            mainCamera.Translate(Vector3.left * (mainCamera.position.x - targetStage.transform.position.x) * 0.01f * 3.0f);
+            yield return new WaitForSeconds(0.01f);
         }
         LocalStorage.isCameraPosessed = false;
         if (!isInit)
@@ -89,7 +89,8 @@ public class DungeonManager : MonoBehaviour
         {
             isEntryEmpty = false;
             curStage.clearStage();
-            enterStage(curStage.getNextStage(stagePos));
+            Debug.Log("다음 스테이지 id:: " + stagePos);
+            enterStage(stageControllers[stagePos.ToString()]);
         }
         isNewStage = isEntryEmpty;
         curStatus = 3;
@@ -98,8 +99,7 @@ public class DungeonManager : MonoBehaviour
     private void setCurrentStageIntoZero()
     {
         mainGameManager = transform.GetComponent<MainGameManager>();
-        curStage = stageControllers[0];
-        curStage.setDungeonManager(this);
+        curStage = stageControllers[0.ToString()];
         curStage.clearStage();
         curStage.openAccessNext();
         curStatus = 2;
@@ -132,27 +132,23 @@ public class DungeonManager : MonoBehaviour
 
     private void generateStages()
     {
-        int stageCnt = LocalDictionary.dungeons[LocalStorage.CurrentLocation.dungeonName].Count;
-        stageControllers = new StageController[stageCnt];
-        StageSaveStat[] tempAligner = new StageSaveStat[stageCnt];
-        foreach (StageSaveStat stageSaveStat in LocalDictionary.dungeons[LocalStorage.CurrentLocation.dungeonName])
+        stageControllers = new Dictionary<string, StageController>();
+        Dictionary<string, StageSaveStat> tempAligner = new Dictionary<string, StageSaveStat>();
+        foreach (StageSaveStat stageSaveStat in LocalDictionary.dungeons[LocalStorage.CurrentLocation.dungeonName].stages)
         {
-            tempAligner[stageSaveStat.id] = stageSaveStat;
+            tempAligner[stageSaveStat.id.ToString()] = stageSaveStat;
         }
-        for (int i = stageCnt - 1; i >= 0; --i)
+        foreach (KeyValuePair<string, StageSaveStat> keyValuePair in tempAligner)
         {
             StageController newStage = Instantiate(stagePrefab);
-            List<StageController> nextStages = new List<StageController>();
-            if (tempAligner[i].next != null)
-            {
-                foreach (int nextNum in tempAligner[i].next)
-                {
-                    nextStages.Add(stageControllers[nextNum]);
-                }
-            }
+            newStage.initInfo(keyValuePair.Value, keyValuePair.Value.next, idx: int.Parse(keyValuePair.Key));
             newStage.transform.SetParent(stageParentTf);
-            newStage.initInfo(tempAligner[i], nextStages);
-            stageControllers[i] = newStage;
+            stageControllers[keyValuePair.Key] = newStage;
+        }
+        foreach (KeyValuePair<string, StageController> keyValuePair in stageControllers)
+        {
+            keyValuePair.Value.setDungeonManager(this);
+            keyValuePair.Value.callNextStages();
         }
         curStatus = 1;
     }

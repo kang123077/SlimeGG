@@ -46,7 +46,6 @@ public class MoreChoiceController : MonoBehaviour
             newChoice.GetChild(0).GetComponent<TextMeshProUGUI>().text = cellInfo.Key;
             newChoice.GetComponent<Button>().onClick.AddListener(() =>
             {
-                Debug.Log($"{cellInfo.Key}");
                 cellInfo.Value(0);
             });
             newChoice.SetParent(transform);

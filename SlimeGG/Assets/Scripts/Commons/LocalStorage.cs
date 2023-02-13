@@ -29,7 +29,7 @@ public static class LocalStorage
     {
         public static StageType stageType = StageType.Event;
         public static int stageLevel = 0;
-        public static int nodeNum = 0;
+        public static string nodeNum = "0";
         public static StageController curLocation;
         public static string dungeonName = string.Empty;
     }
@@ -43,7 +43,7 @@ public static class LocalStorage
 
     public static class UIOpenStatus
     {
-        public static bool fade = false;
+        public static bool fade = true;
         public static bool inventory = false;
         public static bool info = false;
         public static bool setting = false;

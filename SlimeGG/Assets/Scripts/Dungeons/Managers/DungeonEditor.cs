@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 public class DungeonEditor : MonoBehaviour
 {
@@ -11,14 +13,17 @@ public class DungeonEditor : MonoBehaviour
     Transform stageParentTf;
     [SerializeField]
     MoreChoiceController moreChoiceController;
+    [SerializeField]
+    Transform saveInputTf, loadInputTf, initialBtnsTf, saveButtonsTf;
 
-    private StageController[] stageControllers = new StageController[100];
+    private Dictionary<string, StageController> stageControllers = new Dictionary<string, StageController>();
     private int curStatus = 0;
     private int curIdx = 0;
     private bool isNewDungeon = true;
     private StageController curClickedStageController;
     private Vector3 startPos;
     private LineRenderer lineToVisualize;
+    private DungeonStat loadedDungeon;
 
     private Vector3 targetPos;
     void Start()
@@ -35,6 +40,8 @@ public class DungeonEditor : MonoBehaviour
                 // 새로 만들기 | 불러오기 선택
                 break;
             case 1:
+                // 저장 관련 버튼 엑티브
+                saveButtonsTf.gameObject.SetActive(true);
                 // 잇는 것을 보여주기 위한 선 오브젝트 생성
                 GameObject newLine = new GameObject();
                 newLine.AddComponent<LineRenderer>();
@@ -149,12 +156,14 @@ public class DungeonEditor : MonoBehaviour
                     });
                 GetComponent<MouseEventManager>().setActivation(true);
                 // 최초 스테이지 배치
-                placeInitialStage();
+                if (isNewDungeon)
+                    placeInitialStage();
                 break;
             case 2:
                 // 배치
                 break;
             case 3:
+                // 저장 시도중
                 break;
             case 4:
                 break;
@@ -281,20 +290,129 @@ public class DungeonEditor : MonoBehaviour
     private void generateStage(StageSaveStat stat)
     {
         StageController newStage = Instantiate(stagePrefab);
-        stageControllers[stat.id] = newStage;
+        stageControllers[stat.id.ToString()] = newStage;
         newStage.transform.SetParent(stageParentTf);
-        newStage.initInfo(stat, null);
+        newStage.initInfo(stat, nextStages: null, stat.id);
     }
 
-    public void startNewDungeon(Transform btnsTf)
+    public void startNewDungeon()
     {
         curStatus = 1;
         curIdx = 1;
-        Destroy(btnsTf.gameObject);
+        initialBtnsTf.gameObject.SetActive(false);
     }
 
     public void loadDungeon()
     {
-        //curStatus = 1;
+        string searchFileName = loadInputTf.GetChild(0).GetComponent<TMP_InputField>().text;
+        if (searchFileName == null || searchFileName.Length == 0) return;
+        loadedDungeon = CommonFunctions.loadObjectFromJson<DungeonStat>(
+                    $"Assets/Resources/Jsons/Dungeons/{searchFileName}"
+                    );
+
+        int stageCnt = loadedDungeon.stages.Count;
+        stageControllers = new Dictionary<string, StageController>();
+        StageSaveStat[] tempAligner = new StageSaveStat[stageCnt];
+        foreach (StageSaveStat stageSaveStat in loadedDungeon.stages)
+        {
+            tempAligner[stageSaveStat.id] = stageSaveStat;
+        }
+        for (int i = stageCnt - 1; i >= 0; --i)
+        {
+            StageController newStage = Instantiate(stagePrefab);
+            List<StageController> nextStages = new List<StageController>();
+            if (tempAligner[i].next != null)
+            {
+                foreach (int nextNum in tempAligner[i].next)
+                {
+                    nextStages.Add(stageControllers[nextNum.ToString()]);
+                }
+            }
+            newStage.transform.SetParent(stageParentTf);
+            newStage.initInfo(tempAligner[i], nextStages, tempAligner[i].id);
+            stageControllers[i.ToString()] = newStage;
+        }
+        curStatus = 1;
+        curIdx = loadedDungeon.stages.Count;
+        loadInputTf.gameObject.SetActive( false );
+        initialBtnsTf.gameObject.SetActive(false);
+    }
+
+    public void openLoadInput()
+    {
+        loadInputTf.gameObject.SetActive(true);
+    }
+
+    public void openSavingInput()
+    {
+        saveInputTf.gameObject.SetActive(true);
+        curStatus = 3;
+    }
+
+    public void confirmSaving()
+    {
+        string inputName;
+        string displayName;
+        if (isNewDungeon)
+        {
+            inputName = saveInputTf.GetChild(0).GetComponent<TMP_InputField>().text;
+            displayName = saveInputTf.GetChild(1).GetComponent<TMP_InputField>().text;
+        }
+        else
+        {
+            inputName = loadedDungeon.name; displayName = loadedDungeon.displayName;
+        }
+        if (inputName == null || displayName == null || inputName.Length < 2 || displayName.Length < 2) return;
+        DungeonStat dungeonStat = new DungeonStat();
+        // 파일명 받기
+        dungeonStat.name = inputName;
+        dungeonStat.displayName = displayName;
+        List<StageSaveStat> stages = new List<StageSaveStat>();
+        foreach (KeyValuePair<string, StageController> stageControllerPair in stageControllers)
+        {
+            StageController stageController = stageControllerPair.Value;
+            if (stageController != null)
+            {
+                StageSaveStat newStat = new StageSaveStat();
+                newStat.type = stageController.getStageType();
+                newStat.locationPos = stageController.getLocationPos();
+                newStat.next = stageController.getNextStageIds();
+                newStat.id =  int.Parse(stageControllerPair.Key);
+                stages.Add(newStat);
+                Debug.Log("스테이지 추가:: " + stageControllerPair.Key);
+                if (newStat.next != null)
+                {
+                    newStat.next.ForEach((i) => { Debug.Log("다음 스테이지:: " + i); });
+                }
+            }
+        }
+        dungeonStat.stages = stages;
+        SaveFunction.saveDungeon(dungeonStat.name, dungeonStat);
+        returntoMainMenu();
+    }
+
+    public void cancelSaving()
+    {
+        saveInputTf.gameObject.SetActive(false);
+        saveInputTf.GetChild(0).GetComponent<TMP_InputField>().text = string.Empty;
+        saveInputTf.GetChild(1).GetComponent<TMP_InputField>().text = string.Empty;
+        curStatus = 2;
+    }
+
+    public void returntoMainMenu()
+    {
+        clearAll();
+        saveInputTf.gameObject.SetActive(false);
+        initialBtnsTf.gameObject.SetActive(false);
+        saveButtonsTf.gameObject.SetActive(false);
+        initialBtnsTf.gameObject.SetActive(true);
+    }
+    private void clearAll()
+    {
+        foreach(KeyValuePair<string, StageController> stageControllerPair in stageControllers)
+        {
+            Destroy(stageControllerPair.Value.gameObject);
+        }
+        stageControllers = new Dictionary<string, StageController>();
     }
 }

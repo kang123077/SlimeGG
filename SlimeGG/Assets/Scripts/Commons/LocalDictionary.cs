@@ -30,5 +30,5 @@ public static class LocalDictionary
         new List<ItemDictionaryStat>(),
     };
 
-    public static Dictionary<string, List<StageSaveStat>> dungeons = new Dictionary<string, List<StageSaveStat>>();
+    public static Dictionary<string, DungeonStat> dungeons = new Dictionary<string, DungeonStat>();
 }

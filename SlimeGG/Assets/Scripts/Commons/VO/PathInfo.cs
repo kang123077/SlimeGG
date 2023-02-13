@@ -56,6 +56,11 @@ public static class PathInfo
             public static string item = $"{Json.root}{root}Items";
             public static string currency = $"{Json.root}{root}Currency";
         }
+
+        public static class Dictionary
+        {
+            public static string Dungeon = $"{Json.root}Dungeons/";
+        }
     }
 
     public static string TEXTURE = "Textures/";
