@@ -39,7 +39,7 @@ public class StageController : MonoBehaviour
         }
     }
 
-    public void initInfo(StageSaveStat saveStat, List<StageController> nextStages)
+    public void initInfo(StageSaveStat saveStat, List<StageController> nextStages = null)
     {
         if (curStatus == 0)
         {
@@ -50,7 +50,7 @@ public class StageController : MonoBehaviour
             saveStat.locationPos[0],
             saveStat.locationPos[1],
             0f);
-        nextStageList = nextStages.ToArray();
+        nextStageList = nextStages != null ? nextStages.ToArray() : new StageController[0];
 
         transform.localScale = Vector3.one * 0.5f;
         transform.localPosition = new Vector3(
