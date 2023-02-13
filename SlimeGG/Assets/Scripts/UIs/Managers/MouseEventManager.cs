@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class MouseEventManager : MonoBehaviour
 {
+    public static Vector3 targetMousePos = Vector3.one * -1f;
+
     private bool isActive = false;
     private int curClickedMouseButton = -1;
-    private Vector3 initMousePos = Vector3.one * -1f;
 
-    private System.Action<Vector3> actionForClickStart, actionForLeftClick, actionForRightClick, actionForLeftDrag, actionForRightDrag;
+    private System.Action<Vector3> actionForLeftDrag, actionForRightDrag;
+    private System.Action<Transform> actionForClickStart, actionForLeftClick, actionForRightClick;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,9 +25,9 @@ public class MouseEventManager : MonoBehaviour
     }
 
     public void initSetting(
-        System.Action<Vector3> actionForClickStart,
-        System.Action<Vector3> actionForLeftClick,
-        System.Action<Vector3> actionForRightClick,
+        System.Action<Transform> actionForClickStart,
+        System.Action<Transform> actionForLeftClick,
+        System.Action<Transform> actionForRightClick,
         System.Action<Vector3> actionForLeftDrag,
         System.Action<Vector3> actionForRightDrag)
     {
@@ -43,16 +45,16 @@ public class MouseEventManager : MonoBehaviour
             case -1:
                 if (Input.GetMouseButton(0))
                 {
-                    initMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    targetMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     curClickedMouseButton = 0;
-                    actionForClickStart(initMousePos);
+                    actionForClickStart(getTransformBelowMouse());
                     return;
                 }
                 if (Input.GetMouseButton(1))
                 {
-                    initMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    targetMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     curClickedMouseButton = 1;
-                    actionForClickStart(initMousePos);
+                    actionForClickStart(getTransformBelowMouse());
                     return;
                 }
                 break;
@@ -61,13 +63,13 @@ public class MouseEventManager : MonoBehaviour
                 {
                     return;
                 }
-                if (Vector3.Distance(initMousePos, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.1f)
+                if (Vector3.Distance(targetMousePos, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.1f)
                 {
-                    actionForLeftClick(initMousePos);
+                    actionForLeftClick(getTransformBelowMouse());
                 }
                 else
                 {
-                    actionForLeftDrag(initMousePos);
+                    actionForLeftDrag(targetMousePos);
                 }
                 curClickedMouseButton = -1;
                 break;
@@ -76,17 +78,34 @@ public class MouseEventManager : MonoBehaviour
                 {
                     return;
                 }
-                if (Vector3.Distance(initMousePos, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.1f)
+                if (Vector3.Distance(targetMousePos, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.1f)
                 {
-                    actionForRightClick(initMousePos);
+                    actionForRightClick(getTransformBelowMouse());
                 }
                 else
                 {
-                    actionForRightDrag(initMousePos);
+                    actionForRightDrag(targetMousePos);
                 }
                 curClickedMouseButton = -1;
                 break;
         }
+    }
+
+    private Transform getTransformBelowMouse()
+    {
+        Vector3 curMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        curMousePos = new Vector3(
+            curMousePos.x,
+            curMousePos.y,
+            -12f
+            );
+        Debug.DrawRay(curMousePos, Vector3.forward * 14f, Color.green, 1000f);
+        RaycastHit hit;
+        if (Physics.Raycast(curMousePos, Vector3.forward, out hit, 14f))
+        {
+            return hit.transform;
+        }
+        return null;
     }
 
     public void setActivation(bool activation)
