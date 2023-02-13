@@ -317,7 +317,7 @@ public class DungeonEditor : MonoBehaviour
                     );
         stageControllers = new Dictionary<string, StageController>();
         Dictionary<string, StageSaveStat> tempAligner = new Dictionary<string, StageSaveStat>();
-        foreach (StageSaveStat stageSaveStat in LocalDictionary.dungeons[LocalStorage.CurrentLocation.dungeonName].stages)
+        foreach (StageSaveStat stageSaveStat in loadedDungeon.stages)
         {
             tempAligner[stageSaveStat.id.ToString()] = stageSaveStat;
         }
