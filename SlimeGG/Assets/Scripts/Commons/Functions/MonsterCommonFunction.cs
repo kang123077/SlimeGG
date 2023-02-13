@@ -28,10 +28,23 @@ public class MonsterCommonFunction
             {
                 // isMultiple이 false(더하기)면
                 if (itemStat.dictionaryStat.effect[i].isMultiple == false)
-                    res.basic[itemStat.dictionaryStat.effect[i].name].amount += itemStat.dictionaryStat.effect[i].amount;
+                    if (res.basic.ContainsKey(itemStat.dictionaryStat.effect[i].name))
+                    {
+                        res.basic[itemStat.dictionaryStat.effect[i].name].amount += itemStat.dictionaryStat.effect[i].amount;
+                    } else
+                    {
+                        res.basic[itemStat.dictionaryStat.effect[i].name] = new BasicStat(itemStat.dictionaryStat.effect[i].amount);
+                    }
                 // isMultiple이 true(곱하기)면
                 else
+                if (res.basic.ContainsKey(itemStat.dictionaryStat.effect[i].name))
+                {
                     res.basic[itemStat.dictionaryStat.effect[i].name].amount *= itemStat.dictionaryStat.effect[i].amount;
+                }
+                else
+                {
+                    res.basic[itemStat.dictionaryStat.effect[i].name] = new BasicStat(0);
+                }
             }
         }
 

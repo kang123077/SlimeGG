@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7330987913879513979}
   - component: {fileID: 7844005035517543554}
+  - component: {fileID: 6758490532485223988}
   m_Layer: 15
   m_Name: LineBetweenStagePrefab
-  m_TagString: Untagged
+  m_TagString: Line
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -131,3 +132,15 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 0
   m_Loop: 0
+--- !u!114 &6758490532485223988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8688252411956403637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 113c5dd88ecc6d9468f26cf3b7a0590c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

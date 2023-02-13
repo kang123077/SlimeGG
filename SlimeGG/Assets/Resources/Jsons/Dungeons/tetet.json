@@ -1,0 +1,96 @@
+{
+  "name": "tetet",
+  "displayName": "테테전",
+  "stages": [
+    {
+      "id": 0,
+      "locationPos": [
+        -10.0,
+        0.0
+      ],
+      "type": "Event",
+      "next": [
+        1,
+        4
+      ]
+    },
+    {
+      "id": 1,
+      "locationPos": [
+        -6.23595572,
+        2.078652
+      ],
+      "type": "Normal",
+      "next": [
+        3
+      ]
+    },
+    {
+      "id": 2,
+      "locationPos": [
+        -3.146063,
+        0.3595507
+      ],
+      "type": "Normal",
+      "next": [
+        7,
+        3,
+        5
+      ]
+    },
+    {
+      "id": 3,
+      "locationPos": [
+        -1.40449,
+        4.01123571
+      ],
+      "type": "Hard",
+      "next": [
+        5,
+        6
+      ]
+    },
+    {
+      "id": 4,
+      "locationPos": [
+        -6.29213047,
+        -1.7865169
+      ],
+      "type": "Event",
+      "next": [
+        2
+      ]
+    },
+    {
+      "id": 5,
+      "locationPos": [
+        1.674161,
+        -1.74157286
+      ],
+      "type": "Event",
+      "next": [
+        7
+      ]
+    },
+    {
+      "id": 6,
+      "locationPos": [
+        2.34831858,
+        3.0
+      ],
+      "type": "Normal",
+      "next": [
+        7
+      ]
+    },
+    {
+      "id": 7,
+      "locationPos": [
+        4.35955429,
+        0.123595595
+      ],
+      "type": "Boss",
+      "next": null
+    }
+  ]
+}

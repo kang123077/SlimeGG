@@ -25,4 +25,9 @@ public static class SaveFunction
         CommonFunctions.saveObjectToJson<int>($"Assets/Resources/{PathInfo.Json.Save.currency}", LocalStorage.Live.currency);
         CommonFunctions.saveObjectToJson<List<int>>($"Assets/Resources/{PathInfo.Json.Save.journey}", LocalStorage.Live.journeyInfo);
     }
+
+    public static void saveDungeon(string fileName, DungeonStat dungeonStat)
+    {
+        CommonFunctions.saveObjectToJson<DungeonStat>($"Assets/Resources/{PathInfo.Json.Dictionary.Dungeon}{fileName}", dungeonStat);
+    }
 }
