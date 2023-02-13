@@ -43,17 +43,20 @@ public class DungeonEditor : MonoBehaviour
                 // 저장 관련 버튼 엑티브
                 saveButtonsTf.gameObject.SetActive(true);
                 // 잇는 것을 보여주기 위한 선 오브젝트 생성
-                GameObject newLine = new GameObject();
-                newLine.AddComponent<LineRenderer>();
-                newLine.transform.position = Vector3.zero;
-                newLine.transform.localScale = Vector3.one;
-                lineToVisualize = newLine.GetComponent<LineRenderer>();
-                lineToVisualize.startWidth = 0.1f;
-                lineToVisualize.endWidth = 0.1f;
-                lineToVisualize.startColor = Color.black;
-                lineToVisualize.endColor = Color.black;
-                lineToVisualize.positionCount = 2;
-                lineToVisualize.gameObject.SetActive(false);
+                if (lineToVisualize == null)
+                {
+                    GameObject newLine = new GameObject();
+                    newLine.AddComponent<LineRenderer>();
+                    newLine.transform.position = Vector3.zero;
+                    newLine.transform.localScale = Vector3.one;
+                    lineToVisualize = newLine.GetComponent<LineRenderer>();
+                    lineToVisualize.startWidth = 0.1f;
+                    lineToVisualize.endWidth = 0.1f;
+                    lineToVisualize.startColor = Color.black;
+                    lineToVisualize.endColor = Color.black;
+                    lineToVisualize.positionCount = 2;
+                    lineToVisualize.gameObject.SetActive(false);
+                }
                 // 도구창 로딩
                 setNewOptions();
                 // 마우스 이벤트 활성화
@@ -158,6 +161,8 @@ public class DungeonEditor : MonoBehaviour
                 // 최초 스테이지 배치
                 if (isNewDungeon)
                     placeInitialStage();
+                else
+                    curStatus = 2;
                 break;
             case 2:
                 // 배치
@@ -304,37 +309,32 @@ public class DungeonEditor : MonoBehaviour
 
     public void loadDungeon()
     {
+        isNewDungeon = false;
         string searchFileName = loadInputTf.GetChild(0).GetComponent<TMP_InputField>().text;
         if (searchFileName == null || searchFileName.Length == 0) return;
         loadedDungeon = CommonFunctions.loadObjectFromJson<DungeonStat>(
                     $"Assets/Resources/Jsons/Dungeons/{searchFileName}"
                     );
-
-        int stageCnt = loadedDungeon.stages.Count;
         stageControllers = new Dictionary<string, StageController>();
-        StageSaveStat[] tempAligner = new StageSaveStat[stageCnt];
-        foreach (StageSaveStat stageSaveStat in loadedDungeon.stages)
+        Dictionary<string, StageSaveStat> tempAligner = new Dictionary<string, StageSaveStat>();
+        foreach (StageSaveStat stageSaveStat in LocalDictionary.dungeons[LocalStorage.CurrentLocation.dungeonName].stages)
         {
-            tempAligner[stageSaveStat.id] = stageSaveStat;
+            tempAligner[stageSaveStat.id.ToString()] = stageSaveStat;
         }
-        for (int i = stageCnt - 1; i >= 0; --i)
+        foreach (KeyValuePair<string, StageSaveStat> keyValuePair in tempAligner)
         {
             StageController newStage = Instantiate(stagePrefab);
-            List<StageController> nextStages = new List<StageController>();
-            if (tempAligner[i].next != null)
-            {
-                foreach (int nextNum in tempAligner[i].next)
-                {
-                    nextStages.Add(stageControllers[nextNum.ToString()]);
-                }
-            }
+            newStage.initInfo(keyValuePair.Value, keyValuePair.Value.next, idx: int.Parse(keyValuePair.Key));
             newStage.transform.SetParent(stageParentTf);
-            newStage.initInfo(tempAligner[i], nextStages, tempAligner[i].id);
-            stageControllers[i.ToString()] = newStage;
+            stageControllers[keyValuePair.Key] = newStage;
+        }
+        foreach (KeyValuePair<string, StageController> keyValuePair in stageControllers)
+        {
+            keyValuePair.Value.callNextStages(stageControllers);
         }
         curStatus = 1;
         curIdx = loadedDungeon.stages.Count;
-        loadInputTf.gameObject.SetActive( false );
+        loadInputTf.gameObject.SetActive(false);
         initialBtnsTf.gameObject.SetActive(false);
     }
 
@@ -377,13 +377,8 @@ public class DungeonEditor : MonoBehaviour
                 newStat.type = stageController.getStageType();
                 newStat.locationPos = stageController.getLocationPos();
                 newStat.next = stageController.getNextStageIds();
-                newStat.id =  int.Parse(stageControllerPair.Key);
+                newStat.id = int.Parse(stageControllerPair.Key);
                 stages.Add(newStat);
-                Debug.Log("스테이지 추가:: " + stageControllerPair.Key);
-                if (newStat.next != null)
-                {
-                    newStat.next.ForEach((i) => { Debug.Log("다음 스테이지:: " + i); });
-                }
             }
         }
         dungeonStat.stages = stages;
@@ -402,14 +397,15 @@ public class DungeonEditor : MonoBehaviour
     public void returntoMainMenu()
     {
         clearAll();
+        loadInputTf.gameObject.SetActive(false);
         saveInputTf.gameObject.SetActive(false);
         initialBtnsTf.gameObject.SetActive(false);
         saveButtonsTf.gameObject.SetActive(false);
         initialBtnsTf.gameObject.SetActive(true);
     }
-    private void clearAll()
+    public void clearAll()
     {
-        foreach(KeyValuePair<string, StageController> stageControllerPair in stageControllers)
+        foreach (KeyValuePair<string, StageController> stageControllerPair in stageControllers)
         {
             Destroy(stageControllerPair.Value.gameObject);
         }

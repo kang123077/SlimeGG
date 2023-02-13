@@ -148,7 +148,7 @@ public class DungeonManager : MonoBehaviour
         foreach (KeyValuePair<string, StageController> keyValuePair in stageControllers)
         {
             keyValuePair.Value.setDungeonManager(this);
-            keyValuePair.Value.callNextStages();
+            keyValuePair.Value.callNextStages(stageControllers);
         }
         curStatus = 1;
     }

@@ -27,6 +27,7 @@ public class StageController : MonoBehaviour
     private int curStatus = 0;
 
     private List<int> nextIds = new List<int>();
+    private bool isDrawing = false;
 
     // Start is called before the first frame update
     void Start()
@@ -44,8 +45,11 @@ public class StageController : MonoBehaviour
         }
         if (LocalStorage.EDITOR_MODE)
         {
-            adjustPosition();
-            adjustLine();
+            if (!isDrawing)
+            {
+                adjustPosition();
+                adjustLine();
+            }
         }
     }
 
@@ -199,7 +203,8 @@ public class StageController : MonoBehaviour
 
     public void addNextStage(StageController stageToAdd)
     {
-        if (nextStageList.Contains(stageToAdd)) return;
+        if (nextStageList == null) nextStageList = new StageController[0];
+        if (stageToAdd == null || nextStageList.Contains(stageToAdd)) return;
         stageToAdd.addPrevStage(this);
         StageController[] newList = new StageController[(nextStageList != null ? nextStageList.Length : 0) + 1];
         int cnt = 0;
@@ -218,7 +223,7 @@ public class StageController : MonoBehaviour
 
     public void removeNextStage(StageController stageToRemove)
     {
-        if (!nextStageList.Contains(stageToRemove)) return;
+        if (stageToRemove == null || !nextStageList.Contains(stageToRemove)) return;
         stageToRemove.removePrevStage(this);
         StageController[] newList = new StageController[(nextStageList != null ? nextStageList.Length : 0) - 1];
         int cnt = 0;
@@ -236,6 +241,7 @@ public class StageController : MonoBehaviour
 
     private void drawLine()
     {
+        isDrawing = true;
         if (lineList != null)
         {
             foreach (Transform line in lineList)
@@ -259,6 +265,7 @@ public class StageController : MonoBehaviour
             newLineTf.GetComponent<LineController>().nextStageController = nextStageList[i];
             lineList[i] = newLineTf;
         }
+        isDrawing = false;
     }
 
     private void adjustPosition()
@@ -333,15 +340,15 @@ public class StageController : MonoBehaviour
         return ids;
     }
 
-    public void callNextStages()
+    public void callNextStages(Dictionary<string, StageController> stageControllers)
     {
         if (nextIds == null || nextIds.Count == 0) return;
         nextStageList = new StageController[nextIds.Count];
         int cnt = 0;
         foreach (int nextId in nextIds)
         {
-            nextStageList[cnt++] = DungeonManager.stageControllers[nextId.ToString()];
-            DungeonManager.stageControllers[nextId.ToString()].addPrevStage(this);
+            nextStageList[cnt++] = stageControllers[nextId.ToString()];
+            stageControllers[nextId.ToString()].addPrevStage(this);
         }
         drawLine();
     }
