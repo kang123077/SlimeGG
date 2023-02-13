@@ -47,8 +47,8 @@ public class TrackingWindowController : MonoBehaviour
     private void trackMouse()
     {
         Vector3 point = Camera.main.ScreenToWorldPoint(new Vector3(
-            Input.mousePosition.x + ((flipX ? -1f : 1f) * ((GetComponent<RectTransform>().sizeDelta.x / 2f) + 20f)),
-            Input.mousePosition.y + ((flipY ? -1f : 1f) * ((GetComponent<RectTransform>().sizeDelta.y / 2f) + 20f)),
+            Input.mousePosition.x + ((flipX ? -1f : 1f) * ((GetComponent<RectTransform>().sizeDelta.x / 2f) + 1f)),
+            Input.mousePosition.y + ((flipY ? -1f : 1f) * ((GetComponent<RectTransform>().sizeDelta.y / 2f) + 1f)),
             Input.mousePosition.z
             ));
         transform.position = new Vector3(

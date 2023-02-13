@@ -50,6 +50,7 @@ public class DungeonEditor : MonoBehaviour
                     (clickedTransform) =>
                     {
                         targetPos = MouseEventManager.targetMousePos;
+                        targetPos.z = 0f;
                         if (!moreChoiceController.GetComponent<TrackingWindowController>().isOpened)
                         {
                             //  선택창 안열려있음
@@ -95,48 +96,73 @@ public class DungeonEditor : MonoBehaviour
     private void setNewOptions()
     {
         moreChoiceController.initInfo(
-            new List<string>() {
-                        "New: Normal",
-                        "New: Hard",
-                        "New: Event",
-                        "New: Shop",
-                        "New: Boss",
-            },
-            new List<System.Action<int>>() {
-                        (i) => { createNewStage(StageType.Normal); },
-                        (i) => { createNewStage(StageType.Hard); },
-                        (i) => { createNewStage(StageType.Event); },
-                        (i) => { createNewStage(StageType.Shop); },
-                        (i) => { createNewStage(StageType.Boss); },
+            new Dictionary<string, System.Action<int>>()
+            {
+                {
+                        "생성 -> 일반",
+                        (i) => { createNewStage(StageType.Normal); }
+                },
+                {
+                        "생성 -> 어려움",
+                        (i) => { createNewStage(StageType.Hard); }
+                },
+                {
+                        "생성 -> 이벤트",
+                        (i) => { createNewStage(StageType.Event); }
+                },
+                {
+                        "생성 -> 상점",
+                        (i) => { createNewStage(StageType.Shop); }
+                },
+                {
+                        "생성 -> 보스",
+                        (i) => { createNewStage(StageType.Boss); }
+                },
             }
-            );
+        );
     }
 
     private void setModifyingOption(StageController stageController)
     {
         moreChoiceController.initInfo(
-            new List<string>() {
-                        "Remove",
-                        "Change: Normal",
-                        "Change: Hard",
-                        "Change: Event",
-                        "Change: Shop",
-                        "Change: Boss",
-            },
-            new List<System.Action<int>>() {
-                        (i) => { truncateTargetStage(stageController); },
-                        (i) => { createNewStage(StageType.Normal); },
-                        (i) => { createNewStage(StageType.Hard); },
-                        (i) => { createNewStage(StageType.Event); },
-                        (i) => { createNewStage(StageType.Shop); },
-                        (i) => { createNewStage(StageType.Boss); },
+            new Dictionary<string, System.Action<int>>()
+            {
+                {
+                        "삭제",
+                        (i) => { truncateTargetStage(stageController); }
+                },
+                {
+                        "변경 -> 일반",
+                        (i) => { modifyStage(stageController, StageType.Normal); }
+                },
+                {
+                        "변경 -> 어려움",
+                        (i) => { modifyStage(stageController, StageType.Hard); }
+                },
+                {
+                        "변경 -> 이벤트",
+                        (i) => { modifyStage(stageController, StageType.Event); }
+                },
+                {
+                        "변경 -> 상점",
+                        (i) => { modifyStage(stageController, StageType.Shop); }
+                },
+                {
+                        "변경 -> 보스",
+                        (i) => { modifyStage(stageController, StageType.Boss); }
+                },
             }
-            );
+        );
     }
 
     private void createNewStage(StageType stageType)
     {
         Debug.Log($":: {targetPos} 에 신규 {stageType} 스테이지 생성 ::");
+    }
+
+    private void modifyStage(StageController targetController, StageType stageType)
+    {
+        Debug.Log($":: {targetController} -> {stageType} 스테이지 변경 ::");
     }
 
     private void truncateTargetStage(StageController stageController)
