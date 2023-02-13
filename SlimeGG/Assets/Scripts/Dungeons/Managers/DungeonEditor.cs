@@ -14,7 +14,11 @@ public class DungeonEditor : MonoBehaviour
 
     private StageController[] stageControllers = new StageController[100];
     private int curStatus = 0;
+    private int curIdx = 0;
     private bool isNewDungeon = true;
+    private StageController curClickedStageController;
+    private Vector3 startPos;
+    private LineRenderer lineToVisualize;
 
     private Vector3 targetPos;
     void Start()
@@ -31,22 +35,53 @@ public class DungeonEditor : MonoBehaviour
                 // 새로 만들기 | 불러오기 선택
                 break;
             case 1:
+                // 잇는 것을 보여주기 위한 선 오브젝트 생성
+                GameObject newLine = new GameObject();
+                newLine.AddComponent<LineRenderer>();
+                newLine.transform.position = Vector3.zero;
+                newLine.transform.localScale = Vector3.one;
+                lineToVisualize = newLine.GetComponent<LineRenderer>();
+                lineToVisualize.startWidth = 0.1f;
+                lineToVisualize.endWidth = 0.1f;
+                lineToVisualize.startColor = Color.black;
+                lineToVisualize.endColor = Color.black;
+                lineToVisualize.positionCount = 2;
+                lineToVisualize.gameObject.SetActive(false);
                 // 도구창 로딩
                 setNewOptions();
                 // 마우스 이벤트 활성화
                 GetComponent<MouseEventManager>().initSetting(
+                    (mousePos) =>
+                    {
+                        LocalStorage.isCameraPosessed = false;
+                        lineToVisualize.gameObject.SetActive(false);
+                        startPos = Vector3.one * -1f;
+                        curClickedStageController = null;
+                    },
                     // 클릭 시작
-                    (clickedTransform) =>
+                    (clickedTransform, mousePos) =>
                     {
                         if (!checkIfSameTransform(clickedTransform, moreChoiceController.transform))
                         {
                             targetPos = Vector3.one * -1f;
                             moreChoiceController.GetComponent<TrackingWindowController>().closeWindow();
+                            if (clickedTransform != null)
+                            {
+                                if (clickedTransform.GetComponent<StageController>() != null)
+                                {
+                                    // 스테이지 선택
+                                    LocalStorage.isCameraPosessed = true;
+                                    startPos = mousePos;
+                                    curClickedStageController = clickedTransform.GetComponent<StageController>();
+                                }
+                            }
                         }
                     },
-                    // 왼쪽 클릭
-                    (clickedTransform) => { },
-                    // 오른 클릭
+                    // 왼쪽 클릭 <- 클릭 땔때
+                    (clickedTransform) =>
+                    {
+                    },
+                    // 오른 클릭 <- 클릭 땔때
                     (clickedTransform) =>
                     {
                         targetPos = MouseEventManager.targetMousePos;
@@ -66,7 +101,6 @@ public class DungeonEditor : MonoBehaviour
                             }
                             else
                             {
-                                // 
                             }
                             moreChoiceController.GetComponent<TrackingWindowController>().openWindow(true);
                         }
@@ -76,9 +110,43 @@ public class DungeonEditor : MonoBehaviour
                         }
                     },
                     // 왼 드래그
-                    (mousePos) => { },
+                    (mousePos) =>
+                    {
+                        // 스테이지 이동
+                        if (curClickedStageController != null)
+                        {
+                            mousePos.z = 0f;
+                            curClickedStageController.transform.position = mousePos;
+                        }
+                    },
                     // 오른 드래그
-                    (mousePos) => { });
+                    (mousePos) =>
+                    {
+                        if (curClickedStageController != null)
+                        {
+                            // 스테이지 <-> 스테이지 끌어서 연결
+                            if (!lineToVisualize.gameObject.activeSelf)
+                            {
+                                lineToVisualize.SetPosition(0, new Vector3(startPos.x, startPos.y, -1f));
+                                lineToVisualize.gameObject.SetActive(true);
+                            }
+                            visualizeCurrentBridge(mousePos);
+                        }
+                    },
+                    actionforLeftClickEnd: (clickedTransform, mousePos) =>
+                    {
+
+                    },
+                    actionforRightClickEnd: (clickedTransform, mousePos) =>
+                    {
+                        if (clickedTransform != null)
+                        {
+                            if (clickedTransform.GetComponent<StageController>())
+                            {
+                                createConnection(clickedTransform.GetComponent<StageController>());
+                            }
+                        }
+                    });
                 GetComponent<MouseEventManager>().setActivation(true);
                 // 최초 스테이지 배치
                 placeInitialStage();
@@ -91,6 +159,11 @@ public class DungeonEditor : MonoBehaviour
             case 4:
                 break;
         }
+    }
+
+    private void visualizeCurrentBridge(Vector3 curPos)
+    {
+        lineToVisualize.SetPosition(1, new Vector3(curPos.x, curPos.y, -1f));
     }
 
     private void setNewOptions()
@@ -155,19 +228,39 @@ public class DungeonEditor : MonoBehaviour
         );
     }
 
+    private void createConnection(StageController targetStageController)
+    {
+        curClickedStageController.addNextStage(targetStageController);
+    }
+
     private void createNewStage(StageType stageType)
     {
-        Debug.Log($":: {targetPos} 에 신규 {stageType} 스테이지 생성 ::");
+        StageSaveStat newStat = new StageSaveStat();
+        newStat.locationPos = new List<float>() { targetPos.x, targetPos.y };
+        newStat.id = curIdx;
+        newStat.type = stageType;
+        generateStage(newStat);
+        targetPos = Vector3.one * -1f;
+        moreChoiceController.GetComponent<TrackingWindowController>().closeWindow();
+        curIdx++;
     }
 
     private void modifyStage(StageController targetController, StageType stageType)
     {
-        Debug.Log($":: {targetController} -> {stageType} 스테이지 변경 ::");
+        targetController.setStageType(stageType);
+        moreChoiceController.GetComponent<TrackingWindowController>().closeWindow();
     }
 
     private void truncateTargetStage(StageController stageController)
     {
-        Debug.Log("삭제");
+        List<StageController> stages = new List<StageController>();
+        stages.AddRange(stageController.getPrevStageControllers());
+        foreach (StageController prevStage in stages)
+        {
+            prevStage.removeNextStage(stageController);
+        }
+        Destroy(stageController.gameObject);
+        moreChoiceController.GetComponent<TrackingWindowController>().closeWindow();
     }
 
     private bool checkIfSameTransform(Transform tf1, Transform tf2)
@@ -196,6 +289,7 @@ public class DungeonEditor : MonoBehaviour
     public void startNewDungeon(Transform btnsTf)
     {
         curStatus = 1;
+        curIdx = 1;
         Destroy(btnsTf.gameObject);
     }
 

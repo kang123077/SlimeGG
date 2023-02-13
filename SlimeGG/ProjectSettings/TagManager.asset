@@ -11,6 +11,7 @@ TagManager:
   - Field
   - Slot
   - Content
+  - Line
   layers:
   - Default
   - TransparentFX

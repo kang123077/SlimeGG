@@ -9,8 +9,9 @@ public class MouseEventManager : MonoBehaviour
     private bool isActive = false;
     private int curClickedMouseButton = -1;
 
-    private System.Action<Vector3> actionForLeftDrag, actionForRightDrag;
-    private System.Action<Transform> actionForClickStart, actionForLeftClick, actionForRightClick;
+    private System.Action<Vector3> actionForLeftDrag, actionForRightDrag, actionforStop;
+    private System.Action<Transform> actionForLeftClick, actionForRightClick;
+    private System.Action<Transform, Vector3> actionForClickStart, actionforRightClickEnd, actionforLeftClickEnd;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,17 +26,23 @@ public class MouseEventManager : MonoBehaviour
     }
 
     public void initSetting(
-        System.Action<Transform> actionForClickStart,
+        System.Action<Vector3> actionforStop,
+        System.Action<Transform, Vector3> actionForClickStart,
         System.Action<Transform> actionForLeftClick,
         System.Action<Transform> actionForRightClick,
         System.Action<Vector3> actionForLeftDrag,
-        System.Action<Vector3> actionForRightDrag)
+        System.Action<Vector3> actionForRightDrag,
+        System.Action<Transform, Vector3> actionforRightClickEnd,
+        System.Action<Transform, Vector3> actionforLeftClickEnd)
     {
+        this.actionforStop = actionforStop;
         this.actionForClickStart = actionForClickStart;
         this.actionForLeftClick = actionForLeftClick;
         this.actionForRightClick = actionForRightClick;
         this.actionForLeftDrag = actionForLeftDrag;
         this.actionForRightDrag = actionForRightDrag;
+        this.actionforRightClickEnd = actionforRightClickEnd;
+        this.actionforLeftClickEnd = actionforLeftClickEnd;
     }
 
     private void checkMouseEvent()
@@ -43,24 +50,25 @@ public class MouseEventManager : MonoBehaviour
         switch (curClickedMouseButton)
         {
             case -1:
+                targetMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 if (Input.GetMouseButton(0))
                 {
-                    targetMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     curClickedMouseButton = 0;
-                    actionForClickStart(getTransformBelowMouse());
+                    actionForClickStart(getTransformBelowMouse(), targetMousePos);
                     return;
                 }
                 if (Input.GetMouseButton(1))
                 {
-                    targetMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     curClickedMouseButton = 1;
-                    actionForClickStart(getTransformBelowMouse());
+                    actionForClickStart(getTransformBelowMouse(), targetMousePos);
                     return;
                 }
+                actionforStop(targetMousePos);
                 break;
             case 0:
                 if (Input.GetMouseButton(0))
                 {
+                    actionForLeftDrag(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                     return;
                 }
                 if (Vector3.Distance(targetMousePos, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.1f)
@@ -69,13 +77,14 @@ public class MouseEventManager : MonoBehaviour
                 }
                 else
                 {
-                    actionForLeftDrag(targetMousePos);
+                    actionforLeftClickEnd(getTransformBelowMouse(), Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 }
                 curClickedMouseButton = -1;
                 break;
             case 1:
                 if (Input.GetMouseButton(1))
                 {
+                    actionForRightDrag(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                     return;
                 }
                 if (Vector3.Distance(targetMousePos, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.1f)
@@ -84,7 +93,7 @@ public class MouseEventManager : MonoBehaviour
                 }
                 else
                 {
-                    actionForRightDrag(targetMousePos);
+                    actionforRightClickEnd(getTransformBelowMouse(), Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 }
                 curClickedMouseButton = -1;
                 break;

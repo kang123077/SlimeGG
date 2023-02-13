@@ -10,6 +10,8 @@ public class MainGameManager : MonoBehaviour
     GameObject loadingGO, curtainGO;
     [SerializeField]
     SettingManager settingManager;
+    [SerializeField]
+    private bool isForEditor = false;
     public static Vector2 screenSize = Vector2.zero;
     public static float screenUnitSize = 0f;
     public static float adjustFontSize = 8f;
@@ -19,8 +21,9 @@ public class MainGameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        LocalStorage.EDITOR_MODE = isForEditor;
         getScreenSize();
-        if (LocalStorage.UIOpenStatus.fade)
+        if (LocalStorage.UIOpenStatus.fade || !isForEditor)
         {
             controllLoading(false, null);
         }

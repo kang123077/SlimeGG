@@ -273,6 +273,7 @@ MonoBehaviour:
   loadingGO: {fileID: 0}
   curtainGO: {fileID: 0}
   settingManager: {fileID: 0}
+  isForEditor: 1
 --- !u!114 &60201566
 MonoBehaviour:
   m_ObjectHideFlags: 0

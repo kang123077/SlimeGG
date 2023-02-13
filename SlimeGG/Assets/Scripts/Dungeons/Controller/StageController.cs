@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class StageController : MonoBehaviour
 {
     StageController[] nextStageList;
+    List<StageController> prevStageList = new List<StageController>();
     [SerializeField]
     Transform linePrefab;
 
@@ -37,6 +39,11 @@ public class StageController : MonoBehaviour
             bgSprite.color = new Color(0.4f, 0.4f, 0.4f, 1);
             isClear = false;
         }
+        if (LocalStorage.EDITOR_MODE)
+        {
+            adjustPosition();
+            adjustLine();
+        }
     }
 
     public void initInfo(StageSaveStat saveStat, List<StageController> nextStages = null)
@@ -50,26 +57,18 @@ public class StageController : MonoBehaviour
             saveStat.locationPos[0],
             saveStat.locationPos[1],
             0f);
-        nextStageList = nextStages != null ? nextStages.ToArray() : new StageController[0];
 
         transform.localScale = Vector3.one * 0.5f;
         transform.localPosition = new Vector3(
             saveStat.locationPos[0],
             saveStat.locationPos[1],
             0f);
-        lineList = new Transform[nextStageList.Length];
-        for (int i = 0; i < lineList.Length; i++)
+        nextStageList = nextStages != null ? nextStages.ToArray() : new StageController[0];
+        foreach (StageController controller in nextStageList)
         {
-            Transform newLineTf = Instantiate(linePrefab);
-            newLineTf.SetParent(lineListTf);
-            newLineTf.localPosition = Vector3.zero;
-            newLineTf.GetComponent<LineRenderer>().endColor = colorPicker(nextStageList[i].stageType);
-            newLineTf.GetComponent<LineRenderer>().SetPositions(new Vector3[]
-            {
-                (nextStageList[i].locationPos - transform.localPosition) * 0.1f,
-                (nextStageList[i].locationPos - transform.localPosition) * 0.9f
-            });
+            controller.addPrevStage(this);
         }
+        drawLine();
     }
 
     public void initSetting()
@@ -186,5 +185,115 @@ public class StageController : MonoBehaviour
     public StageController getNextStage(int num)
     {
         return nextStageList[num];
+    }
+
+    public void addNextStage(StageController stageToAdd)
+    {
+        if (nextStageList.Contains(stageToAdd)) return;
+        stageToAdd.addPrevStage(this);
+        StageController[] newList = new StageController[(nextStageList != null ? nextStageList.Length : 0) + 1];
+        int cnt = 0;
+        if (nextStageList != null)
+        {
+            foreach (StageController stage in nextStageList)
+            {
+                if (stage != stageToAdd)
+                    newList[cnt++] = stage;
+            }
+        }
+        newList[cnt] = stageToAdd;
+        nextStageList = newList;
+        drawLine();
+    }
+
+    public void removeNextStage(StageController stageToRemove)
+    {
+        if (!nextStageList.Contains(stageToRemove)) return;
+        stageToRemove.removePrevStage(this);
+        StageController[] newList = new StageController[(nextStageList != null ? nextStageList.Length : 0) - 1];
+        int cnt = 0;
+        if (nextStageList != null)
+        {
+            foreach (StageController stage in nextStageList)
+            {
+                if (stage != stageToRemove)
+                    newList[cnt++] = stage;
+            }
+        }
+        nextStageList = newList;
+        drawLine();
+    }
+
+    private void drawLine()
+    {
+        if (lineList != null)
+        {
+            foreach (Transform line in lineList)
+            {
+                Destroy(line.gameObject);
+            }
+        }
+        lineList = new Transform[nextStageList.Length];
+        for (int i = 0; i < lineList.Length; i++)
+        {
+            Transform newLineTf = Instantiate(linePrefab);
+            newLineTf.SetParent(lineListTf);
+            newLineTf.localPosition = Vector3.zero;
+            newLineTf.GetComponent<LineRenderer>().endColor = colorPicker(nextStageList[i].stageType);
+            newLineTf.GetComponent<LineRenderer>().SetPositions(new Vector3[]
+            {
+                (nextStageList[i].locationPos - transform.localPosition) * 0.1f,
+                (nextStageList[i].locationPos - transform.localPosition) * 0.9f
+            });
+            newLineTf.GetComponent<LineController>().fromStageController = this;
+            newLineTf.GetComponent<LineController>().nextStageController = nextStageList[i];
+            lineList[i] = newLineTf;
+        }
+    }
+
+    private void adjustPosition()
+    {
+        locationPos = transform.position;
+    }
+
+    private void adjustLine()
+    {
+        if (lineList != null)
+            for (int i = 0; i < lineList.Length; i++)
+            {
+                lineList[i].GetComponent<LineRenderer>().endColor = colorPicker(nextStageList[i].stageType);
+                lineList[i].GetComponent<LineRenderer>().SetPositions(new Vector3[]
+                {
+                (nextStageList[i].locationPos - transform.localPosition) * 0.1f,
+                (nextStageList[i].locationPos - transform.localPosition) * 0.9f
+                });
+            }
+    }
+
+    private void addPrevStage(StageController stage)
+    {
+        if (!prevStageList.Contains(stage))
+        {
+            prevStageList.Add(stage);
+        }
+    }
+
+    private void removePrevStage(StageController stage)
+    {
+        if (prevStageList.Contains(stage))
+        {
+            prevStageList.Remove(stage);
+        }
+    }
+
+    public void setStageType(StageType stageType)
+    {
+        this.stageType = stageType;
+        bgSprite.color = colorPicker(stageType);
+    }
+
+    public List<StageController> getPrevStageControllers()
+    {
+        return prevStageList;
     }
 }

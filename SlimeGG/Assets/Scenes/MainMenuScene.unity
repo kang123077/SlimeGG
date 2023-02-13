@@ -497,6 +497,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeRatioToUnit: {x: 10, y: 2}
   posRatioToUnit: {x: -1, y: -1}
+  isFixed: 1
+  isRatioToUnit: 1
 --- !u!1 &605308571
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,6 +859,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeRatioToUnit: {x: 0, y: 0}
   posRatioToUnit: {x: 0.5, y: 0.5}
+  isFixed: 1
+  isRatioToUnit: 1
 --- !u!114 &1275353696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -896,6 +900,8 @@ MonoBehaviour:
   cellSizeRatioToUnit: {x: 6, y: 1.2}
   spacingRatioToUnit: {x: 0.5, y: 0.5}
   childAlignmentAnchor: 6
+  isRatioToUnit: 1
+  constraintCount: 0
 --- !u!1 &1444393148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1265,7 +1271,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadingGO: {fileID: 540892959}
+  curtainGO: {fileID: 0}
   settingManager: {fileID: 0}
+  isForEditor: 0
 --- !u!4 &1778974773
 Transform:
   m_ObjectHideFlags: 0
