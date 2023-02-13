@@ -6,7 +6,7 @@ using TMPro;
 public class FontResizeController : MonoBehaviour
 {
     [SerializeField]
-    private float fonsSizeRatioToUnit = 1f;
+    public float fonsSizeRatioToUnit = 1f;
     // Start is called before the first frame update
     void Start()
     {

@@ -10,40 +10,6 @@
         "name": "Spirit",
         "amount": 5.0,
         "shouldOver": true
-      }
-    ],
-    "id": "00000001",
-    "speicie": "BabySpirit",
-    "entryPos": null
-  },
-  {
-    "exp": [
-      {
-        "name": "Spirit",
-        "amount": 10.0,
-        "shouldOver": true
-      },
-      {
-        "name": "Earth",
-        "amount": 5.0,
-        "shouldOver": true
-      }
-    ],
-    "id": "00000002",
-    "speicie": "BabySpirit",
-    "entryPos": null
-  },
-  {
-    "exp": [
-      {
-        "name": "Wind",
-        "amount": 10.0,
-        "shouldOver": true
-      },
-      {
-        "name": "Spirit",
-        "amount": 5.0,
-        "shouldOver": true
       },
       {
         "name": "Earth",

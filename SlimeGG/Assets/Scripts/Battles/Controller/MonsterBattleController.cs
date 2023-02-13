@@ -147,7 +147,7 @@ public class MonsterBattleController : MonoBehaviour
         {
             foreach (SkillStat skill in liveBattleInfo.skills.Values)
             {
-                skill.timeCharging += Time.deltaTime * (1 / liveBattleInfo.basic[BasicStatEnum.timeCoolCycle].amount);
+                skill.timeCharging += Time.deltaTime * (1 /( liveBattleInfo.basic.ContainsKey(BasicStatEnum.timeCoolCycle) ? liveBattleInfo.basic[BasicStatEnum.timeCoolCycle].amount : 1));
             }
         }
 

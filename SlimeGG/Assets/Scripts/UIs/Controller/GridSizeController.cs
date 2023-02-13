@@ -8,11 +8,21 @@ public class GridSizeController : MonoBehaviour
     [SerializeField]
     public Vector2 cellSizeRatioToUnit, spacingRatioToUnit;
     [SerializeField]
-    TextAnchor childAlignmentAnchor;
+    public TextAnchor childAlignmentAnchor;
     [SerializeField]
     private bool isRatioToUnit = true;
     [SerializeField]
     private int constraintCount = 0;
+
+    public void initInfo(Vector2 cellSizeRatioToUnit, Vector2 spacingRatioToUnit, TextAnchor childAlignmentAnchor, int constraintCount, bool isRatioToUnit = true)
+    {
+        this.cellSizeRatioToUnit = cellSizeRatioToUnit;
+        this.spacingRatioToUnit = spacingRatioToUnit;
+        this.childAlignmentAnchor = childAlignmentAnchor;
+        this.constraintCount = constraintCount;
+        this.isRatioToUnit = isRatioToUnit;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

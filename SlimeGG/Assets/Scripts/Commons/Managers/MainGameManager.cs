@@ -10,6 +10,8 @@ public class MainGameManager : MonoBehaviour
     GameObject loadingGO, curtainGO;
     [SerializeField]
     SettingManager settingManager;
+    [SerializeField]
+    private bool isForEditor = false;
     public static Vector2 screenSize = Vector2.zero;
     public static float screenUnitSize = 0f;
     public static float adjustFontSize = 8f;
@@ -19,8 +21,13 @@ public class MainGameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        LocalStorage.EDITOR_MODE = isForEditor;
+        if (LocalStorage.EDITOR_MODE)
+        {
+            LocalStorage.UIOpenStatus.fade = false;
+        }
         getScreenSize();
-        if (LocalStorage.UIOpenStatus.fade)
+        if (LocalStorage.UIOpenStatus.fade && !isForEditor)
         {
             controllLoading(false, null);
         }
@@ -57,13 +64,15 @@ public class MainGameManager : MonoBehaviour
         {
             targetCurtain.SetActive(isFadeIn);
         }
+        yield return new WaitForSeconds(0.2f);
         float cnt = 0f;
         while (cnt < 0.5f)
         {
-            cnt += 0.03f;
+            cnt += 0.01f;
             yield return new WaitForSeconds(0.01f);
-            targetCurtain.GetComponent<Image>().color = new Color(0f, 0f, 0f, isFadeIn ? cnt : (0.5f - cnt));
+            targetCurtain.GetComponent<Image>().color = new Color(0f, 0f, 0f, isFadeIn ? 2f * cnt : 2f * (0.5f - cnt));
         }
+        yield return new WaitForSeconds(0.2f);
         if (targetSceneName != null)
         {
             SceneManager.LoadScene(targetSceneName);
