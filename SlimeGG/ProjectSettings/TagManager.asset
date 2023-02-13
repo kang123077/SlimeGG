@@ -3,7 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Socket
+  - Tile
+  - Tile Set
+  - Monster
+  - Field
+  - Slot
+  - Content
+  - Line
   layers:
   - Default
   - TransparentFX
@@ -12,17 +20,17 @@ TagManager:
   - Water
   - UI
   - 
+  - Monster
+  - Moving
+  - MonsterInBattle
+  - InfoInBattle
+  - FieldForBattle
+  - Effect
+  - Projectile
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Stage
+  - Map
+  - Background
   - 
   - 
   - 
@@ -40,4 +48,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Reward
+    uniqueID: 127016185
+    locked: 0
+  - name: Inventory
+    uniqueID: 4108963767
+    locked: 0
+  - name: UI
+    uniqueID: 3316714223
+    locked: 0
+  - name: GameObject Above UI
+    uniqueID: 466244633
     locked: 0

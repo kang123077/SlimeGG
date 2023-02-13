@@ -1,0 +1,60 @@
+{
+  "name": "Eartipede",
+  "displayName": "대지네",
+  "tier": 2,
+  "desc": "존나게 큰 지네이다.\n좀 징그러울지도?...",
+  "basic": [
+    {
+      "name": "hp",
+      "amount": 500
+    },
+    {
+      "name": "atk",
+      "amount": 1
+    },
+    {
+      "name": "def",
+      "amount": 15
+    },
+    {
+      "name": "spd",
+      "amount": 1.4
+    },
+    {
+      "name": "timeCoolCycle",
+      "amount": 1
+    },
+    {
+      "name": "timeCastingCycle",
+      "amount": 1
+    }
+  ],
+  "element": [
+    "Wind",
+    "Earth"
+  ],
+  "exp": [
+    {
+      "name": "Wind",
+      "amount": 7
+    },
+    {
+      "name": "Earth",
+      "amount": 12
+    }
+  ],
+  "elementEvol": [
+    {
+      "name": "Wind",
+      "amount": 10
+    },
+    {
+      "name": "Earth",
+      "amount": 10
+    }
+  ],
+  "nextMonster": [],
+  "skills": [
+    "Charge"
+  ]
+}

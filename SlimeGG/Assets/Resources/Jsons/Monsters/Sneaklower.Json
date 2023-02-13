@@ -1,0 +1,69 @@
+{
+  "name": "Sneaklower",
+  "displayName": "숨박꽃질",
+  "tier": 2,
+  "desc": "눈에 딱 보이는 꽃의 정령.\n본인은 잘 숨었다고 생각하는게 귀여워!",
+  "basic": [
+    {
+      "name": "hp",
+      "amount": 100
+    },
+    {
+      "name": "atk",
+      "amount": 1
+    },
+    {
+      "name": "def",
+      "amount": 15
+    },
+    {
+      "name": "spd",
+      "amount": 1.4
+    },
+    {
+      "name": "timeCoolCycle",
+      "amount": 1
+    },
+    {
+      "name": "timeCastingCycle",
+      "amount": 1
+    }
+  ],
+  "element": [
+    "Wind",
+    "Spirit"
+  ],
+  "exp": [
+    {
+      "name": "Wind",
+      "amount": 23
+    },
+    {
+      "name": "Spirit",
+      "amount": 23
+    },
+    {
+      "name": "Fire",
+      "amount": 23
+    },
+    {
+      "name": "Grass",
+      "amount": 23
+    }
+  ],
+  "elementEvol": [
+    {
+      "name": "Wind",
+      "amount": 20
+    },
+    {
+      "name": "Spirit",
+      "amount": 20
+    }
+  ],
+  "nextMonster": [],
+  "skills": [
+    "Spit",
+    "SpitDouble"
+  ]
+}

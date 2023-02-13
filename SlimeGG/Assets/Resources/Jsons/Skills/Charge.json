@@ -1,0 +1,55 @@
+{
+  "name": "박치기",
+  "desc": "잇는 힘것 박치기!\n머리가 왜이리 단단한걸까?",
+  "range": 3,
+  "targetType": "ENEMY_CLOSE",
+  "coolTime": 3.0,
+  "castingTime": 0.55,
+  "toCaster": [
+    {
+      "name": "position",
+      "amount": 3,
+      "isMultiple": false,
+      "duration": 0,
+      "tickTime": 0
+    }
+  ],
+  "projectiles": [
+    {
+      "spd": 100,
+      "src": null,
+      "isTarget": true,
+      "effects": {
+        "instant": [
+          {
+            "name": "position",
+            "amount": 1.5,
+            "isMultiple": false,
+            "duration": 0,
+            "tickTime": 0
+          },
+          {
+            "name": "hp",
+            "amount": -13,
+            "isMultiple": false,
+            "duration": 0,
+            "tickTime": 0
+          },
+          {
+            "name": "spd",
+            "amount": -1,
+            "isMultiple": true,
+            "duration": 0.5,
+            "tickTime": 0
+          },
+          {
+            "name": "stop_cooltime",
+            "amount": 1,
+            "duration": 0.5,
+            "tickTime": 0
+          }
+        ]
+      }
+    }
+  ]
+}

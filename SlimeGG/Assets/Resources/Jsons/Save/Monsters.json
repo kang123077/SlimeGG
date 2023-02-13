@@ -1,0 +1,64 @@
+[
+  {
+    "exp": [
+      {
+        "name": "Wind",
+        "amount": 10.0,
+        "shouldOver": true
+      },
+      {
+        "name": "Spirit",
+        "amount": 5.0,
+        "shouldOver": true
+      },
+      {
+        "name": "Earth",
+        "amount": 1.0,
+        "shouldOver": true
+      }
+    ],
+    "id": "00000004",
+    "speicie": "Eartipede",
+    "entryPos": [
+      4.0,
+      7.0
+    ]
+  },
+  {
+    "exp": [
+      {
+        "name": "Wind",
+        "amount": 10.0,
+        "shouldOver": true
+      },
+      {
+        "name": "Spirit",
+        "amount": 5.0,
+        "shouldOver": true
+      }
+    ],
+    "id": "00000005",
+    "speicie": "Sneaklower",
+    "entryPos": [
+      4.0,
+      7.0
+    ]
+  },
+  {
+    "exp": [
+      {
+        "name": "Wind",
+        "amount": 10.0,
+        "shouldOver": true
+      },
+      {
+        "name": "Spirit",
+        "amount": 5.0,
+        "shouldOver": true
+      }
+    ],
+    "id": "cbcdc4dc",
+    "speicie": "Sleepion",
+    "entryPos": null
+  }
+]

@@ -1,0 +1,55 @@
+{
+  "name": "Sleepion",
+  "tier": 1,
+  "skills": [
+    "Spit",
+    "FireBall"
+  ],
+  "basic": [
+    {
+      "name": "hp",
+      "amount": 200
+    },
+    {
+      "name": "atk",
+      "amount": 1
+    },
+    {
+      "name": "def",
+      "amount": 15
+    },
+    {
+      "name": "spd",
+      "amount": 1.4
+    }
+  ],
+  "element": [
+    "Wind",
+    "Spirit"
+  ],
+  "exp": [
+    {
+      "name": "Wind",
+      "amount": 10
+    },
+    {
+      "name": "Spirit",
+      "amount": 5
+    }
+  ],
+  "elementEvol": [
+    {
+      "name": "Wind",
+      "amount": 7
+    },
+    {
+      "name": "Spirit",
+      "amount": 4
+    }
+  ],
+  "nextMonster": [
+    "Sneaklower",
+    "Eartipede"
+  ],
+  "displayName": "아기영혼"
+}

@@ -1,0 +1,43 @@
+{
+  "name": "침 뱉기",
+  "desc": "침을 뱉는다.\n더러울지도..?",
+  "range": 3.4,
+  "targetType": "ENEMY_CLOSE",
+  "coolTime": 1.0,
+  "castingTime": 0.2,
+  "projectiles": [
+    {
+      "spd": 5,
+      "src": "FarNormal",
+      "rgb": "#06FF94",
+      "isTarget": true,
+      "effects": {
+        "instant": [
+          {
+            "name": "position",
+            "amount": 0.1,
+            "isMultiple": false,
+            "duration": 0,
+            "tickTime": 0
+          },
+          {
+            "name": "hp",
+            "amount": -5,
+            "isMultiple": false,
+            "duration": 0,
+            "tickTime": 0
+          }
+        ],
+        "sustain": [
+          {
+            "name": "hp",
+            "amount": -5,
+            "isMultiple": false,
+            "duration": 2,
+            "tickTime": 0.5
+          }
+        ]
+      }
+    }
+  ]
+}

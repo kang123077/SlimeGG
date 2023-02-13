@@ -1,0 +1,58 @@
+{
+  "name": "파이어볼",
+  "desc": "바이어볼을 발사한다.",
+  "range": 6,
+  "targetType": "ENEMY_FAR",
+  "coolTime": 5.0,
+  "castingTime": 2.2,
+  "toCaster": [
+    {
+      "name": "position",
+      "amount": -1,
+      "isMultiple": false,
+      "duration": 0,
+      "tickTime": 0
+    }
+  ],
+  "projectiles": [
+    {
+      "spd": 6,
+      "isTarget": false,
+      "rgb": "#ff4b61",
+      "src": "FarNormal",
+      "area": {
+        "rgb": "#FF7070",
+        "src": "Smog",
+        "duration": 3,
+        "range": 2.5,
+        "isTarget": false,
+        "effects": {
+          "instant": [
+            {
+              "name": "spd",
+              "amount": -0.1,
+              "isMultiple": true,
+              "duration": 0.5,
+              "tickTime": 0
+            },
+            {
+              "name": "hp",
+              "amount": -31,
+              "isMultiple": false,
+              "duration": 0,
+              "tickTime": 0
+            }
+          ],
+          "sustain": [
+            {
+              "name": "hp",
+              "amount": -10,
+              "isMultiple": false,
+              "tickTime": 0.3
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

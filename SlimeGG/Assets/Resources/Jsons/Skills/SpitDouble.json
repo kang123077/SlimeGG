@@ -1,0 +1,45 @@
+{
+  "name": "두번 뱉기",
+  "desc": "침을 두번 뱉는다",
+  "range": 7.2,
+  "targetType": "ENEMY_FAR",
+  "coolTime": 2.6,
+  "castingTime": 0.3,
+  "delayProjectile": 0.1,
+  "projectiles": [
+    {
+      "spd": 5,
+      "src": "FarNormal",
+      "rgb": "#06ff94",
+      "isTarget": true,
+      "effects": {
+        "instant": [
+          {
+            "name": "hp",
+            "amount": -7,
+            "isMultiple": false,
+            "duration": 0,
+            "tickTime": 0
+          }
+        ]
+      }
+    },
+    {
+      "spd": 5,
+      "src": "FarNormal",
+      "rgb": "#ff4b61",
+      "isTarget": true,
+      "effects": {
+        "instant": [
+          {
+            "name": "hp",
+            "amount": -7,
+            "isMultiple": false,
+            "duration": 0,
+            "tickTime": 0
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Dagger",
+  "displayName": "단검",
+  "desc": "평범한 단검.\n찌르면 따끔해!\n\n스킬 쿨타임을 10%만큼 감소시킨다.",
+  "effect": [
+    {
+      "name": "timeCoolCycle",
+      "amount": -0.1,
+      "isMultiple": false
+    }
+  ],
+  "tier": 1
+}

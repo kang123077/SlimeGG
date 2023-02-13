@@ -1,0 +1,42 @@
+{
+  "name": "할퀴기",
+  "desc": "할퀸다! \n따가워!",
+  "range": 1,
+  "targetType": "ENEMY_CLOSE",
+  "coolTime": 2.0,
+  "castingTime": 0.05,
+  "toCaster": [
+    {
+      "name": "position",
+      "amount": 0.5,
+      "isMultiple": false,
+      "duration": 0,
+      "tickTime": 0
+    }
+  ],
+  "projectiles": [
+    {
+      "spd": 100,
+      "src": null,
+      "isTarget": true,
+      "effects": {
+        "instant": [
+          {
+            "name": "position",
+            "amount": 0.2,
+            "isMultiple": false,
+            "duration": 0,
+            "tickTime": 0
+          },
+          {
+            "name": "hp",
+            "amount": -20,
+            "isMultiple": false,
+            "duration": 0,
+            "tickTime": 0
+          }
+        ]
+      }
+    }
+  ]
+}

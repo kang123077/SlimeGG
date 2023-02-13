@@ -1,0 +1,67 @@
+{
+  "name": "BabySpirit",
+  "displayName": "아기영혼",
+  "tier": 1,
+  "desc": "졸귀탱 아기영혼이다.\n많이 귀엽다.",
+  "basic": [
+    {
+      "name": "hp",
+      "amount": 100
+    },
+    {
+      "name": "atk",
+      "amount": 1
+    },
+    {
+      "name": "def",
+      "amount": 15
+    },
+    {
+      "name": "spd",
+      "amount": 1.4
+    },
+    {
+      "name": "timeCoolCycle",
+      "amount": 1
+    },
+    {
+      "name": "timeCastingCycle",
+      "amount": 1
+    }
+  ],
+  "element": [
+    "Wind",
+    "Spirit"
+  ],
+  "exp": [
+    {
+      "name": "Wind",
+      "amount": 10
+    },
+    {
+      "name": "Spirit",
+      "amount": 5
+    },
+    {
+      "name": "Earth",
+      "amount": 1
+    }
+  ],
+  "elementEvol": [
+    {
+      "name": "Wind",
+      "amount": 7
+    },
+    {
+      "name": "Spirit",
+      "amount": 4
+    }
+  ],
+  "nextMonster": [
+    "Eartipede",
+    "Sneaklower"
+  ],
+  "skills": [
+    "Spit"
+  ]
+}
