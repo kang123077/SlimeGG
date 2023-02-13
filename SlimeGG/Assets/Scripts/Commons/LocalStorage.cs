@@ -19,6 +19,7 @@ public static class LocalStorage
         public static Dictionary<string, MonsterLiveStat> monsters = new Dictionary<string, MonsterLiveStat>();
         public static Dictionary<string, ItemLiveStat> items = new Dictionary<string, ItemLiveStat>();
         public static List<int> journeyInfo = new List<int>();
+        public static List<string> dungeonHistory = new List<string>();
         public static int currency = 0;
         public static int numClearDungeon = 0;
     }
@@ -29,6 +30,7 @@ public static class LocalStorage
         public static int stageLevel = 0;
         public static int nodeNum = 0;
         public static StageController curLocation;
+        public static string dungeonName = string.Empty;
     }
 
     public static List<Transform> tileSetTransforms = new List<Transform>();

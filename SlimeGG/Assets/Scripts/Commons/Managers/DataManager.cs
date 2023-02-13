@@ -49,6 +49,16 @@ public class DataManager : MonoBehaviour
                     $"Assets/Resources/Jsons/Fields/{fileName}"
                     );
         }
+
+        foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
+            "Assets/Resources/Jsons/Dungeons"
+            ))
+        {
+            LocalDictionary.dungeons[fileName] =
+                CommonFunctions.loadObjectFromJson<List<StageSaveStat>>(
+                    $"Assets/Resources/Jsons/Dungeons/{fileName}"
+                    );
+        }
         LocalStorage.DataCall.DICTIONARY = true;
 
         foreach (MonsterSaveStat monsterSaveStat in CommonFunctions.loadObjectFromJson<List<MonsterSaveStat>>(
@@ -72,7 +82,20 @@ public class DataManager : MonoBehaviour
         LocalStorage.Live.journeyInfo = CommonFunctions.loadObjectFromJson<List<int>>(
             "Assets/Resources/Jsons/Save/Journey"
             );
+
+        LocalStorage.Live.dungeonHistory = CommonFunctions.loadObjectFromJson<List<string>>(
+            "Assets/Resources/Jsons/Save/DungeonHistory"
+            );
         LocalStorage.DataCall.JOURNEY = true;
+        
+        // 만약 journeyInfo가 비었다? -> 월드라는 소림
+        if (LocalStorage.Live.journeyInfo.Count != 0)
+        {
+            LocalStorage.CurrentLocation.dungeonName = LocalStorage.Live.dungeonHistory[LocalStorage.Live.dungeonHistory.Count - 1];
+        } else
+        {
+
+        }
 
         LocalStorage.Live.currency = CommonFunctions.loadObjectFromJson<int>(
             "Assets/Resources/Jsons/Save/Currency"

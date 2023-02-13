@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 public class DungeonManager : MonoBehaviour
 {
     [SerializeField]
+    StageController stagePrefab;
+    [SerializeField]
+    Transform stageParentTf;
     StageController curStage;
     [SerializeField]
     Transform mainCamera;
@@ -13,34 +16,53 @@ public class DungeonManager : MonoBehaviour
     Transform userTf;
     MainGameManager mainGameManager;
 
-    private bool isInit = false;
-
     private bool isFocusDone = false;
     private bool isNewStage = false;
+
+    private StageController[] stageControllers;
+    private int curStatus = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        initSetting();
-        //activateNewEvent(RewardType.Choice_Monster);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isInit && !isFocusDone)
+        switch (curStatus)
         {
-            StartCoroutine(focusCamera(true, curStage));
+            case 0:
+                //  최초 로드
+                //  스테이지 생성
+                generateStages();
+                break;
+            case 1:
+                //  curStage 지정 -> stageControllers의 첫번째 칸
+                setCurrentStageIntoZero();
+                break;
+            case 2:
+                // 저장된 여정 적용
+                applyJourney();
+                break;
+            case 3:
+                //  유저 캐릭터 배치
+                setUserCharacter(curStage);
+                break;
+            case 4:
+                // 카메라 자동 이동
+                StartCoroutine(focusCamera(true, curStage));
+                break;
+            case 5:
+                // 로딩 종료
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
         }
-    }
-
-    private void initSetting()
-    {
-        setSetting();
-        setClear();
-        applyJourney();
-        setUser(curStage);
-        isInit = true;
     }
 
     private IEnumerator focusCamera(bool isInit, StageController targetStage)
@@ -57,6 +79,7 @@ public class DungeonManager : MonoBehaviour
         {
             mainGameManager.controllLoading(true, "BattleScene");
         }
+        curStatus = 5;
     }
 
     private void applyJourney()
@@ -69,23 +92,23 @@ public class DungeonManager : MonoBehaviour
             enterStage(curStage.getNextStage(stagePos));
         }
         isNewStage = isEntryEmpty;
+        curStatus = 3;
     }
 
-    private void setSetting()
+    private void setCurrentStageIntoZero()
     {
         mainGameManager = transform.GetComponent<MainGameManager>();
+        curStage = stageControllers[0];
         curStage.setDungeonManager(this);
-    }
-
-    private void setClear()
-    {
         curStage.clearStage();
         curStage.openAccessNext();
+        curStatus = 2;
     }
 
-    private void setUser(StageController targetStage)
+    private void setUserCharacter(StageController targetStage)
     {
         userTf.position = targetStage.transform.position;
+        curStatus = 4;
     }
 
     public void moveCamera(StageController targetStage)
@@ -103,7 +126,34 @@ public class DungeonManager : MonoBehaviour
         moveCamera(targetStage);
         //curStage.clearStage();
         curStage = targetStage;
-        setUser(curStage);
+        setUserCharacter(curStage);
         curStage.openAccessNext();
+    }
+
+    private void generateStages()
+    {
+        int stageCnt = LocalDictionary.dungeons[LocalStorage.CurrentLocation.dungeonName].Count;
+        stageControllers = new StageController[stageCnt];
+        StageSaveStat[] tempAligner = new StageSaveStat[stageCnt];
+        foreach (StageSaveStat stageSaveStat in LocalDictionary.dungeons[LocalStorage.CurrentLocation.dungeonName])
+        {
+            tempAligner[stageSaveStat.id] = stageSaveStat;
+        }
+        for (int i = stageCnt - 1; i >= 0; --i)
+        {
+            StageController newStage = Instantiate(stagePrefab);
+            List<StageController> nextStages = new List<StageController>();
+            if (tempAligner[i].next != null)
+            {
+                foreach (int nextNum in tempAligner[i].next)
+                {
+                    nextStages.Add(stageControllers[nextNum]);
+                }
+            }
+            newStage.transform.SetParent(stageParentTf);
+            newStage.initInfo(tempAligner[i], nextStages);
+            stageControllers[i] = newStage;
+        }
+        curStatus = 1;
     }
 }

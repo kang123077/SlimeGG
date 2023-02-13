@@ -29,4 +29,6 @@ public static class LocalDictionary
         new List<ItemDictionaryStat>(),
         new List<ItemDictionaryStat>(),
     };
+
+    public static Dictionary<string, List<StageSaveStat>> dungeons = new Dictionary<string, List<StageSaveStat>>();
 }

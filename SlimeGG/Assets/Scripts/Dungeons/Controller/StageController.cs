@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class StageController : MonoBehaviour
 {
-    [SerializeField]
     StageController[] nextStageList;
     [SerializeField]
     Transform linePrefab;
@@ -19,31 +18,15 @@ public class StageController : MonoBehaviour
     private bool isClear { get; set; }
     private bool isClick = false;
     private bool isAccessible = false;
+    private StageType stageType;
+    private Vector3 locationPos;
 
-    [SerializeField]
-    StageType stageType;
+    private int curStatus = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        bgSprite = GetComponent<SpriteRenderer>();
-        bgSprite.color = colorPicker(stageType);
-        lineListTf = transform.Find("Lines");
-        xMarkTf = transform.Find("X Mark");
-
-        lineList = new Transform[nextStageList.Length];
-        for (int i = 0; i < lineList.Length; i++)
-        {
-            Transform newLineTf = Instantiate(linePrefab);
-            newLineTf.SetParent(lineListTf);
-            newLineTf.localPosition = Vector3.zero;
-            newLineTf.GetComponent<LineRenderer>().endColor = colorPicker(nextStageList[i].stageType);
-            newLineTf.GetComponent<LineRenderer>().SetPositions(new Vector3[]
-            {
-                (nextStageList[i].transform.localPosition - transform.localPosition) * 0.1f,
-                (nextStageList[i].transform.localPosition - transform.localPosition) * 0.9f
-            });
-        }
+        initSetting();
     }
 
     // Update is called once per frame
@@ -54,6 +37,48 @@ public class StageController : MonoBehaviour
             bgSprite.color = new Color(0.4f, 0.4f, 0.4f, 1);
             isClear = false;
         }
+    }
+
+    public void initInfo(StageSaveStat saveStat, List<StageController> nextStages)
+    {
+        if (curStatus == 0)
+        {
+            initSetting();
+        }
+        stageType = saveStat.type;
+        locationPos = new Vector3(
+            saveStat.locationPos[0],
+            saveStat.locationPos[1],
+            0f);
+        nextStageList = nextStages.ToArray();
+
+        transform.localScale = Vector3.one * 0.5f;
+        transform.localPosition = new Vector3(
+            saveStat.locationPos[0],
+            saveStat.locationPos[1],
+            0f);
+        lineList = new Transform[nextStageList.Length];
+        for (int i = 0; i < lineList.Length; i++)
+        {
+            Transform newLineTf = Instantiate(linePrefab);
+            newLineTf.SetParent(lineListTf);
+            newLineTf.localPosition = Vector3.zero;
+            newLineTf.GetComponent<LineRenderer>().endColor = colorPicker(nextStageList[i].stageType);
+            newLineTf.GetComponent<LineRenderer>().SetPositions(new Vector3[]
+            {
+                (nextStageList[i].locationPos - transform.localPosition) * 0.1f,
+                (nextStageList[i].locationPos - transform.localPosition) * 0.9f
+            });
+        }
+    }
+
+    public void initSetting()
+    {
+        bgSprite = GetComponent<SpriteRenderer>();
+        bgSprite.color = colorPicker(stageType);
+        lineListTf = transform.Find("Lines");
+        xMarkTf = transform.Find("X Mark");
+        curStatus = 1;
     }
 
     static Color colorPicker(StageType stageType)

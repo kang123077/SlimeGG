@@ -1,0 +1,184 @@
+[
+    {
+        "id": 15,
+        "locationPos": [
+            14,
+            0
+        ],
+        "type": "Boss"
+    },
+    {
+        "id": 14,
+        "locationPos": [
+            10,
+            -1.3
+        ],
+        "type": "Normal",
+        "next": [
+            15
+        ]
+    },
+    {
+        "id": 13,
+        "locationPos": [
+            10,
+            1.9
+        ],
+        "type": "Hard",
+        "next": [
+            15
+        ]
+    },
+    {
+        "id": 12,
+        "locationPos": [
+            6,
+            -2
+        ],
+        "type": "Shop",
+        "next": [
+            14
+        ]
+    },
+    {
+        "id": 11,
+        "locationPos": [
+            6,
+            0.4
+        ],
+        "type": "Normal",
+        "next": [
+            13,
+            14
+        ]
+    },
+    {
+        "id": 10,
+        "locationPos": [
+            6,
+            3
+        ],
+        "type": "Event",
+        "next": [
+            13
+        ]
+    },
+    {
+        "id": 9,
+        "locationPos": [
+            2,
+            -2.7
+        ],
+        "type": "Normal",
+        "next": [
+            12
+        ]
+    },
+    {
+        "id": 8,
+        "locationPos": [
+            2,
+            -0.5
+        ],
+        "type": "Normal",
+        "next": [
+            11,
+            12
+        ]
+    },
+    {
+        "id": 7,
+        "locationPos": [
+            2,
+            2.9
+        ],
+        "type": "Hard",
+        "next": [
+            10,
+            11
+        ]
+    },
+    {
+        "id": 6,
+        "locationPos": [
+            -2,
+            -3.1
+        ],
+        "type": "Shop",
+        "next": [
+            9
+        ]
+    },
+    {
+        "id": 5,
+        "locationPos": [
+            -2,
+            -1.5
+        ],
+        "type": "Normal",
+        "next": [
+            8,
+            9
+        ]
+    },
+    {
+        "id": 4,
+        "locationPos": [
+            -2,
+            1.2
+        ],
+        "type": "Normal",
+        "next": [
+            7,
+            8
+        ]
+    },
+    {
+        "id": 3,
+        "locationPos": [
+            -2,
+            3
+        ],
+        "type": "Event",
+        "next": [
+            7
+        ]
+    },
+    {
+        "id": 2,
+        "locationPos": [
+            -6,
+            -2
+        ],
+        "type": "Normal",
+        "next": [
+            6,
+            5,
+            3
+        ]
+    },
+    {
+        "id": 1,
+        "locationPos": [
+            -6,
+            1.3
+        ],
+        "type": "Normal",
+        "next": [
+            3,
+            4
+        ]
+    },
+    {
+        "id": 0,
+        "locationPos": [
+            -10,
+            0
+        ],
+        "type": "Event",
+        "next": [
+            2,
+            1
+        ]
+    }
+]
