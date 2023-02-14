@@ -16,6 +16,7 @@ public class EntrySlotController : MonoBehaviour
         {
             BattleManager.allyEntry.Add(originMonster);
         }
+        originMonster.isInstalledOnField = true;
         originMonster.monsterLiveStat.saveStat.entryPos = new float[] { x, y };
         isPosessed = true;
         originMonster.transform.SetParent(transform);
@@ -30,6 +31,7 @@ public class EntrySlotController : MonoBehaviour
         {
             BattleManager.allyEntry.Remove(originMonster);
         }
+        originMonster.isInstalledOnField = false;
         originMonster.monsterLiveStat.saveStat.entryPos = new float[] { };
         isPosessed = false;
     }

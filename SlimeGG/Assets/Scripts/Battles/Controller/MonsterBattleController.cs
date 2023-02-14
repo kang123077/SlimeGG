@@ -129,7 +129,13 @@ public class MonsterBattleController : MonoBehaviour
         if (castingTime > 0f)
         {
             animCasting.SetFloat("isCasting", 1f);
-            castingTime = Mathf.Max(castingTime - (Time.deltaTime * (1 + liveBattleInfo.basic[BasicStatEnum.timeCastingCycle].amount)), 0f);
+            castingTime = Mathf.Max(castingTime - (Time.deltaTime * (1 +
+                    (
+                        liveBattleInfo.basic.ContainsKey(BasicStatEnum.timeCastingCycle)
+                        ? liveBattleInfo.basic[BasicStatEnum.timeCastingCycle].amount
+                        : 0
+                    )
+                )), 0f);
         }
         else
         {
@@ -147,7 +153,7 @@ public class MonsterBattleController : MonoBehaviour
         {
             foreach (SkillStat skill in liveBattleInfo.skills.Values)
             {
-                skill.timeCharging += Time.deltaTime * (1 /( liveBattleInfo.basic.ContainsKey(BasicStatEnum.timeCoolCycle) ? liveBattleInfo.basic[BasicStatEnum.timeCoolCycle].amount : 1));
+                skill.timeCharging += Time.deltaTime * (1 / (liveBattleInfo.basic.ContainsKey(BasicStatEnum.timeCoolCycle) ? liveBattleInfo.basic[BasicStatEnum.timeCoolCycle].amount : 1));
             }
         }
 
