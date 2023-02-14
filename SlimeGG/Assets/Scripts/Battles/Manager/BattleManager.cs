@@ -19,7 +19,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     public GameObject areaPrefab;
     [SerializeField]
-    public InventoryManager inventoryManager;
+    InventoryManager inventoryManager;
     [SerializeField]
     public GameObject barrier;
     [SerializeField]

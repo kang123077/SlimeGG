@@ -33,13 +33,15 @@ public class ObjectMoveController : MonoBehaviour
         }
     }
 
-    public void toggle()
+    public void toggle(System.Action<int> actionBeforeToggle = null, System.Action<int> actionAfterToggle = null)
     {
-        StartCoroutine(toggleObject());
+        StartCoroutine(toggleObject(actionBeforeToggle: actionBeforeToggle, actionAfterToggle: actionAfterToggle));
     }
 
-    private IEnumerator toggleObject()
+    private IEnumerator toggleObject(System.Action<int> actionBeforeToggle = null, System.Action<int> actionAfterToggle = null)
     {
+        if (actionBeforeToggle != null)
+            actionBeforeToggle(0);
         isActive = !isActive;
         isAnimating = true;
         float distanceUnitLeft = distanceToMoveRatioToUnit; ;
@@ -100,6 +102,8 @@ public class ObjectMoveController : MonoBehaviour
             }
         }
         isAnimating = false;
+        if (actionAfterToggle != null)
+            actionAfterToggle(0);
     }
 
     public bool getIsActive()

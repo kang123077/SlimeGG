@@ -43,6 +43,7 @@ public class SlotController : MonoBehaviour
 
     public void installContent(Transform newContent)
     {
+        type = newContent.GetComponent<ContentController>().type;
         newContent.SetParent(transform);
         newContent.localScale = Vector3.one;
         newContent.localPosition = new Vector3(0f, 0f, -2f);
