@@ -89,7 +89,6 @@ public class DungeonManager : MonoBehaviour
         {
             isEntryEmpty = false;
             curStage.clearStage();
-            Debug.Log("다음 스테이지 id:: " + stagePos);
             enterStage(stageControllers[stagePos.ToString()]);
         }
         isNewStage = isEntryEmpty;

@@ -106,10 +106,20 @@ public class ContentController : MonoBehaviour
         {
             inventoryManager.selectMonster(this);
         }
-        if (prevPerant != null && prevPerant.GetComponent<EntrySlotController>() != null)
+        if (prevPerant != null)
         {
-            // 직전에 필드에 있었다 -> 필드에서 제거
-            prevPerant.GetComponent<EntrySlotController>().truncateMonster(this, false);
+            if (prevPerant.GetComponent<EntrySlotController>() != null)
+            {
+                // 직전에 필드에 있었다 -> 필드에서 제거
+                prevPerant.GetComponent<EntrySlotController>().truncateMonster(this, false);
+                return;
+            }
+            if (prevPerant.GetComponent<SlotController>() != null)
+            {
+                // 직전에 슬롯에 있었다 -> 슬롯에서 제거
+                prevPerant.GetComponent<SlotController>().removeContent();
+                return;
+            }
         }
     }
 
@@ -121,7 +131,13 @@ public class ContentController : MonoBehaviour
             if (inventoryManager.getIsForEntry())
             {
                 // 다시 붙이기
-                prevPerant.GetComponent<EntrySlotController>().installMonster(this, false);
+                if (prevPerant != null)
+                {
+                    if (prevPerant.GetComponent<EntrySlotController>() != null)
+                        prevPerant.GetComponent<EntrySlotController>().installMonster(this, false);
+                    if (prevPerant.GetComponent<SlotController>() != null)
+                        prevPerant.GetComponent<SlotController>().installContent(transform);
+                }
             }
         }
         else

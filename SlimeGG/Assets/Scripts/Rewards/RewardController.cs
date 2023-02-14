@@ -10,6 +10,8 @@ public class RewardController : MonoBehaviour
     private Transform slotPrefab, contentPrefab;
     [SerializeField]
     Button btnNext;
+    [SerializeField]
+    InfoWindowController infoWindowController;
     private TextMeshProUGUI btnText;
     private TextMeshProUGUI cntText;
 
@@ -39,7 +41,7 @@ public class RewardController : MonoBehaviour
                 break;
             case 2:
                 // 몬스터 보상: 컨텐츠 남아있을때
-                if (!checkAllReceived())
+                if (checkAllReceived())
                 {
                     curStatus = 6;
                     return;
@@ -47,6 +49,7 @@ public class RewardController : MonoBehaviour
                 break;
             case 6:
                 // 몬스터 보상: 컨텐츠 다 수령했을 때
+                updateButtonText();
                 break;
             case 3:
                 // 몬스터 보상 후 아이템 보상으로 넘어가는 사이
@@ -54,7 +57,7 @@ public class RewardController : MonoBehaviour
                 break;
             case 4:
                 // 아이템 보상: 컨텐츠 남아있을때
-                if (!checkAllReceived())
+                if (checkAllReceived())
                 {
                     curStatus = 7;
                     return;
@@ -62,6 +65,7 @@ public class RewardController : MonoBehaviour
                 break;
             case 7:
                 // 아이템 보상: 컨텐츠 다 수령했을 때
+                updateButtonText();
                 break;
             case 5:
                 // 아이템 보상 후 대기
@@ -97,11 +101,7 @@ public class RewardController : MonoBehaviour
         for (int i = 0; i < numOfReward; i++)
         {
             // 랜덤 확률로 몬스터 오브젝트 생성
-            Transform newContent = Instantiate(contentPrefab);
-            MonsterLiveStat newMonster = GeneratorFunction.generateMonsterLiveStatFromDictionaryStat(pickRandomMonsterDictionaryStat(pickRandomTier()));
-            LocalStorage.Live.monsters[newMonster.saveStat.id] = newMonster;
-            newContent.GetComponent<ContentController>().initContent(newMonster);
-            slotControllers[i].installContent(newContent);
+            generateRandomContentForSlot(slotControllers[i], InventoryType.Monster);
         }
         objectMoveController.toggle(actionAfterToggle: (i) => { curStatus = 2; });
     }
@@ -166,12 +166,8 @@ public class RewardController : MonoBehaviour
         generateSlots(numOfReward);
         for (int i = 0; i < numOfReward; i++)
         {
-            // 랜덤 확률로 몬스터 오브젝트 생성
-            Transform newContent = Instantiate(contentPrefab);
-            ItemLiveStat newItem = GeneratorFunction.generateItemLiveStatFromDictionaryStat(pickRandomItemDictionaryStat(pickRandomTier()));
-            LocalStorage.Live.items[newItem.saveStat.id] = newItem;
-            newContent.GetComponent<ContentController>().initContent(newItem);
-            slotControllers[i].installContent(newContent);
+            // 랜덤 확률로 아이팀 오브젝트 생성
+            generateRandomContentForSlot(slotControllers[i], InventoryType.Item);
         }
         objectMoveController.toggle(actionAfterToggle: (i) => { curStatus = 4; });
     }
@@ -189,10 +185,12 @@ public class RewardController : MonoBehaviour
         switch (curStatus)
         {
             case 2:
+            case 6:
                 // 몬스터 보상 종료
                 curStatus = 3;
                 break;
             case 4:
+            case 7:
                 // 아이템 보상 종료
                 curStatus = 5;
                 break;
@@ -212,8 +210,8 @@ public class RewardController : MonoBehaviour
     private void updateCount(bool isInit = false)
     {
         // 텍스트 업데이트 후 1 차감
-        cntText.text = rerollLeftCnt > 0 ? $"남은 횟수: {rerollLeftCnt}" : $"리롤 불가!";
         if (!isInit) --rerollLeftCnt;
+        cntText.text = rerollLeftCnt > 0 ? $"남은 횟수: {rerollLeftCnt}" : $"리롤 불가!";
         if (rerollLeftCnt == 0) updateButtonText();
     }
 
@@ -241,18 +239,39 @@ public class RewardController : MonoBehaviour
         }
     }
 
+    private void generateRandomContentForSlot(SlotController targetSlotController, InventoryType type)
+    {
+        Transform newContent = Instantiate(contentPrefab);
+        switch (type)
+        {
+            case InventoryType.Monster:
+                MonsterLiveStat newMonster = GeneratorFunction.generateMonsterLiveStatFromDictionaryStat(pickRandomMonsterDictionaryStat(pickRandomTier()));
+                LocalStorage.Live.monsters[newMonster.saveStat.id] = newMonster;
+                newContent.GetComponent<ContentController>().initContent(newMonster);
+                break;
+            case InventoryType.Item:
+                ItemLiveStat newItem = GeneratorFunction.generateItemLiveStatFromDictionaryStat(pickRandomItemDictionaryStat(pickRandomTier()));
+                LocalStorage.Live.items[newItem.saveStat.id] = newItem;
+                newContent.GetComponent<ContentController>().initContent(newItem);
+                newContent.GetComponent<ContentController>().setInfoWindowController(infoWindowController);
+                break;
+        }
+        targetSlotController.installContent(newContent);
+    }
+
     private void rerollLeftContent(InventoryType type)
     {
         if (rerollLeftCnt > 0)
         {
-            // 남은 컨텐츠 리롤
-            if (type == InventoryType.Monster)
+            foreach (SlotController slotController in slotControllers)
             {
-
-            }
-            else if (type == InventoryType.Item)
-            {
-
+                if (slotController.isOccupied())
+                {
+                    // 컨텐츠 밀기
+                    // 컨텐츠 재생성 후 설치
+                    slotController.truncateContent();
+                    generateRandomContentForSlot(slotController, type);
+                }
             }
             updateCount();
         }
