@@ -22,5 +22,11 @@ public static class SettingVariables
             { 1, 5},
             { 2, 7},
         };
+
+        public static class RerollCount
+        {
+            public static int monster = 2;
+            public static int item = 2;
+        }
     }
 }

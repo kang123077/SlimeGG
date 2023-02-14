@@ -53,6 +53,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeRatioToUnit: {x: 10, y: 2.5}
   posRatioToUnit: {x: 0.5, y: 0}
+  isFixed: 1
+  isRatioToUnit: 1
 --- !u!114 &1487479406975695384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,6 +70,8 @@ MonoBehaviour:
   cellSizeRatioToUnit: {x: 0.8, y: 0.8}
   spacingRatioToUnit: {x: 0.2, y: 0.2}
   childAlignmentAnchor: 3
+  isRatioToUnit: 1
+  constraintCount: 0
 --- !u!114 &5676197209720397253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +247,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeRatioToUnit: {x: 2, y: 0.5}
   posRatioToUnit: {x: 0.25, y: 0.5}
+  isFixed: 1
+  isRatioToUnit: 1
 --- !u!114 &5189101929090742842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,6 +354,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeRatioToUnit: {x: 0.8, y: 0.8}
   posRatioToUnit: {x: -0.1, y: 0.1}
+  isFixed: 1
+  isRatioToUnit: 1
 --- !u!114 &5189101929153382773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,6 +470,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeRatioToUnit: {x: 11, y: 1}
   posRatioToUnit: {x: 5.5, y: 0.5}
+  isFixed: 1
+  isRatioToUnit: 1
 --- !u!114 &5189101930183619180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -477,6 +487,7 @@ MonoBehaviour:
   directionToMove: 0
   distanceToMoveRatioToUnit: 11
   keyToToggle: 
+  isActive: 0
 --- !u!222 &5189101930183619182
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -529,3 +540,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotPrefab: {fileID: 3699539852172333448, guid: 3d0edc3ece306f34db8da6e60c3d401b, type: 3}
   contentPrefab: {fileID: 8910481221815906065, guid: dd8463c5270512941a83136aed0062f6, type: 3}
+  btnNext: {fileID: 5189101929153382773}

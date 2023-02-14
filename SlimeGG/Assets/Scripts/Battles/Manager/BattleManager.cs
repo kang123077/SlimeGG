@@ -429,10 +429,12 @@ public class BattleManager : MonoBehaviour
             cnt++;
         }
         cnt = 0;
+        Debug.Log("전투 참가 아군 수:: " + allyEntry.Count);
         foreach (ContentController ally in allyEntry)
         {
             if (ally.isInstalledOnField)
             {
+                Debug.Log("아군 배치!");
                 generateMonster(ally, 0, cnt);
                 cnt++;
             }

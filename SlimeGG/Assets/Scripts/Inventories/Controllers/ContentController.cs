@@ -106,7 +106,11 @@ public class ContentController : MonoBehaviour
         {
             inventoryManager.selectMonster(this);
         }
-        isInstalledOnField = false;
+        if (prevPerant != null && prevPerant.GetComponent<EntrySlotController>() != null)
+        {
+            // 직전에 필드에 있었다 -> 필드에서 제거
+            prevPerant.GetComponent<EntrySlotController>().truncateMonster(this, false);
+        }
     }
 
     private void OnMouseUp()
@@ -114,6 +118,11 @@ public class ContentController : MonoBehaviour
         if (!canMove) return;
         if (Vector3.Distance(mousePos, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.15f)
         {
+            if (inventoryManager.getIsForEntry())
+            {
+                // 다시 붙이기
+                prevPerant.GetComponent<EntrySlotController>().installMonster(this, false);
+            }
         }
         else
         {
@@ -127,8 +136,11 @@ public class ContentController : MonoBehaviour
         LocalStorage.isCameraPosessed = false;
         if (inventoryManager.getIsForEntry())
         {
+            // 전투씬임
             if (!isInstalledOnField)
             {
+                // 설치 안되어있음
+                // 이전 위치로 도르마무
                 transform.SetParent(prevPerant);
                 prevPerant = null;
                 transform.localScale = Vector3.one;
@@ -304,11 +316,12 @@ public class ContentController : MonoBehaviour
         if (objectBelow.parent != null && objectBelow.parent.tag == "Tile" && objectBelow.parent.GetComponent<EntrySlotController>().isAlly && !objectBelow.parent.GetComponent<EntrySlotController>().isPosessed)
         {
             // 전투 필드에 배치
-            isInstalledOnField = true;
             if (prevPerant != null && prevPerant.GetComponent<EntrySlotController>() != null)
             {
+                // 이전 필드에서 해당 몬스터 정보 제거
                 prevPerant.GetComponent<EntrySlotController>().truncateMonster(this, false);
             }
+            // 새로운 필드에 배치
             prevPerant = objectBelow;
             objectBelow.parent.GetComponent<EntrySlotController>().installMonster(this, false);
             return;
@@ -319,8 +332,10 @@ public class ContentController : MonoBehaviour
             isInstalledOnField = false;
             if (prevPerant && prevPerant.GetComponent<EntrySlotController>())
             {
+                // 이전 필드에서 해당 몬스터 정보 제거
                 prevPerant.GetComponent<EntrySlotController>().truncateMonster(this);
             }
+            // 슬롯으로 도르마무
             prevPerant = objectBelow;
             prevSize = Vector2.one;
             objectBelow.GetComponent<SlotController>().installContent(transform);
