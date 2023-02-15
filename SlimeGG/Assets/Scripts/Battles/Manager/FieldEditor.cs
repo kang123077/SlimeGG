@@ -6,7 +6,9 @@ using UnityEngine.Events;
 
 public class FieldEditor : BasicEditor, IBasicEditor
 {
-    private int curStatus = 0;
+    [SerializeField]
+    private Transform fieldTf;
+    private int curStatus = -1;
     protected virtual void Start()
     {
         base.Start();
@@ -18,8 +20,13 @@ public class FieldEditor : BasicEditor, IBasicEditor
         base.Update();
         switch (curStatus)
         {
+            case -1:
+                initSetting();
+                break;
             case 0:
                 base.setActions(
+                    actionToEnterEditorMode: () => fieldTf.gameObject.SetActive(true),
+                    actionToLeaveEditorMode: () => fieldTf.gameObject.SetActive(false),
                     actionToSave: (fileName, displayName) => saveIntoFile(fileName, displayName),
                     actionToClearAll: () => clearAll(),
                     actionToLoadByFileName: (fileName) => loadFromFile(fileName)
@@ -40,6 +47,13 @@ public class FieldEditor : BasicEditor, IBasicEditor
                 curStatus++;
                 break;
         }
+    }
+
+    private void initSetting()
+    {
+        fieldTf.gameObject.SetActive(false);
+
+        curStatus = 0;
     }
 
     public void onClickStart(Transform clickedTf, Vector3 clickedPos)

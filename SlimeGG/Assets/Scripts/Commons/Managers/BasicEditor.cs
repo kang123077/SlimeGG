@@ -24,7 +24,7 @@ public class BasicEditor : MonoBehaviour
     protected bool isNew = false;
 
     private bool isMouseEventApplied, isActionSet;
-    private UnityAction actionToClearAll;
+    private UnityAction actionToClearAll, actionToEnterEditorMode, actionToLeaveEditorMode;
     private System.Action<string> actionToLoadByFileName;
     private System.Action<string, string> actionToSave;
     // Start is called before the first frame update
@@ -60,11 +60,15 @@ public class BasicEditor : MonoBehaviour
 
     protected void setActions(
         UnityAction actionToClearAll,
+        UnityAction actionToEnterEditorMode,
+        UnityAction actionToLeaveEditorMode,
         System.Action<string> actionToLoadByFileName,
         System.Action<string, string> actionToSave
         )
     {
         this.actionToClearAll = actionToClearAll;
+        this.actionToEnterEditorMode = actionToEnterEditorMode;
+        this.actionToLeaveEditorMode = actionToLeaveEditorMode;
         this.actionToLoadByFileName = actionToLoadByFileName;
         this.actionToSave = actionToSave;
         isActionSet = true;
@@ -124,6 +128,7 @@ public class BasicEditor : MonoBehaviour
         buttonInitialNew.onClick.AddListener(() =>
         {
             startNewFile();
+            actionToEnterEditorMode();
         });
         // 불러오기
         buttonInitialLoad.onClick.AddListener(() =>
@@ -198,6 +203,7 @@ public class BasicEditor : MonoBehaviour
 
     public void returntoMainMenu()
     {
+        actionToLeaveEditorMode();
         clearAll();
         openMainMenu();
         baseStatus = 1;
@@ -226,6 +232,7 @@ public class BasicEditor : MonoBehaviour
         actionToLoadByFileName(searchFileName);
         loadInputTf.gameObject.SetActive(false);
         initialBtnsTf.gameObject.SetActive(false);
+        actionToEnterEditorMode();
         baseStatus = 2;
     }
 
