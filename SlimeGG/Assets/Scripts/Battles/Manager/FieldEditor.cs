@@ -20,13 +20,13 @@ public class FieldEditor : BasicEditor, IBasicEditor
     private EntrySlotController curClickedEntrySlotController;
     private List<PlaceableSlotController> mirroredPlaceableSlotControllers = new List<PlaceableSlotController>(), placeableSlotControllers = new List<PlaceableSlotController>();
     private List<EntrySlotController> entrySlotControllers = new List<EntrySlotController>();
-    protected virtual void Start()
+    protected override void Start()
     {
         base.Start();
     }
 
     // Update is called once per frame
-    protected virtual void Update()
+    protected override void Update()
     {
         base.Update();
         switch (curStatus)
@@ -40,10 +40,10 @@ public class FieldEditor : BasicEditor, IBasicEditor
                     actionToLeaveEditorMode: () =>
                     {
                         fieldTf.gameObject.SetActive(false);
-                        clearAll();
+                        clearEditor();
                     },
                     actionToSave: (fileName, displayName) => saveIntoFile(fileName, displayName),
-                    actionToClearAll: () => clearAll(),
+                    actionToClearAll: () => clearEditor(),
                     actionToLoadByFileName: (fileName) => loadFromFile(fileName)
                     );
                 curStatus++;
@@ -402,7 +402,7 @@ public class FieldEditor : BasicEditor, IBasicEditor
             saveStat.entries.Add(newStat);
         }
         SaveFunction.saveField(saveStat.name, saveStat);
-        clearAll();
+        clearEditor();
     }
 
     public void loadFromFile(string fileName)
@@ -417,7 +417,7 @@ public class FieldEditor : BasicEditor, IBasicEditor
         }
     }
 
-    public void clearAll()
+    public void clearEditor()
     {
         fieldSaveStat = null;
         mirroredPlaceableSlotControllers.ForEach((controller) => controller.truncateEntrySlot());

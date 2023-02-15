@@ -6,7 +6,7 @@ public class MonsterBattleInfo
 
     public List<ElementEnum> element { get; set; }
     public Dictionary<string, SkillStat> skills { get; set; }
-    public float[] entryPos { get; set; }
+    public int[] entryPos { get; set; }
     public string speicie { get; set; }
 
     public MonsterBattleInfo()

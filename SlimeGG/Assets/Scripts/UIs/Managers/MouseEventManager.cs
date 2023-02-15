@@ -24,10 +24,10 @@ public class MouseEventManager : MonoBehaviour
         if (isActive)
             checkMouseEvent();
     }
-
+    #nullable enable
     public void initSetting(
         System.Action<Vector3> actionforStop,
-        System.Action<Transform, Vector3> actionForClickStart,
+        System.Action<Transform?, Vector3> actionForClickStart,
         System.Action<Transform?> actionForLeftClick,
         System.Action<Transform?> actionForRightClick,
         System.Action<Vector3> actionForLeftDrag,
@@ -100,7 +100,7 @@ public class MouseEventManager : MonoBehaviour
         }
     }
 
-    private Transform getTransformBelowMouse()
+    private Transform? getTransformBelowMouse()
     {
         Vector3 curMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         curMousePos = new Vector3(

@@ -391,7 +391,7 @@ public class BattleManager : MonoBehaviour
         inventoryManager.setEntriable(true);
         foreach (ContentController enemy in enemyEntry)
         {
-            float[] pos = enemy.monsterLiveStat.saveStat.entryPos;
+            int[] pos = enemy.monsterLiveStat.saveStat.entryPos;
             fieldController.enemyEntryGenerator.transform.GetChild((int)pos[0] + ((int)pos[1] * SettingVariables.Battle.entrySizeMax[0])).GetComponent<EntrySlotController>().installMonster(enemy);
         }
         fieldController.allyEntryGenerator.sendCellsFunction((Transform cell) => cell.GetComponent<EntrySlotController>().isAlly = true);

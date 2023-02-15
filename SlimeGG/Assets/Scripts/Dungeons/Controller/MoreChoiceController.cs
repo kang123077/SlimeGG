@@ -45,7 +45,14 @@ public class MoreChoiceController : MonoBehaviour
         foreach (KeyValuePair<string, UnityAction> cellInfo in cellInfos)
         {
             Transform newChoice = Instantiate(choicePrefab);
-            newChoice.GetChild(0).GetComponent<TextMeshProUGUI>().text = cellInfo.Key;
+            if (newChoice.childCount != 0)
+            {
+                newChoice.GetChild(0).GetComponent<TextMeshProUGUI>().text = cellInfo.Key;
+            }
+            else
+            {
+                newChoice.GetComponent<Image>().sprite = Resources.Load<Sprite>($"{PathInfo.Monster.Sprite}{cellInfo.Key}");
+            }
             newChoice.GetComponent<Button>().onClick.AddListener(() =>
             {
                 cellInfo.Value();
