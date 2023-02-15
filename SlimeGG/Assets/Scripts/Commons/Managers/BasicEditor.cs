@@ -74,7 +74,7 @@ public class BasicEditor : MonoBehaviour
         isActionSet = true;
     }
 
-    #nullable enable
+#nullable enable
     protected void initMouseEvents(
         System.Action<Vector3> actionforStop,
         System.Action<Transform?, Vector3> actionForClickStart,
@@ -223,7 +223,7 @@ public class BasicEditor : MonoBehaviour
         saveButtonsTf.gameObject.SetActive(false);
         initialBtnsTf.gameObject.SetActive(true);
     }
-    public virtual void clearAll()
+    public void clearAll()
     {
         // 전체 비우기
         saveButtonsTf.gameObject.SetActive(true);

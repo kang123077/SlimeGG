@@ -40,10 +40,10 @@ public class FieldEditor : BasicEditor, IBasicEditor
                     actionToLeaveEditorMode: () =>
                     {
                         fieldTf.gameObject.SetActive(false);
-                        clearAll();
+                        clearEditor();
                     },
                     actionToSave: (fileName, displayName) => saveIntoFile(fileName, displayName),
-                    actionToClearAll: () => clearAll(),
+                    actionToClearAll: () => clearEditor(),
                     actionToLoadByFileName: (fileName) => loadFromFile(fileName)
                     );
                 curStatus++;
@@ -402,7 +402,7 @@ public class FieldEditor : BasicEditor, IBasicEditor
             saveStat.entries.Add(newStat);
         }
         SaveFunction.saveField(saveStat.name, saveStat);
-        clearAll();
+        clearEditor();
     }
 
     public void loadFromFile(string fileName)
@@ -417,7 +417,7 @@ public class FieldEditor : BasicEditor, IBasicEditor
         }
     }
 
-    public override void clearAll()
+    public void clearEditor()
     {
         fieldSaveStat = null;
         mirroredPlaceableSlotControllers.ForEach((controller) => controller.truncateEntrySlot());
