@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
 
 public class MoreChoiceController : MonoBehaviour
 {
@@ -33,20 +34,21 @@ public class MoreChoiceController : MonoBehaviour
         curStatus = 1;
     }
 
-    public void initInfo(Dictionary<string, System.Action<int>> cellInfos)
+    public void initInfo(Dictionary<string, UnityAction> cellInfos)
     {
         foreach (Transform choice in choices)
         {
             Destroy(choice.gameObject);
         }
         choices = new List<Transform>();
-        foreach (KeyValuePair<string, System.Action<int>> cellInfo in cellInfos)
+        if (cellInfos == null) return;
+        foreach (KeyValuePair<string, UnityAction> cellInfo in cellInfos)
         {
             Transform newChoice = Instantiate(choicePrefab);
             newChoice.GetChild(0).GetComponent<TextMeshProUGUI>().text = cellInfo.Key;
             newChoice.GetComponent<Button>().onClick.AddListener(() =>
             {
-                cellInfo.Value(0);
+                cellInfo.Value();
             });
             newChoice.SetParent(transform);
             newChoice.localScale = Vector3.one;
@@ -54,15 +56,5 @@ public class MoreChoiceController : MonoBehaviour
                 0f, 0f, -1f);
             choices.Add(newChoice);
         }
-    }
-
-    private void OnMouseDown()
-    {
-        //Debug.Log("클릭 시작");
-    }
-
-    private void OnMouseUp()
-    {
-        //Debug.Log("클릭 종료");
     }
 }

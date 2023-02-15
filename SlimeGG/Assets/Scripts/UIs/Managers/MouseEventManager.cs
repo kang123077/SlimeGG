@@ -10,8 +10,8 @@ public class MouseEventManager : MonoBehaviour
     private int curClickedMouseButton = -1;
 
     private System.Action<Vector3> actionForLeftDrag, actionForRightDrag, actionforStop;
-    private System.Action<Transform> actionForLeftClick, actionForRightClick;
-    private System.Action<Transform, Vector3> actionForClickStart, actionforRightClickEnd, actionforLeftClickEnd;
+    private System.Action<Transform?> actionForLeftClick, actionForRightClick;
+    private System.Action<Transform?, Vector3> actionForClickStart, actionforRightClickEnd, actionforLeftClickEnd;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,12 +28,12 @@ public class MouseEventManager : MonoBehaviour
     public void initSetting(
         System.Action<Vector3> actionforStop,
         System.Action<Transform, Vector3> actionForClickStart,
-        System.Action<Transform> actionForLeftClick,
-        System.Action<Transform> actionForRightClick,
+        System.Action<Transform?> actionForLeftClick,
+        System.Action<Transform?> actionForRightClick,
         System.Action<Vector3> actionForLeftDrag,
         System.Action<Vector3> actionForRightDrag,
-        System.Action<Transform, Vector3> actionforRightClickEnd,
-        System.Action<Transform, Vector3> actionforLeftClickEnd)
+        System.Action<Transform?, Vector3> actionforRightClickEnd,
+        System.Action<Transform?, Vector3> actionforLeftClickEnd)
     {
         this.actionforStop = actionforStop;
         this.actionForClickStart = actionForClickStart;

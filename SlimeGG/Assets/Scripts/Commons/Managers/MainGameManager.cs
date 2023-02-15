@@ -39,7 +39,7 @@ public class MainGameManager : MonoBehaviour
         getScreenSize();
     }
 
-    public void exitGame()
+    public static void exitGame()
     {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;

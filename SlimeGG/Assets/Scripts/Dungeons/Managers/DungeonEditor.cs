@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -183,27 +184,27 @@ public class DungeonEditor : MonoBehaviour
     private void setNewOptions()
     {
         moreChoiceController.initInfo(
-            new Dictionary<string, System.Action<int>>()
+            new Dictionary<string, UnityAction>()
             {
                 {
                         "생성 -> 일반",
-                        (i) => { createNewStage(StageType.Normal); }
+                        () => { createNewStage(StageType.Normal); }
                 },
                 {
                         "생성 -> 어려움",
-                        (i) => { createNewStage(StageType.Hard); }
+                        () => { createNewStage(StageType.Hard); }
                 },
                 {
                         "생성 -> 이벤트",
-                        (i) => { createNewStage(StageType.Event); }
+                        () => { createNewStage(StageType.Event); }
                 },
                 {
                         "생성 -> 상점",
-                        (i) => { createNewStage(StageType.Shop); }
+                        () => { createNewStage(StageType.Shop); }
                 },
                 {
                         "생성 -> 보스",
-                        (i) => { createNewStage(StageType.Boss); }
+                        () => { createNewStage(StageType.Boss); }
                 },
             }
         );
@@ -212,31 +213,31 @@ public class DungeonEditor : MonoBehaviour
     private void setModifyingOption(StageController stageController)
     {
         moreChoiceController.initInfo(
-            new Dictionary<string, System.Action<int>>()
+            new Dictionary<string, UnityAction>()
             {
                 {
                         "삭제",
-                        (i) => { truncateTargetStage(stageController); }
+                        () => { truncateTargetStage(stageController); }
                 },
                 {
                         "변경 -> 일반",
-                        (i) => { modifyStage(stageController, StageType.Normal); }
+                        () => { modifyStage(stageController, StageType.Normal); }
                 },
                 {
                         "변경 -> 어려움",
-                        (i) => { modifyStage(stageController, StageType.Hard); }
+                        () => { modifyStage(stageController, StageType.Hard); }
                 },
                 {
                         "변경 -> 이벤트",
-                        (i) => { modifyStage(stageController, StageType.Event); }
+                        () => { modifyStage(stageController, StageType.Event); }
                 },
                 {
                         "변경 -> 상점",
-                        (i) => { modifyStage(stageController, StageType.Shop); }
+                        () => { modifyStage(stageController, StageType.Shop); }
                 },
                 {
                         "변경 -> 보스",
-                        (i) => { modifyStage(stageController, StageType.Boss); }
+                        () => { modifyStage(stageController, StageType.Boss); }
                 },
             }
         );

@@ -437,7 +437,7 @@ public class MonsterBattleController : MonoBehaviour
                     transform.localScale = Vector3.one;
                     EntrySlotController tempSlot = temp.transform.parent.GetComponent<EntrySlotController>();
                     transform.SetParent(monsterContainer);
-                    transform.localPosition = new Vector3(-1f + tempSlot.x, tempSlot.y, 0f);
+                    transform.localPosition = new Vector3(-1f + tempSlot.getCoordinate()[0], tempSlot.getCoordinate()[1], 0f);
                     for (int i = 0; i < BattleManager.monsterBattleControllerList[0].Length; i++)
                     {
                         if (BattleManager.monsterBattleControllerList[0][i] == null)
