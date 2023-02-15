@@ -6,6 +6,8 @@ public class PlaceableSlotController : MonoBehaviour
 {
     private SpriteRenderer background;
     private bool isPosessed;
+    private int x, y;
+    private EntrySlotController entrySlotController;
     private int curStatus = 0;
     // Start is called before the first frame update
     void Start()
@@ -16,7 +18,7 @@ public class PlaceableSlotController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch(curStatus)
+        switch (curStatus)
         {
             case 0:
                 // 초기화 안됨
@@ -40,5 +42,39 @@ public class PlaceableSlotController : MonoBehaviour
     {
         if (isPosessed) return new Color(0.8f, 0.8f, 0.8f, 1f);
         return new Color(.2f, .2f, .2f, 1f);
+    }
+
+    public bool getIsPosessed()
+    {
+        return isPosessed;
+    }
+
+    public void setCoordinate(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int[] getCoordinate()
+    {
+        return new int[] { x, y };
+    }
+
+    public void installEntrySlot(Transform newEntrySlot)
+    {
+        newEntrySlot.SetParent(transform);
+        newEntrySlot.localScale = Vector3.one;
+        newEntrySlot.localPosition = new Vector3(0f, 0f, -1f);
+        entrySlotController = newEntrySlot.GetComponent<EntrySlotController>();
+        entrySlotController.setCoordinate(x, y);
+        isPosessed = true;
+        background.color = pickColor(true);
+    }
+
+    public void uninstallEntrySlot()
+    {
+        entrySlotController = null;
+        isPosessed = false;
+        background.color = pickColor(false);
     }
 }

@@ -46,6 +46,9 @@ public class GridCellGenerator : MonoBehaviour
                 if (newCell.GetComponent<EntrySlotController>())
                 {
                     newCell.GetComponent<EntrySlotController>().setCoordinate(x, y);
+                } else if (newCell.GetComponent<PlaceableSlotController>())
+                {
+                    newCell.GetComponent<PlaceableSlotController>().setCoordinate(x, y);
                 }
                 newCell.SetParent(transform);
                 newCell.localPosition = Vector3.zero;

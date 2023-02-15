@@ -75,13 +75,13 @@ public class BasicEditor : MonoBehaviour
     }
     protected void initMouseEvents(
         System.Action<Vector3> actionforStop,
-        System.Action<Transform, Vector3> actionForClickStart,
-        System.Action<Transform> actionForLeftClickInPosition,
-        System.Action<Transform> actionForRightClickInPosition,
+        System.Action<Transform?, Vector3> actionForClickStart,
+        System.Action<Transform?> actionForLeftClickInPosition,
+        System.Action<Transform?> actionForRightClickInPosition,
         System.Action<Vector3> actionForLeftDrag,
         System.Action<Vector3> actionForRightDrag,
-        System.Action<Transform, Vector3> actionforRightClickEnd,
-        System.Action<Transform, Vector3> actionforLeftClickEnd
+        System.Action<Transform?, Vector3> actionforRightClickEnd,
+        System.Action<Transform?, Vector3> actionforLeftClickEnd
         )
     {
         mouseEventManager = GetComponent<MouseEventManager>();

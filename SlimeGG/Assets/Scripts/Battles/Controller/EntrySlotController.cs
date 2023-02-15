@@ -41,4 +41,10 @@ public class EntrySlotController : MonoBehaviour
         this.x = x;
         this.y = y;
     }
+
+    public void destroySelf()
+    {
+        transform.parent.GetComponent<PlaceableSlotController>().uninstallEntrySlot();
+        Destroy(gameObject);
+    }
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1240054596881756474}
   - component: {fileID: 1240054596881756468}
   - component: {fileID: 1240054596881756469}
+  - component: {fileID: 658893087986504278}
   m_Layer: 0
   m_Name: PlaceableSlotPrefab
   m_TagString: Untagged
@@ -102,3 +103,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!65 &658893087986504278
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240054596881756475}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}

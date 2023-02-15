@@ -427,6 +427,8 @@ MonoBehaviour:
   loadInputTf: {fileID: 1267501060}
   initialBtnsTf: {fileID: 19725159}
   saveButtonsTf: {fileID: 1963757543}
+  fieldTf: {fileID: 798683512}
+  entrySlotPrefab: {fileID: 5545274058862907483, guid: c2ee959679342dc4c9cde36e3a332e42, type: 3}
 --- !u!1 &83653537
 GameObject:
   m_ObjectHideFlags: 0

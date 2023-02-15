@@ -7,8 +7,11 @@ using UnityEngine.Events;
 public class FieldEditor : BasicEditor, IBasicEditor
 {
     [SerializeField]
-    private Transform fieldTf;
+    private Transform fieldTf, entrySlotPrefab;
+    private PlaceableSlotController curClickedPlaceableSlotController;
+    private EntrySlotController curClickedEntrySlotController;
     private int curStatus = -1;
+    private List<EntrySlotController> entrySlotControllers = new List<EntrySlotController>();
     protected virtual void Start()
     {
         base.Start();
@@ -56,9 +59,21 @@ public class FieldEditor : BasicEditor, IBasicEditor
         curStatus = 0;
     }
 
+    private void generateNewTile(PlaceableSlotController targetSlotController)
+    {
+        Transform newEntrySlot = Instantiate(entrySlotPrefab);
+        targetSlotController.installEntrySlot(newEntrySlot);
+        EntrySlotController entrySlotController = newEntrySlot.GetComponent<EntrySlotController>();
+        entrySlotControllers.Add(entrySlotController);
+    }
+
+    private void removeEntrySlot(EntrySlotController targetEntrySlotController)
+    {
+        targetEntrySlotController.destroySelf();
+    }
+
     public void onClickStart(Transform clickedTf, Vector3 clickedPos)
     {
-        base.closeChoiceWindowWithClear();
     }
 
     public void onClickLeftInPlace(Transform clickedTf)
@@ -68,10 +83,46 @@ public class FieldEditor : BasicEditor, IBasicEditor
 
     public void onClickRightInPlace(Transform clickedTf)
     {
-        base.openChoiceWindowWithOptions(new Dictionary<string, UnityAction>()
+        if (clickedTf == null)
         {
-
-        });
+            // 빈공간 -> 패스
+        }
+        else
+        {
+            // 뭔가 클릭함
+            if ((curClickedPlaceableSlotController = clickedTf.GetComponent<PlaceableSlotController>()) != null)
+            {
+                // 배치 가능 타일 클릭
+                if (!curClickedPlaceableSlotController.getIsPosessed())
+                {
+                    // 비어있음 -> 새로운 타일 생성 옵션 떠야 함
+                    base.openChoiceWindowWithOptions(new Dictionary<string, UnityAction>()
+                    {
+                        { "신규 타일 배치", () =>
+                            {
+                                generateNewTile(curClickedPlaceableSlotController);
+                                base.closeChoiceWindowWithClear();
+                            }
+                        }
+                    });
+                }
+                return;
+            }
+            if ((curClickedEntrySlotController = clickedTf.parent.GetComponent<EntrySlotController>()) != null)
+            {
+                // 설치된 엔트리 슬롯 클릭
+                base.openChoiceWindowWithOptions(new Dictionary<string, UnityAction>()
+                    {
+                        { "삭제", () =>
+                            {
+                                removeEntrySlot(curClickedEntrySlotController);
+                                base.closeChoiceWindowWithClear();
+                            }
+                        }
+                    });
+                return;
+            }
+        }
     }
 
     public void onDragLeft(Vector3 clickedPos)
