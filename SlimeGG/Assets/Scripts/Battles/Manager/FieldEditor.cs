@@ -9,16 +9,17 @@ public class FieldEditor : BasicEditor, IBasicEditor
 {
     [SerializeField]
     private Transform fieldTf, entrySlotPrefab, EffectCreateTf;
-    private List<PlaceableSlotController> mirroredPlaceableSlotControllers = new List<PlaceableSlotController>(), placeableSlotControllers = new List<PlaceableSlotController>();
-    private PlaceableSlotController curClickedPlaceableSlotController;
-    private EntrySlotController curClickedEntrySlotController;
     private int curStatus = -1;
-    private List<EntrySlotController> entrySlotControllers = new List<EntrySlotController>();
     private Button buttonEffectCreateCancel, buttonEffectCreateConfirm;
     private TMP_InputField effectChoiceInput;
     private MoreChoiceController effectChoiceController;
+
     private BasicStat curDesignBasicStat;
     private FieldSaveStat fieldSaveStat;
+    private PlaceableSlotController curClickedPlaceableSlotController;
+    private EntrySlotController curClickedEntrySlotController;
+    private List<PlaceableSlotController> mirroredPlaceableSlotControllers = new List<PlaceableSlotController>(), placeableSlotControllers = new List<PlaceableSlotController>();
+    private List<EntrySlotController> entrySlotControllers = new List<EntrySlotController>();
     protected virtual void Start()
     {
         base.Start();
@@ -36,7 +37,11 @@ public class FieldEditor : BasicEditor, IBasicEditor
             case 0:
                 base.setActions(
                     actionToEnterEditorMode: () => fieldTf.gameObject.SetActive(true),
-                    actionToLeaveEditorMode: () => fieldTf.gameObject.SetActive(false),
+                    actionToLeaveEditorMode: () =>
+                    {
+                        fieldTf.gameObject.SetActive(false);
+                        clearAll();
+                    },
                     actionToSave: (fileName, displayName) => saveIntoFile(fileName, displayName),
                     actionToClearAll: () => clearAll(),
                     actionToLoadByFileName: (fileName) => loadFromFile(fileName)
@@ -397,6 +402,7 @@ public class FieldEditor : BasicEditor, IBasicEditor
             saveStat.entries.Add(newStat);
         }
         SaveFunction.saveField(saveStat.name, saveStat);
+        clearAll();
     }
 
     public void loadFromFile(string fileName)
@@ -407,12 +413,18 @@ public class FieldEditor : BasicEditor, IBasicEditor
                     );
         foreach (EntrySlotSaveStat saveStat in fieldSaveStat.entries)
         {
-            generateNewTile(placeableSlotControllers[(saveStat.x * saveStat.y) + saveStat.x], saveStat);
+            generateNewTile(placeableSlotControllers[(SettingVariables.Battle.entrySizeMax[0] * saveStat.y) + saveStat.x], saveStat);
         }
     }
 
     public void clearAll()
     {
-
+        fieldSaveStat = null;
+        mirroredPlaceableSlotControllers.ForEach((controller) => controller.truncateEntrySlot());
+        placeableSlotControllers.ForEach((controller) => controller.truncateEntrySlot());
+        entrySlotControllers = new List<EntrySlotController>();
+        curDesignBasicStat = null;
+        curClickedEntrySlotController = null;
+        curClickedPlaceableSlotController = null;
     }
 }

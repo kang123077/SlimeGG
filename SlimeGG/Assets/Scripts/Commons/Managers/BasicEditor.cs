@@ -271,7 +271,6 @@ public class BasicEditor : MonoBehaviour
             inputName = string.Empty;
             displayName = string.Empty;
         }
-        if (inputName == null || displayName == null || inputName.Length < 2 || displayName.Length < 2) return;
         actionToSave(inputName, displayName);
         returntoMainMenu();
     }

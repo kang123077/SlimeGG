@@ -94,4 +94,14 @@ public class PlaceableSlotController : MonoBehaviour
     {
         return entrySlotController;
     }
+
+    public void truncateEntrySlot()
+    {
+        isPosessed = false;
+        background.color = pickColor(false);
+        if (entrySlotController != null)
+        {
+            Destroy(entrySlotController.gameObject);
+        }
+    }
 }
