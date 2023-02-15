@@ -40,19 +40,23 @@ public class GridCellGenerator : MonoBehaviour
             x = SettingVariables.Battle.entrySizeMax[0];
             y = SettingVariables.Battle.entrySizeMax[1];
             GetComponent<GridLayoutGroup>().constraintCount = x;
-            for (int i = 0; i < x * y; i++)
+            for (int i = 0; i < x; i++)
             {
-                Transform newCell = Instantiate(cellTf);
-                if (newCell.GetComponent<EntrySlotController>())
+                for (int j = 0; j < y; j++)
                 {
-                    newCell.GetComponent<EntrySlotController>().setCoordinate(x, y);
-                } else if (newCell.GetComponent<PlaceableSlotController>())
-                {
-                    newCell.GetComponent<PlaceableSlotController>().setCoordinate(x, y);
+                    Transform newCell = Instantiate(cellTf);
+                    if (newCell.GetComponent<EntrySlotController>())
+                    {
+                        newCell.GetComponent<EntrySlotController>().setCoordinate(i, j);
+                    }
+                    else if (newCell.GetComponent<PlaceableSlotController>())
+                    {
+                        newCell.GetComponent<PlaceableSlotController>().setCoordinate(i, j);
+                    }
+                    newCell.SetParent(transform);
+                    newCell.localPosition = Vector3.zero;
+                    cells.Add(newCell);
                 }
-                newCell.SetParent(transform);
-                newCell.localPosition = Vector3.zero;
-                cells.Add(newCell);
             }
         }
     }

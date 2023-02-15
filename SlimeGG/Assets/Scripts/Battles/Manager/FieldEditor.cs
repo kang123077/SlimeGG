@@ -69,6 +69,7 @@ public class FieldEditor : BasicEditor, IBasicEditor
 
     private void removeEntrySlot(EntrySlotController targetEntrySlotController)
     {
+        entrySlotControllers.Remove(targetEntrySlotController);
         targetEntrySlotController.destroySelf();
     }
 
@@ -152,7 +153,18 @@ public class FieldEditor : BasicEditor, IBasicEditor
 
     public void saveIntoFile(string fileName, string displayName)
     {
-
+        FieldSaveStat fieldSaveStat = new FieldSaveStat();
+        // 파일명 받기
+        fieldSaveStat.name = fileName;
+        fieldSaveStat.displayName = displayName;
+        foreach (EntrySlotController entrySlotController in entrySlotControllers)
+        {
+            EntrySlotSaveStat newStat = new EntrySlotSaveStat();
+            newStat.x = entrySlotController.x;
+            newStat.y = entrySlotController.y;
+            fieldSaveStat.entries.Add(newStat);
+        }
+        SaveFunction.saveField(fieldSaveStat.name, fieldSaveStat);
     }
 
     public void loadFromFile(string fileName)
