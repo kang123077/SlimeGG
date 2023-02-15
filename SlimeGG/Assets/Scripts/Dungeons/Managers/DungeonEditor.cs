@@ -266,6 +266,7 @@ public class DungeonEditor : MonoBehaviour
         moreChoiceController.GetComponent<TrackingWindowController>().closeWindow();
     }
 
+    // 스테이지 삭제
     private void truncateTargetStage(StageController stageController)
     {
         List<StageController> stages = new List<StageController>();
@@ -274,6 +275,7 @@ public class DungeonEditor : MonoBehaviour
         {
             prevStage.removeNextStage(stageController);
         }
+        stageControllers[stageController.getIdx().ToString()] = null;
         Destroy(stageController.gameObject);
         moreChoiceController.GetComponent<TrackingWindowController>().closeWindow();
     }
@@ -318,8 +320,10 @@ public class DungeonEditor : MonoBehaviour
                     );
         stageControllers = new Dictionary<string, StageController>();
         Dictionary<string, StageSaveStat> tempAligner = new Dictionary<string, StageSaveStat>();
+        int maxIdx = 0;
         foreach (StageSaveStat stageSaveStat in loadedDungeon.stages)
         {
+            maxIdx = Mathf.Max(maxIdx, stageSaveStat.id);
             tempAligner[stageSaveStat.id.ToString()] = stageSaveStat;
         }
         foreach (KeyValuePair<string, StageSaveStat> keyValuePair in tempAligner)
@@ -334,7 +338,7 @@ public class DungeonEditor : MonoBehaviour
             keyValuePair.Value.callNextStages(stageControllers);
         }
         curStatus = 1;
-        curIdx = loadedDungeon.stages.Count;
+        curIdx = maxIdx + 1;
         loadInputTf.gameObject.SetActive(false);
         initialBtnsTf.gameObject.SetActive(false);
     }
@@ -408,7 +412,8 @@ public class DungeonEditor : MonoBehaviour
     {
         foreach (KeyValuePair<string, StageController> stageControllerPair in stageControllers)
         {
-            Destroy(stageControllerPair.Value.gameObject);
+            if (stageControllerPair.Value != null)
+                Destroy(stageControllerPair.Value.gameObject);
         }
         stageControllers = new Dictionary<string, StageController>();
     }
