@@ -60,7 +60,7 @@ public class MonsterCommonFunction
         // 전투 시에 필요한 추가 설정치
         res.basic[BasicStatEnum.position] = new BasicStat(0f);
         res.basic[BasicStatEnum.invincible] = new BasicStat(0f);
-        res.entryPos = monsterLiveStat.saveStat.entryPos != null ? monsterLiveStat.saveStat.entryPos : new float[2];
+        res.entryPos = monsterLiveStat.saveStat.entryPos != null ? monsterLiveStat.saveStat.entryPos : new int[2];
         return res;
     }
 

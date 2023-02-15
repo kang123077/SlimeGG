@@ -262,10 +262,12 @@ public class BasicEditor : MonoBehaviour
         // 클릭: 저장하기 클릭
         string inputName;
         string displayName;
-        if (isNew)
+        if (inputSaveFileName.text != string.Empty)
         {
             inputName = inputSaveFileName.text;
             displayName = inputSaveDisplayName.text;
+            inputSaveFileName.text = string.Empty;
+            inputSaveDisplayName.text = string.Empty;
         }
         else
         {

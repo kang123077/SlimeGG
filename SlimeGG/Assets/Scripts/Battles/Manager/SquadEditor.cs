@@ -16,7 +16,8 @@ public class SquadEditor : BasicEditor, IBasicEditor
     private EntrySlotController curClickedEntrySlotController;
     private ContentController curClickedContentController;
     private List<Dictionary<string, UnityAction>> cellInfosByTier = new List<Dictionary<string, UnityAction>>();
-    private List<EntrySlotController> entrySlotControllers = new List<EntrySlotController>(); 
+    private List<EntrySlotController> entrySlotControllers = new List<EntrySlotController>();
+    private string fileName;
     protected override void Start()
     {
         base.Start();
@@ -98,17 +99,34 @@ public class SquadEditor : BasicEditor, IBasicEditor
         curStatus = 0;
     }
 
-    private void generateMonster(MonsterDictionaryStat monster)
+    private void generateMonster(MonsterDictionaryStat monster, EntrySlotController targetSlot = null)
     {
         Transform newMonster = Instantiate(contentPrefab);
         ContentController contentController = newMonster.GetComponent<ContentController>();
         contentController.initContent(GeneratorFunction.generateMonsterLiveStatFromDictionaryStat(monster), false);
-        curClickedEntrySlotController.installMonster(contentController);
+        if (targetSlot != null)
+        {
+            targetSlot.installMonster(contentController);
+        }
+        else
+        {
+            curClickedEntrySlotController.installMonster(contentController);
+        }
     }
 
     public void loadFromFile(string fileName)
     {
-
+        if (fileName == null || fileName.Length == 0) return;
+        this.fileName = fileName;
+        List<MonsterSaveStat> monsterSaveStats = CommonFunctions.loadObjectFromJson<List<MonsterSaveStat>>(
+                    $"Assets/Resources/{PathInfo.Json.Dictionary.Entry}{fileName}"
+                    );
+        foreach (MonsterSaveStat monsterSaveStat in monsterSaveStats)
+        {
+            int x = monsterSaveStat.entryPos[0];
+            int y = monsterSaveStat.entryPos[1];
+            generateMonster(LocalDictionary.speicies[monsterSaveStat.speicie], entrySlotControllers[y * SettingVariables.Battle.entrySizeMax[0] + x]);
+        }
     }
 
     public void onClickLeftEnd(Transform clickedTf, Vector3 clickedPos)
@@ -213,7 +231,22 @@ public class SquadEditor : BasicEditor, IBasicEditor
 
     public void saveIntoFile(string fileName, string displayName)
     {
-
+        List<MonsterSaveStat> monsterSaveStats = new List<MonsterSaveStat>();
+        // 파일명 받기
+        if (fileName != string.Empty)
+        {
+            this.fileName = fileName;
+        }
+        foreach (EntrySlotController entrySlotController in entrySlotControllers)
+        {
+            ContentController temp = null;
+            if ((temp = entrySlotController.getContentController()) != null)
+            {
+                monsterSaveStats.Add(temp.monsterLiveStat.saveStat);
+            }
+        }
+        SaveFunction.saveMonsters(this.fileName, monsterSaveStats);
+        clearEditor();
     }
 
     public void clearEditor()

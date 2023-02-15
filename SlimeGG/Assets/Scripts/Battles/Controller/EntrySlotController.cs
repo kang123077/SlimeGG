@@ -8,6 +8,7 @@ public class EntrySlotController : MonoBehaviour
     private int x;
     private int y;
     private List<BasicStat> basicStats = new List<BasicStat>();
+    private ContentController contentController = null;
 
     public bool isPosessed = false;
 
@@ -17,8 +18,9 @@ public class EntrySlotController : MonoBehaviour
         {
             BattleManager.allyEntry.Add(originMonster);
         }
+        contentController = originMonster;
         originMonster.isInstalledOnField = true;
-        originMonster.monsterLiveStat.saveStat.entryPos = new float[] { x, y };
+        originMonster.monsterLiveStat.saveStat.entryPos = new int[] { x, y };
         isPosessed = true;
         originMonster.transform.SetParent(transform);
         originMonster.transform.localScale = Vector3.one;
@@ -32,8 +34,9 @@ public class EntrySlotController : MonoBehaviour
         {
             BattleManager.allyEntry.Remove(originMonster);
         }
+        contentController = null;
         originMonster.isInstalledOnField = false;
-        originMonster.monsterLiveStat.saveStat.entryPos = new float[] { };
+        originMonster.monsterLiveStat.saveStat.entryPos = new int[] { };
         isPosessed = false;
     }
 
@@ -71,5 +74,10 @@ public class EntrySlotController : MonoBehaviour
     public void initEffects(List<BasicStat> basicStats)
     {
         this.basicStats = basicStats;
+    }
+
+    public ContentController getContentController()
+    {
+        return contentController;
     }
 }
