@@ -6,4 +6,10 @@ using UnityEngine;
 public class EntrySlotSaveStat
 {
     public int x, y;
+    public List<BasicStat> stats;
+
+    public EntrySlotSaveStat()
+    {
+        stats = new List<BasicStat>();
+    }
 }

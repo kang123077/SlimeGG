@@ -5,8 +5,9 @@ using UnityEngine;
 public class EntrySlotController : MonoBehaviour
 {
     public bool isAlly = false;
-    public int x;
-    public int y;
+    private int x;
+    private int y;
+    private List<BasicStat> basicStats = new List<BasicStat>();
 
     public bool isPosessed = false;
 
@@ -51,5 +52,24 @@ public class EntrySlotController : MonoBehaviour
     {
         transform.parent.GetComponent<PlaceableSlotController>().uninstallEntrySlot();
         Destroy(gameObject);
+    }
+    public void addBasicStat(BasicStat basicStat)
+    {
+        basicStats.Add(new BasicStat(basicStat));
+    }
+
+    public void removeBasicStat(BasicStat basicStat)
+    {
+        basicStats.Remove(basicStat);
+    }
+
+    public List<BasicStat> getBasicStats()
+    {
+        return basicStats;
+    }
+
+    public void initEffects(List<BasicStat> basicStats)
+    {
+        this.basicStats = basicStats;
     }
 }

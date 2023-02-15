@@ -238,6 +238,7 @@ public class BasicEditor : MonoBehaviour
         actionToLoadByFileName(searchFileName);
         loadInputTf.gameObject.SetActive(false);
         initialBtnsTf.gameObject.SetActive(false);
+        saveButtonsTf.gameObject.SetActive(true);
         actionToEnterEditorMode();
         baseStatus = 2;
     }

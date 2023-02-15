@@ -15,10 +15,16 @@ public enum BasicStatEnum
     def_sum, def_multiple, invincible,
 
     // 사거리 관련
-    range,
+    range, range_multiple,
 
-    // 쿨타임 관련
+    // 쿨타임
+    timeCoolCycle, timeCoolCycle_multiple,
+
+    // 시전시간
+    timeCastingCycle, timeCastingCycle_multiple,
+
+    // 군중제어 관련
     stop_cooltime, stop_position,
 
-    position, timeCoolCycle, timeCastingCycle,
+    position,
 }

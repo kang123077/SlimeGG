@@ -63,6 +63,8 @@ public class PlaceableSlotController : MonoBehaviour
     public void installEntrySlot(Transform newEntrySlot)
     {
         newEntrySlot.SetParent(transform);
+        newEntrySlot.GetComponent<RectTransform>().anchorMin = Vector2.one * .5f;
+        newEntrySlot.GetComponent<RectTransform>().anchorMax = Vector2.one * .5f;
         newEntrySlot.localScale = Vector3.one;
         newEntrySlot.localPosition = new Vector3(0f, 0f, -1f);
         entrySlotController = newEntrySlot.GetComponent<EntrySlotController>();
@@ -81,6 +83,11 @@ public class PlaceableSlotController : MonoBehaviour
     public void setIsForDisplay(bool isForDisplay)
     {
         this.isForDisplay = isForDisplay;
+    }
+
+    public bool getIsForDisplay()
+    {
+        return isForDisplay;
     }
 
     public EntrySlotController getInstalledEntrySlotController()
