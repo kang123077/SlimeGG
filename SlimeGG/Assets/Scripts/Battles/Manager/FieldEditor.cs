@@ -20,13 +20,13 @@ public class FieldEditor : BasicEditor, IBasicEditor
     private EntrySlotController curClickedEntrySlotController;
     private List<PlaceableSlotController> mirroredPlaceableSlotControllers = new List<PlaceableSlotController>(), placeableSlotControllers = new List<PlaceableSlotController>();
     private List<EntrySlotController> entrySlotControllers = new List<EntrySlotController>();
-    protected virtual void Start()
+    protected override void Start()
     {
         base.Start();
     }
 
     // Update is called once per frame
-    protected virtual void Update()
+    protected override void Update()
     {
         base.Update();
         switch (curStatus)
@@ -417,7 +417,7 @@ public class FieldEditor : BasicEditor, IBasicEditor
         }
     }
 
-    public void clearAll()
+    public override void clearAll()
     {
         fieldSaveStat = null;
         mirroredPlaceableSlotControllers.ForEach((controller) => controller.truncateEntrySlot());

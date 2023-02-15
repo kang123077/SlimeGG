@@ -11,13 +11,13 @@ public class SquadEditor : BasicEditor, IBasicEditor
     private int curStatus = -1;
     private Button monsterCreateCancel, monsterCreateConfirm;
     private MoreChoiceController monsterChoiceController;
-    protected virtual void Start()
+    protected override void Start()
     {
         base.Start();
     }
 
     // Update is called once per frame
-    protected virtual void Update()
+    protected override void Update()
     {
         base.Update();
         switch (curStatus)
@@ -71,55 +71,55 @@ public class SquadEditor : BasicEditor, IBasicEditor
 
     public void loadFromFile(string fileName)
     {
-        
+
     }
 
     public void onClickLeftEnd(Transform clickedTf, Vector3 clickedPos)
     {
-        
+
     }
 
     public void onClickLeftInPlace(Transform clickedTf)
     {
-        
+
     }
 
     public void onClickRightEnd(Transform clickedTf, Vector3 clickedPos)
     {
-        
+
     }
 
     public void onClickRightInPlace(Transform clickedTf)
     {
-        
+        if (clickedTf == null) return;
     }
 
     public void onClickStart(Transform clickedTf, Vector3 clickedPos)
     {
-        
+
     }
 
     public void onClickStop(Vector3 lastMousePos)
     {
-        
+
     }
 
     public void onDragLeft(Vector3 clickedPos)
     {
-        
+
     }
 
     public void onDragRight(Vector3 clickedPos)
     {
-        
+
     }
 
     public void saveIntoFile(string fileName, string displayName)
     {
-        
+
     }
 
-    public void clearAll()
+    public override void clearAll()
     {
 
     }
