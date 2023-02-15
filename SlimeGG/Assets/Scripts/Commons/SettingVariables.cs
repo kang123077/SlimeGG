@@ -6,6 +6,8 @@ public static class SettingVariables
     public static float slideToggleSpd = 0.25f;
     public static class Battle
     {
+        // 0번 칸 : 열 개수 = x 좌표
+        // 1번 칸 : 행 개수 = y 좌표
         public static int[] entrySizeMax = new int[] { 4, 7 };
     }
     public static class Reward

@@ -5,10 +5,11 @@ using UnityEngine;
 [System.Serializable]
 public class BasicStat
 {
+    [JsonConverter(typeof(StringEnumConverter))]
     public BasicStatEnum name;
     public float amount;
     public bool isMultiple;
-
+    [System.NonSerialized]
     public Vector3 directionWithPower = Vector3.zero;
 
     public BasicStat()

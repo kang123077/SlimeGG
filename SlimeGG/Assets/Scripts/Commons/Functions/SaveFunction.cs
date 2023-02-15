@@ -30,4 +30,10 @@ public static class SaveFunction
     {
         CommonFunctions.saveObjectToJson<DungeonStat>($"Assets/Resources/{PathInfo.Json.Dictionary.Dungeon}{fileName}", dungeonStat);
     }
+
+
+    public static void saveField(string fileName, FieldSaveStat fieldStat)
+    {
+        CommonFunctions.saveObjectToJson<FieldSaveStat>($"Assets/Resources/{PathInfo.Json.Dictionary.Field}{fileName}", fieldStat);
+    }
 }
