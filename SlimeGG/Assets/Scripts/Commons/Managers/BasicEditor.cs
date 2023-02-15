@@ -73,6 +73,8 @@ public class BasicEditor : MonoBehaviour
         this.actionToSave = actionToSave;
         isActionSet = true;
     }
+
+#nullable enable
     protected void initMouseEvents(
         System.Action<Vector3> actionforStop,
         System.Action<Transform?, Vector3> actionForClickStart,
@@ -260,10 +262,12 @@ public class BasicEditor : MonoBehaviour
         // 클릭: 저장하기 클릭
         string inputName;
         string displayName;
-        if (isNew)
+        if (inputSaveFileName.text != string.Empty)
         {
             inputName = inputSaveFileName.text;
             displayName = inputSaveDisplayName.text;
+            inputSaveFileName.text = string.Empty;
+            inputSaveDisplayName.text = string.Empty;
         }
         else
         {

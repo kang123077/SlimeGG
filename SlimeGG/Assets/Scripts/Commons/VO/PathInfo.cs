@@ -61,6 +61,7 @@ public static class PathInfo
         {
             public static string Dungeon = $"{Json.root}Dungeons/";
             public static string Field = $"{Json.root}Fields/";
+            public static string Entry = $"{Json.root}Entries/";
         }
     }
 

@@ -31,7 +31,8 @@ public static class CommonFunctions
         List<string> files = new List<string>();
         foreach (FileInfo file in di.GetFiles())
         {
-            files.Add(file.Name.Split(".")[0]);
+            if (file.Name.Split(".").Length <= 2)
+                files.Add(file.Name.Split(".")[0]);
         }
         return files;
     }
