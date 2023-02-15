@@ -8,6 +8,7 @@ public class FieldEditor : BasicEditor, IBasicEditor
 {
     [SerializeField]
     private Transform fieldTf, entrySlotPrefab;
+    private List<PlaceableSlotController> mirroredPlaceableSlotControllers = new List<PlaceableSlotController>();
     private PlaceableSlotController curClickedPlaceableSlotController;
     private EntrySlotController curClickedEntrySlotController;
     private int curStatus = -1;
@@ -55,26 +56,57 @@ public class FieldEditor : BasicEditor, IBasicEditor
     private void initSetting()
     {
         fieldTf.gameObject.SetActive(false);
-
+        Transform mirrorSlotsContainer = fieldTf.GetChild(4);
+        int cnt = mirrorSlotsContainer.childCount;
+        int i = 0;
+        while (i < cnt)
+        {
+            mirroredPlaceableSlotControllers.Add(mirrorSlotsContainer.GetChild(i).GetComponent<PlaceableSlotController>());
+            mirroredPlaceableSlotControllers[i].setIsForDisplay(true);
+            i++;
+        }
         curStatus = 0;
     }
 
     private void generateNewTile(PlaceableSlotController targetSlotController)
     {
+        // 정방향 생성 <- 오리지널
         Transform newEntrySlot = Instantiate(entrySlotPrefab);
         targetSlotController.installEntrySlot(newEntrySlot);
         EntrySlotController entrySlotController = newEntrySlot.GetComponent<EntrySlotController>();
         entrySlotControllers.Add(entrySlotController);
+
+        // 역방향 생성 <- 미러
+        newEntrySlot = Instantiate(entrySlotPrefab);
+        mirroredPlaceableSlotControllers[findMirrorPosition(targetSlotController.getCoordinate())].installEntrySlot(newEntrySlot);
+    }
+
+    private int findMirrorPosition(int[] coordinate)
+    {
+        int[] c = SettingVariables.Battle.entrySizeMax;
+        int maxX = c[0], maxY = c[1];
+        return (coordinate[1] * maxX) + (maxX - 1 - coordinate[0]);
     }
 
     private void removeEntrySlot(EntrySlotController targetEntrySlotController)
     {
         entrySlotControllers.Remove(targetEntrySlotController);
+        PlaceableSlotController mirrorPlaceableController = mirroredPlaceableSlotControllers[findMirrorPosition(targetEntrySlotController.getCoordinate())];
+        EntrySlotController mirrorToRemove = mirrorPlaceableController.getInstalledEntrySlotController();
+        mirrorPlaceableController.uninstallEntrySlot();
+        mirrorToRemove.destroySelf();
         targetEntrySlotController.destroySelf();
     }
 
     public void onClickStart(Transform clickedTf, Vector3 clickedPos)
     {
+        if (base.isClickMoreChoiceWindow(clickedTf))
+        {
+
+        } else
+        {
+            base.closeChoiceWindowWithClear();
+        }
     }
 
     public void onClickLeftInPlace(Transform clickedTf)
@@ -94,7 +126,7 @@ public class FieldEditor : BasicEditor, IBasicEditor
             if ((curClickedPlaceableSlotController = clickedTf.GetComponent<PlaceableSlotController>()) != null)
             {
                 // 배치 가능 타일 클릭
-                if (!curClickedPlaceableSlotController.getIsPosessed())
+                if (curClickedPlaceableSlotController.getIsAvailable())
                 {
                     // 비어있음 -> 새로운 타일 생성 옵션 떠야 함
                     base.openChoiceWindowWithOptions(new Dictionary<string, UnityAction>()

@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlaceableSlotController : MonoBehaviour
 {
     private SpriteRenderer background;
-    private bool isPosessed;
+    private bool isPosessed, isForDisplay;
     private int x, y;
     private EntrySlotController entrySlotController;
     private int curStatus = 0;
@@ -44,9 +44,9 @@ public class PlaceableSlotController : MonoBehaviour
         return new Color(.2f, .2f, .2f, 1f);
     }
 
-    public bool getIsPosessed()
+    public bool getIsAvailable()
     {
-        return isPosessed;
+        return !isPosessed && !isForDisplay;
     }
 
     public void setCoordinate(int x, int y)
@@ -76,5 +76,15 @@ public class PlaceableSlotController : MonoBehaviour
         entrySlotController = null;
         isPosessed = false;
         background.color = pickColor(false);
+    }
+
+    public void setIsForDisplay(bool isForDisplay)
+    {
+        this.isForDisplay = isForDisplay;
+    }
+
+    public EntrySlotController getInstalledEntrySlotController()
+    {
+        return entrySlotController;
     }
 }

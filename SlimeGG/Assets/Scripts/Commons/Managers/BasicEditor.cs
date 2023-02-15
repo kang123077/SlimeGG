@@ -182,6 +182,12 @@ public class BasicEditor : MonoBehaviour
         });
         baseStatus = 1;
     }
+
+    public bool isClickMoreChoiceWindow(Transform clickedTf)
+    {
+        return clickedTf == moreChoiceController.transform;
+    }
+
     protected void openChoiceWindowWithOptions(Dictionary<string, UnityAction> choiceOptions)
     {
         moreChoiceController.initInfo(choiceOptions);

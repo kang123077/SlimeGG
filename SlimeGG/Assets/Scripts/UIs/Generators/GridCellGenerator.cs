@@ -40,9 +40,9 @@ public class GridCellGenerator : MonoBehaviour
             x = SettingVariables.Battle.entrySizeMax[0];
             y = SettingVariables.Battle.entrySizeMax[1];
             GetComponent<GridLayoutGroup>().constraintCount = x;
-            for (int i = 0; i < x; i++)
+            for (int j = 0; j < y; j++)
             {
-                for (int j = 0; j < y; j++)
+                for (int i = 0; i < x; i++)
                 {
                     Transform newCell = Instantiate(cellTf);
                     if (newCell.GetComponent<EntrySlotController>())

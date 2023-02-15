@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EntrySlotController : MonoBehaviour
 {
-    public bool isAlly =false;
+    public bool isAlly = false;
     public int x;
     public int y;
 
@@ -40,6 +40,11 @@ public class EntrySlotController : MonoBehaviour
     {
         this.x = x;
         this.y = y;
+    }
+
+    public int[] getCoordinate()
+    {
+        return new int[] { x, y };
     }
 
     public void destroySelf()
