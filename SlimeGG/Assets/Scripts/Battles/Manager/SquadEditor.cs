@@ -14,7 +14,9 @@ public class SquadEditor : BasicEditor, IBasicEditor
     private MoreChoiceController monsterChoiceController;
 
     private EntrySlotController curClickedEntrySlotController;
+    private ContentController curClickedContentController;
     private List<Dictionary<string, UnityAction>> cellInfosByTier = new List<Dictionary<string, UnityAction>>();
+    private List<EntrySlotController> entrySlotControllers = new List<EntrySlotController>(); 
     protected override void Start()
     {
         base.Start();
@@ -86,6 +88,13 @@ public class SquadEditor : BasicEditor, IBasicEditor
         }
         monsterChoiceController = monsterCreateTf.GetChild(1).GetComponent<MoreChoiceController>();
         fieldTf.gameObject.SetActive(false);
+        int i = 0;
+        Transform slotcontainer = fieldTf.GetChild(3);
+        int maxCnt = slotcontainer.childCount;
+        while (i < maxCnt)
+        {
+            entrySlotControllers.Add(slotcontainer.GetChild(i++).GetComponent<EntrySlotController>());
+        }
         curStatus = 0;
     }
 
@@ -120,10 +129,27 @@ public class SquadEditor : BasicEditor, IBasicEditor
     public void onClickRightInPlace(Transform clickedTf)
     {
         if (clickedTf == null) return;
+        if ((curClickedContentController = clickedTf.GetComponent<ContentController>()) != null)
+        {
+            // 몬스터 클릭
+            base.openChoiceWindowWithOptions(new Dictionary<string, UnityAction>()
+            {
+                {
+                    "삭제", () =>
+                    {
+                        base.closeChoiceWindowWithClear();
+                        curClickedContentController.transform.parent.GetComponent<EntrySlotController>().truncateMonster(curClickedContentController);
+                        curClickedContentController.destroySelf();
+                        curClickedContentController = null;
+                    }
+                }
+            });
+            return;
+        }
         if ((curClickedEntrySlotController = clickedTf.parent.GetComponent<EntrySlotController>()) != null)
         {
             // 엔트리 슬롯 클릭
-            base.openChoiceWindowWithOptions(new Dictionary<string, UnityEngine.Events.UnityAction>()
+            base.openChoiceWindowWithOptions(new Dictionary<string, UnityAction>()
             {
                 {
                     "몬스터 생성: 1티어", () =>
@@ -158,6 +184,7 @@ public class SquadEditor : BasicEditor, IBasicEditor
                     }
                 },
             });
+            return;
         }
     }
 
