@@ -22,7 +22,7 @@ public class StageController : MonoBehaviour
     private bool isAccessible = false;
     private StageType stageType;
     private Vector3 locationPos;
-    private int idx = -1;
+    public int idx = -1;
 
     private int curStatus = 0;
 
@@ -225,6 +225,7 @@ public class StageController : MonoBehaviour
     {
         if (stageToRemove == null || !nextStageList.Contains(stageToRemove)) return;
         stageToRemove.removePrevStage(this);
+        nextIds.Remove(stageToRemove.idx);
         StageController[] newList = new StageController[(nextStageList != null ? nextStageList.Length : 0) - 1];
         int cnt = 0;
         if (nextStageList != null)
@@ -246,7 +247,8 @@ public class StageController : MonoBehaviour
         {
             foreach (Transform line in lineList)
             {
-                Destroy(line.gameObject);
+                if (line != null)
+                    Destroy(line.gameObject);
             }
         }
         lineList = new Transform[nextStageList.Length];
