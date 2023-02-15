@@ -34,7 +34,7 @@ public class SquadEditor : BasicEditor, IBasicEditor
                 base.setActions(
                     actionToEnterEditorMode: () => fieldTf.gameObject.SetActive(true),
                     actionToLeaveEditorMode: () =>
-                    {   
+                    {
                         fieldTf.gameObject.SetActive(false);
                         clearEditor();
                     },
@@ -77,7 +77,8 @@ public class SquadEditor : BasicEditor, IBasicEditor
                 {
                     tempCells[$"{monster.name}"] = () =>
                     {
-
+                        generateMonster(monster);
+                        monsterCreateTf.gameObject.SetActive(false);
                     };
                 }
             }
@@ -86,6 +87,14 @@ public class SquadEditor : BasicEditor, IBasicEditor
         monsterChoiceController = monsterCreateTf.GetChild(1).GetComponent<MoreChoiceController>();
         fieldTf.gameObject.SetActive(false);
         curStatus = 0;
+    }
+
+    private void generateMonster(MonsterDictionaryStat monster)
+    {
+        Transform newMonster = Instantiate(contentPrefab);
+        ContentController contentController = newMonster.GetComponent<ContentController>();
+        contentController.initContent(GeneratorFunction.generateMonsterLiveStatFromDictionaryStat(monster), false);
+        curClickedEntrySlotController.installMonster(contentController);
     }
 
     public void loadFromFile(string fileName)
@@ -111,7 +120,7 @@ public class SquadEditor : BasicEditor, IBasicEditor
     public void onClickRightInPlace(Transform clickedTf)
     {
         if (clickedTf == null) return;
-        if (clickedTf.parent.GetComponent<EntrySlotController>() != null)
+        if ((curClickedEntrySlotController = clickedTf.parent.GetComponent<EntrySlotController>()) != null)
         {
             // 엔트리 슬롯 클릭
             base.openChoiceWindowWithOptions(new Dictionary<string, UnityEngine.Events.UnityAction>()
