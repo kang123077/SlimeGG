@@ -28,9 +28,10 @@ public class ObjectSizeController : MonoBehaviour
             );
         if (GetComponent<BoxCollider>() != null)
         {
-            GetComponent<BoxCollider>().size = new Vector2(
+            GetComponent<BoxCollider>().size = new Vector3(
             unitSize * sizeRatioToUnit.x,
-            unitSize * sizeRatioToUnit.y
+            unitSize * sizeRatioToUnit.y,
+            0.2f
             );
         }
         if (isFixed)

@@ -85,11 +85,12 @@ public class DungeonManager : MonoBehaviour
     private void applyJourney()
     {
         bool isEntryEmpty = true;
-        foreach (int stagePos in LocalStorage.Live.journeyInfo)
+        foreach (int stageIdx in LocalStorage.Live.journeyInfo)
         {
             isEntryEmpty = false;
             curStage.clearStage();
-            enterStage(stageControllers[stagePos.ToString()]);
+            curStage.openAccessNext();
+            enterStage(stageControllers[stageIdx.ToString()]);
         }
         isNewStage = isEntryEmpty;
         curStatus = 3;
@@ -99,8 +100,6 @@ public class DungeonManager : MonoBehaviour
     {
         mainGameManager = transform.GetComponent<MainGameManager>();
         curStage = stageControllers[0.ToString()];
-        curStage.clearStage();
-        curStage.openAccessNext();
         curStatus = 2;
     }
 
