@@ -95,7 +95,7 @@ public class EventController : ObjectSizeController
         buttonMain.onClick.RemoveAllListeners();
         choiceBoxTf.gameObject.SetActive(false);
 
-        if (curPage.nextId == -1 || curPage.nextId == null)
+        if (curPage.choices == null && curPage.nextId == null)
         {
             // 다음 페이지 없음
             buttonMain.onClick.AddListener(() =>

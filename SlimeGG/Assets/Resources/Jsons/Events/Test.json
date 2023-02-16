@@ -1,12 +1,59 @@
 [
   {
     "id": 0,
-    "desc": "테스트용 페이지이다.\n그냥 누르면 끝나는 것이다.",
+    "desc": "테스트용 페이지이다.\n누르면 다음으로 넘어간다.",
     "background": null,
     "characterLeft": null,
     "characterRight": null,
-    "nextId": null,
+    "nextId": 1,
     "choices": null,
+    "rewards": null
+  },
+  {
+    "id": 1,
+    "desc": "두번째 페이지이다.\n선택지가 있다..",
+    "choices": [
+      {
+        "destId": 2,
+        "desc": "눌러보자.\n첫번째 선택지이다."
+      },
+      {
+        "destId": 3,
+        "desc": "눌러보자.\n죽고싶다."
+      },
+      {
+        "destId": 4,
+        "desc": "눌러보자.\n살고싶다."
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "desc": "첫번째 선택지를 선택했다!",
+    "rewards": [
+      {
+        "isRandom": true,
+        "type": 0,
+        "name": "Sneaklower",
+        "isGive": true
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "desc": "너가 선택한 일이다.\n악으로 깡으로 버텨라 ...",
+    "rewards": [
+      {
+        "isRandom": true,
+        "type": 0,
+        "name": "Sneaklower",
+        "isGive": true
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "desc": "안탂바지만 도망친 곳에는 낙원은 없다..",
     "rewards": [
       {
         "isRandom": true,
