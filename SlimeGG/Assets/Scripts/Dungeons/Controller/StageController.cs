@@ -139,6 +139,7 @@ public class StageController : MonoBehaviour
         {
             if (isAccessible)
             {
+                LocalStorage.Live.journeyInfo.Add(idx);
                 LocalStorage.CurrentLocation.nodeNum = idx.ToString();
                 LocalStorage.CurrentLocation.stageLevel = stageType == StageType.Normal ? 0 : stageType == StageType.Hard ? 1 : stageType == StageType.Boss ? 2 : 0;
                 dungeonManager.enterStage(this);

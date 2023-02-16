@@ -85,11 +85,11 @@ public class DungeonManager : MonoBehaviour
     private void applyJourney()
     {
         bool isEntryEmpty = true;
-        Debug.Log(LocalStorage.Live.journeyInfo.Count);
         foreach (int stageIdx in LocalStorage.Live.journeyInfo)
         {
             isEntryEmpty = false;
             curStage.clearStage();
+            curStage.openAccessNext();
             enterStage(stageControllers[stageIdx.ToString()]);
         }
         isNewStage = isEntryEmpty;
@@ -98,11 +98,8 @@ public class DungeonManager : MonoBehaviour
 
     private void setCurrentStageIntoZero()
     {
-        LocalStorage.Live.journeyInfo.Add(0);
         mainGameManager = transform.GetComponent<MainGameManager>();
         curStage = stageControllers[0.ToString()];
-        curStage.clearStage();
-        curStage.openAccessNext();
         curStatus = 2;
     }
 
@@ -122,7 +119,6 @@ public class DungeonManager : MonoBehaviour
 
     public void enterStage(StageController targetStage)
     {
-        LocalStorage.Live.journeyInfo.Add(targetStage.idx);
         LocalStorage.CurrentLocation.curLocation = targetStage;
         curStage.closeAccessNext();
         moveCamera(targetStage);

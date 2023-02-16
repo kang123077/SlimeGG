@@ -17,11 +17,16 @@
   {
     "itemName": "SuperDagger",
     "id": "c5e1668b",
-    "equipMonsterId": null
+    "equipMonsterId": "00000005"
   },
   {
     "itemName": "WoodenStaff",
     "id": "56387a0e",
+    "equipMonsterId": null
+  },
+  {
+    "itemName": "SuperDagger",
+    "id": "ec2e8450",
     "equipMonsterId": null
   }
 ]
