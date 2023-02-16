@@ -1,0 +1,19 @@
+[
+  {
+    "id": 0,
+    "desc": "테스트용 페이지이다.\n그냥 누르면 끝나는 것이다.",
+    "background": null,
+    "characterLeft": null,
+    "characterRight": null,
+    "nextId": null,
+    "choices": null,
+    "rewards": [
+      {
+        "isRandom": true,
+        "type": 0,
+        "name": "Sneaklower",
+        "isGive": true
+      }
+    ]
+  }
+]

@@ -7,7 +7,7 @@ public class ObjectSizeController : MonoBehaviour
     [SerializeField]
     public Vector2 sizeRatioToUnit, posRatioToUnit;
     [SerializeField]
-    private bool isFixed = true, isRatioToUnit = true;
+    public bool isFixed = true, isRatioToUnit = true;
     // Start is called before the first frame update
     public void Start()
     {
