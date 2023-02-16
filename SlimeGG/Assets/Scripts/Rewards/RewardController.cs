@@ -18,7 +18,6 @@ public class RewardController : MonoBehaviour
     private TextMeshProUGUI titleText;
     private ObjectMoveController objectMoveController;
     private GridLayoutGroup slotGridLayout;
-    private int curSlotCnt;
     private List<SlotController> slotControllers;
     private int curStatus = 0;
     private int rerollLeftCnt = -1;
@@ -130,7 +129,6 @@ public class RewardController : MonoBehaviour
     private void generateSlots(int cnt)
     {
         slotControllers = new List<SlotController>();
-        curSlotCnt = cnt;
         while (cnt > 0)
         {
             Transform newSlot = Instantiate(slotPrefab);
@@ -248,15 +246,16 @@ public class RewardController : MonoBehaviour
                 MonsterLiveStat newMonster = GeneratorFunction.generateMonsterLiveStatFromDictionaryStat(pickRandomMonsterDictionaryStat(pickRandomTier()));
                 LocalStorage.Live.monsters[newMonster.saveStat.id] = newMonster;
                 newContent.GetComponent<ContentController>().initContent(newMonster);
+                targetSlotController.installContent(newContent, InventoryType.Monster);
                 break;
             case InventoryType.Item:
                 ItemLiveStat newItem = GeneratorFunction.generateItemLiveStatFromDictionaryStat(pickRandomItemDictionaryStat(pickRandomTier()));
                 LocalStorage.Live.items[newItem.saveStat.id] = newItem;
                 newContent.GetComponent<ContentController>().initContent(newItem);
                 newContent.GetComponent<ContentController>().setInfoWindowController(infoWindowController);
+                targetSlotController.installContent(newContent, InventoryType.Item);
                 break;
         }
-        targetSlotController.installContent(newContent);
     }
 
     private void rerollLeftContent(InventoryType type)
@@ -269,6 +268,15 @@ public class RewardController : MonoBehaviour
                 {
                     // 컨텐츠 밀기
                     // 컨텐츠 재생성 후 설치
+                    switch (type)
+                    {
+                        case InventoryType.Monster:
+                            LocalStorage.Live.monsters.Remove(slotController.getContentController().monsterLiveStat.saveStat.id);
+                            break;
+                        case InventoryType.Item:
+                            LocalStorage.Live.items.Remove(slotController.getContentController().itemLiveStat.saveStat.id);
+                            break;
+                    }
                     slotController.truncateContent();
                     generateRandomContentForSlot(slotController, type);
                 }

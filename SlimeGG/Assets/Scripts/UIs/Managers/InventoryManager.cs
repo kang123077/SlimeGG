@@ -27,7 +27,8 @@ public class InventoryManager : MonoBehaviour
 
     void Start()
     {
-        initSetting();
+        if (LocalStorage.isDataCallDone())
+            initSetting();
     }
 
     // Update is called once per frame

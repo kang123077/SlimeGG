@@ -152,7 +152,7 @@ public class StageController : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        isClick = true;
+        isClick = !LocalStorage.isCameraPosessed;
     }
 
     private void OnMouseExit()

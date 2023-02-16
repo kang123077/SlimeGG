@@ -1,17 +1,27 @@
 [
   {
-    "itemName": "WoodenStaff",
-    "id": "063620c2",
-    "equipMonsterId": null
+    "itemName": "SuperDagger",
+    "id": "c5760156",
+    "equipMonsterId": "00000004"
   },
   {
     "itemName": "Dagger",
     "id": "6c9b98a1",
-    "equipMonsterId": null
+    "equipMonsterId": "00000004"
+  },
+  {
+    "itemName": "WoodenStaff",
+    "id": "063620c2",
+    "equipMonsterId": "00000005"
   },
   {
     "itemName": "SuperDagger",
-    "id": "c5760156",
+    "id": "c5e1668b",
+    "equipMonsterId": null
+  },
+  {
+    "itemName": "WoodenStaff",
+    "id": "56387a0e",
     "equipMonsterId": null
   }
 ]

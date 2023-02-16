@@ -20,28 +20,28 @@
     "id": "00000004",
     "speicie": "Eartipede",
     "entryPos": [
-      4,
-      7
+      3,
+      3
     ]
   },
   {
     "exp": [
       {
         "name": "Wind",
-        "amount": 10.0,
+        "amount": 20.0,
         "shouldOver": true
       },
       {
         "name": "Spirit",
-        "amount": 5.0,
+        "amount": 10.0,
         "shouldOver": true
       }
     ],
     "id": "00000005",
     "speicie": "Sneaklower",
     "entryPos": [
-      4,
-      7
+      0,
+      3
     ]
   },
   {
@@ -59,6 +59,45 @@
     ],
     "id": "cbcdc4dc",
     "speicie": "Sleepion",
+    "entryPos": null
+  },
+  {
+    "exp": [
+      {
+        "name": "Wind",
+        "amount": 10.0,
+        "shouldOver": true
+      },
+      {
+        "name": "Spirit",
+        "amount": 5.0,
+        "shouldOver": true
+      }
+    ],
+    "id": "b9d4446c",
+    "speicie": "MudBall",
+    "entryPos": null
+  },
+  {
+    "exp": [
+      {
+        "name": "Wind",
+        "amount": 10.0,
+        "shouldOver": true
+      },
+      {
+        "name": "Spirit",
+        "amount": 5.0,
+        "shouldOver": true
+      },
+      {
+        "name": "Earth",
+        "amount": 1.0,
+        "shouldOver": true
+      }
+    ],
+    "id": "d65b8996",
+    "speicie": "BabySpirit",
     "entryPos": null
   }
 ]

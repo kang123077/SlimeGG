@@ -518,7 +518,6 @@ public class BattleManager : MonoBehaviour
 
     private void returnToDungeon()
     {
-        LocalStorage.Live.journeyInfo.Add(int.Parse(LocalStorage.CurrentLocation.nodeNum));
         GetComponent<MainGameManager>().loadScene("DungeonMapScene");
         curStage = 9;
     }
