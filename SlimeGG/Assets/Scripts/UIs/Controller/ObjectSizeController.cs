@@ -9,18 +9,19 @@ public class ObjectSizeController : MonoBehaviour
     [SerializeField]
     private bool isFixed = true, isRatioToUnit = true;
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         adjustSize();
     }
 
     private void adjustSize()
     {
+        if (sizeRatioToUnit.x == 0f && sizeRatioToUnit.y == 0f && posRatioToUnit.x == 0f && posRatioToUnit.y == 0f) return;
         float unitSize = isRatioToUnit ? MainGameManager.screenUnitSize : 1f;
         GetComponent<RectTransform>().sizeDelta = new Vector2(
             unitSize * sizeRatioToUnit.x,
