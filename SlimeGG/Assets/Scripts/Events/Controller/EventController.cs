@@ -142,6 +142,6 @@ public class EventController : ObjectSizeController
 
     private void finishReward()
     {
-
+        Debug.Log($"");
     }
 }
