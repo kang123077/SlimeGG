@@ -29,6 +29,7 @@ public class ObjectMoveController : MonoBehaviour
             {
                 return;
             }
+            Debug.Log(isActive ? "닫기" : "열기");
             toggle();
         }
     }

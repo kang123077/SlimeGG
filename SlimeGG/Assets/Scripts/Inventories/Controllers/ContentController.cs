@@ -236,7 +236,6 @@ public class ContentController : MonoBehaviour
                 if (type == InventoryType.Monster)
                 {
                     checkIsOnFieldTile(res.transform);
-                    return;
                 }
             }
 
@@ -250,6 +249,7 @@ public class ContentController : MonoBehaviour
                 inventoryManager.sellContent(this);
                 return;
             }
+
 
             // 슬롯 있는지?
             if (res.transform.tag == "Slot")
@@ -342,7 +342,7 @@ public class ContentController : MonoBehaviour
             objectBelow.parent.GetComponent<EntrySlotController>().installMonster(this, false);
             return;
         }
-        if (objectBelow.tag == "Slot")
+        if (objectBelow.tag == "Slot" && prevPerant && prevPerant.GetComponent<EntrySlotController>())
         {
             // 전투 필드에서 제거:: 전투 필드 -> 인벤토리
             isInstalledOnField = false;
