@@ -138,7 +138,74 @@ public class EventController : ObjectSizeController
     {
         foreach (EventRewardStat stat in rewardStats)
         {
-            Debug.Log($"보상:: {(stat.isRandom ? "랜덤" : "일반")} | {(stat.type == 0 ? "몬스터" : stat.type == 1 ? "아이템" : "재화")} | {stat.name} | {(stat.isGive ? "추가" : "삭제")}");
+            switch (stat.type)
+            {
+                case 0:
+                    // 몬스터
+                    if (stat.isGive)
+                    {
+                        // 획득
+                        if (stat.isRandom)
+                        {
+                            //랜덤 얻기
+                            MonsterLiveStat newMonster = GeneratorFunction.generateRendomMonsterLiveStat();
+                            LocalStorage.Live.monsters[newMonster.saveStat.id] = newMonster;
+                        }
+                        else
+                        {
+                            // 특정 얻기
+                            MonsterLiveStat newMonster = GeneratorFunction.generateMonsterLiveStatFromDictionaryStat(LocalDictionary.speicies[stat.name]);
+                            LocalStorage.Live.monsters[newMonster.saveStat.id] = newMonster;
+                        }
+                    }
+                    else
+                    {
+                        // 소실
+                        if (stat.isRandom)
+                        {
+                            // 랜덤
+                        }
+                        else
+                        {
+                            // 확정
+                        }
+                    }
+                    break;
+                case 1:
+                    // 아이템
+                    if (stat.isGive)
+                    {
+                        // 획득
+                        if (stat.isRandom)
+                        {
+                            //랜덤 얻기
+                            ItemLiveStat newItem = GeneratorFunction.generateRandomItemLiveStat();
+                            LocalStorage.Live.items[newItem.saveStat.id] = newItem;
+                        }
+                        else
+                        {
+                            // 특정 얻기
+                            ItemLiveStat newItem = GeneratorFunction.generateItemLiveStatFromDictionaryStat(LocalDictionary.items[stat.name]);
+                            LocalStorage.Live.items[newItem.saveStat.id] = newItem;
+                        }
+                    }
+                    else
+                    {
+                        // 소실
+                        if (stat.isRandom)
+                        {
+                            // 랜덤
+                        }
+                        else
+                        {
+                            // 확정
+                        }
+                    }
+                    break;
+                case 2:
+                    // 재화
+                    break;
+            }
         }
     }
 

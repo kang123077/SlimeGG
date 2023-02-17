@@ -105,27 +105,6 @@ public class RewardController : MonoBehaviour
         objectMoveController.toggle(actionAfterToggle: (i) => { curStatus = 2; });
     }
 
-    private MonsterDictionaryStat pickRandomMonsterDictionaryStat(int tier)
-    {
-        int randNum = Random.Range(0, LocalDictionary.speicesByTier[tier].Count);
-        return LocalDictionary.speicesByTier[tier][randNum];
-    }
-
-    private int pickRandomTier()
-    {
-        float randNum = Random.Range(0.0f, 1.0f);
-        int res = 1;
-        foreach (float standard in SettingVariables.Reward.tierRandomStandard[LocalStorage.Live.numClearDungeon])
-        {
-            if (randNum <= standard)
-            {
-                return res;
-            }
-            res++;
-        }
-        return 1;
-    }
-
     private void generateSlots(int cnt)
     {
         slotControllers = new List<SlotController>();
@@ -168,11 +147,6 @@ public class RewardController : MonoBehaviour
             generateRandomContentForSlot(slotControllers[i], InventoryType.Item);
         }
         objectMoveController.toggle(actionAfterToggle: (i) => { curStatus = 4; });
-    }
-    private ItemDictionaryStat pickRandomItemDictionaryStat(int tier)
-    {
-        int randNum = Random.Range(0, LocalDictionary.itemsByTier[tier].Count);
-        return LocalDictionary.itemsByTier[tier][randNum];
     }
 
     public void closeReward()
@@ -243,13 +217,13 @@ public class RewardController : MonoBehaviour
         switch (type)
         {
             case InventoryType.Monster:
-                MonsterLiveStat newMonster = GeneratorFunction.generateMonsterLiveStatFromDictionaryStat(pickRandomMonsterDictionaryStat(pickRandomTier()));
+                MonsterLiveStat newMonster = GeneratorFunction.generateRendomMonsterLiveStat();
                 LocalStorage.Live.monsters[newMonster.saveStat.id] = newMonster;
                 newContent.GetComponent<ContentController>().initContent(newMonster);
                 targetSlotController.installContent(newContent, InventoryType.Monster);
                 break;
             case InventoryType.Item:
-                ItemLiveStat newItem = GeneratorFunction.generateItemLiveStatFromDictionaryStat(pickRandomItemDictionaryStat(pickRandomTier()));
+                ItemLiveStat newItem = GeneratorFunction.generateRandomItemLiveStat();
                 LocalStorage.Live.items[newItem.saveStat.id] = newItem;
                 newContent.GetComponent<ContentController>().initContent(newItem);
                 newContent.GetComponent<ContentController>().setInfoWindowController(infoWindowController);

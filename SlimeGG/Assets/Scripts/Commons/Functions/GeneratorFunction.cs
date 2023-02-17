@@ -78,4 +78,40 @@ public static class GeneratorFunction
         }
         return res;
     }
+
+    public static int pickRandomTier()
+    {
+        float randNum = Random.Range(0.0f, 1.0f);
+        int res = 1;
+        foreach (float standard in SettingVariables.Reward.tierRandomStandard[LocalStorage.Live.numClearDungeon])
+        {
+            if (randNum <= standard)
+            {
+                return res;
+            }
+            res++;
+        }
+        return 1;
+    }
+
+    private static MonsterDictionaryStat pickRandomMonsterDictionaryStat(int tier)
+    {
+        int randNum = Random.Range(0, LocalDictionary.speicesByTier[tier].Count);
+        return LocalDictionary.speicesByTier[tier][randNum];
+    }
+
+    public static MonsterLiveStat generateRendomMonsterLiveStat()
+    {
+        return generateMonsterLiveStatFromDictionaryStat(pickRandomMonsterDictionaryStat(pickRandomTier()));
+    }
+    private static ItemDictionaryStat pickRandomItemDictionaryStat(int tier)
+    {
+        int randNum = Random.Range(0, LocalDictionary.itemsByTier[tier].Count);
+        return LocalDictionary.itemsByTier[tier][randNum];
+    }
+
+    public static ItemLiveStat generateRandomItemLiveStat()
+    {
+        return generateItemLiveStatFromDictionaryStat(pickRandomItemDictionaryStat(pickRandomTier()));
+    }
 }

@@ -114,7 +114,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   directionToMove: 0
   distanceToMoveRatioToUnit: 11
-  keyToToggle: i
+  keyToToggle: 
+  isActive: 0
 --- !u!114 &6848055600428722152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,6 +130,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeRatioToUnit: {x: 10, y: -2}
   posRatioToUnit: {x: 0, y: 0}
+  isFixed: 1
+  isRatioToUnit: 1
 --- !u!1 &1217105996332705366
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,6 +231,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeRatioToUnit: {x: 4, y: -2}
   posRatioToUnit: {x: -4, y: 0}
+  isFixed: 1
+  isRatioToUnit: 1
 --- !u!114 &8274209343865480872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,7 +247,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   directionToMove: 1
   distanceToMoveRatioToUnit: 5
-  keyToToggle: i
+  keyToToggle: 
+  isActive: 0
 --- !u!1 &1217105996439591460
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,12 +300,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58253512390c43b449b0c1b28071c284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keyToToggle: i
   slotPrefab: {fileID: 3699539852172333448, guid: 3d0edc3ece306f34db8da6e60c3d401b, type: 3}
   contentPrefab: {fileID: 8910481221815906065, guid: dd8463c5270512941a83136aed0062f6, type: 3}
   infoWindowController: {fileID: 0}
+  isInitWithToggle: 0
+  keyToToggle: i
   curSelectedMonster: {fileID: 0}
-  isInfoNeeded: 1
 --- !u!1 &1217105996564759366
 GameObject:
   m_ObjectHideFlags: 0
@@ -1174,6 +1180,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeRatioToUnit: {x: 0.8, y: 0.8}
   posRatioToUnit: {x: 0, y: 0}
+  isFixed: 1
+  isRatioToUnit: 1
 --- !u!114 &1217105997351034067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1186,6 +1194,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da16dfb275636fc4c8b35eddf61835a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sizeRatioToUnit: {x: 0, y: 0}
+  posRatioToUnit: {x: 0, y: 0}
+  isFixed: 1
+  isRatioToUnit: 1
   fonsSizeRatioToUnit: 1.1
 --- !u!1 &1217105997496190083
 GameObject:
@@ -1398,6 +1410,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeRatioToUnit: {x: 0, y: 0}
   posRatioToUnit: {x: -0.5, y: -3.6}
+  isFixed: 1
+  isRatioToUnit: 1
 --- !u!1 &1217105997502147702
 GameObject:
   m_ObjectHideFlags: 0
@@ -1606,6 +1620,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeRatioToUnit: {x: 0.8, y: 0.8}
   posRatioToUnit: {x: 1.3, y: -3.6}
+  isFixed: 1
+  isRatioToUnit: 1
 --- !u!65 &1217105997558141553
 BoxCollider:
   m_ObjectHideFlags: 0
