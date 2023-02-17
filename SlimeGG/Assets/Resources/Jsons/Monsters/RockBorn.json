@@ -1,0 +1,73 @@
+{
+  "displayName": "땅의영혼",
+  "tier": 3,
+  "desc": "신체를 구성하는 모든 돌들은 자유의지를 가진것으로 관찰되지만 일단은 머릿돌의 통제를 전적으로 따르는 것으로 보인다. 신체의 일부가 마모되거나 유실되면 땅을 파헤쳐 적당한 돌을 골라 갈아끼운다.",
+  "basic": [
+    {
+      "name": "hp",
+      "amount": 1600
+    },
+    {
+      "name": "atk",
+      "amount": 2.0
+    },
+    {
+      "name": "def",
+      "amount": 65
+    },
+    {
+      "name": "spd",
+      "amount": 0.8
+    },
+    {
+      "name": "timeCoolCycle",
+      "amount": 1.3
+    },
+    {
+      "name": "timeCastingCycle",
+      "amount": 1.3
+    }
+  ],
+  "element": [
+    "Earth",
+    "Spirit",
+    "Water"
+  ],
+  "exp": [
+    {
+      "name": "Earth",
+      "amount": 16
+    },
+    {
+      "name": "Spirit",
+      "amount": 16
+    },
+    {
+      "name": "Water",
+      "amount": 8
+    }
+  ],
+  "elementEvol": [
+    {
+      "name": "Earth",
+      "amount": 16
+    },
+    {
+      "name": "Spirit",
+      "amount": 16
+    },
+    {
+      "name": "Water",
+      "amount": 8
+    }
+  ],
+  "nextMonster": [
+    "EarthQuaker",
+    "EarthTyrant",
+    "EarthTalker"
+  ],
+  "skills": [
+    "PlanetSmasher",
+    "Proof"
+  ]
+}
