@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public static class SettingVariables
 {
     public static float slideToggleSpd = 0.25f;
+    public static float fadeToggleSpd = 0.5f;
     public static class Battle
     {
         // 0번 칸 : 열 개수 = x 좌표

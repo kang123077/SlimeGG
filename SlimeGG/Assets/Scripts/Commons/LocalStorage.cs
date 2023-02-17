@@ -48,6 +48,7 @@ public static class LocalStorage
         public static bool info = false;
         public static bool setting = false;
         public static bool reward = false;
+        public static bool eventModule = false;
     }
 
     public static Dictionary<string, List<SlotController>> inventory = new Dictionary<string, List<SlotController>>()

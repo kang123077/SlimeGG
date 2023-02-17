@@ -14,6 +14,7 @@ public class EventController : ObjectSizeController
     private Button[] choiceButtons = new Button[3];
     private TextMeshProUGUI[] choiceTexts = new TextMeshProUGUI[3];
     private EventSaveStat[] pages = new EventSaveStat[50];
+    private ObjectMoveController moveController;
 
     // Start is called before the first frame update
     public void Start()
@@ -46,6 +47,7 @@ public class EventController : ObjectSizeController
 
     private void initSetting()
     {
+        moveController = GetComponent<ObjectMoveController>();
         imageBackground = transform.GetChild(0).GetComponent<Image>();
         imageLeft = transform.GetChild(1).GetComponent<Image>();
         imageRight = transform.GetChild(2).GetComponent<Image>();
@@ -142,6 +144,11 @@ public class EventController : ObjectSizeController
 
     private void finishReward()
     {
-        Debug.Log($"");
+        moveController.toggle();
+    }
+
+    public void openModule()
+    {
+        moveController.toggle();
     }
 }
