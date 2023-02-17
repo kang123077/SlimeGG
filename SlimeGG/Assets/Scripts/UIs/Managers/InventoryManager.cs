@@ -15,6 +15,8 @@ public class InventoryManager : MonoBehaviour
     InfoWindowController infoWindowController;
     [SerializeField]
     private bool isInitWithToggle = false;
+    [SerializeField]
+    private string keyToToggle;
     bool isInit = false;
     Transform monsterSlot;
     Transform equipmentSlot;
@@ -27,7 +29,8 @@ public class InventoryManager : MonoBehaviour
 
     void Start()
     {
-        initSetting();
+        if (LocalStorage.isDataCallDone())
+            initSetting();
     }
 
     // Update is called once per frame
@@ -37,6 +40,10 @@ public class InventoryManager : MonoBehaviour
         {
             adjustSize();
             trackCamera();
+            if (keyToToggle != null && keyToToggle.Length != 0 && Input.GetKeyDown(keyToToggle))
+            {
+                toggleAll();
+            }
         }
         else
         {
@@ -83,12 +90,17 @@ public class InventoryManager : MonoBehaviour
 
     public void toggleAll()
     {
-        transform.GetChild(0).GetComponent<ObjectMoveController>().toggle();
-        transform.GetChild(1).GetComponent<ObjectMoveController>().toggle();
         if (!transform.GetChild(0).GetComponent<ObjectMoveController>().isActive)
         {
-            reloadInventory();
+            // 닫힌 상태에서 열기 시도
+            // => 열리기 전에 인벤 리로드
+            transform.GetChild(0).GetComponent<ObjectMoveController>().toggle(actionBeforeToggle: (i) => { reloadInventory(); });
         }
+        else
+        {
+            transform.GetChild(0).GetComponent<ObjectMoveController>().toggle();
+        }
+        transform.GetChild(1).GetComponent<ObjectMoveController>().toggle();
     }
 
     private void trackCamera()

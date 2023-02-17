@@ -110,4 +110,9 @@ public class ObjectMoveController : MonoBehaviour
     {
         return isActive;
     }
+
+    public void setKeyToToggle(string keyToToggle)
+    {
+        this.keyToToggle = keyToToggle;
+    }
 }

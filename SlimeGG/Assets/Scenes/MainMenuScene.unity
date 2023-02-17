@@ -647,6 +647,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da16dfb275636fc4c8b35eddf61835a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sizeRatioToUnit: {x: 0, y: 0}
+  posRatioToUnit: {x: 0, y: 0}
+  isFixed: 1
+  isRatioToUnit: 1
   fonsSizeRatioToUnit: 1.5
 --- !u!1 &829127623
 GameObject:
@@ -897,10 +901,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e89c59692ec8aa498fd2d5653f0b39d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sizeRatioToUnit: {x: 0, y: 0}
+  posRatioToUnit: {x: 0, y: 0}
+  isFixed: 1
+  isRatioToUnit: 1
   cellSizeRatioToUnit: {x: 6, y: 1.2}
   spacingRatioToUnit: {x: 0.5, y: 0.5}
   childAlignmentAnchor: 6
-  isRatioToUnit: 1
   constraintCount: 0
 --- !u!1 &1444393148
 GameObject:
@@ -1240,6 +1247,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da16dfb275636fc4c8b35eddf61835a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sizeRatioToUnit: {x: 0, y: 0}
+  posRatioToUnit: {x: 0, y: 0}
+  isFixed: 1
+  isRatioToUnit: 1
   fonsSizeRatioToUnit: 1.5
 --- !u!1 &1778974771
 GameObject:
@@ -1437,6 +1448,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da16dfb275636fc4c8b35eddf61835a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sizeRatioToUnit: {x: 0, y: 0}
+  posRatioToUnit: {x: 0, y: 0}
+  isFixed: 1
+  isRatioToUnit: 1
   fonsSizeRatioToUnit: 1.5
 --- !u!1 &1847796190
 GameObject:

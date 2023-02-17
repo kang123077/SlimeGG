@@ -41,9 +41,10 @@ public class SlotController : MonoBehaviour
         GetComponent<BoxCollider>().size = new Vector3(temp.x, temp.y, 0.2f);
     }
 
-    public void installContent(Transform newContent)
+    public void installContent(Transform newContent, InventoryType typeToChange = InventoryType.None)
     {
-        type = newContent.GetComponent<ContentController>().type;
+        if (typeToChange != InventoryType.None)
+            type = typeToChange;
         newContent.SetParent(transform);
         newContent.localScale = Vector3.one;
         newContent.localPosition = new Vector3(0f, 0f, -2f);
@@ -63,5 +64,10 @@ public class SlotController : MonoBehaviour
     public void removeContent()
     {
         contentController = null;
+    }
+
+    public ContentController getContentController()
+    {
+        return contentController;
     }
 }

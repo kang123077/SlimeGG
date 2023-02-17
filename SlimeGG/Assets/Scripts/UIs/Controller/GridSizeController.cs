@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GridSizeController : MonoBehaviour
+public class GridSizeController : ObjectSizeController
 {
     [SerializeField]
     public Vector2 cellSizeRatioToUnit, spacingRatioToUnit;
     [SerializeField]
     public TextAnchor childAlignmentAnchor;
-    [SerializeField]
-    private bool isRatioToUnit = true;
     [SerializeField]
     private int constraintCount = 0;
 
@@ -20,12 +18,13 @@ public class GridSizeController : MonoBehaviour
         this.spacingRatioToUnit = spacingRatioToUnit;
         this.childAlignmentAnchor = childAlignmentAnchor;
         this.constraintCount = constraintCount;
-        this.isRatioToUnit = isRatioToUnit;
+        base.isRatioToUnit = isRatioToUnit;
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        base.Start();
         if (constraintCount != 0)
         {
             GetComponent<GridLayoutGroup>().constraintCount = constraintCount;
@@ -35,7 +34,8 @@ public class GridSizeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float unitSize = isRatioToUnit ? MainGameManager.screenUnitSize : 1f;
+        base.Update();
+        float unitSize = base.isRatioToUnit ? MainGameManager.screenUnitSize : 1f;
         GetComponent<GridLayoutGroup>().childAlignment = childAlignmentAnchor;
         GetComponent<GridLayoutGroup>().cellSize = new Vector2(
             unitSize * cellSizeRatioToUnit.x,

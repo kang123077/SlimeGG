@@ -3,6 +3,13 @@ public static class PathInfo
     public static string JSON = "Jsons/";
     private static string sprite = "Sprites/";
     private static string animation = "Animations/";
+
+    public static class Background
+    {
+        private static string root = "Backgrounds/";
+        public static string Sprite = $"{sprite}{root}";
+    }
+
     public static class Monster
     {
         private static string root = "Monsters/";
