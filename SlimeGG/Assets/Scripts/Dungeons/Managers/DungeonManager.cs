@@ -14,6 +14,8 @@ public class DungeonManager : MonoBehaviour
     Transform mainCamera;
     [SerializeField]
     Transform userTf;
+    [SerializeField]
+    EventController eventModule;
     MainGameManager mainGameManager;
     private bool isNewStage = false;
 
@@ -75,9 +77,23 @@ public class DungeonManager : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
         LocalStorage.isCameraPosessed = false;
-        if (!isInit)
+        switch (targetStage.getStageType())
         {
-            mainGameManager.controllLoading(true, "BattleScene");
+            case StageType.Normal:
+            case StageType.Hard:
+            case StageType.Boss:
+                if (!isInit)
+                {
+                    mainGameManager.controllLoading(true, "BattleScene");
+                }
+                break;
+            case StageType.Event:
+                // 이벤트 진입
+                eventModule.openModule();
+                break;
+            case StageType.Shop:
+                // 상점 진입
+                break;
         }
         curStatus = 5;
     }
@@ -146,6 +162,7 @@ public class DungeonManager : MonoBehaviour
         foreach (KeyValuePair<string, StageController> keyValuePair in stageControllers)
         {
             keyValuePair.Value.setDungeonManager(this);
+            keyValuePair.Value.setEventController(eventModule);
             keyValuePair.Value.callNextStages(stageControllers);
         }
         curStatus = 1;

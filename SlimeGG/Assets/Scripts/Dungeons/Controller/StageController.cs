@@ -16,6 +16,7 @@ public class StageController : MonoBehaviour
     Transform[] lineList;
 
     DungeonManager dungeonManager;
+    EventController eventController;
 
     private bool isClear { get; set; }
     private bool isClick = false;
@@ -141,7 +142,7 @@ public class StageController : MonoBehaviour
             {
                 LocalStorage.Live.journeyInfo.Add(idx);
                 LocalStorage.CurrentLocation.nodeNum = idx.ToString();
-                LocalStorage.CurrentLocation.stageLevel = stageType == StageType.Normal ? 0 : stageType == StageType.Hard ? 1 : stageType == StageType.Boss ? 2 : 0;
+                LocalStorage.CurrentLocation.stageLevel = stageType == StageType.Normal ? 0 : stageType == StageType.Hard ? 1 : stageType == StageType.Boss ? 2 : -1;
                 dungeonManager.enterStage(this);
             }
             else
@@ -354,5 +355,10 @@ public class StageController : MonoBehaviour
             stageControllers[nextId.ToString()].addPrevStage(this);
         }
         drawLine();
+    }
+
+    public void setEventController(EventController eventController)
+    {
+        this.eventController = eventController;
     }
 }
