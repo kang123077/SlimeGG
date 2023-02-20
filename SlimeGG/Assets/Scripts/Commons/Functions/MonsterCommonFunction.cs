@@ -13,7 +13,7 @@ public class MonsterCommonFunction
         res.speicie = monsterLiveStat.saveStat.speicie;
         // 기본 정보는 곱연산을 통한 설정
         // 속성 정보는 합연산을 통한 설정
-        
+
         // 종족의 기본 정보 불러오기
         foreach (BasicStat basicStat in monsterLiveStat.dictionaryStat.basic)
         {
@@ -31,7 +31,8 @@ public class MonsterCommonFunction
                     if (res.basic.ContainsKey(itemStat.dictionaryStat.effect[i].name))
                     {
                         res.basic[itemStat.dictionaryStat.effect[i].name].amount += itemStat.dictionaryStat.effect[i].amount;
-                    } else
+                    }
+                    else
                     {
                         res.basic[itemStat.dictionaryStat.effect[i].name] = new BasicStat(itemStat.dictionaryStat.effect[i].amount);
                     }
@@ -124,5 +125,19 @@ public class MonsterCommonFunction
     public static Vector3 translatePositionPowerToVector3(Vector3 direction, float power)
     {
         return direction * power * 10;
+    }
+
+    public static void evolveMonster(ContentController targetMonsterController, string targetSpeice)
+    {
+        targetMonsterController.monsterLiveStat.saveStat.speicie = targetSpeice;
+        targetMonsterController.monsterLiveStat.saveStat.exp = new List<ElementStat>();
+        foreach (ElementStat stat in LocalDictionary.speicies[targetSpeice].exp)
+        {
+            targetMonsterController.monsterLiveStat.saveStat.exp.Add(new ElementStat(stat));
+        }
+        Dictionary<string, ItemLiveStat> temp = new Dictionary<string, ItemLiveStat>(targetMonsterController.monsterLiveStat.itemStatList);
+        LocalStorage.Live.monsters[targetMonsterController.monsterLiveStat.saveStat.id] = GeneratorFunction.returnMonsterLiveStat(targetMonsterController.monsterLiveStat.saveStat);
+        targetMonsterController.monsterLiveStat = LocalStorage.Live.monsters[targetMonsterController.monsterLiveStat.saveStat.id];
+        targetMonsterController.monsterLiveStat.itemStatList = new Dictionary<string, ItemLiveStat>(temp);
     }
 }

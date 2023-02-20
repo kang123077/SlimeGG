@@ -9,10 +9,14 @@ public class EvolutionCaseController : MonoBehaviour
     [SerializeField]
     private ExpModuleController expModuleController;
     private Image thumbImg, backgroundImg;
+    private Button evolButton;
     private List<ElementStat> elementStats;
 
     private bool isInit = false, isEvolable = false;
+    private InventoryManager inventoryManager;
+    private ContentController contentController;
     Color evolColor = Color.yellow;
+    private string specieName;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +41,7 @@ public class EvolutionCaseController : MonoBehaviour
         if (isInit) return;
         thumbImg = transform.GetChild(0).GetComponent<Image>();
         backgroundImg = transform.GetChild(1).GetComponent<Image>();
+        evolButton = transform.GetChild(1).GetComponent<Button>();
         backgroundImg.gameObject.SetActive(false);
         expModuleController = Instantiate(expModuleController);
         expModuleController.transform.SetParent(transform);
@@ -75,6 +80,7 @@ public class EvolutionCaseController : MonoBehaviour
         expModuleController.initInfo(nextSpecie.element, nextSpecie.elementEvol);
         expModuleController.setSizeRatio(0.8f);
         elementStats = nextSpecie.elementEvol;
+        this.specieName = specieName;
     }
 
     private IEnumerator glitterImage()
@@ -108,6 +114,7 @@ public class EvolutionCaseController : MonoBehaviour
 
     public void checkIfEvolable(List<ElementStat> compareStats)
     {
+        evolButton.onClick.RemoveAllListeners();
         foreach (ElementStat elementStat in elementStats)
         {
             ElementStat temp;
@@ -125,6 +132,22 @@ public class EvolutionCaseController : MonoBehaviour
             }
         }
         isEvolable = true;
+        // 버튼 기능 부여 -> 진화
+        evolButton.onClick.AddListener(() =>
+        {
+            inventoryManager.evolveMonster(contentController, specieName);
+        }
+        );
         return;
+    }
+
+    public void setInventoryManager(InventoryManager inventoryManager)
+    {
+        this.inventoryManager = inventoryManager;
+    }
+
+    public void setContentController(ContentController contentController)
+    {
+        this.contentController = contentController;
     }
 }

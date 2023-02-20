@@ -16,4 +16,11 @@ public class ElementStat
         this.amount = amount;
         shouldOver = true;
     }
+
+    public ElementStat(ElementStat stat)
+    {
+        amount = stat.amount;
+        name = stat.name;
+        shouldOver = stat.shouldOver;
+    }
 }
