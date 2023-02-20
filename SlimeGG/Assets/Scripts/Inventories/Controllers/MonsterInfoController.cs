@@ -132,6 +132,7 @@ public class MonsterInfoController : MonoBehaviour
             temp.transform.localPosition = Vector3.zero;
             evolutionCaseControllers.Add(temp);
             temp.initInfo(nextMonster);
+            temp.checkIfEvolable(monsterLiveStat.saveStat.exp);
         }
     }
 
