@@ -33,6 +33,7 @@ public class StatSlotController : MonoBehaviour
 
     public void initBaseInfo(BasicStat basicStat)
     {
+        if (!isInit) initSetting();
         if (basicStat == null)
         {
             nameText.text = $"";

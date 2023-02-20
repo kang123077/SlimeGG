@@ -1,15 +1,5 @@
 [
   {
-    "itemName": "SuperDagger",
-    "id": "c5760156",
-    "equipMonsterId": "00000004"
-  },
-  {
-    "itemName": "Dagger",
-    "id": "6c9b98a1",
-    "equipMonsterId": "00000004"
-  },
-  {
     "itemName": "WoodenStaff",
     "id": "063620c2",
     "equipMonsterId": "00000005"
@@ -20,13 +10,23 @@
     "equipMonsterId": "00000005"
   },
   {
+    "itemName": "Dagger",
+    "id": "6c9b98a1",
+    "equipMonsterId": "b9d4446c"
+  },
+  {
+    "itemName": "SuperDagger",
+    "id": "ec2e8450",
+    "equipMonsterId": "b9d4446c"
+  },
+  {
     "itemName": "WoodenStaff",
     "id": "56387a0e",
     "equipMonsterId": null
   },
   {
     "itemName": "SuperDagger",
-    "id": "ec2e8450",
+    "id": "c5760156",
     "equipMonsterId": null
   }
 ]

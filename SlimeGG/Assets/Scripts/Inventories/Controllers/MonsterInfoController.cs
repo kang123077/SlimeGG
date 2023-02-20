@@ -21,6 +21,7 @@ public class MonsterInfoController : MonoBehaviour
 
     private bool isInit = false;
     private MonsterLiveStat monsterLiveStat;
+    private ContentController curMonsterController;
     private Dictionary<BasicStatEnum, StatSlotController> basicStatControllers = new Dictionary<BasicStatEnum, StatSlotController>();
 
     private ExpModuleController expModuleController;
@@ -39,6 +40,8 @@ public class MonsterInfoController : MonoBehaviour
     private Transform starPrefab;
 
     public Vector2 size = new Vector2(10f, 7f);
+
+    private InventoryManager inventoryManager;
 
     // Start is called before the first frame update
     void Start()
@@ -59,8 +62,9 @@ public class MonsterInfoController : MonoBehaviour
         }
     }
 
-    public void initInfo(MonsterLiveStat monsterLiveStat)
+    public void initInfo(MonsterLiveStat monsterLiveStat, ContentController curMonsterController)
     {
+        this.curMonsterController = curMonsterController;
         this.monsterLiveStat = monsterLiveStat;
         initUpInfo();
         initMidInfo();
@@ -131,7 +135,10 @@ public class MonsterInfoController : MonoBehaviour
             temp.transform.localScale = Vector3.one;
             temp.transform.localPosition = Vector3.zero;
             evolutionCaseControllers.Add(temp);
+            temp.setInventoryManager(inventoryManager);
+            temp.setContentController(curMonsterController);
             temp.initInfo(nextMonster);
+            temp.checkIfEvolable(monsterLiveStat.saveStat.exp);
         }
     }
 
@@ -348,5 +355,10 @@ public class MonsterInfoController : MonoBehaviour
             skillInfoController.destorySelf();
         }
         skillInfoControllers = new List<SkillInfoController>();
+    }
+
+    public void setInventoryManager(InventoryManager inventoryManager)
+    {
+        this.inventoryManager = inventoryManager;
     }
 }

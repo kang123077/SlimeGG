@@ -77,6 +77,7 @@ public class InventoryManager : MonoBehaviour
             addSlot(InventoryType.Item, itemSlot);
         }
         monsterInfoController = transform.GetChild(1).GetComponent<MonsterInfoController>();
+        monsterInfoController.setInventoryManager(this);
 
         ContentController.inventoryManager = this;
         loadInventory();
@@ -176,14 +177,14 @@ public class InventoryManager : MonoBehaviour
         LocalStorage.Live.items.Remove(targetItem.itemLiveStat.saveStat.id);
         curSelectedMonster.addItem(targetItem.itemLiveStat);
         targetSlot.installContent(targetItem.transform);
-        monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
+        monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat, curSelectedMonster);
     }
 
     public void unMountItemFromMonster(SlotController targetSlot, ContentController targetItem)
     {
         curSelectedMonster.removeItem(targetItem.itemLiveStat);
         targetSlot.installContent(targetItem.transform);
-        monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat);
+        monsterInfoController.initInfo(curSelectedMonster.monsterLiveStat, curSelectedMonster);
         LocalStorage.Live.items[targetItem.itemLiveStat.saveStat.id] = targetItem.itemLiveStat;
     }
 
@@ -228,7 +229,7 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
-        curSelectedMonster = null;
+        selectMonster(null);
     }
 
     public void selectMonster(ContentController selectedMonster)
@@ -238,7 +239,7 @@ public class InventoryManager : MonoBehaviour
         if (selectedMonster != null)
         {
             generateEquipmentItems(selectedMonster.getItemLiveStat());
-            monsterInfoController.initInfo(selectedMonster.monsterLiveStat);
+            monsterInfoController.initInfo(selectedMonster.monsterLiveStat, selectedMonster);
         }
         else
         {
@@ -370,5 +371,12 @@ public class InventoryManager : MonoBehaviour
     public MonsterInfoController getMonsterInfoController()
     {
         return monsterInfoController;
+    }
+
+    public void evolveMonster(ContentController contentController, string targetSpeice)
+    {
+        // 진화 적용 -> 데이터 수정
+        MonsterCommonFunction.evolveMonster(contentController, targetSpeice);
+        reloadInventory();
     }
 }

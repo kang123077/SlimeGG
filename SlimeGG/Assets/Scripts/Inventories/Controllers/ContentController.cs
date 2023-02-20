@@ -139,6 +139,11 @@ public class ContentController : MonoBehaviour
                         prevPerant.GetComponent<SlotController>().installContent(transform);
                 }
             }
+            else
+            {
+                if (prevPerant.GetComponent<SlotController>() != null)
+                    prevPerant.GetComponent<SlotController>().installContent(transform);
+            }
         }
         else
         {
