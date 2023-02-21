@@ -1,0 +1,331 @@
+{
+  "name": "Lava1",
+  "displayName": "용암지대1",
+  "stages": [
+    {
+      "id": 0,
+      "locationPos": [
+        -10.0,
+        0.0
+      ],
+      "type": "Event",
+      "next": [
+        2,
+        8,
+        1
+      ]
+    },
+    {
+      "id": 1,
+      "locationPos": [
+        -6.59237766,
+        0.416666865
+      ],
+      "type": "Normal",
+      "next": [
+        10,
+        6
+      ]
+    },
+    {
+      "id": 2,
+      "locationPos": [
+        -6.620804,
+        2.257752
+      ],
+      "type": "Normal",
+      "next": [
+        6
+      ]
+    },
+    {
+      "id": 3,
+      "locationPos": [
+        4.03810835,
+        -1.68281651
+      ],
+      "type": "Normal",
+      "next": [
+        20,
+        17
+      ]
+    },
+    {
+      "id": 4,
+      "locationPos": [
+        4.07040834,
+        0.5458659
+      ],
+      "type": "Normal",
+      "next": [
+        18
+      ]
+    },
+    {
+      "id": 5,
+      "locationPos": [
+        -3.76227665,
+        -2.16731262
+      ],
+      "type": "Normal",
+      "next": [
+        11
+      ]
+    },
+    {
+      "id": 6,
+      "locationPos": [
+        -3.697677,
+        2.645349
+      ],
+      "type": "Normal",
+      "next": [
+        12,
+        13
+      ]
+    },
+    {
+      "id": 7,
+      "locationPos": [
+        -0.27390492,
+        -0.9076229
+      ],
+      "type": "Shop",
+      "next": [
+        14,
+        3
+      ]
+    },
+    {
+      "id": 8,
+      "locationPos": [
+        -6.54005432,
+        -1.63436675
+      ],
+      "type": "Event",
+      "next": [
+        5
+      ]
+    },
+    {
+      "id": 10,
+      "locationPos": [
+        -3.729977,
+        -0.148578286
+      ],
+      "type": "Hard",
+      "next": [
+        7
+      ]
+    },
+    {
+      "id": 11,
+      "locationPos": [
+        -0.3546561,
+        -2.99095583
+      ],
+      "type": "Normal",
+      "next": [
+        14
+      ]
+    },
+    {
+      "id": 12,
+      "locationPos": [
+        -0.241605043,
+        3.40439272
+      ],
+      "type": "Normal",
+      "next": [
+        16
+      ]
+    },
+    {
+      "id": 13,
+      "locationPos": [
+        -0.290054917,
+        1.191861
+      ],
+      "type": "Event",
+      "next": [
+        15,
+        4
+      ]
+    },
+    {
+      "id": 14,
+      "locationPos": [
+        3.87661123,
+        -3.39470267
+      ],
+      "type": "Hard",
+      "next": [
+        17
+      ]
+    },
+    {
+      "id": 15,
+      "locationPos": [
+        4.118858,
+        1.85400546
+      ],
+      "type": "Event",
+      "next": [
+        19
+      ]
+    },
+    {
+      "id": 16,
+      "locationPos": [
+        3.77971339,
+        3.93733859
+      ],
+      "type": "Normal",
+      "next": [
+        21,
+        19
+      ]
+    },
+    {
+      "id": 17,
+      "locationPos": [
+        7.96253,
+        -3.55620146
+      ],
+      "type": "Event",
+      "next": [
+        25
+      ]
+    },
+    {
+      "id": 18,
+      "locationPos": [
+        8.075579,
+        -1.76356578
+      ],
+      "type": "Normal",
+      "next": [
+        24
+      ]
+    },
+    {
+      "id": 19,
+      "locationPos": [
+        8.027133,
+        2.241602
+      ],
+      "type": "Normal",
+      "next": [
+        23
+      ]
+    },
+    {
+      "id": 20,
+      "locationPos": [
+        7.99482536,
+        0.513566136
+      ],
+      "type": "Shop",
+      "next": [
+        23
+      ]
+    },
+    {
+      "id": 21,
+      "locationPos": [
+        7.88178349,
+        4.131137
+      ],
+      "type": "Hard",
+      "next": [
+        22
+      ]
+    },
+    {
+      "id": 22,
+      "locationPos": [
+        12.5167952,
+        3.40439272
+      ],
+      "type": "Event",
+      "next": [
+        26
+      ]
+    },
+    {
+      "id": 23,
+      "locationPos": [
+        12.6298389,
+        0.9819126
+      ],
+      "type": "Hard",
+      "next": [
+        27
+      ]
+    },
+    {
+      "id": 24,
+      "locationPos": [
+        12.4198961,
+        -1.29521966
+      ],
+      "type": "Normal",
+      "next": [
+        28
+      ]
+    },
+    {
+      "id": 25,
+      "locationPos": [
+        12.6621389,
+        -3.03940535
+      ],
+      "type": "Normal",
+      "next": [
+        28
+      ]
+    },
+    {
+      "id": 26,
+      "locationPos": [
+        16.2151222,
+        2.43540049
+      ],
+      "type": "Normal",
+      "next": [
+        29
+      ]
+    },
+    {
+      "id": 27,
+      "locationPos": [
+        16.231266,
+        0.335917473
+      ],
+      "type": "Event",
+      "next": [
+        29
+      ]
+    },
+    {
+      "id": 28,
+      "locationPos": [
+        16.231266,
+        -1.89276457
+      ],
+      "type": "Shop",
+      "next": [
+        29
+      ]
+    },
+    {
+      "id": 29,
+      "locationPos": [
+        20.2202835,
+        -0.261627436
+      ],
+      "type": "Boss",
+      "next": null
+    }
+  ]
+}

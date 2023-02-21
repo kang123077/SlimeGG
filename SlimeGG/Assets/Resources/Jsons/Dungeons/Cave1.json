@@ -1,0 +1,333 @@
+{
+  "name": "Cave1",
+  "displayName": "동굴1",
+  "stages": [
+    {
+      "id": 0,
+      "locationPos": [
+        -10.0,
+        0.0
+      ],
+      "type": "Event",
+      "next": [
+        4,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 1,
+      "locationPos": [
+        -6.64678574,
+        0.871369243
+      ],
+      "type": "Normal",
+      "next": [
+        6
+      ]
+    },
+    {
+      "id": 2,
+      "locationPos": [
+        -6.620837,
+        -1.28112054
+      ],
+      "type": "Normal",
+      "next": [
+        7
+      ]
+    },
+    {
+      "id": 3,
+      "locationPos": [
+        -7.529044,
+        -2.86307073
+      ],
+      "type": "Event",
+      "next": [
+        8,
+        28
+      ]
+    },
+    {
+      "id": 4,
+      "locationPos": [
+        -7.78853226,
+        2.608921
+      ],
+      "type": "Normal",
+      "next": [
+        27,
+        5
+      ]
+    },
+    {
+      "id": 5,
+      "locationPos": [
+        -1.48298216,
+        2.427386
+      ],
+      "type": "Normal",
+      "next": [
+        32,
+        9
+      ]
+    },
+    {
+      "id": 6,
+      "locationPos": [
+        -2.98801017,
+        0.7935685
+      ],
+      "type": "Normal",
+      "next": [
+        32,
+        10
+      ]
+    },
+    {
+      "id": 7,
+      "locationPos": [
+        -1.89816213,
+        -0.7883817
+      ],
+      "type": "Event",
+      "next": [
+        10
+      ]
+    },
+    {
+      "id": 8,
+      "locationPos": [
+        -2.287394,
+        -2.42219925
+      ],
+      "type": "Normal",
+      "next": [
+        10
+      ]
+    },
+    {
+      "id": 9,
+      "locationPos": [
+        1.9941529,
+        3.51659775
+      ],
+      "type": "Hard",
+      "next": [
+        13
+      ]
+    },
+    {
+      "id": 10,
+      "locationPos": [
+        2.389799,
+        -1.206095
+      ],
+      "type": "Normal",
+      "next": [
+        14
+      ]
+    },
+    {
+      "id": 12,
+      "locationPos": [
+        2.25364017,
+        -3.25207472
+      ],
+      "type": "Hard",
+      "next": [
+        15,
+        16
+      ]
+    },
+    {
+      "id": 13,
+      "locationPos": [
+        6.12000656,
+        3.80186749
+      ],
+      "type": "Event",
+      "next": [
+        18
+      ]
+    },
+    {
+      "id": 14,
+      "locationPos": [
+        6.27648449,
+        -0.5991736
+      ],
+      "type": "Event",
+      "next": [
+        19
+      ]
+    },
+    {
+      "id": 15,
+      "locationPos": [
+        6.43139458,
+        -2.13692927
+      ],
+      "type": "Normal",
+      "next": [
+        21,
+        20
+      ]
+    },
+    {
+      "id": 16,
+      "locationPos": [
+        6.275699,
+        -3.8744812
+      ],
+      "type": "Normal",
+      "next": [
+        21
+      ]
+    },
+    {
+      "id": 17,
+      "locationPos": [
+        6.382047,
+        1.234504
+      ],
+      "type": "Hard",
+      "next": [
+        18,
+        20
+      ]
+    },
+    {
+      "id": 18,
+      "locationPos": [
+        10.4793987,
+        3.80186749
+      ],
+      "type": "Hard",
+      "next": [
+        22
+      ]
+    },
+    {
+      "id": 19,
+      "locationPos": [
+        10.2977571,
+        1.51970983
+      ],
+      "type": "Normal",
+      "next": [
+        22
+      ]
+    },
+    {
+      "id": 20,
+      "locationPos": [
+        10.090168,
+        -0.866182446
+      ],
+      "type": "Normal",
+      "next": [
+        23
+      ]
+    },
+    {
+      "id": 21,
+      "locationPos": [
+        10.3756027,
+        -3.22614145
+      ],
+      "type": "Normal",
+      "next": [
+        23
+      ]
+    },
+    {
+      "id": 22,
+      "locationPos": [
+        14.9944859,
+        2.3755188
+      ],
+      "type": "Shop",
+      "next": [
+        25
+      ]
+    },
+    {
+      "id": 23,
+      "locationPos": [
+        15.0204353,
+        -1.79979265
+      ],
+      "type": "Shop",
+      "next": [
+        26
+      ]
+    },
+    {
+      "id": 24,
+      "locationPos": [
+        20.21019,
+        0.223029256
+      ],
+      "type": "Boss",
+      "next": null
+    },
+    {
+      "id": 25,
+      "locationPos": [
+        18.17571,
+        1.78977251
+      ],
+      "type": "Event",
+      "next": [
+        24
+      ]
+    },
+    {
+      "id": 26,
+      "locationPos": [
+        18.1240311,
+        -0.9478307
+      ],
+      "type": "Normal",
+      "next": [
+        24
+      ]
+    },
+    {
+      "id": 27,
+      "locationPos": [
+        -4.31139755,
+        4.00933647
+      ],
+      "type": "Normal",
+      "next": [
+        9
+      ]
+    },
+    {
+      "id": 28,
+      "locationPos": [
+        -1.32728958,
+        -3.79668045
+      ],
+      "type": "Event",
+      "next": [
+        12
+      ]
+    },
+    {
+      "id": 32,
+      "locationPos": [
+        2.59097362,
+        1.00103736
+      ],
+      "type": "Shop",
+      "next": [
+        17
+      ]
+    }
+  ]
+}
