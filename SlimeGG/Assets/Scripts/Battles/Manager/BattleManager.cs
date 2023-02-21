@@ -367,10 +367,10 @@ public class BattleManager : MonoBehaviour
         return (int)pureDmg;
     }
 
-    private void loadBattleZoneInfo(int lv = 0, string fieldName = null, string squadName = null)
+    private void loadBattleZoneInfo(string fieldName = null, string squadName = null)
     {
-        callFieldInfo(fieldName, lv);
-        callEnemyEntry(squadName, lv);
+        callFieldInfo(fieldName, LocalStorage.CurrentLocation.stageLevel);
+        callEnemyEntry(squadName, LocalStorage.CurrentLocation.stageLevel);
         curStage = 1;
     }
 
