@@ -248,7 +248,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5189101930183619178, guid: 56b5adaa1001ae14fbc24cb580459645, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 499.99997
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 5189101930183619178, guid: 56b5adaa1001ae14fbc24cb580459645, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -353,10 +353,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e89c59692ec8aa498fd2d5653f0b39d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sizeRatioToUnit: {x: 0, y: 0}
+  posRatioToUnit: {x: 0, y: 0}
+  isFixed: 1
+  isRatioToUnit: 0
   cellSizeRatioToUnit: {x: 1, y: 1}
   spacingRatioToUnit: {x: 0.1, y: 0.1}
   childAlignmentAnchor: 3
-  isRatioToUnit: 0
   constraintCount: 0
 --- !u!114 &141106208
 MonoBehaviour:
@@ -1082,6 +1085,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da16dfb275636fc4c8b35eddf61835a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sizeRatioToUnit: {x: 0, y: 0}
+  posRatioToUnit: {x: 0, y: 0}
+  isFixed: 1
+  isRatioToUnit: 1
   fonsSizeRatioToUnit: 1.2
 --- !u!1 &986398695
 GameObject:
@@ -1121,7 +1128,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 153.99997, y: -192}
+  m_AnchoredPosition: {x: 154, y: -192}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &986398697
@@ -1888,10 +1895,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e89c59692ec8aa498fd2d5653f0b39d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sizeRatioToUnit: {x: 0, y: 0}
+  posRatioToUnit: {x: 0, y: 0}
+  isFixed: 1
+  isRatioToUnit: 0
   cellSizeRatioToUnit: {x: 1, y: 1}
   spacingRatioToUnit: {x: 0.1, y: 0.1}
   childAlignmentAnchor: 5
-  isRatioToUnit: 0
   constraintCount: 0
 --- !u!114 &1901534076
 MonoBehaviour:

@@ -80,4 +80,19 @@ public class EntrySlotController : MonoBehaviour
     {
         return contentController;
     }
+
+    public void initTileInfo(EntrySlotSaveStat saveStat = null)
+    {
+        if (saveStat == null)
+        {
+            Transform temp = transform.GetChild(0);
+            Destroy(temp.GetComponent<BoxCollider>());
+            Destroy(temp.GetComponent<SpriteRenderer>());
+        }
+        else
+        {
+            initEffects(saveStat.stats);
+            setCoordinate(saveStat.x, saveStat.y);
+        }
+    }
 }
