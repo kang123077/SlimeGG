@@ -65,7 +65,7 @@ public class DataManager : MonoBehaviour
             ))
         {
             LocalDictionary.fields[fileName] =
-                CommonFunctions.loadObjectFromJson<FieldInfo>(
+                CommonFunctions.loadObjectFromJson<FieldSaveStat>(
                     $"Assets/Resources/Jsons/Fields/{fileName}"
                     );
         }
@@ -77,6 +77,16 @@ public class DataManager : MonoBehaviour
             LocalDictionary.dungeons[fileName] =
                 CommonFunctions.loadObjectFromJson<DungeonStat>(
                     $"Assets/Resources/Jsons/Dungeons/{fileName}"
+                    );
+        }
+
+        foreach (string fileName in CommonFunctions.loadFileNamesFromFolder(
+            "Assets/Resources/Jsons/Entries"
+            ))
+        {
+            LocalDictionary.entries[fileName] =
+                CommonFunctions.loadObjectFromJson<List<MonsterSaveStat>>(
+                    $"Assets/Resources/Jsons/Entries/{fileName}"
                     );
         }
         LocalStorage.DataCall.DICTIONARY = true;

@@ -1,0 +1,284 @@
+{
+  "name": "Beach1",
+  "displayName": "해변1",
+  "stages": [
+    {
+      "id": 0,
+      "locationPos": [
+        -10.0,
+        0.0
+      ],
+      "type": "Event",
+      "next": [
+        2,
+        4,
+        16,
+        1
+      ]
+    },
+    {
+      "id": 1,
+      "locationPos": [
+        -7.03061152,
+        3.08109522
+      ],
+      "type": "Normal",
+      "next": [
+        3
+      ]
+    },
+    {
+      "id": 2,
+      "locationPos": [
+        -6.888493,
+        0.240185857
+      ],
+      "type": "Normal",
+      "next": [
+        5
+      ]
+    },
+    {
+      "id": 3,
+      "locationPos": [
+        -3.5810008,
+        3.1844008
+      ],
+      "type": "Normal",
+      "next": [
+        13
+      ]
+    },
+    {
+      "id": 4,
+      "locationPos": [
+        -7.069371,
+        -2.755682
+      ],
+      "type": "Normal",
+      "next": [
+        11
+      ]
+    },
+    {
+      "id": 5,
+      "locationPos": [
+        -3.41304159,
+        0.188533068
+      ],
+      "type": "Event",
+      "next": [
+        6
+      ]
+    },
+    {
+      "id": 6,
+      "locationPos": [
+        0.0101095438,
+        0.3434342
+      ],
+      "type": "Normal",
+      "next": [
+        7,
+        23
+      ]
+    },
+    {
+      "id": 7,
+      "locationPos": [
+        3.82209778,
+        -0.250516534
+      ],
+      "type": "Event",
+      "next": [
+        8
+      ]
+    },
+    {
+      "id": 8,
+      "locationPos": [
+        7.24587059,
+        -0.5733472
+      ],
+      "type": "Hard",
+      "next": [
+        9
+      ]
+    },
+    {
+      "id": 9,
+      "locationPos": [
+        10.7600851,
+        0.175619721
+      ],
+      "type": "Normal",
+      "next": [
+        10
+      ]
+    },
+    {
+      "id": 10,
+      "locationPos": [
+        14.4293356,
+        0.201446414
+      ],
+      "type": "Boss",
+      "next": null
+    },
+    {
+      "id": 11,
+      "locationPos": [
+        -3.01252842,
+        -3.207645
+      ],
+      "type": "Normal",
+      "next": [
+        12
+      ]
+    },
+    {
+      "id": 12,
+      "locationPos": [
+        0.152846336,
+        -3.42716932
+      ],
+      "type": "Normal",
+      "next": [
+        15
+      ]
+    },
+    {
+      "id": 13,
+      "locationPos": [
+        0.23036623,
+        2.21590948
+      ],
+      "type": "Event",
+      "next": [
+        14
+      ]
+    },
+    {
+      "id": 14,
+      "locationPos": [
+        3.382821,
+        3.765496
+      ],
+      "type": "Hard",
+      "next": [
+        21
+      ]
+    },
+    {
+      "id": 15,
+      "locationPos": [
+        3.78333783,
+        -2.69111586
+      ],
+      "type": "Event",
+      "next": [
+        22
+      ]
+    },
+    {
+      "id": 16,
+      "locationPos": [
+        -6.009941,
+        -1.41270661
+      ],
+      "type": "Hard",
+      "next": [
+        17
+      ]
+    },
+    {
+      "id": 17,
+      "locationPos": [
+        -2.28901076,
+        -1.36105359
+      ],
+      "type": "Normal",
+      "next": [
+        18
+      ]
+    },
+    {
+      "id": 18,
+      "locationPos": [
+        0.204528689,
+        -1.56766534
+      ],
+      "type": "Shop",
+      "next": [
+        15
+      ]
+    },
+    {
+      "id": 19,
+      "locationPos": [
+        11.1218452,
+        -1.58057833
+      ],
+      "type": "Shop",
+      "next": [
+        10
+      ]
+    },
+    {
+      "id": 20,
+      "locationPos": [
+        10.3337307,
+        2.60330558
+      ],
+      "type": "Event",
+      "next": [
+        10
+      ]
+    },
+    {
+      "id": 21,
+      "locationPos": [
+        7.23295,
+        3.610537
+      ],
+      "type": "Normal",
+      "next": [
+        20
+      ]
+    },
+    {
+      "id": 22,
+      "locationPos": [
+        7.31046963,
+        -2.85898733
+      ],
+      "type": "Hard",
+      "next": [
+        19
+      ]
+    },
+    {
+      "id": 23,
+      "locationPos": [
+        3.7445786,
+        1.63481414
+      ],
+      "type": "Shop",
+      "next": [
+        24
+      ]
+    },
+    {
+      "id": 24,
+      "locationPos": [
+        7.32339,
+        1.72520638
+      ],
+      "type": "Normal",
+      "next": [
+        9,
+        20
+      ]
+    }
+  ]
+}

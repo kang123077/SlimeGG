@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class GridCellGenerator : MonoBehaviour
 {
@@ -15,7 +16,6 @@ public class GridCellGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        updateGridCellSize();
     }
 
     // Update is called once per frame
@@ -23,8 +23,19 @@ public class GridCellGenerator : MonoBehaviour
     {
     }
 
-    private void updateGridCellSize()
+    public void generateTiles(string fieldName = null)
     {
+        FieldSaveStat temp;
+        if (fieldName != null)
+        {
+            // 특정
+            temp = LocalDictionary.fields[fieldName];
+        }
+        else
+        {
+            // 랜덤
+            temp = LocalDictionary.fields[LocalDictionary.fields.Keys.ToList()[UnityEngine.Random.Range(0, LocalDictionary.fields.Keys.Count)]];
+        }
         if (x != 0)
         {
             GetComponent<GridLayoutGroup>().constraintCount = x;
@@ -48,6 +59,7 @@ public class GridCellGenerator : MonoBehaviour
                     if (newCell.GetComponent<EntrySlotController>())
                     {
                         newCell.GetComponent<EntrySlotController>().setCoordinate(i, j);
+                        newCell.GetComponent<EntrySlotController>().initTileInfo(temp.entries.Find((stat) => { return stat.x == i && stat.y == j; }));
                     }
                     else if (newCell.GetComponent<PlaceableSlotController>())
                     {

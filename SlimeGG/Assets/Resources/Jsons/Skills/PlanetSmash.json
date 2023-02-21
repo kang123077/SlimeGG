@@ -1,0 +1,50 @@
+{
+  "name": "대지 강타",
+  "desc": "적에게 육중한 팔을 휘둘러 땅을 울리는 강력한 범위 피해를 가한다.",
+  "range": 1,
+  "targetType": "ENEMY_CLOSE",
+  "coolTime": 4.0,
+  "castingTime": 1.2,
+  "projectiles": [
+    {
+      "spd": 100,
+      "isTarget": true,
+      "rgb": "#ff4b61",
+      "area": {
+        "rgb": "#FF7070",
+        "src": "Smog",
+        "duration": 2,
+        "range": 1.5,
+        "isTarget": false,
+        "effects": {
+          "instant":[
+            {
+              "name": "hp",
+              "amount": -80,
+              "isMultiple": false,
+              "duration": 0,
+              "tickTime": 0
+            },
+            {
+              "name": "spd",
+              "amount": -1.4,
+              "isMultiple": false,
+              "duration": 2,
+              "tickTime": 0
+            },
+            {
+              "name": "timeCoolCycle",
+              "amount": -1,
+              "isMultiple": false,
+              "duration": 2,
+              "tickTime": 0
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
+        
+
+  

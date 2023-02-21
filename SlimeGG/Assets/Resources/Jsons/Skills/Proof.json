@@ -1,0 +1,24 @@
+{
+    "name": "저항",
+    "desc": "이동을 멈춘채 몸을 단단히 굳히고 체력을 회복한다.",
+    "range": 1,
+    "targetType": "SELF",
+    "coolTime": 15.0,
+    "castingTime": 1.5,
+    "toCaster": [
+     {
+        "name": "hp",
+        "amount": 150,
+        "isMultiple": false,
+        "duration": 5,
+        "tickTime": 1
+     },
+     {
+        "name": "spd",
+        "amount": 0,
+        "isMultiple": true,
+        "duration": 5,
+        "tickTime": 0
+     }    
+  ]  
+}

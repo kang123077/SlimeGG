@@ -53,7 +53,7 @@ public class BattleManager : MonoBehaviour
                 // 적 필드 정보 + 몬스터 정보 불러오기
                 staticProjectilePrefab = projectilePrefab;
                 staticAreaPrefab = areaPrefab;
-                loadBattleZoneInfo(0, "swamp");
+                loadBattleZoneInfo();
                 break;
             case 1:
                 // 적 배치
@@ -367,22 +367,39 @@ public class BattleManager : MonoBehaviour
         return (int)pureDmg;
     }
 
-    private void loadBattleZoneInfo(int level, string dungeonTheme)
+    private void loadBattleZoneInfo(string fieldName = null, string squadName = null)
     {
-        callEnemyEntry("Test");
+        callFieldInfo(fieldName, LocalStorage.CurrentLocation.stageLevel);
+        callEnemyEntry(squadName, LocalStorage.CurrentLocation.stageLevel);
         curStage = 1;
     }
 
-    private void callEnemyEntry(string entryPath)
+    private void callFieldInfo(string fieldName = null, int lv = 0)
     {
-        foreach (MonsterSaveStat saveStat in
-                        CommonFunctions.loadObjectFromJson<MonsterSaveStat[]>(
-                            $"Assets/Resources/Jsons/Entries/{entryPath}"
-                            ))
+        fieldController.allyEntryGenerator.generateTiles(fieldName);
+        fieldController.enemyEntryGenerator.generateTiles(fieldName);
+    }
+
+    private void callEnemyEntry(string entryName = null, int lv = 0)
+    {
+        if (entryName != null)
         {
-            ContentController newEnemy = inventoryManager.generateMonsterContentController();
-            newEnemy.initContent(GeneratorFunction.returnMonsterLiveStat(saveStat), false);
-            enemyEntry.Add(newEnemy);
+            foreach (MonsterSaveStat saveStat in LocalDictionary.entries[entryName])
+            {
+                ContentController newEnemy = inventoryManager.generateMonsterContentController();
+                newEnemy.initContent(GeneratorFunction.returnMonsterLiveStat(saveStat), false);
+                enemyEntry.Add(newEnemy);
+            }
+        }
+        else
+        {
+            int randInt = Random.Range(0, LocalDictionary.entries.Keys.Count);
+            foreach (MonsterSaveStat saveStat in LocalDictionary.entries[LocalDictionary.entries.Keys.ToList()[randInt]])
+            {
+                ContentController newEnemy = inventoryManager.generateMonsterContentController();
+                newEnemy.initContent(GeneratorFunction.returnMonsterLiveStat(saveStat), false);
+                enemyEntry.Add(newEnemy);
+            }
         }
     }
 

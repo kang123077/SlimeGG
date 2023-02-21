@@ -1,0 +1,310 @@
+{
+  "name": "Forest1",
+  "displayName": "숲1",
+  "stages": [
+    {
+      "id": 0,
+      "locationPos": [
+        -10.0,
+        0.0
+      ],
+      "type": "Event",
+      "next": [
+        9,
+        1,
+        10
+      ]
+    },
+    {
+      "id": 1,
+      "locationPos": [
+        -7.005848,
+        0.0292396545
+      ],
+      "type": "Shop",
+      "next": [
+        2,
+        23
+      ]
+    },
+    {
+      "id": 2,
+      "locationPos": [
+        -3.34113073,
+        -0.6140351
+      ],
+      "type": "Normal",
+      "next": [
+        14
+      ]
+    },
+    {
+      "id": 3,
+      "locationPos": [
+        -0.8382084,
+        -0.00974655151
+      ],
+      "type": "Normal",
+      "next": [
+        4
+      ]
+    },
+    {
+      "id": 4,
+      "locationPos": [
+        3.21636581,
+        0.3216374
+      ],
+      "type": "Hard",
+      "next": [
+        18,
+        25
+      ]
+    },
+    {
+      "id": 6,
+      "locationPos": [
+        11.7348824,
+        -1.29629636
+      ],
+      "type": "Event",
+      "next": [
+        7
+      ]
+    },
+    {
+      "id": 7,
+      "locationPos": [
+        15.5360527,
+        0.224171281
+      ],
+      "type": "Normal",
+      "next": [
+        8
+      ]
+    },
+    {
+      "id": 8,
+      "locationPos": [
+        18.9785576,
+        -0.224171579
+      ],
+      "type": "Boss",
+      "next": null
+    },
+    {
+      "id": 9,
+      "locationPos": [
+        -6.90838242,
+        -2.62183237
+      ],
+      "type": "Normal",
+      "next": [
+        12,
+        2
+      ]
+    },
+    {
+      "id": 10,
+      "locationPos": [
+        -6.94736862,
+        3.10916185
+      ],
+      "type": "Normal",
+      "next": [
+        11,
+        23
+      ]
+    },
+    {
+      "id": 11,
+      "locationPos": [
+        -3.00974751,
+        3.86939573
+      ],
+      "type": "Normal",
+      "next": [
+        13
+      ]
+    },
+    {
+      "id": 12,
+      "locationPos": [
+        -3.341129,
+        -2.64132547
+      ],
+      "type": "Event",
+      "next": [
+        14
+      ]
+    },
+    {
+      "id": 13,
+      "locationPos": [
+        -0.417151928,
+        3.01169586
+      ],
+      "type": "Event",
+      "next": [
+        4,
+        15
+      ]
+    },
+    {
+      "id": 14,
+      "locationPos": [
+        -0.3976593,
+        -3.30409336
+      ],
+      "type": "Hard",
+      "next": [
+        16,
+        26
+      ]
+    },
+    {
+      "id": 15,
+      "locationPos": [
+        3.28655052,
+        3.01169586
+      ],
+      "type": "Normal",
+      "next": [
+        18,
+        30
+      ]
+    },
+    {
+      "id": 16,
+      "locationPos": [
+        3.411297,
+        -1.29629636
+      ],
+      "type": "Normal",
+      "next": [
+        25
+      ]
+    },
+    {
+      "id": 18,
+      "locationPos": [
+        7.095509,
+        3.4405458
+      ],
+      "type": "Normal",
+      "next": [
+        19
+      ]
+    },
+    {
+      "id": 19,
+      "locationPos": [
+        11.6569118,
+        3.32358646
+      ],
+      "type": "Normal",
+      "next": [
+        21
+      ]
+    },
+    {
+      "id": 21,
+      "locationPos": [
+        15.4307957,
+        2.25146174
+      ],
+      "type": "Hard",
+      "next": [
+        8
+      ]
+    },
+    {
+      "id": 22,
+      "locationPos": [
+        15.6335182,
+        -2.93372345
+      ],
+      "type": "Event",
+      "next": [
+        8
+      ]
+    },
+    {
+      "id": 23,
+      "locationPos": [
+        -3.2436657,
+        1.66666687
+      ],
+      "type": "Event",
+      "next": [
+        3
+      ]
+    },
+    {
+      "id": 25,
+      "locationPos": [
+        7.69979525,
+        -1.56920075
+      ],
+      "type": "Normal",
+      "next": [
+        6
+      ]
+    },
+    {
+      "id": 26,
+      "locationPos": [
+        3.76217437,
+        -3.30409336
+      ],
+      "type": "Shop",
+      "next": [
+        27
+      ]
+    },
+    {
+      "id": 27,
+      "locationPos": [
+        7.81675434,
+        -3.4405458
+      ],
+      "type": "Normal",
+      "next": [
+        28
+      ]
+    },
+    {
+      "id": 28,
+      "locationPos": [
+        12.0467739,
+        -3.57699823
+      ],
+      "type": "Hard",
+      "next": [
+        22
+      ]
+    },
+    {
+      "id": 29,
+      "locationPos": [
+        11.2280617,
+        1.41325533
+      ],
+      "type": "Normal",
+      "next": [
+        7
+      ]
+    },
+    {
+      "id": 30,
+      "locationPos": [
+        7.348918,
+        1.21832371
+      ],
+      "type": "Shop",
+      "next": [
+        29
+      ]
+    }
+  ]
+}

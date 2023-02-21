@@ -7,8 +7,6 @@ public static class LocalDictionary
         new Dictionary<string, MonsterDictionaryStat>();
     public static Dictionary<string, SkillStat> skills =
         new Dictionary<string, SkillStat>();
-    public static Dictionary<string, FieldInfo> fields =
-        new Dictionary<string, FieldInfo>();
 
     public static Dictionary<string, ItemDictionaryStat> items =
         new Dictionary<string, ItemDictionaryStat>();
@@ -31,4 +29,7 @@ public static class LocalDictionary
     };
 
     public static Dictionary<string, DungeonStat> dungeons = new Dictionary<string, DungeonStat>();
+
+    public static Dictionary<string, FieldSaveStat> fields = new Dictionary<string, FieldSaveStat>();
+    public static Dictionary<string, List<MonsterSaveStat>> entries = new Dictionary<string, List<MonsterSaveStat>>();
 }
